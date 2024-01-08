@@ -26,12 +26,12 @@ Current VAD Model used: https://huggingface.co/pyannote/voice-activity-detection
 
 
 
-audio_file='audio_own'
+#audio_file='audio_own'
 audio_file='audio_vilearn'
 
 audio_file_channeled=audio_file + "channel1"
 audio_file_gated=audio_file_channeled + "gated"
-
+'''
 from scipy.io import wavfile
 import noisereduce as nr
 from pydub import AudioSegment
@@ -58,7 +58,8 @@ print()
 '''
 
 
-
+'''
+# VAD PIPELINE
 from pyannote.audio import Pipeline
 pipeline = Pipeline.from_pretrained("pyannote/voice-activity-detection",
                                     use_auth_token=token)
@@ -69,5 +70,29 @@ for speech in output.get_timeline().support():
 '''
 
 
+''' '''
+# SPEAKER DIARIZATION PIPELINE
+from pyannote.audio import Pipeline
+pipeline = Pipeline.from_pretrained(
+  "pyannote/speaker-diarization-3.1",
+  use_auth_token=token)
+
+# run the pipeline on an audio file
+diarization = pipeline(audio_file + ".wav")
+
+# dump the diarization output to disk using RTTM format
+with open("audio.rttm", "w") as rttm:
+    diarization.write_rttm(rttm)
+    print(str(rttm))
+
+
+
 '''
+# SPEAKER SEGMENTATION PIPELINE
+from pyannote.audio import Pipeline
+pipeline = Pipeline.from_pretrained("pyannote/speaker-segmentation", use_auth_token=token)
+output = pipeline(audio_file + ".wav")
+
+for turn, _, speaker in output.itertracks(yield_label=True):
+    print('turn: ' + str(turn) + ' _: ' + str(_) + ' speaker: ' + str(speaker))
 '''
