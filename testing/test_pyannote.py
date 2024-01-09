@@ -11,6 +11,10 @@ token='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'
 # https://pypi.org/project/noisereduce/
 
 # Alternative2: sox can be configured for noise gate: https://stackoverflow.com/questions/18985952/sox-how-to-noise-gate
+
+# Alternative3: routing of nvidia broadcast, but then begin has to be synced
+# https://www.youtube.com/watch?v=Z3QeaXhfkGg
+
 ################noise gate################
 
 ################VAD################
@@ -72,18 +76,42 @@ for speech in output.get_timeline().support():
 
 ''' '''
 # SPEAKER DIARIZATION PIPELINE
+import torch, torchaudio
 from pyannote.audio import Pipeline
+from pyannote.audio.pipelines.utils.hook import ProgressHook
+
 pipeline = Pipeline.from_pretrained(
   "pyannote/speaker-diarization-3.1",
   use_auth_token=token)
 
+if torch.cuda.is_available():
+    dev='cuda'
+else:
+    dev='cpu'
+
+# send pipeline to GPU (when available)
+pipeline.to(torch.device(dev))
+
+#apply pretrained pipeline
+waveform, sample_rate = torchaudio.load(audio_file + ".wav")
+
+audio=waveform.reshape(1,-1)
+with ProgressHook() as hook:
+    diarization = pipeline({"waveform": audio, "sample_rate": sample_rate, "hook":hook})
+
+for turn, _, speaker in diarization.itertracks(yield_label=True):
+    print(f"start={turn.start:.1f}s stop={turn.end:.1f}s speaker_{speaker}")
+
+
+
+
 # run the pipeline on an audio file
-diarization = pipeline(audio_file + ".wav")
+#diarization = pipeline(audio_file + ".wav")
 
 # dump the diarization output to disk using RTTM format
-with open("audio.rttm", "w") as rttm:
-    diarization.write_rttm(rttm)
-    print(str(rttm))
+#with open("audio.rttm", "w") as rttm:
+#    diarization.write_rttm(rttm)
+#    print(str(rttm))
 
 
 
