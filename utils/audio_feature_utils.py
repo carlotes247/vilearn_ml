@@ -141,3 +141,24 @@ def extract_emotional_speech_features(audio) -> np.ndarray:
 
 
 
+def compute_context(audio: np.ndarray, context_window: int) -> np.ndarray:
+    """
+    Computes the context of audio by repeating the initial samples.
+
+    Args:
+        audio: A numpy array representing the input audio signal as a numpy array.
+        context_window: An integer representing the number of times the initial samples are repeated.
+
+    Returns:
+        A numpy containing the audio context with repeated initial samples.
+    """
+    audio_context = copy.deepcopy(audio)
+
+    context = audio_context[:, :]
+    filler = audio_context[0, :]
+    for i in range(context_window):
+        audio_context = np.insert(audio_context, 0, filler, axis=0)[:context.shape[0], :]
+        context = np.append(context, audio_context, axis=1)
+    return context
+
+
