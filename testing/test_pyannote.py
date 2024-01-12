@@ -21,7 +21,7 @@ token='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'
 '''
 Pyannote repo: https://github.com/pyannote/pyannote-audio
 From there, pipelines: https://huggingface.co/models?other=pyannote-audio-pipeline
-From there, models: https://huggingface.co/models?other=pyannote-audio-model
+From there, training: https://huggingface.co/models?other=pyannote-audio-model
 
 Current VAD Model used: https://huggingface.co/pyannote/voice-activity-detection
 '''
@@ -75,45 +75,127 @@ for speech in output.get_timeline().support():
 
 
 ''' '''
-# SPEAKER DIARIZATION PIPELINE
-import torch, torchaudio
-from pyannote.audio import Pipeline
-from pyannote.audio.pipelines.utils.hook import ProgressHook
 
-pipeline = Pipeline.from_pretrained(
-  "pyannote/speaker-diarization-3.1",
-  use_auth_token=token)
+from datetime import timedelta
+from pathlib import Path
 
-if torch.cuda.is_available():
-    dev='cuda'
-else:
-    dev='cpu'
 
-# send pipeline to GPU (when available)
-pipeline.to(torch.device(dev))
-
-#apply pretrained pipeline
-waveform, sample_rate = torchaudio.load(audio_file + ".wav")
-
-audio=waveform.reshape(1,-1)
-with ProgressHook() as hook:
-    diarization = pipeline({"waveform": audio, "sample_rate": sample_rate, "hook":hook})
-
-for turn, _, speaker in diarization.itertracks(yield_label=True):
-    print(f"start={turn.start:.1f}s stop={turn.end:.1f}s speaker_{speaker}")
+elan_csv_header=[
+    'Tier',
+    'Begin',
+    'Begin_no',
+    'End',
+    'End_no',
+    'Duration',
+    'Duration_no',
+    'Annotation'
+]
 
 
 
 
-# run the pipeline on an audio file
-#diarization = pipeline(audio_file + ".wav")
 
-# dump the diarization output to disk using RTTM format
-#with open("audio.rttm", "w") as rttm:
-#    diarization.write_rttm(rttm)
-#    print(str(rttm))
+'''
+# test convertTimeToElan(ts)
 
 
+a = convertTimeToElan(3601.340)
+b = convertTimeToElan(3661.803)
+c = convertTimeToElan(3600.810)
+d = convertTimeToElan(3559.0001)
+print()
+'''
+def convertTimeToElan(ts: float):
+    # Calculate hours, minutes, seconds, and milliseconds
+    hours, remainder = divmod(ts, 3600)
+    minutes, remainder2 = divmod(remainder, 60)
+
+    milliseconds, seconds = int (round(remainder2 - int(remainder2), 3)*1000 ) , int(remainder2)
+
+
+    # Create a timedelta object
+    time_delta = timedelta(hours=hours, minutes=minutes, seconds=seconds, milliseconds=milliseconds)
+
+    # Manually format the milliseconds part
+    milliseconds_str = "{:03d}".format(time_delta.microseconds // 1000)
+
+    # Format the timedelta as a string in the desired format
+    time_format = "{:02d}:{:02d}:{:02d}.{}".format(int(hours), int(minutes), int(seconds), milliseconds_str)
+
+    return time_format
+
+def speaker_diarization_to_csv(file_path:Path, line_separator:str, csv_header:[], csv_rows:[[]]):
+    import csv
+
+    # Writing to CSV file
+    with open(file_path, 'w', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file, delimiter=line_separator)
+
+        # Write the header
+        csv_writer.writerow(csv_header)
+
+        # Write the data row
+        for row in csv_rows:
+            csv_writer.writerow(row)
+
+def predict_speakers(audio_file_path:Path, file_path:Path, csv_header, line_separator, save:bool, output:bool, tier:str):
+    # SPEAKER DIARIZATION PIPELINE
+    import torch, torchaudio
+    from pyannote.audio import Pipeline
+    from pyannote.audio.pipelines.utils.hook import ProgressHook
+
+    pipeline = Pipeline.from_pretrained(
+      "pyannote/speaker-diarization-3.1",
+      use_auth_token=token)
+
+    '''
+    if torch.cuda.is_available():
+        dev='cuda'
+    else:
+        dev='cpu'
+    
+    # send pipeline to GPU (when available)
+    pipeline.to(torch.device(dev))
+    
+    #apply pretrained pipeline
+    waveform, sample_rate = torchaudio.load(audio_file + ".wav")
+    
+    audio=waveform.reshape(1,-1)
+    with ProgressHook() as hook:
+        diarization = pipeline({"waveform": audio, "sample_rate": sample_rate, "hook":hook})
+    '''
+    # run the pipeline on an audio file
+    diarization = pipeline(str(audio_file_path))
+    csv_rows=[]
+    for turn, _, speaker in diarization.itertracks(yield_label=True):
+        if output:
+            print(f"start={turn.start:.1f}s stop={turn.end:.1f}s speaker_{speaker}")
+        if save:
+            start_str=convertTimeToElan(turn.start)
+            end_str=convertTimeToElan(turn.end)
+            dur_str=convertTimeToElan(turn.duration)
+            row=[
+                tier,
+                start_str,
+                str(round(turn.start, 2)),
+                end_str,
+                str(round(turn.end, 2)),
+                dur_str,
+                str(round(turn.duration, 2)),
+                str(speaker)
+            ]
+            csv_rows.append(row)
+            print()
+
+    if save:
+        speaker_diarization_to_csv( file_path, line_separator, csv_header, csv_rows)
+
+
+
+
+predict_speakers(Path('DESKTOP-IV41AK1_vilearn2023-10-30__15-08-39.270.wav'), Path('DESKTOP-IV41AK1_vilearn2023-10-30__15-08-39.270.csv'), elan_csv_header, ';', True, True, tier='speaker_tier')
+predict_speakers(Path('DESKTOP-QTU96C2_vilearn2023-10-30__15-08-32.921.wav'), Path('DESKTOP-QTU96C2_vilearn2023-10-30__15-08-32.921' + '.csv'), elan_csv_header, ';', True, True, tier='speaker_tier')
+predict_speakers(Path('DESKTOP-VK97U75_vilearn2023-10-30__15-08-32.173.wav'), Path('DESKTOP-VK97U75_vilearn2023-10-30__15-08-32.173' + '.csv'), elan_csv_header, ';', True, True, tier='speaker_tier')
 
 '''
 # SPEAKER SEGMENTATION PIPELINE
