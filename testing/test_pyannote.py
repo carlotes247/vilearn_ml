@@ -1,3 +1,8 @@
+import numpy as np
+
+
+
+
 token='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'
 
 # dataset:
@@ -149,6 +154,8 @@ def predict_speakers(audio_file_path:Path, file_path:Path, csv_header, line_sepa
       use_auth_token=token)
 
     '''
+    
+    '''
     if torch.cuda.is_available():
         dev='cuda'
     else:
@@ -162,10 +169,13 @@ def predict_speakers(audio_file_path:Path, file_path:Path, csv_header, line_sepa
     
     audio=waveform.reshape(1,-1)
     with ProgressHook() as hook:
-        diarization = pipeline({"waveform": audio, "sample_rate": sample_rate, "hook":hook})
-    '''
-    # run the pipeline on an audio file
-    diarization = pipeline(str(audio_file_path))
+        # run the pipeline on an audio file
+        audio_p = str(audio_file_path)
+        diarization = pipeline(audio_p, hook=hook)
+        #diarization = pipeline({"waveform": audio, "sample_rate": sample_rate, "hook": hook})
+
+
+    #diarization = pipeline(audio_p)
     csv_rows=[]
     for turn, _, speaker in diarization.itertracks(yield_label=True):
         if output:
@@ -191,11 +201,285 @@ def predict_speakers(audio_file_path:Path, file_path:Path, csv_header, line_sepa
         speaker_diarization_to_csv( file_path, line_separator, csv_header, csv_rows)
 
 
+def predict_speakers_vad(audio_file_path:Path, file_path:Path, csv_header, line_separator, save:bool, output:bool, tier:str, accuracy=10):
+    # https://github.com/MorenoLaQuatra/vad
+
+    from vad.energy_vad import EnergyVAD
+    import torch
+    import torchaudio
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    audio=str(audio_file_path)
+    clean_filename = audio.split("/")[-1].split(".")[0]
+
+    # Load audio
+    waveform, sample_rate = torchaudio.load(audio)
 
 
-predict_speakers(Path('DESKTOP-IV41AK1_vilearn2023-10-30__15-08-39.270.wav'), Path('DESKTOP-IV41AK1_vilearn2023-10-30__15-08-39.270.csv'), elan_csv_header, ';', True, True, tier='speaker_tier')
-predict_speakers(Path('DESKTOP-QTU96C2_vilearn2023-10-30__15-08-32.921.wav'), Path('DESKTOP-QTU96C2_vilearn2023-10-30__15-08-32.921' + '.csv'), elan_csv_header, ';', True, True, tier='speaker_tier')
-predict_speakers(Path('DESKTOP-VK97U75_vilearn2023-10-30__15-08-32.173.wav'), Path('DESKTOP-VK97U75_vilearn2023-10-30__15-08-32.173' + '.csv'), elan_csv_header, ';', True, True, tier='speaker_tier')
+    fl=waveform.shape[1]/sample_rate*1000
+    fl2=fl * sample_rate // 1000
+
+    # Compute VAD
+    vad = EnergyVAD(
+        sample_rate=sample_rate,
+        frame_length=int(fl),
+        #frame_shift=0.022675736961451247,
+        energy_threshold=0.05,
+        pre_emphasis=0.95
+    )
+    vad_output = vad(waveform.numpy())
+
+    if save:
+        # collect list of (start,end)-index tuples referring to index in numpy array
+        previous=-1.0
+        start=-1
+        all_times=[]
+        for i, value in enumerate(vad_output):
+            if previous==0.0 and value==0.0:
+                continue
+            elif previous==1.0 and value==1.0:
+                continue
+            elif previous==0.0 and value==1.0:
+                start=i
+            elif (previous==1.0 and value==0.0) or (previous==1.0 and i==len(vad_output)-1):
+                end=i-1
+                all_times.append((start,end))
+
+        # calc actual times on ms basis as float of each sample in the audio
+        y_range = np.arange(len(waveform))
+        y_times = librosa.frames_to_time(y_range, sr=sample_rate, hop_length=1)
+
+        csv_rows=[]
+        for start, end in all_times:
+            new_start, new_end = y_times[start], y_times[end]   # using indices (start,end) crop the times out of y_times--> new_start, new_end
+            start_str = convertTimeToElan(new_start)
+            end_str = convertTimeToElan(new_end)
+            dur_str = convertTimeToElan(new_end-new_start)
+            row = [
+                tier,
+                start_str,
+                str(round(new_start, accuracy)),
+                end_str,
+                str(round(new_end, accuracy)),
+                dur_str,
+                str(round(new_end-new_start, accuracy)),
+                str('')
+            ]
+            csv_rows.append(row)
+            print()
+
+        speaker_diarization_to_csv( file_path, line_separator, csv_header, csv_rows)
+
+
+
+
+
+
+import contextlib
+import sys
+import wave
+
+import webrtcvad
+
+
+def read_wave(path):
+    """
+    from https://github.com/wiseman/py-webrtcvad/blob/master/example.py
+    Reads a .wav file.
+
+
+    Takes the path, and returns (PCM audio data, sample rate).
+    """
+    with contextlib.closing(wave.open(path, 'rb')) as wf:
+        num_channels = wf.getnchannels()
+        assert num_channels == 1
+        sample_width = wf.getsampwidth()
+        assert sample_width == 2
+        sample_rate = wf.getframerate()
+        assert sample_rate in (8000, 16000, 32000, 48000)
+        pcm_data = wf.readframes(wf.getnframes())
+        return pcm_data, sample_rate
+
+
+import collections
+'''
+    https://github.com/wiseman/py-webrtcvad/blob/master/example.py
+'''
+
+
+class Frame(object):
+    """Represents a "frame" of audio data."""
+    def __init__(self, bytes, timestamp, duration):
+        self.bytes = bytes
+        self.timestamp = timestamp
+        self.duration = duration
+
+
+def frame_generator(frame_duration_ms, audio, sample_rate):
+    """Generates audio frames from PCM audio data.
+
+    Takes the desired frame duration in milliseconds, the PCM data, and
+    the sample rate.
+
+    Yields Frames of the requested duration.
+    """
+    n = int(sample_rate * (frame_duration_ms / 1000.0) * 2)
+    offset = 0
+    timestamp = 0.0
+    duration = (float(n) / sample_rate) / 2.0
+    while offset + n < len(audio):
+        yield Frame(audio[offset:offset + n], timestamp, duration)
+        timestamp += duration
+        offset += n
+
+
+def vad_collector(sample_rate, frame_duration_ms,
+                  padding_duration_ms, vad, frames):
+    """Filters out non-voiced audio frames.
+
+    Given a webrtcvad.Vad and a source of audio frames, yields only
+    the voiced audio.
+
+    Uses a padded, sliding window algorithm over the audio frames.
+    When more than 90% of the frames in the window are voiced (as
+    reported by the VAD), the collector triggers and begins yielding
+    audio frames. Then the collector waits until 90% of the frames in
+    the window are unvoiced to detrigger.
+
+    The window is padded at the front and back to provide a small
+    amount of silence or the beginnings/endings of speech around the
+    voiced frames.
+
+    Arguments:
+
+    sample_rate - The audio sample rate, in Hz.
+    frame_duration_ms - The frame duration in milliseconds.
+    padding_duration_ms - The amount to pad the window, in milliseconds.
+    vad - An instance of webrtcvad.Vad.
+    frames - a source of audio frames (sequence or generator).
+
+    Returns: A generator that yields PCM audio data.
+    """
+    num_padding_frames = int(padding_duration_ms / frame_duration_ms)
+    # We use a deque for our sliding window/ring buffer.
+    ring_buffer = collections.deque(maxlen=num_padding_frames)
+    # We have two states: TRIGGERED and NOTTRIGGERED. We start in the
+    # NOTTRIGGERED state.
+    triggered = False
+
+    voiced_frames = []
+    for frame in frames:
+        is_speech = vad.is_speech(frame.bytes, sample_rate)
+
+        sys.stdout.write('1' if is_speech else '0')
+        if not triggered:
+            ring_buffer.append((frame, is_speech))
+            num_voiced = len([f for f, speech in ring_buffer if speech])
+            # If we're NOTTRIGGERED and more than 90% of the frames in
+            # the ring buffer are voiced frames, then enter the
+            # TRIGGERED state.
+            if num_voiced > 0.9 * ring_buffer.maxlen:
+                triggered = True
+                sys.stdout.write('+(%s)' % (ring_buffer[0][0].timestamp,))
+                # We want to yield all the audio we see from now until
+                # we are NOTTRIGGERED, but we have to start with the
+                # audio that's already in the ring buffer.
+                for f, s in ring_buffer:
+                    voiced_frames.append(f)
+                ring_buffer.clear()
+        else:
+            # We're in the TRIGGERED state, so collect the audio data
+            # and add it to the ring buffer.
+            voiced_frames.append(frame)
+            ring_buffer.append((frame, is_speech))
+            num_unvoiced = len([f for f, speech in ring_buffer if not speech])
+            # If more than 90% of the frames in the ring buffer are
+            # unvoiced, then enter NOTTRIGGERED and yield whatever
+            # audio we've collected.
+            if num_unvoiced > 0.9 * ring_buffer.maxlen:
+                sys.stdout.write('-(%s)' % (frame.timestamp + frame.duration))
+                triggered = False
+                yield b''.join([f.bytes for f in voiced_frames])
+                ring_buffer.clear()
+                voiced_frames = []
+    if triggered:
+        sys.stdout.write('-(%s)' % (frame.timestamp + frame.duration))
+    sys.stdout.write('\n')
+    # If we have any leftover voiced audio when we run out of input,
+    # yield it.
+    if voiced_frames:
+        yield b''.join([f.bytes for f in voiced_frames])
+
+
+
+'''
+from https://github.com/wiseman/py-webrtcvad/blob/master/example.py
+'''
+def predict_speakers_vad_2(audio_file_path: Path, file_path: Path, csv_header, line_separator, save: bool,
+                         output: bool, tier: str, accuracy=10):
+    audio = str(audio_file_path.as_posix())
+
+    # # Load the audio file as mono and resample it to 16 kHz
+    # y, sr = librosa.load(audio, sr=16000, mono=True)
+    #
+    # # Save the resampled audio to the temporary file
+    # librosa.output.write_wav('tmp.wav', y, sr)
+    # audio='tmp.wav'
+
+    audio, sample_rate = read_wave(audio)
+    vad = webrtcvad.Vad(int(0))
+    frames = frame_generator(30, audio, sample_rate)
+    frames = list(frames)
+
+    print()
+
+
+
+
+
+
+
+
+
+import librosa
+audio = str( Path('DESKTOP-IV41AK1_vilearn2023-10-30__15-08-39.270.wav') )
+
+predict_speakers_vad_2(Path('example_mono.wav'),
+                 Path('example_mono.csv'),
+                 elan_csv_header,
+                 ';',
+                 save=True,
+                 output=True,
+                 tier='speaker_tier')
+
+# predict_speakers_vad(Path('DESKTOP-IV41AK1_vilearn2023-10-30__15-08-39.270.wav'),
+#                  Path('DESKTOP-IV41AK1_vilearn2023-10-30__15-08-39.270.csv'),
+#                  elan_csv_header,
+#                  ';',
+#                  save=True,
+#                  output=True,
+#                  tier='speaker_tier')
+
+print()
+
+
+'''
+
+predict_speakers(Path('DESKTOP-IV41AK1_vilearn2023-10-30__15-08-39.270.wav'),
+                 Path('DESKTOP-IV41AK1_vilearn2023-10-30__15-08-39.270.csv'),
+                 elan_csv_header,
+                 ';',
+                 save=True,
+                 output=True,
+                 tier='speaker_tier')
+
+
+
+
+'''
+#predict_speakers(Path('DESKTOP-QTU96C2_vilearn2023-10-30__15-08-32.921.wav'), Path('DESKTOP-QTU96C2_vilearn2023-10-30__15-08-32.921' + '.csv'), elan_csv_header, ';', True, True, tier='speaker_tier')
+#predict_speakers(Path('DESKTOP-VK97U75_vilearn2023-10-30__15-08-32.173.wav'), Path('DESKTOP-VK97U75_vilearn2023-10-30__15-08-32.173' + '.csv'), elan_csv_header, ';', True, True, tier='speaker_tier')
 
 '''
 # SPEAKER SEGMENTATION PIPELINE
