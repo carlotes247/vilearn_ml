@@ -6,11 +6,13 @@ import torch.nn as nn
 import numpy as np
 from torch.optim import Adam
 from torch.utils.data import DataLoader
-from models.MyDataset import MyDataset
-from models.architectures.lstm import LSTM, train_step, validation_loss
-from models.lstm_train import batch_size, epochs, output_dim
-from models.model_config import lstm_config
-from constant import VIDEO_PATH, FEATURE_PATH, ROOT_DIR, RANDOM_SEED, N_GPU, MOUTH_IDX
+from training.MyDataset import MyDataset
+from training.architectures.lstm import LSTM
+from training.lstm_train import batch_size, epochs, output_dim
+from training.model_cfg import lstm_config, RANDOM_SEED,N_GPU
+from training.model_cfg import FEATURE_PATH, ROOT_DIR
+from training.lstm_train import train_step, validation_loss
+
 
 # set random seed
 random.seed(RANDOM_SEED)
@@ -50,17 +52,20 @@ else:
 
 input_dim = model_config['input_dim']
 
+
+
+
 # set up  data loaders
-train_set = MyDataset(video_path=VIDEO_PATH, feature_path=FEATURE_PATH, root_dir=ROOT_DIR, mouth_idx=MOUTH_IDX,
-                      spectral_features=spectral_features, emotional_speech_features=emotional_speech_features,
-                      remove_identity=remove_identity, add_context=add_context, data_set='train')
-train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, num_workers=0)
+training_data = MyDataset(feature_path=FEATURE_PATH, root_dir=ROOT_DIR,
+                          spectral_features=spectral_features, emotional_speech_features=emotional_speech_features,
+                          add_context=add_context, data_set='train')
+train_loader = DataLoader(training_data, batch_size=batch_size, shuffle=True, num_workers=0)
 
 # do not remove identity information from validation set
-val_set = MyDataset(video_path=VIDEO_PATH, feature_path=FEATURE_PATH, root_dir=ROOT_DIR, mouth_idx=MOUTH_IDX,
-                    spectral_features=spectral_features, emotional_speech_features=emotional_speech_features,
-                    remove_identity=False, add_context=add_context, data_set='val')
-val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True, num_workers=0)
+validation_data = MyDataset(feature_path=FEATURE_PATH, root_dir=ROOT_DIR,
+                            spectral_features=spectral_features, emotional_speech_features=emotional_speech_features,
+                            add_context=add_context, data_set='val')
+val_loader = DataLoader(validation_data, batch_size=batch_size, shuffle=True, num_workers=0)
 
 # set up device
 device = torch.device('cuda:0' if (torch.cuda.is_available() and N_GPU > 0) else 'cpu')
