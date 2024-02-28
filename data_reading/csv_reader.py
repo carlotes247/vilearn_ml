@@ -8,6 +8,91 @@ class csv_reader:
     """
     Can  read CSV files
     """
+    # raw data loaded by pandas
+    raw_data = pd.DataFrame()
+    # timestamp   
+    overallTsString = []
+    overallTsNtpString = []
+    overallTsParsed = []
+    overallTsNtpParsed = []
+    imuTS = []
+    eyeTS = []
+    # device status
+    headsetValid, leftHandValid, rightHandValid, isUserPresent = []
+    # head
+    headAcc = []
+    headGyro = []
+    # head transform
+    headPosition = []
+    headRotation =  []
+    # left hand transform
+    leftHandPosition = []
+    leftHandRotation = []
+    # right hand transform
+    rightHandPosition = []
+    rightHandRotation = []
+    # eye left
+    leftEyeGaze = []
+    leftPupilPosition = []
+    leftPupilDilation = []
+    leftEyeOpeness = []
+    # eye right
+    rightEyeGaze = []
+    rightPupilPosition = []
+    rightPupilDilation = []
+    rightEyeOpeness = []
+    # combined gaze
+    combinedGaze = []
+    # features
+    leftHandVelocity = []
+    leftHandAngularVelocity = []
+    rightHandVelocity = []
+    rightHandAngularVelocity = []
+
+    def __init__(self, path):
+        self.raw_data = pd.read_csv(path)
+        # timestamp   
+        self.overallTsString = self.raw_data['overallTS']
+        self.overallTsNtpString = self.raw_data['overallTsNTP']
+        self.overallTsParsed = []
+        self.overallTsNtpParsed = []
+        self.imuTS = self.raw_data['imuTS']
+        self.eyeTS = self.raw_data['eyeTS']
+        # device status
+        self.headsetValid = self.raw_data['headsetValid']
+        self.leftHandValid = self.raw_data['leftHandValid']
+        self.rightHandValid = self.raw_data['rightHandValid']
+        self.isUserPresent = self.raw_data['isUserPresent']
+        # head
+        self.headAcc = self.raw_data[["headAccX", "headAccY", "headAccZ"]]
+        self.headGyro = self.raw_data[["headGyroX", "headGyroY", "headGyroZ"]]
+        # head transform
+        self.headPosition = self.raw_data[["headPositionX", "headPositionY", "headPositionZ"]]   
+        self.headRotation =  self.raw_data[["headRotationX", "headRotationY", "headRotationZ", "headRotationW"]]
+        # left hand transform
+        self.leftHandPosition = self.raw_data[["leftHandPositionX", "leftHandPositionY", "leftHandPositionZ"]]
+        self.leftHandRotation = self.raw_data[["leftHandRotationX", "leftHandRotationY", "leftHandRotationZ", "leftHandRotationW"]]
+        # right hand transform
+        self.rightHandPosition = self.raw_data[["rightHandPositionX", "rightHandPositionY", "rightHandPositionZ"]]
+        self.rightHandRotation = self.raw_data[["rightHandRotationX", "rightHandRotationY", "rightHandRotationZ", "rightHandRotationW"]]
+        # eye left
+        self.leftEyeGaze = self.raw_data[["leftEyeGazeX", "leftEyeGazeY", "leftEyeGazeZ", "leftEyeGazeConfidence"]]
+        self.leftPupilPosition = self.raw_data[["leftEyePupilPosition_PositionX", "leftEyePupilPosition_PositionY", "leftEyePupilPosition_Position_Confidence"]]
+        self.leftPupilDilation = self.raw_data[["leftEyePupilDilation", "leftEyePupilDilationConfidence"]]
+        self.leftEyeOpeness = self.raw_data[["leftEyeOpeness", "leftEyeOpenessConfidence"]]
+        # eye right
+        self.rightEyeGaze = self.raw_data[["rightEyeGazeX", "rightEyeGazeY", "rightEyeGazeZ", "rightEyeGazeConfidence"]]
+        self.rightPupilPosition = self.raw_data[["rightEyePupilPosition_PositionX", "rightEyePupilPosition_PositionY", "rightEyePupilPosition_Position_Confidence"]]
+        self.rightPupilDilation = self.raw_data[["rightEyePupilDilation", "rightEyePupilDilationConfidence"]]
+        self.rightEyeOpeness = self.raw_data[["rightEyeOpeness", "rightEyeOpenessConfidence"]]
+        # combined gaze
+        self.combinedGaze = self.raw_data[["combinedGazeX", "combinedGazeY", "combinedGazeZ"]]
+        # features
+        self.leftHandVelocity = self.raw_data[["leftHandVelocityX", "leftHandVelocityY", "leftHandVelocityZ"]]
+        self.leftHandAngularVelocity = self.raw_data[["leftHandAngularVelocityX", "leftHandAngularVelocityY", "leftHandAngularVelocityZ"]]
+        self.rightHandVelocity = self.raw_data[["rightHandVelocityX", "rightHandVelocityY", "rightHandVelocityZ"]]
+        self.rightHandAngularVelocity = self.raw_data[["rightHandAngularVelocityX", "rightHandAngularVelocityY", "rightHandAngularVelocityZ"]]
+
     def getDeltasBetweenTimestamps(self, path):
         """
         (Uses CSV module) Returns a list of deltas between the timestamps
