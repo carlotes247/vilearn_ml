@@ -8,6 +8,8 @@ class csv_reader:
     """
     Can  read CSV files
     """
+    #region Variables
+
     # raw data loaded by pandas
     raw_data = pd.DataFrame()
     # timestamp   
@@ -48,7 +50,10 @@ class csv_reader:
     leftHandAngularVelocity = []
     rightHandVelocity = []
     rightHandAngularVelocity = []
+    
+    #endregion
 
+    #region Constructor
     def __init__(self, path):
         self.raw_data = pd.read_csv(path)
         # timestamp   
@@ -92,7 +97,9 @@ class csv_reader:
         self.leftHandAngularVelocity = self.raw_data[["leftHandAngularVelocityX", "leftHandAngularVelocityY", "leftHandAngularVelocityZ"]]
         self.rightHandVelocity = self.raw_data[["rightHandVelocityX", "rightHandVelocityY", "rightHandVelocityZ"]]
         self.rightHandAngularVelocity = self.raw_data[["rightHandAngularVelocityX", "rightHandAngularVelocityY", "rightHandAngularVelocityZ"]]
-
+    #endregion
+    
+    #region Methods
     def getDeltasBetweenTimestamps(self, path):
         """
         (Uses CSV module) Returns a list of deltas between the timestamps
@@ -246,7 +253,7 @@ class csv_reader:
         firstInit = True
 
         return listOfEyeTracking
-            
+    #endregion
 
 # reader = csv_reader()
 # reader.getEyeTrackingData("Thomas_HCM153_Administrator2023-10-05__16-13-46.496.csv")
