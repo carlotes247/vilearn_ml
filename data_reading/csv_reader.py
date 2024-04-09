@@ -58,6 +58,9 @@ class csv_reader:
 
     #region Constructor
     def __init__(self, path):
+        """
+        (Uses Pandas module) Loads a Vilearn dataset to memory
+        """
         self.raw_data = pd.read_csv(path, decimal=',', sep=';')
         # timestamp   
         self.overallTsString = self.raw_data['overallTS']
@@ -154,7 +157,7 @@ class csv_reader:
 
         return listOfDeltas
 
-    def getEyeTrackingData(self, path):
+    def getEyeTrackingData(self):
         """
         (Uses Pandas module) Returns a list of eye tracking
         of a csv file where the first column are the timestamps
@@ -162,7 +165,7 @@ class csv_reader:
         # IMU data
         print("--------------------- IMU -----------------------------------")
         # timestamp
-        data = pd.read_csv(path, decimal=',', sep=';')
+        #data = pd.read_csv(path, decimal=',', sep=';')
         print(f"Percentage of NaN values in IMU TimeStamp: {self.imuTS.isna().mean()*100}%")
         print(f"Percentage of NaN values in EYE TimeStamp: {self.eyeTS.isna().mean()*100}%")
         print("-------------------------------------------------------------")
@@ -189,17 +192,17 @@ class csv_reader:
         # PupilPosition_Position
         # leftPupilPosition = data[["leftEyePupilPosition_PositionX", "leftEyePupilPosition_PositionY", "leftEyePupilPosition_Position_Confidence"]]
         print(f"Percentage of NaN values in:\n{self.leftPupilPosition.isna().mean()*100}")
-        print(f"Percentage of 0 Confidence entries on Left Pupil Position: {(data['leftEyePupilPosition_Position_Confidence'] == 0).mean()*100}%")
+        print(f"Percentage of 0 Confidence entries on Left Pupil Position: {(self.leftPupilPosition['leftEyePupilPosition_Position_Confidence'] == 0).mean()*100}%")
         print("-------------------------------------------------------------")
         # PupilDilation
         # leftPupilDilation = data[["leftEyePupilDilation", "leftEyePupilDilationConfidence"]]
         print(f"Percentage of NaN values in:\n{self.leftPupilDilation.isna().mean()*100}")
-        print(f"Percentage of 0 Confidence entries on Left Pupil Dilation: {(data['leftEyePupilDilationConfidence'] == 0).mean()*100}%")
+        print(f"Percentage of 0 Confidence entries on Left Pupil Dilation: {(self.leftPupilDilation['leftEyePupilDilationConfidence'] == 0).mean()*100}%")
         print("-------------------------------------------------------------")
         # EyeOpeness
         # leftEyeOpeness = data[["leftEyeOpeness", "leftEyeOpenessConfidence"]]
         print(f"Percentage of NaN values in:\n{self.leftEyeOpeness.isna().mean()*100}")
-        print(f"Percentage of 0 Confidence entries on Left Eye Openess: {(data['leftEyeOpenessConfidence'] == 0).mean()*100}%")
+        print(f"Percentage of 0 Confidence entries on Left Eye Openess: {(self.leftEyeOpeness['leftEyeOpenessConfidence'] == 0).mean()*100}%")
         print("-------------------------------------------------------------")
 
         # rightEye
@@ -211,17 +214,17 @@ class csv_reader:
         # PupilPosition_Position
         # rightPupilPosition = data[["rightEyePupilPosition_PositionX", "rightEyePupilPosition_PositionY", "rightEyePupilPosition_Position_Confidence"]]
         print(f"Percentage of NaN values in:\n{self.rightPupilPosition.isna().mean()*100}")
-        print(f"Percentage of 0 Confidence entries on right Pupil Position: {(data['rightEyePupilPosition_Position_Confidence'] == 0).mean()*100}%")
+        print(f"Percentage of 0 Confidence entries on right Pupil Position: {(self.rightPupilPosition['rightEyePupilPosition_Position_Confidence'] == 0).mean()*100}%")
         print("-------------------------------------------------------------")
         # PupilDilation
         # rightPupilDilation = data[["rightEyePupilDilation", "rightEyePupilDilationConfidence"]]
         print(f"Percentage of NaN values in:\n{self.rightPupilDilation.isna().mean()*100}")
-        print(f"Percentage of 0 Confidence entries on right Pupil Dilation: {(data['rightEyePupilDilationConfidence'] == 0).mean()*100}%")
+        print(f"Percentage of 0 Confidence entries on right Pupil Dilation: {(self.rightPupilDilation['rightEyePupilDilationConfidence'] == 0).mean()*100}%")
         print("-------------------------------------------------------------")
         # EyeOpeness
         # rightEyeOpeness = data[["rightEyeOpeness", "rightEyeOpenessConfidence"]]
         print(f"Percentage of NaN values in:\n{self.rightEyeOpeness.isna().mean()*100}")
-        print(f"Percentage of 0 Confidence entries on right Eye Openess: {(data['rightEyeOpenessConfidence'] == 0).mean()*100}%")
+        print(f"Percentage of 0 Confidence entries on right Eye Openess: {(self.rightEyeOpeness['rightEyeOpenessConfidence'] == 0).mean()*100}%")
         print("-------------------------------------------------------------")
 
         # combinedGaze
@@ -261,6 +264,14 @@ class csv_reader:
 
 datafilepath='../data/DESKTOP-QTU96C2_vilearn2023-12-19__12-26-14.586.csv'
 datafilepath_mun06NovPC5 = '../data/DESKTOP-QTU96C2_vilearn2023-11-06__16-09-26.660.csv'
-reader = csv_reader(datafilepath_mun06NovPC5)
-eyeTracking = reader.getEyeTrackingData(datafilepath_mun06NovPC5)
-print(eyeTracking)
+# Get all the data paths to test from the txt. This way we don't need to rewrite paths in this class when testing
+fileWithPaths = 'data_paths.txt'
+dataFilesToTest = []
+with open(fileWithPaths, "r") as file:
+    dataFilesToTest = file.read().splitlines()
+
+# Load a file and print if there any problems with eye data
+reader = csv_reader(dataFilesToTest[0])
+reader.getEyeTrackingData()
+#eyeTracking = reader.getEyeTrackingData(datafilepath_mun06NovPC5)
+#print(eyeTracking)
