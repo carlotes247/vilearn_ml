@@ -1,0 +1,6 @@
+Recordings/2023_10_23_Seminar_Munich/PC1_23_10/23_10/DESKTOP-GQ19454_vilearn2023-10-23__14-02-03.813.csv
+Recordings/2023_10_23_Seminar_Munich/PC1_23_10/23_10/DESKTOP-GQ19454_vilearn2023-10-23__14-02-03.818.wav
+Recordings/2023_10_23_Seminar_Munich/PC2_23_10/23_10/DESKTOP-EJPM4S7_vilearn2023-10-23__14-02-03.399.csv
+Recordings/2023_10_23_Seminar_Munich/PC2_23_10/23_10/DESKTOP-EJPM4S7_vilearn2023-10-23__14-02-03.404.wav
+Recordings/2023_10_23_Seminar_Munich/PC3_23_10/23_10/DESKTOP-IV41AK1_vilearn2023-10-23__14-02-03.904.csv
+Recordings/2023_10_23_Seminar_Munich/PC3_23_10/23_10/DESKTOP-IV41AK1_vilearn2023-10-23__14-02-03.908.wav
