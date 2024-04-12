@@ -1,5 +1,6 @@
-from data_reading.vilearn_csv_data_loader import ViLearnCSVDataLoader
+from vilearn_csv_data_loader import ViLearnCSVDataLoader
 import numpy as np
+from groups_manager import *
 
 def calculate_stats(list, stringTag, stringMeasurement):
     """
@@ -34,7 +35,7 @@ def read_data_and_calculate_stats (reader, fileName, stringTag):
     reader.getEyeTrackingData(fileName)
 
 # create csv_reader obj 
-reader = ViLearnCSVDataLoader()
+#reader = ViLearnCSVDataLoader()
 # Read deltas between timestampts and calculate stats. Pass it a path to a local csv file. Try not to push the csv files not to clutter the repo
 #readDataAndCalculateStats(reader, "HCM153.csv", "(Subscription to Eye Event) ")
 #readDataAndCalculateStats(reader, "goodUserName.csv", "(Fixed Update) ")
@@ -44,6 +45,11 @@ reader = ViLearnCSVDataLoader()
 # Files from 05 October 2023 long test
 #readDataAndCalculateStats(reader, "LAPTOP-UJR5JBB1_carlo2023-10-05__15-53-28.036.csv", "(Carlos) ") # this one is massive (200MB) avoid pushing
 #readDataAndCalculateStats(reader, "Thomas_HCM153_Administrator2023-10-05__16-13-46.496.csv", "(Thomas) ")
-read_data_and_calculate_stats(reader, "DESKTOP-QTU96C2_vilearn2023-10-22__10-33-39.028.csv", "(Laura) ")
+#read_data_and_calculate_stats(reader, "DESKTOP-QTU96C2_vilearn2023-10-22__10-33-39.028.csv", "(Laura) ")
 
 # added this comment to check if git hooks work
+
+# Testing loading data logic 12 April 2024
+path_prefix_file = "data/_path_prefix.txt"
+data_folder_path = "data/"
+my_groups_manager = GroupsManager(path_prefix_file, data_folder_path)
