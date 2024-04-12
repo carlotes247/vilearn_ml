@@ -1,6 +1,6 @@
 import participant
 
-class group:
+class Group:
     """
     An instance of a group, which can be a dyad or triad 
     """

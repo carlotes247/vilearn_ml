@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 
-class csv_reader:
+class ViLearnCSVDataLoader:
     """
     Can  read CSV files
     """
@@ -106,7 +106,7 @@ class csv_reader:
     #endregion
     
     #region Methods
-    def getDeltasBetweenTimestamps(self, path):
+    def get_deltas_between_timestamps(self, path):
         """
         (Uses CSV module) Returns a list of deltas between the timestamps
         of a csv file where the first column are the timestamps
@@ -157,7 +157,7 @@ class csv_reader:
 
         return listOfDeltas
 
-    def getEyeTrackingData(self):
+    def get_eye_tracking_data(self):
         """
         (Uses Pandas module) Returns a list of eye tracking
         of a csv file where the first column are the timestamps
@@ -262,16 +262,16 @@ class csv_reader:
     #endregion
 
 
-datafilepath='../data/DESKTOP-QTU96C2_vilearn2023-12-19__12-26-14.586.csv'
+data_file_path='../data/DESKTOP-QTU96C2_vilearn2023-12-19__12-26-14.586.csv'
 datafilepath_mun06NovPC5 = '../data/DESKTOP-QTU96C2_vilearn2023-11-06__16-09-26.660.csv'
 # Get all the data paths to test from the txt. This way we don't need to rewrite paths in this class when testing
-fileWithPaths = 'data_paths.txt'
-dataFilesToTest = []
-with open(fileWithPaths, "r") as file:
-    dataFilesToTest = file.read().splitlines()
+file_with_paths = 'data_paths.txt'
+data_files_to_test = []
+with open(file_with_paths, "r") as file:
+    data_files_to_test = file.read().splitlines()
 
 # Load a file and print if there any problems with eye data
-reader = csv_reader(dataFilesToTest[0])
-reader.getEyeTrackingData()
+data_loader = ViLearnCSVDataLoader(data_files_to_test[0])
+data_loader.get_eye_tracking_data()
 #eyeTracking = reader.getEyeTrackingData(datafilepath_mun06NovPC5)
 #print(eyeTracking)

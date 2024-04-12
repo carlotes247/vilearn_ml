@@ -1,7 +1,7 @@
-from csv_reader import csv_reader
+from data_reading.vilearn_csv_data_loader import ViLearnCSVDataLoader
 import numpy as np
 
-def calculateStats(list, stringTag, stringMeasurement):
+def calculate_stats(list, stringTag, stringMeasurement):
     """
     (Uses Numpy) Prints stats about a csv file
     """ 
@@ -25,16 +25,16 @@ def calculateStats(list, stringTag, stringMeasurement):
     print(stringTag + "Percentage of deltas above 500ms: " + str(np.count_nonzero(deltaArray > 500) / count * 100) + " %")
     print(stringTag + "Percentage of deltas above 900ms: " + str(np.count_nonzero(deltaArray > 900) / count * 100) + " %")
 
-def readDataAndCalculateStats (reader, fileName, stringTag):
+def read_data_and_calculate_stats (reader, fileName, stringTag):
     """
     Calls all functions written so far to understand the data
     """ 
     listOfDeltas = reader.getDeltasBetweenTimestamps(fileName)
-    calculateStats(listOfDeltas, stringTag, "ms")
+    calculate_stats(listOfDeltas, stringTag, "ms")
     reader.getEyeTrackingData(fileName)
 
 # create csv_reader obj 
-reader = csv_reader()
+reader = ViLearnCSVDataLoader()
 # Read deltas between timestampts and calculate stats. Pass it a path to a local csv file. Try not to push the csv files not to clutter the repo
 #readDataAndCalculateStats(reader, "HCM153.csv", "(Subscription to Eye Event) ")
 #readDataAndCalculateStats(reader, "goodUserName.csv", "(Fixed Update) ")
@@ -44,6 +44,6 @@ reader = csv_reader()
 # Files from 05 October 2023 long test
 #readDataAndCalculateStats(reader, "LAPTOP-UJR5JBB1_carlo2023-10-05__15-53-28.036.csv", "(Carlos) ") # this one is massive (200MB) avoid pushing
 #readDataAndCalculateStats(reader, "Thomas_HCM153_Administrator2023-10-05__16-13-46.496.csv", "(Thomas) ")
-readDataAndCalculateStats(reader, "DESKTOP-QTU96C2_vilearn2023-10-22__10-33-39.028.csv", "(Laura) ")
+read_data_and_calculate_stats(reader, "DESKTOP-QTU96C2_vilearn2023-10-22__10-33-39.028.csv", "(Laura) ")
 
 # added this comment to check if git hooks work
