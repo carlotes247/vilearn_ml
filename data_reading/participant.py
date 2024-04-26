@@ -13,6 +13,7 @@ class Participant:
         self.csv_file_path = csv_path
         self.audio_file_path = audio_path
         self.movement_data = ViLearnCSVDataLoader(self.csv_file_path)
+        # TODO: create an audio loader (if needed)
         self.audio_data = ""
         # debug loaded data
         self.movement_data.get_eye_tracking_data()
