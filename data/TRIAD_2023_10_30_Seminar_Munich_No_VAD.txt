@@ -1,0 +1,6 @@
+Recordings/2023_10_30_Seminar_Munich/PC3_30_10/30_10/DESKTOP-IV41AK1_vilearn2023-10-30__15-08-39.264.csv
+Recordings/2023_10_30_Seminar_Munich/PC3_30_10/30_10/DESKTOP-IV41AK1_vilearn2023-10-30__15-08-39.270.wav
+Recordings/2023_10_30_Seminar_Munich/PC5_30_10/DESKTOP-QTU96C2_vilearn2023-10-30__15-08-32.918.csv
+Recordings/2023_10_30_Seminar_Munich/PC5_30_10/DESKTOP-QTU96C2_vilearn2023-10-30__15-08-32.921.wav
+Recordings/2023_10_30_Seminar_Munich/PC6_30_10/30_10/DESKTOP-VK97U75_vilearn2023-10-30__15-08-32.168.csv
+Recordings/2023_10_30_Seminar_Munich/PC6_30_10/30_10/DESKTOP-VK97U75_vilearn2023-10-30__15-08-32.173.wav
