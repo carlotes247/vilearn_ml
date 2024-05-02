@@ -1,4 +1,4 @@
-from vilearn_csv_data_loader import ViLearnCSVDataLoader
+from vilearn_csv_data_loader import ViLearnParticipantCSVLoader
 import numpy as np
 from groups_manager import *
 

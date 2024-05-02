@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 
-class ViLearnCSVDataLoader:
+class ViLearnParticipantCSVLoader:
     """
     Can  read CSV files
     """
@@ -59,7 +59,7 @@ class ViLearnCSVDataLoader:
     #region Constructor
     def __init__(self, path):
         """
-        (Uses Pandas module) Loads a Vilearn dataset to memory
+        (Uses Pandas module) Loads a Vilearn participant dataset to memory
         """
         self.raw_data = pd.read_csv(path, decimal=',', sep=';')
         # timestamp   
@@ -271,7 +271,7 @@ with open(file_with_paths, "r") as file:
     data_files_to_test = file.read().splitlines()
 
 # Load a file and print if there any problems with eye data
-data_loader = ViLearnCSVDataLoader(data_files_to_test[0])
+data_loader = ViLearnParticipantCSVLoader(data_files_to_test[0])
 data_loader.get_eye_tracking_data()
 #eyeTracking = reader.getEyeTrackingData(datafilepath_mun06NovPC5)
 #print(eyeTracking)

@@ -16,6 +16,7 @@ class Group:
     participants: list[Participant]
     # group feature data
     group_feature_frames: list[GroupFeatureFrame]
+    group_data_loader: GroupCSVDataLoader
 
     def __init__(self, csv_paths_participants: list[str], audio_paths: list[str], group_name: str, csv_path_group_features: str, csv_path_group_annotations: str):
         if len(csv_paths_participants) != len(audio_paths):
