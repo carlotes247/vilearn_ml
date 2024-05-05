@@ -18,7 +18,7 @@ class Group:
     group_feature_frames: list[GroupFeatureFrame]
     group_data_loader: GroupCSVDataLoader
 
-    def __init__(self, csv_paths_participants: list[str], audio_paths: list[str], group_name: str, csv_path_group_features: str, csv_path_group_annotations: str):
+    def __init__(self, csv_paths_participants: list[str], audio_paths: list[str], csv_path_group_features: str, group_name: str,  csv_path_group_annotations: str):
         if len(csv_paths_participants) != len(audio_paths):
             raise Exception(f"Can't create group, lengths of csv and audio paths ({len(csv_paths_participants)} vs {len(audio_paths)}) don't match for group {group_name}")
         self.group_name = group_name
@@ -32,4 +32,7 @@ class Group:
         for i in range(len(csv_paths_participants)):
             aux_participant = Participant(csv_paths_participants[i], audio_paths[i])
             self.participants.append(aux_participant)
-        # TODO: Sync group features with group cognition                
+        # If a group feature file is present, load file
+        if (csv_path_group_features):
+            self.group_data_loader = GroupCSVDataLoader(csv_path_group_features)
+        # TODO: Extract feature frames from loaded group features file                
