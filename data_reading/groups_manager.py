@@ -1,4 +1,4 @@
-from group import *
+from group import Group
 import os
 
 class GroupsManager:
@@ -7,6 +7,10 @@ class GroupsManager:
     """
     path_prefix_data: str
     groups: list[Group]
+    group_participant_csv_paths: list[str]
+    group_participant_audio_paths: list[str]
+    group_features_path: str
+
 
     def __init__(self, path_prefix: str, path_folder_groups: str):
         # Ignore lines with the # symbol to read the final uncommented line with the path prefix
@@ -22,9 +26,9 @@ class GroupsManager:
             with open(group_file_path) as group_file:
                 group_data_paths = group_file.read().splitlines()
             # Separate paths for csv files from paths to audio files
-            group_participant_csv_paths = list[str]
-            group_participant_audio_paths: list[str]
-            group_features_path: str
+            group_participant_csv_paths = []
+            group_participant_audio_paths = []
+            group_features_path = ""
             for data_path_line in group_data_paths:
                 # Group features file
                 if data_path_line.startswith("GroupFeatures: "):

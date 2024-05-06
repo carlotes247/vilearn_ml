@@ -1,5 +1,6 @@
-from participant import *
-from features import *
+from participant import Participant
+from features.group_feature_frame import GroupFeatureFrame
+from group_csv_data_loader import GroupCSVDataLoader
 
 class Group:
     """
@@ -18,7 +19,7 @@ class Group:
     group_feature_frames: list[GroupFeatureFrame]
     group_data_loader: GroupCSVDataLoader
 
-    def __init__(self, csv_paths_participants: list[str], audio_paths: list[str], csv_path_group_features: str, group_name: str,  csv_path_group_annotations: str):
+    def __init__(self, csv_paths_participants: list[str], audio_paths: list[str], csv_path_group_features: str, group_name: str):
         if len(csv_paths_participants) != len(audio_paths):
             raise Exception(f"Can't create group, lengths of csv and audio paths ({len(csv_paths_participants)} vs {len(audio_paths)}) don't match for group {group_name}")
         self.group_name = group_name
@@ -26,7 +27,6 @@ class Group:
         self.csv_participants_file_paths = csv_paths_participants
         self.audio_file_paths = audio_paths
         self.csv_group_features_file_path = csv_path_group_features
-        self.csv_group_cognition_file_path = csv_path_group_annotations
         self.participants = []
         # Populate participant data
         for i in range(len(csv_paths_participants)):

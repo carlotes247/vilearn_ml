@@ -2,7 +2,11 @@ import csv
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from features import *
+from features.group_feature_frame import GroupFeatureFrame
+from features.blink_feature import BlinkFeature
+from features.direct_gaze_feature import DirectGazeFeature
+from features.gaze_behaviour_feature import GazeBehaviourFeature
+from features.participant_features import ParticipantFeatures
 import os
 
 class GroupCSVDataLoader:
@@ -18,8 +22,11 @@ class GroupCSVDataLoader:
 
     def __init__(self, filePath: str):
         if (filePath):
-            self.raw_data = pd.read_csv(filePath, sep=';')
-            self.group_name = os.path.basename(filePath)
+            try:
+                self.raw_data = pd.read_csv(filePath, sep=';')
+                self.group_name = os.path.basename(filePath)
+            except FileNotFoundError:
+                print(f"Error: File not found when loading group feature data file {filePath}")
 
 #endregion
 

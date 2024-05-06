@@ -1,6 +1,6 @@
 from vilearn_csv_data_loader import ViLearnParticipantCSVLoader
 import numpy as np
-from groups_manager import *
+from groups_manager import GroupsManager
 
 def calculate_stats(list, stringTag, stringMeasurement):
     """

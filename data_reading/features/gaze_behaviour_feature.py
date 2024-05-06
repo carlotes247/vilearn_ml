@@ -1,4 +1,5 @@
-from features import *
+from features.direct_gaze_feature import DirectGazeFeature
+from features.blink_feature import BlinkFeature
 
 class GazeBehaviourFeature:
     direct_gaze: DirectGazeFeature
