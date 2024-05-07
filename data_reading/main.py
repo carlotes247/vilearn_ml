@@ -52,4 +52,7 @@ def read_data_and_calculate_stats (reader, fileName, stringTag):
 # Testing loading data logic 12 April 2024
 path_prefix_file = "data/_path_prefix.txt"
 data_folder_path = "data/"
-my_groups_manager = GroupsManager(path_prefix_file, data_folder_path)
+# Leave empty to load data from all groups
+specific_group = "TRIAD_2023_10_30_Seminar_Munich_No_VAD"
+my_groups_manager = GroupsManager(path_prefix_file, data_folder_path, specific_group)
+print("All required data loaded!")

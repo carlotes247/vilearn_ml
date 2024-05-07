@@ -1,5 +1,6 @@
 from group import Group
 import os
+from pathlib import Path
 
 class GroupsManager:
     """
@@ -12,7 +13,7 @@ class GroupsManager:
     group_features_path: str
 
 
-    def __init__(self, path_prefix: str, path_folder_groups: str):
+    def __init__(self, path_prefix: str, path_folder_groups: str, specific_group: str):
         # Ignore lines with the # symbol to read the final uncommented line with the path prefix
         with open(path_prefix) as path_prefix_file:
             for line in path_prefix_file:
@@ -20,6 +21,9 @@ class GroupsManager:
                     self.path_prefix_data = line
         self.groups = []
         for group_file_name in os.listdir(path_folder_groups):
+            # if we have a specific group to only load data from, skip until that group is loaded
+            if (specific_group and specific_group != "" and specific_group != Path(group_file_name).stem):
+                continue
             # Construct the full file path
             group_file_path = os.path.join(path_folder_groups, group_file_name)
             # Read contents of path file
