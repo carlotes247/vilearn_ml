@@ -35,4 +35,5 @@ class Group:
         # If a group feature file is present, load file
         if (csv_path_group_features):
             self.group_data_loader = GroupCSVDataLoader(csv_path_group_features)
+            self.group_feature_frames = self.group_data_loader.extract_group_feature_frames()
         # TODO: Extract feature frames from loaded group features file                
