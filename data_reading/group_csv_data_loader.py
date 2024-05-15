@@ -7,13 +7,18 @@ from features.blink_feature import BlinkFeature
 from features.direct_gaze_feature import DirectGazeFeature
 from features.gaze_behaviour_feature import GazeBehaviourFeature
 from features.participant_features import ParticipantFeatures
+from torch_vilearn.torch_group_dataset import TorchGroupDataset
+from torch_vilearn.torch_group_data_loader import TorchGroupDataLoader
 import os
 
 class GroupCSVDataLoader:
 
 #region variables
 
-    raw_data: pd.DataFrame 
+    raw_data: pd.DataFrame
+    torch_dataset: TorchGroupDataset
+    torch_loader: TorchGroupDataLoader
+    onlyTorch: bool
     group_name: str
     fileLoaded: bool
 
@@ -21,10 +26,15 @@ class GroupCSVDataLoader:
 
 #region Constructor
 
-    def __init__(self, filePath: str):
+    def __init__(self, filePath: str, onlyTorch: bool):
         if (filePath):
             try:
-                self.raw_data = pd.read_csv(filePath, sep=';')
+                self.onlyTorch = onlyTorch
+                if (not onlyTorch):
+                    self.raw_data = pd.read_csv(filePath, sep=';')
+                else:
+                    self.torch_dataset = TorchGroupDataset(filePath)
+                    self.torch_loader = TorchGroupDataLoader(self.torch_dataset)
                 self.group_name = os.path.basename(filePath)
                 self.fileLoaded = True
             except FileNotFoundError:
@@ -35,7 +45,7 @@ class GroupCSVDataLoader:
 
 #region getters
     def extract_group_feature_frames(self) -> list[GroupFeatureFrame]:
-        if self.fileLoaded:
+        if self.fileLoaded and not self.onlyTorch:
             list_feauture_frames = []
             count_participants = self.raw_data.columns.str.contains("Participant").sum()
             for index, row in self.raw_data.iterrows():
