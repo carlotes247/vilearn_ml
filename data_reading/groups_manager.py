@@ -10,6 +10,7 @@ class GroupsManager:
     group_participant_csv_paths: list[str]
     group_participant_audio_paths: list[str]
     group_features_path: str
+    onlyTorch: bool = True
 
 
     def __init__(self, path_prefix: str, path_folder_groups: str):
@@ -42,7 +43,7 @@ class GroupsManager:
                     elif full_data_path.endswith(".wav"):
                         group_participant_audio_paths.append(full_data_path)
             # Instantiate group and add to list of groups
-            aux_group = Group(group_participant_csv_paths, group_participant_audio_paths, group_features_path, group_file_name)
+            aux_group = Group(group_participant_csv_paths, group_participant_audio_paths, group_features_path, group_file_name, onlyTorch=self.onlyTorch)
             self.groups.append(aux_group)
 
             
