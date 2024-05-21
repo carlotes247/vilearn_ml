@@ -271,17 +271,17 @@ class ViLearnParticipantCSVLoader:
             print("Can't print eye tracking data from this file because it doesn't exist.")
     #endregion
 
+if __name__ == '__main__':
+    data_file_path='../data/DESKTOP-QTU96C2_vilearn2023-12-19__12-26-14.586.csv'
+    datafilepath_mun06NovPC5 = '../data/DESKTOP-QTU96C2_vilearn2023-11-06__16-09-26.660.csv'
+    # Get all the data paths to test from the txt. This way we don't need to rewrite paths in this class when testing
+    file_with_paths = 'data_paths.txt'
+    data_files_to_test = []
+    with open(file_with_paths, "r") as file:
+        data_files_to_test = file.read().splitlines()
 
-data_file_path='../data/DESKTOP-QTU96C2_vilearn2023-12-19__12-26-14.586.csv'
-datafilepath_mun06NovPC5 = '../data/DESKTOP-QTU96C2_vilearn2023-11-06__16-09-26.660.csv'
-# Get all the data paths to test from the txt. This way we don't need to rewrite paths in this class when testing
-file_with_paths = 'data_paths.txt'
-data_files_to_test = []
-with open(file_with_paths, "r") as file:
-    data_files_to_test = file.read().splitlines()
-
-# Load a file and print if there any problems with eye data
-data_loader = ViLearnParticipantCSVLoader(data_files_to_test[0])
-data_loader.get_eye_tracking_data()
-#eyeTracking = reader.getEyeTrackingData(datafilepath_mun06NovPC5)
-#print(eyeTracking)
+    # Load a file and print if there any problems with eye data
+    data_loader = ViLearnParticipantCSVLoader(data_files_to_test[0])
+    data_loader.get_eye_tracking_data()
+    #eyeTracking = reader.getEyeTrackingData(datafilepath_mun06NovPC5)
+    #print(eyeTracking)

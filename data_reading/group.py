@@ -1,6 +1,6 @@
-from participant import Participant
-from features.group_feature_frame import GroupFeatureFrame
-from group_csv_data_loader import GroupCSVDataLoader
+from data_reading.participant import Participant
+from data_reading.features.group_feature_frame import GroupFeatureFrame
+from data_reading.group_csv_data_loader import GroupCSVDataLoader
 
 class Group:
     """
@@ -17,7 +17,7 @@ class Group:
     participants: list[Participant]
     # group feature data
     group_feature_frames: list[GroupFeatureFrame]
-    group_data_loader: GroupCSVDataLoader
+    group_features_csv_loader: GroupCSVDataLoader
 
     def __init__(self, csv_paths_participants: list[str], audio_paths: list[str], csv_path_group_features: str, group_name: str, onlyTorch: bool):
         if len(csv_paths_participants) != len(audio_paths):
@@ -35,6 +35,8 @@ class Group:
                 self.participants.append(aux_participant)
         # If a group feature file is present, load file
         if (csv_path_group_features):
-            self.group_data_loader = GroupCSVDataLoader(csv_path_group_features, onlyTorch)
+            self.group_features_csv_loader = GroupCSVDataLoader(csv_path_group_features, onlyTorch)
             if (not onlyTorch):
-                self.group_feature_frames = self.group_data_loader.extract_group_feature_frames()
+                self.group_feature_frames = self.group_features_csv_loader.extract_group_feature_frames()
+        else:
+            self.group_features_csv_loader = None

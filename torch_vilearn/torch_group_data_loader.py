@@ -1,5 +1,5 @@
 from torch.utils.data import DataLoader
-from torch_group_dataset import TorchGroupDataset
+from torch_vilearn.torch_group_dataset import TorchGroupDataset
 
 class TorchGroupDataLoader():
     group_dataloader: DataLoader

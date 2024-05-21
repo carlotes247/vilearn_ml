@@ -1,6 +1,7 @@
-from vilearn_csv_data_loader import ViLearnParticipantCSVLoader
 import numpy as np
-from groups_manager import GroupsManager
+from data_reading.groups_manager import GroupsManager
+from training.vilearn_train import ViLearnTrainLogic
+import torch.utils.data
 
 def calculate_stats(list, stringTag, stringMeasurement):
     """
@@ -49,7 +50,22 @@ def read_data_and_calculate_stats (reader, fileName, stringTag):
 
 # added this comment to check if git hooks work
 
-# Testing loading data logic 12 April 2024
-path_prefix_file = "data/_path_prefix.txt"
-data_folder_path = "data/"
-my_groups_manager = GroupsManager(path_prefix_file, data_folder_path)
+if __name__ == "__main__":
+    # Testing loading data logic 12 April 2024
+    path_prefix_file = "data/_path_prefix.txt"
+    data_folder_path = "data/"
+    # Load all groups
+    my_groups_manager = GroupsManager(path_prefix_file, data_folder_path, onlyTorch=True)
+    # Get all groups data as a single dataset 
+    dataset = GroupsManager.get_concat_groups_torch_dataset()
+    # Split into training and eval datasets
+    train_size = int(0.8 * len(dataset))
+    test_size = len(dataset) - train_size
+    training_dataset, eval_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
+    data_loader_train = GroupsManager.get_vilearn_torch_dataloader(training_dataset)
+    data_loader_eval = GroupsManager.get_vilearn_torch_dataloader(eval_dataset)
+    training_class = ViLearnTrainLogic()
+    # Train model
+    training_class.train_lstm(data_loader_train, data_loader_eval)
+
+

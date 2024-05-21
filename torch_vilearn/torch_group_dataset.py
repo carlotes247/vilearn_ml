@@ -6,7 +6,9 @@ class TorchGroupDataset(Dataset):
     def __init__(self, group_file_path: str, transform=None):
         self.transform = transform
         xy = np.loadtxt(group_file_path, delimiter=",", dtype=np.float32, skiprows=1)
+        # features
         self.x = torch.from_numpy(xy[:, 1:])
+        # label
         self.y = torch.from_numpy(xy[:, [0]]) # n_samples, 1
         self.n_samples = xy.shape[0]        
 

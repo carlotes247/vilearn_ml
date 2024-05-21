@@ -2,11 +2,11 @@ import csv
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from features.group_feature_frame import GroupFeatureFrame
-from features.blink_feature import BlinkFeature
-from features.direct_gaze_feature import DirectGazeFeature
-from features.gaze_behaviour_feature import GazeBehaviourFeature
-from features.participant_features import ParticipantFeatures
+from data_reading.features.group_feature_frame import GroupFeatureFrame
+from data_reading.features.blink_feature import BlinkFeature
+from data_reading.features.direct_gaze_feature import DirectGazeFeature
+from data_reading.features.gaze_behaviour_feature import GazeBehaviourFeature
+from data_reading.features.participant_features import ParticipantFeatures
 from torch_vilearn.torch_group_dataset import TorchGroupDataset
 from torch_vilearn.torch_group_data_loader import TorchGroupDataLoader
 import os

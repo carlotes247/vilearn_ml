@@ -1,10 +1,10 @@
-from architectures.lstm import LSTM
-from architectures.svm import Bin_SVM
+from training.architectures.lstm import LSTM
+from training.architectures.svm import Bin_SVM
 import torch.nn as nn
 import torch
 from torch.utils.data.dataloader import DataLoader
 from torch.optim import Adam
-from data_reading.torch_vilearn.torch_group_data_loader import TorchGroupDataLoader
+from torch_vilearn.torch_group_data_loader import TorchGroupDataLoader
 import numpy as np
 
 class ViLearnTrainLogic():
