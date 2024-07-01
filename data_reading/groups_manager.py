@@ -20,6 +20,7 @@ class GroupsManager:
 
     def __init__(self, path_prefix: str, path_folder_groups: str, onlyTorch: bool):
         self.onlyTorch = onlyTorch
+        self.groups_torch_data = []
         # Ignore lines with the # symbol to read the final uncommented line with the path prefix
         with open(path_prefix) as path_prefix_file:
             for line in path_prefix_file:
