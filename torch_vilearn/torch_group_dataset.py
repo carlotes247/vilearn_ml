@@ -12,7 +12,7 @@ class TorchGroupDataset(Dataset):
         self.y = torch.from_numpy(xy[:, [0]]) # n_samples, 1
         self.n_samples = xy.shape[0]        
 
-    def __len__(self, index):
+    def __len__(self):
         return self.n_samples
     
     def __getitem__(self, index):
