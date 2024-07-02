@@ -57,15 +57,17 @@ if __name__ == "__main__":
     # Load all groups
     my_groups_manager = GroupsManager(path_prefix_file, data_folder_path, onlyTorch=True)
     # Get all groups data as a single dataset 
-    dataset = GroupsManager.get_concat_groups_torch_dataset()
+    dataset = my_groups_manager.get_concat_groups_torch_dataset()
     # Split into training and eval datasets
     train_size = int(0.8 * len(dataset))
     test_size = len(dataset) - train_size
     training_dataset, eval_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
-    data_loader_train = GroupsManager.get_vilearn_torch_dataloader(training_dataset)
-    data_loader_eval = GroupsManager.get_vilearn_torch_dataloader(eval_dataset)
+    data_loader_train = my_groups_manager.get_vilearn_torch_dataloader(training_dataset)
+    data_loader_eval = my_groups_manager.get_vilearn_torch_dataloader(eval_dataset)
     training_class = ViLearnTrainLogic()
     # Train model
-    training_class.train_lstm(data_loader_train, data_loader_eval)
+    training_class.train_lstm(data_loader_train.group_dataloader, data_loader_eval.group_dataloader)
+
+    print("done!")
 
 
