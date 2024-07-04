@@ -27,8 +27,8 @@ class ViLearnTrainLogic():
         # set up model architecture
         # initialize lstm
         self.device = torch.device('cuda:0' if (torch.cuda.is_available()) else 'cpu')
-        self.input_dim = 10
-        self.hidden_dim = 32
+        self.input_dim = 9
+        self.hidden_dim = 8
         self.output_dim = 1 # 1 is binary, but in our case it would be a regression so I need to change this
         self.dropout_rate = 0.1    
         self.learning_rate = 1e-3
