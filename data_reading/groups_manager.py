@@ -1,6 +1,9 @@
-from group import Group
+import torch.utils
+import torch.utils.data
+from data_reading.group import Group
+from torch_vilearn.torch_group_dataset import TorchGroupDataset
+from torch_vilearn.torch_group_data_loader import TorchGroupDataLoader
 import os
-from pathlib import Path
 
 class GroupsManager:
     """
@@ -11,9 +14,13 @@ class GroupsManager:
     group_participant_csv_paths: list[str]
     group_participant_audio_paths: list[str]
     group_features_path: str
+    onlyTorch: bool = True
+    groups_torch_data: list[TorchGroupDataset]
 
 
-    def __init__(self, path_prefix: str, path_folder_groups: str, specific_group: str):
+    def __init__(self, path_prefix: str, path_folder_groups: str, onlyTorch: bool):
+        self.onlyTorch = onlyTorch
+        self.groups_torch_data = []
         # Ignore lines with the # symbol to read the final uncommented line with the path prefix
         with open(path_prefix) as path_prefix_file:
             for line in path_prefix_file:
@@ -21,9 +28,6 @@ class GroupsManager:
                     self.path_prefix_data = line
         self.groups = []
         for group_file_name in os.listdir(path_folder_groups):
-            # if we have a specific group to only load data from, skip until that group is loaded
-            if (specific_group and specific_group != "" and specific_group != Path(group_file_name).stem):
-                continue
             # Construct the full file path
             group_file_path = os.path.join(path_folder_groups, group_file_name)
             # Read contents of path file
@@ -46,7 +50,16 @@ class GroupsManager:
                     elif full_data_path.endswith(".wav"):
                         group_participant_audio_paths.append(full_data_path)
             # Instantiate group and add to list of groups
-            aux_group = Group(group_participant_csv_paths, group_participant_audio_paths, group_features_path, group_file_name)
+            aux_group = Group(group_participant_csv_paths, group_participant_audio_paths, group_features_path, group_file_name, onlyTorch=self.onlyTorch)
+            # Add group dataset to internal list of datasets
+            if self.onlyTorch and not (aux_group.group_features_csv_loader is None):
+                self.groups_torch_data.append(aux_group.group_features_csv_loader.torch_dataset)
             self.groups.append(aux_group)
 
-            
+    def get_concat_groups_torch_dataset(self) -> list[TorchGroupDataset]:
+        if not self.onlyTorch:
+            raise Exception("Can't return all torch datasets concatenated because this group manager wasn't created with onlyTorch set to true")        
+        return torch.utils.data.ConcatDataset(self.groups_torch_data)
+    
+    def get_vilearn_torch_dataloader(self, groups_dataset: TorchGroupDataset):
+        return TorchGroupDataLoader(groups_dataset)

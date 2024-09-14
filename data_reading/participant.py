@@ -1,4 +1,4 @@
-from vilearn_csv_data_loader import ViLearnParticipantCSVLoader
+from data_reading.vilearn_csv_data_loader import ViLearnParticipantCSVLoader
 
 class Participant:
     """

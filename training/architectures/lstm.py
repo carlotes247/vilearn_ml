@@ -19,7 +19,10 @@ class LSTM(nn.Module):
     def forward(self, x):
         h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_dim).to(x.device)
         c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_dim).to(x.device)
-
+        x = x.unsqueeze(1)
+        #print(f"x shape: {x.shape}")
+        #print(f"h0 shape: {h0.shape}")
+        #print(f"c0 shape: {c0.shape}")
         out, _ = self.lstm(x, (h0, c0))
         out = self.sigmoid(out)
         out = self.fc(out)

@@ -1,5 +1,5 @@
 import datetime
-from features.participant_features import ParticipantFeatures
+from data_reading.features.participant_features import ParticipantFeatures
 
 class GroupFeatureFrame:
     """

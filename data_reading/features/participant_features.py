@@ -1,4 +1,4 @@
-from features.gaze_behaviour_feature import GazeBehaviourFeature
+from data_reading.features.gaze_behaviour_feature import GazeBehaviourFeature
 
 class ParticipantFeatures:
     participant_name: str
