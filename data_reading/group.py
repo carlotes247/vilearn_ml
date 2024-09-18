@@ -19,7 +19,7 @@ class Group:
     group_feature_frames: list[GroupFeatureFrame]
     group_features_csv_loader: GroupCSVDataLoader
 
-    def __init__(self, csv_paths_participants: list[str], audio_paths: list[str], csv_path_group_features: str, group_name: str, onlyTorch: bool):
+    def __init__(self, csv_paths_participants: list[str], audio_paths: list[str], csv_path_group_features: str, group_name: str, onlyTorch: bool, load_individual_p_files: bool):
         if len(csv_paths_participants) != len(audio_paths):
             raise Exception(f"Can't create group, lengths of csv and audio paths ({len(csv_paths_participants)} vs {len(audio_paths)}) don't match for group {group_name}")
         self.group_name = group_name
@@ -29,14 +29,14 @@ class Group:
         self.csv_group_features_file_path = csv_path_group_features
         self.participants = []
         # Populate participant data only if not using pytorch (since we are using pytorch for group feature processing, we don't really need participant data)
-        if (not onlyTorch):            
+        if (load_individual_p_files):            
             for i in range(len(csv_paths_participants)):
                 aux_participant = Participant(csv_paths_participants[i], audio_paths[i])
                 self.participants.append(aux_participant)
         # If a group feature file is present, load file
         if (csv_path_group_features):
             self.group_features_csv_loader = GroupCSVDataLoader(csv_path_group_features, onlyTorch)
-            if (not onlyTorch):
+            if (load_individual_p_files):
                 self.group_feature_frames = self.group_features_csv_loader.extract_group_feature_frames()
         else:
             self.group_features_csv_loader = None
