@@ -58,7 +58,7 @@ class ViLearnParticipantCSVLoader:
     #endregion
 
     #region Constructor
-    def __init__(self, path):
+    def __init__(self, path: str):
         """
         (Uses Pandas module) Loads a Vilearn participant dataset to memory
         """
@@ -164,7 +164,7 @@ class ViLearnParticipantCSVLoader:
 
         return listOfDeltas
 
-    def get_eye_tracking_data(self):
+    def print_eye_tracking_data(self):
         """
         (Uses Pandas module) Returns a list of eye tracking
         of a csv file where the first column are the timestamps
@@ -269,6 +269,9 @@ class ViLearnParticipantCSVLoader:
             return listOfEyeTracking
         else:
             print("Can't print eye tracking data from this file because it doesn't exist.")
+    
+    def print_blink_stats(self):
+        return
     #endregion
 
 if __name__ == '__main__':
@@ -282,6 +285,6 @@ if __name__ == '__main__':
 
     # Load a file and print if there any problems with eye data
     data_loader = ViLearnParticipantCSVLoader(data_files_to_test[0])
-    data_loader.get_eye_tracking_data()
+    data_loader.print_eye_tracking_data()
     #eyeTracking = reader.getEyeTrackingData(datafilepath_mun06NovPC5)
     #print(eyeTracking)
