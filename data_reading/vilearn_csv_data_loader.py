@@ -271,6 +271,46 @@ class ViLearnParticipantCSVLoader:
             print("Can't print eye tracking data from this file because it doesn't exist.")
     
     def print_blink_stats(self):
+        """
+        (Uses Pandas module) Returns a list of eye tracking
+        of a csv file where the first column are the timestamps
+        """
+        if self.fileExists:
+            # leftEye
+            print("----------------- LEFT EYE ----------------------------------")            
+            # EyeOpeness
+            # leftEyeOpeness = data[["leftEyeOpeness", "leftEyeOpenessConfidence"]]
+            print(f"Percentage of NaN values in left eye openness:\n{self.leftEyeOpeness.isna().mean()*100}")
+            print(f"Percentage of 0 Confidence entries on Left Eye Openess: {(self.leftEyeOpeness['leftEyeOpenessConfidence'] == 0).mean()*100}%")
+            blinks_single = self.leftEyeOpeness.loc[(self.leftEyeOpeness['leftEyeOpenessConfidence'] > 1) & (self.leftEyeOpeness['leftEyeOpeness'] < 1)]
+            blinks_double = []            
+            print(f"Percentage of single frame blinks (1 frame at least, 1 confidence): {blinks_single.mean()*100}%")
+            print("-------------------------------------------------------------")
+
+            # rightEye
+            print("----------------- RIGHT EYE ---------------------------------")
+            # Gaze
+            # rightEyeGaze = data[["rightEyeGazeX", "rightEyeGazeY", "rightEyeGazeZ", "rightEyeGazeConfidence"]]
+            print(f"Percentage of NaN values in:\n{self.rightEyeGaze.isna().mean()*100}")
+            print("-------------------------------------------------------------")
+            # PupilPosition_Position
+            # rightPupilPosition = data[["rightEyePupilPosition_PositionX", "rightEyePupilPosition_PositionY", "rightEyePupilPosition_Position_Confidence"]]
+            print(f"Percentage of NaN values in:\n{self.rightPupilPosition.isna().mean()*100}")
+            print(f"Percentage of 0 Confidence entries on right Pupil Position: {(self.rightPupilPosition['rightEyePupilPosition_Position_Confidence'] == 0).mean()*100}%")
+            print("-------------------------------------------------------------")
+            # PupilDilation
+            # rightPupilDilation = data[["rightEyePupilDilation", "rightEyePupilDilationConfidence"]]
+            print(f"Percentage of NaN values in:\n{self.rightPupilDilation.isna().mean()*100}")
+            print(f"Percentage of 0 Confidence entries on right Pupil Dilation: {(self.rightPupilDilation['rightEyePupilDilationConfidence'] == 0).mean()*100}%")
+            print("-------------------------------------------------------------")
+            # EyeOpeness
+            # rightEyeOpeness = data[["rightEyeOpeness", "rightEyeOpenessConfidence"]]
+            print(f"Percentage of NaN values in:\n{self.rightEyeOpeness.isna().mean()*100}")
+            print(f"Percentage of 0 Confidence entries on right Eye Openess: {(self.rightEyeOpeness['rightEyeOpenessConfidence'] == 0).mean()*100}%")
+            print("-------------------------------------------------------------")
+
+        else:
+            print("Can't print blink stats from this participant because it doesn't exist.")
         return
     #endregion
 
@@ -286,5 +326,6 @@ if __name__ == '__main__':
     # Load a file and print if there any problems with eye data
     data_loader = ViLearnParticipantCSVLoader(data_files_to_test[0])
     data_loader.print_eye_tracking_data()
+    data_loader.print_blink_stats()
     #eyeTracking = reader.getEyeTrackingData(datafilepath_mun06NovPC5)
     #print(eyeTracking)

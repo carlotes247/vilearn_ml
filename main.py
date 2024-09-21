@@ -4,6 +4,7 @@ from training.vilearn_train import ViLearnTrainLogic
 import torch.utils.data
 from plotting.plotterClass import PlotterClass
 import matplotlib.pyplot as plt
+import pandas as pd
 
 def calculate_stats(list, stringTag, stringMeasurement):
     """
@@ -58,8 +59,10 @@ def read_data_and_calculate_stats (reader, fileName, stringTag):
 if __name__ == "__main__":
     # Config flags (I might want to move them somewhere else, leave here for the moment)
     train_torch = False
-    load_individual_participant_files = True
-    plot_eye_openess = True
+    load_individual_participant_files = False
+    print_all_stats_p_files = False
+    print_blink_stats_p_files = False
+    plot_eye_openess = False
 
     # Testing loading data logic 12 April 2024
     path_prefix_file = "data/_path_prefix.txt"
@@ -67,7 +70,9 @@ if __name__ == "__main__":
     # Leave empty to load data from all groups
     specific_group = "TRIAD_2023_10_30_Seminar_Munich_No_VAD"
     # Load all groups
-    my_groups_manager = GroupsManager(path_prefix_file, data_folder_path, specific_group=specific_group, onlyTorch=train_torch, load_individual_p_files=load_individual_participant_files)
+    my_groups_manager = GroupsManager(path_prefix_file, data_folder_path, specific_group=specific_group, 
+                                      onlyTorch=train_torch, load_individual_p_files=load_individual_participant_files, 
+                                      print_all_stats=print_all_stats_p_files, print_blink_stats=print_blink_stats_p_files)
     if train_torch:
         # Get all groups data as a single dataset 
         dataset = my_groups_manager.get_concat_groups_torch_dataset()
@@ -81,19 +86,21 @@ if __name__ == "__main__":
         # Train model
         training_class.train_lstm(data_loader_train.group_dataloader, data_loader_eval.group_dataloader)
     if plot_eye_openess:
-        groupData = my_groups_manager.groups[0]
+        groupData = my_groups_manager.groups[0]    
         # this is the raw data from the participant file without it being synced with the other participants
-        raw_left_eye_openess_data_p1 = groupData.participants[0].movement_data.leftEyeOpeness
-        timestamp_unsync = groupData.participants[0].movement_data.overallTsNtpString
+        if (load_individual_participant_files):
+            raw_left_eye_openess_data_p1 = groupData.participants[0].movement_data.leftEyeOpeness
+            timestamp_unsync = groupData.participants[0].movement_data.overallTsNtpString
         # this is the synced data
-        timestamps = groupData.group_features_csv_loader.raw_data['TSGroupNTP']
+        timestamps_string = groupData.group_features_csv_loader.raw_data['TSGroupNTP']
+        timestamps = pd.to_datetime(timestamps_string, utc=True, format='%Y-%m-%d %H:%M:%S.%f')
         left_eye_openess_p1 = groupData.group_features_csv_loader.raw_data['LeftEyeOpennesP1']
         left_eye_openess_confidence_p1 = groupData.group_features_csv_loader.raw_data['LeftEyeOpennesConfidenceP1']
         right_eye_openess_p1 = groupData.group_features_csv_loader.raw_data['RightEyeOpennesP1']
         right_eye_openess_confidence_p1 = groupData.group_features_csv_loader.raw_data['RightEyeOpennesConfidenceP1']
         blink_p1 = groupData.group_features_csv_loader.raw_data['BlinkP1']
         print("open plot window")
-        plt.plot(raw_left_eye_openess_data_p1[:10000])
+        plt.plot(timestamps[:1000], blink_p1[:1000])
         plt.show()
         #plotter = PlotterClass()
         #plotter.plot_eye_blinks(my_groups_manager.groups[0])

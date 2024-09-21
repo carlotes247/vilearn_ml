@@ -20,7 +20,7 @@ class GroupsManager:
     groups_torch_data: list[TorchGroupDataset]
 
 
-    def __init__(self, path_prefix: str, path_folder_groups: str, specific_group: str, onlyTorch: bool, load_individual_p_files: bool):
+    def __init__(self, path_prefix: str, path_folder_groups: str, specific_group: str, onlyTorch: bool, load_individual_p_files: bool, print_all_stats: bool, print_blink_stats: bool):
         self.onlyTorch = onlyTorch
         self.groups_torch_data = []
         self.specific_group = specific_group
@@ -56,7 +56,7 @@ class GroupsManager:
                     elif full_data_path.endswith(".wav"):
                         group_participant_audio_paths.append(full_data_path)
             # Instantiate group and add to list of groups
-            aux_group = Group(group_participant_csv_paths, group_participant_audio_paths, group_features_path, group_file_name, onlyTorch=self.onlyTorch, load_individual_p_files=load_individual_p_files)
+            aux_group = Group(group_participant_csv_paths, group_participant_audio_paths, group_features_path, group_file_name, onlyTorch=self.onlyTorch, load_individual_p_files=load_individual_p_files, print_all_stats=print_all_stats, print_blink_stats=print_blink_stats)
             # Add group dataset to internal list of datasets
             if self.onlyTorch and not (aux_group.group_features_csv_loader is None):
                 self.groups_torch_data.append(aux_group.group_features_csv_loader.torch_dataset)
