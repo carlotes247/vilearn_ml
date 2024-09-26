@@ -62,7 +62,7 @@ if __name__ == "__main__":
     load_individual_participant_files = False
     print_all_stats_p_files = False
     print_blink_stats_p_files = False
-    plot_eye_openess = False
+    plot_eye_openess = True
 
     # Testing loading data logic 12 April 2024
     path_prefix_file = "data/_path_prefix.txt"
@@ -99,8 +99,10 @@ if __name__ == "__main__":
         right_eye_openess_p1 = groupData.group_features_csv_loader.raw_data['RightEyeOpennesP1']
         right_eye_openess_confidence_p1 = groupData.group_features_csv_loader.raw_data['RightEyeOpennesConfidenceP1']
         blink_p1 = groupData.group_features_csv_loader.raw_data['BlinkP1']
+        valid_blinks = groupData.group_features_csv_loader.extract_valid_blinks_frames()
+        valid_blinks_p1 = valid_blinks[0]
         print("open plot window")
-        plt.plot(timestamps[:1000], blink_p1[:1000])
+        plt.plot(timestamps, valid_blinks_p1)
         plt.show()
         #plotter = PlotterClass()
         #plotter.plot_eye_blinks(my_groups_manager.groups[0])
