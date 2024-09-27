@@ -69,7 +69,7 @@ class GroupCSVDataLoader:
     
     def extract_valid_blinks_frames(self) -> dict[int, list[bool]]:
         """
-        Returns a dict with a list of valid blinks per frame per participant. 
+        Returns TWO dicts, one with a list of valid blinks per frame per participant and another with blink onsets per participant
         """
         if self.fileLoaded:
             print("stuff")
@@ -77,12 +77,15 @@ class GroupCSVDataLoader:
             num_participants = 3 if 'BlinkP3' in self.raw_data else 2
             prior_blink_happenned: dict[int, bool] = dict()
             blinks_participants: dict[int, list[bool]] = dict()
-            blinks_indexes_window: dict[int, list[int]] = dict()
+            blinks_onsets_participants: dict[int, list[bool]] = dict()
+            blinks_indexes_window: dict[int, list[int]] = dict()            
             # init blink lists            
             for p_index in range(num_participants):
                 prior_blink_happenned[p_index] = False
-                blinks_list = [False] * len(self.raw_data[f'LeftEyeOpennesP{p_index+1}'])              
+                blinks_list = [False] * len(self.raw_data[f'LeftEyeOpennesP{p_index+1}'])
+                blinks_onsets_list = [False] * len(blinks_list)
                 blinks_participants[p_index] = blinks_list
+                blinks_onsets_participants[p_index] = blinks_onsets_list
                 blinks_indexes_window[p_index] = []
             # Row by row
             for index_row, row in self.raw_data.iterrows():
@@ -95,9 +98,10 @@ class GroupCSVDataLoader:
                     #   3. End blink window
                     # Start of blink window
                     if (prior_blink_happenned[p_index] == False and current_blink == True):                        
-                        blinks_participants[p_index][index_row] = True
+                        blinks_onsets_participants[p_index][index_row] = True
+                        blinks_participants[p_index][index_row] = True                        
                         blinks_indexes_window[p_index].append(index_row)
-                        prior_blink_happenned[p_index] = True
+                        prior_blink_happenned[p_index] = True                        
                     # Continue blink window
                     elif(prior_blink_happenned[p_index] == True and current_blink == True):
                         blinks_participants[p_index][index_row] = True
@@ -113,13 +117,14 @@ class GroupCSVDataLoader:
                         length_blink_ms = (last_blink_TS - first_blink_TS).total_seconds() * 1000;
                         if (length_blink_ms < 100 or length_blink_ms > 500):
                             # Set to false all stored blinks because they are invalid
-                            for blink_index in blinks_indexes_window[p_index]:
+                            blinks_onsets_participants[p_index][first_blink_index] = False
+                            for blink_index in blinks_indexes_window[p_index]:                                
                                 blinks_participants[p_index][blink_index] = False
                         # Regardless of validity we clear window to find a new set of blinks ahead in the data
                         blinks_indexes_window[p_index].clear()  
                         prior_blink_happenned[p_index] = False
             # Return final list of valid blinks once all rows are computed
-            return blinks_participants
+            return blinks_participants, blinks_onsets_participants
         else:
             print(f"Can't extract group feature frames because the file wasn't loaded correctly!")
         return None
