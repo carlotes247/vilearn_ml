@@ -128,4 +128,25 @@ class GroupCSVDataLoader:
         else:
             print(f"Can't extract group feature frames because the file wasn't loaded correctly!")
         return None
+
+    def get_blink_onset_collisions(self, onsets_p1: list[bool], onsets_p2: list[bool], timestamps: list[datetime]) -> None:
+        """
+        Returns where the closest collision between two blink onsets is
+        """
+        if (onsets_p1 is None or onsets_p2 is None or timestamps is None len(onsets_p1)!=len(onsets_p2) or len(onsets_p1)!=len(timestamps)):
+            print("Aborting. The lists of onsets are empty or not match size when calculating collisions!")
+        else:
+            # We get the participant with the least amount of blinks as a reference
+            total_onsets_p1 = onsets_p1.count(True)
+            total_onsets_p2 = onsets_p2.count(True)
+            onsets_ref = onsets_p1 # assume p1 has less onsets unless proven otherswise
+            onsets_adv = onsets_p2
+            if (total_onsets_p1 > total_onsets_p2):
+                onsets_ref = onsets_p2 # p2 has less onsets in this case
+                onsets_adv = onsets_p1
+            for i in range(onsets_p1):
+                onset_ref = onsets_ref[i]
+                if (onsets_ref == True):
+                    print(f"index onset is{i}, with TS {timestamps[i]}")
+                    # TODO: calculate closest collision in a window of 3 seconds from onset ref origin
 #endregion

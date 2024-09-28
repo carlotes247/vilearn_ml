@@ -102,6 +102,8 @@ if __name__ == "__main__":
         valid_blinks, valid_blink_onsets = groupData.group_features_csv_loader.extract_valid_blinks_frames()
         valid_blinks_p1 = valid_blinks[0]
         valid_blink_onsets_p1 = valid_blink_onsets[0]
+        valid_blink_onsets_p2 = valid_blink_onsets[1]
+        collisions_p1_p2 = groupData.group_features_csv_loader.get_blink_onset_collisions(valid_blink_onsets_p1, valid_blink_onsets_p2, timestamps)
         print("open plot window")
         plt.plot(timestamps, valid_blink_onsets_p1)
         plt.show()
