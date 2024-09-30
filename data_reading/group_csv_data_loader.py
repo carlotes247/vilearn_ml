@@ -1,7 +1,7 @@
 import csv
 import pandas as pd
 import numpy as np
-from datetime import datetime
+from datetime import datetime, time, timedelta
 from data_reading.features.group_feature_frame import GroupFeatureFrame
 from data_reading.features.blink_feature import BlinkFeature
 from data_reading.features.direct_gaze_feature import DirectGazeFeature
@@ -91,7 +91,8 @@ class GroupCSVDataLoader:
             for index_row, row in self.raw_data.iterrows():
                 # Participant per row
                 for p_index in range(num_participants):
-                    current_blink = row[f'LeftEyeOpennesP{p_index+1}'] and row[f'LeftEyeOpennesConfidenceP{p_index+1}'] and row[f'RightEyeOpennesP{p_index+1}'] and row[f'RightEyeOpennesConfidenceP{p_index+1}']
+                    current_blink = row[f'BlinkP{p_index+1}']
+                    #current_blink = row[f'LeftEyeOpennesP{p_index+1}'] and row[f'LeftEyeOpennesConfidenceP{p_index+1}'] and row[f'RightEyeOpennesP{p_index+1}'] and row[f'RightEyeOpennesConfidenceP{p_index+1}']
                     # Three conditions
                     #   1. Start of blink window 
                     #   2. Continue blink window
@@ -129,13 +130,15 @@ class GroupCSVDataLoader:
             print(f"Can't extract group feature frames because the file wasn't loaded correctly!")
         return None
 
-    def get_blink_onset_collisions(self, onsets_p1: list[bool], onsets_p2: list[bool], timestamps: list[datetime]) -> None:
+    def get_blink_onset_collisions(self, onsets_p1: list[bool], onsets_p2: list[bool], timestamps: list[datetime]) -> dict[datetime, bool]:
         """
         Returns where the closest collision between two blink onsets is
         """
-        if (onsets_p1 is None or onsets_p2 is None or timestamps is None len(onsets_p1)!=len(onsets_p2) or len(onsets_p1)!=len(timestamps)):
+        if (onsets_p1 is None or onsets_p2 is None or timestamps is None or len(onsets_p1)!=len(onsets_p2) or len(onsets_p1)!=len(timestamps)):
             print("Aborting. The lists of onsets are empty or not match size when calculating collisions!")
+            return None
         else:
+            hits: dict[datetime, bool] = dict()
             # We get the participant with the least amount of blinks as a reference
             total_onsets_p1 = onsets_p1.count(True)
             total_onsets_p2 = onsets_p2.count(True)
@@ -144,9 +147,29 @@ class GroupCSVDataLoader:
             if (total_onsets_p1 > total_onsets_p2):
                 onsets_ref = onsets_p2 # p2 has less onsets in this case
                 onsets_adv = onsets_p1
-            for i in range(onsets_p1):
-                onset_ref = onsets_ref[i]
-                if (onsets_ref == True):
-                    print(f"index onset is{i}, with TS {timestamps[i]}")
+            # place values into dictionary 
+            indexes = range(len(timestamps))
+            dict_onsets_ref = dict(zip(timestamps, onsets_ref))
+            dict_onsets_adv = dict(zip(timestamps, onsets_adv))
+            df_onsets = pd.DataFrame({'timestamps': timestamps,
+                'indexes': indexes,
+                'onsets_ref': onsets_ref,
+                'onsets_adv': onsets_adv
+                })
+            for i, row in df_onsets.iterrows():
+                onset_ref = row['onsets_ref']
+                if (onset_ref == True):
+                    onset_TS = row['timestamps']                
+                    #print(f"index onset is {i}, with TS {timestamps[i]}")
                     # TODO: calculate closest collision in a window of 3 seconds from onset ref origin
+                    lower_bound_target = onset_TS + (timedelta(seconds=-1.5))                                        
+                    upper_bound_target = onset_TS + (timedelta(seconds=1.5))       
+                    cond = df_onsets.rolling('1.5s')['onsets_adv'].apply(lambda x: x == True)      
+                    result = df_onsets[cond]       
+                    TS_lower_bound = min(timestamps, key=lambda d: abs(d - lower_bound_target))
+                    TS_upper_bound = min(timestamps, key=lambda d: abs(d - upper_bound_target))                    
+                    hit_TS, hit_value = min(df_onsets.items(), key=lambda x: (abs(onset_TS - x[0]) and x[1]==True))
+                    if ((hit_TS-onset_TS).total_seconds() <=1.5):
+                        hits[hit_TS] = hit_value
+                    return hits                
 #endregion
