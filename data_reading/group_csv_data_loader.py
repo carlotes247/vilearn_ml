@@ -91,8 +91,8 @@ class GroupCSVDataLoader:
             for index_row, row in self.raw_data.iterrows():
                 # Participant per row
                 for p_index in range(num_participants):
-                    current_blink = row[f'BlinkP{p_index+1}']
-                    #current_blink = row[f'LeftEyeOpennesP{p_index+1}'] and row[f'LeftEyeOpennesConfidenceP{p_index+1}'] and row[f'RightEyeOpennesP{p_index+1}'] and row[f'RightEyeOpennesConfidenceP{p_index+1}']
+                    #current_blink = row[f'BlinkP{p_index+1}']
+                    current_blink = row[f'LeftEyeOpennesP{p_index+1}'] and row[f'LeftEyeOpennesConfidenceP{p_index+1}'] and row[f'RightEyeOpennesP{p_index+1}'] and row[f'RightEyeOpennesConfidenceP{p_index+1}']
                     # Three conditions
                     #   1. Start of blink window 
                     #   2. Continue blink window
@@ -151,25 +151,42 @@ class GroupCSVDataLoader:
             indexes = range(len(timestamps))
             dict_onsets_ref = dict(zip(timestamps, onsets_ref))
             dict_onsets_adv = dict(zip(timestamps, onsets_adv))
-            df_onsets = pd.DataFrame({'timestamps': timestamps,
-                'indexes': indexes,
+            df_onsets = pd.DataFrame({'indexes_original': indexes,
                 'onsets_ref': onsets_ref,
                 'onsets_adv': onsets_adv
-                })
-            for i, row in df_onsets.iterrows():
+                }, index=timestamps)
+            for i_TS, row in df_onsets.iterrows():
                 onset_ref = row['onsets_ref']
                 if (onset_ref == True):
-                    onset_TS = row['timestamps']                
+                    onset_TS = i_TS               
                     #print(f"index onset is {i}, with TS {timestamps[i]}")
-                    # TODO: calculate closest collision in a window of 3 seconds from onset ref origin
-                    lower_bound_target = onset_TS + (timedelta(seconds=-1.5))                                        
-                    upper_bound_target = onset_TS + (timedelta(seconds=1.5))       
-                    cond = df_onsets.rolling('1.5s')['onsets_adv'].apply(lambda x: x == True)      
-                    result = df_onsets[cond]       
-                    TS_lower_bound = min(timestamps, key=lambda d: abs(d - lower_bound_target))
-                    TS_upper_bound = min(timestamps, key=lambda d: abs(d - upper_bound_target))                    
-                    hit_TS, hit_value = min(df_onsets.items(), key=lambda x: (abs(onset_TS - x[0]) and x[1]==True))
-                    if ((hit_TS-onset_TS).total_seconds() <=1.5):
-                        hits[hit_TS] = hit_value
-                    return hits                
+                    # TODO: calculate closest collision in a window of 3 seconds from onset ref origin    
+                    lower_bound_idx = df_onsets.index.searchsorted(onset_TS + (timedelta(seconds=-1.5)))
+                    upper_bound_idx = df_onsets.index.searchsorted(onset_TS + (timedelta(seconds=1.5)))
+                    lower_bound_TS = df_onsets.iloc[lower_bound_idx].name
+                    upper_bound_TS = df_onsets.iloc[upper_bound_idx].name
+                    # Get only the rows in window (lower and upper bound) where there is an onset
+                    lower_bound_df = df_onsets[lower_bound_TS:onset_TS].loc[df_onsets['onsets_adv']==True].drop(onset_TS, errors='ignore')
+                    upper_bound_df = df_onsets[onset_TS:upper_bound_TS].loc[df_onsets['onsets_adv']==True].drop(onset_TS, errors='ignore')
+                    # Get closest hit to onset_TS
+                    lower_hit = pd.Series()
+                    upper_hit = pd.Series()
+                    if (len(lower_bound_df) > 0):
+                        lower_hit = lower_bound_df.iloc[-1] # Get last lower hit to be closest to Onset_TS
+                    if (len(upper_bound_df) > 0):
+                        upper_hit = upper_bound_df.iloc[0] # Get first upper hit to be closest to Onset_TS   
+                    # If there was a hit, get closest of the two and add it to hits dict
+                    lower_hit_distance = 10000  
+                    upper_hit_distance = 10000
+                    hit = pd.Series()
+                    if (not lower_hit.empty):
+                        lower_hit_distance = abs((onset_TS-lower_hit.name).total_seconds())
+                        hit = lower_hit
+                    if (not upper_hit.empty):
+                        upper_hit_distance = abs((upper_hit.name-onset_TS).total_seconds())
+                        if (upper_hit_distance < lower_hit_distance): hit = upper_hit
+                    if (not hit.empty):
+                        hits[hit.name] = True
+            # TODO: return a datastructure that tells us (1) which is ref-adv, (2) TS for ref-adv, (3) distance in ms
+            return hits                
 #endregion
