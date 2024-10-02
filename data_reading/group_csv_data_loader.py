@@ -7,6 +7,7 @@ from data_reading.features.blink_feature import BlinkFeature
 from data_reading.features.direct_gaze_feature import DirectGazeFeature
 from data_reading.features.gaze_behaviour_feature import GazeBehaviourFeature
 from data_reading.features.participant_features import ParticipantFeatures
+from  data_reading.features.blink_collision import BlinkCollision, BlinkCollisionsList
 from torch_vilearn.torch_group_dataset import TorchGroupDataset
 from torch_vilearn.torch_group_data_loader import TorchGroupDataLoader
 import os
@@ -130,7 +131,7 @@ class GroupCSVDataLoader:
             print(f"Can't extract group feature frames because the file wasn't loaded correctly!")
         return None
 
-    def get_blink_onset_collisions(self, onsets_p1: list[bool], onsets_p2: list[bool], timestamps: list[datetime]) -> dict[datetime, bool]:
+    def get_blink_onset_collisions(self, onsets_p1: list[bool], onsets_p2: list[bool], timestamps: list[datetime], p1_name: str, p2_name: str) -> BlinkCollisionsList:
         """
         Returns where the closest collision between two blink onsets is
         """
@@ -138,19 +139,24 @@ class GroupCSVDataLoader:
             print("Aborting. The lists of onsets are empty or not match size when calculating collisions!")
             return None
         else:
-            hits: dict[datetime, bool] = dict()
+            hits: BlinkCollisionsList
+            ref_name: str = ""
+            adv_name: str = ""            
             # We get the participant with the least amount of blinks as a reference
             total_onsets_p1 = onsets_p1.count(True)
             total_onsets_p2 = onsets_p2.count(True)
             onsets_ref = onsets_p1 # assume p1 has less onsets unless proven otherswise
             onsets_adv = onsets_p2
+            ref_name = p1_name
+            adv_name = p2_name
             if (total_onsets_p1 > total_onsets_p2):
                 onsets_ref = onsets_p2 # p2 has less onsets in this case
                 onsets_adv = onsets_p1
+                ref_name = p2_name
+                adv_name = p1_name
             # place values into dictionary 
+            hits = BlinkCollisionsList(ref_name, adv_name)
             indexes = range(len(timestamps))
-            dict_onsets_ref = dict(zip(timestamps, onsets_ref))
-            dict_onsets_adv = dict(zip(timestamps, onsets_adv))
             df_onsets = pd.DataFrame({'indexes_original': indexes,
                 'onsets_ref': onsets_ref,
                 'onsets_adv': onsets_adv
@@ -178,15 +184,19 @@ class GroupCSVDataLoader:
                     # If there was a hit, get closest of the two and add it to hits dict
                     lower_hit_distance = 10000  
                     upper_hit_distance = 10000
+                    delta_hit = 10000
                     hit = pd.Series()
                     if (not lower_hit.empty):
-                        lower_hit_distance = abs((onset_TS-lower_hit.name).total_seconds())
+                        delta_hit = (onset_TS-lower_hit.name).total_seconds()
+                        lower_hit_distance = abs(delta_hit)
                         hit = lower_hit
-                    if (not upper_hit.empty):
+                    if (not upper_hit.empty):                        
                         upper_hit_distance = abs((upper_hit.name-onset_TS).total_seconds())
-                        if (upper_hit_distance < lower_hit_distance): hit = upper_hit
+                        if (upper_hit_distance < lower_hit_distance): 
+                            hit = upper_hit
+                            delta_hit = (upper_hit.name-onset_TS).total_seconds()
                     if (not hit.empty):
-                        hits[hit.name] = True
-            # TODO: return a datastructure that tells us (1) which is ref-adv, (2) TS for ref-adv, (3) distance in ms
+                        hits.add_collision(onset_TS, hit.name, delta_hit * 1000)                       
+            # Return a datastructure that tells us (1) which is ref-adv, (2) TS for ref-adv, (3) distance in ms
             return hits                
 #endregion
