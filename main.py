@@ -38,6 +38,14 @@ def read_data_and_calculate_stats (reader, fileName, stringTag):
     calculate_stats(listOfDeltas, stringTag, "ms")
     reader.getEyeTrackingData(fileName)
 
+# gets called with a series of timestamps and a list for a particular person
+def calculate_blink_per_minute_rate(timestamps, valid_blink_onsets):
+    # total_minutes_within_the_timespan = (timestamps.nsmallest(1) - timestamps.nlargest(1))#.minutes
+    a = timestamps.values[-1]
+    b = timestamps.values[0]
+    total_minutes_within_the_timespan = (timestamps.values[-1] - timestamps.values[0]).astype('timedelta64[m]')
+    blinks_rate = sum(valid_blink_onsets) / total_minutes_within_the_timespan.astype('int')
+    print (total_minutes_within_the_timespan, " ", sum(valid_blink_onsets), " ", blinks_rate)
 
 
 
@@ -74,7 +82,7 @@ if __name__ == "__main__":
                                       onlyTorch=train_torch, load_individual_p_files=load_individual_participant_files, 
                                       print_all_stats=print_all_stats_p_files, print_blink_stats=print_blink_stats_p_files)
     if train_torch:
-        # Get all groups data as a single dataset 
+        # Get all groups data as a single dataset
         dataset = my_groups_manager.get_concat_groups_torch_dataset()
         # Split into training and eval datasets
         train_size = int(0.8 * len(dataset))
@@ -105,17 +113,25 @@ if __name__ == "__main__":
         valid_blink_onsets_p2 = valid_blink_onsets[1]
         collisions_p1_p2 = groupData.group_features_csv_loader.get_blink_onset_collisions(valid_blink_onsets_p1, valid_blink_onsets_p2, timestamps, "P1", "P2")
         collisions_df = collisions_p1_p2.get_collisions_with_all_TS(timestamps)
+
+        # calculate_blink_per_minute_rate(timestamps, valid_blink_onsets_p1)
+
+
         print("open plot window")
         collisions_df.plot()
         plt.title("Blink Sync")
         plt.xlabel('Time')
         plt.ylabel('Blinks')
-        #plt.plot(collisions_df.index, collisions_df[collisions_df.columns[1]].values, label = "Reference")
-        #plt.plot(collisions_df.index, collisions_df[collisions_df.columns[2]].values, label = "Adversary")
-        #plt.plot(timestamps, valid_blinks_p1)        
+
+        # plt.plot(collisions_df.index, collisions_df[collisions_df.columns[1]].values, label = "Reference")
+        # plt.plot(collisions_df.index, collisions_df[collisions_df.columns[2]].values, label = "Adversary")
+        # plt.plot(timestamps, valid_blinks_p1)
+
         plt.show()
+
         #plotter = PlotterClass()
         #plotter.plot_eye_blinks(my_groups_manager.groups[0])
     print("done!")
+
 
 
