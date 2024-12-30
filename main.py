@@ -119,13 +119,13 @@ if __name__ == "__main__":
 
         print("open plot window")
         collisions_df.plot()
-        plt.title("Blink Sync")
+        plt.title("Blink Sync P1-P2")
         plt.xlabel('Time')
         plt.ylabel('Blinks')
 
-        # plt.plot(collisions_df.index, collisions_df[collisions_df.columns[1]].values, label = "Reference")
-        # plt.plot(collisions_df.index, collisions_df[collisions_df.columns[2]].values, label = "Adversary")
-        # plt.plot(timestamps, valid_blinks_p1)
+        #plt.plot(collisions_df.index, collisions_df[collisions_df.columns[1]].values, label = "Reference")
+        #plt.plot(collisions_df.index, collisions_df[collisions_df.columns[2]].values, label = "Adversary")
+        #plt.plot(timestamps, collisions_df)        
 
         plt.show()
 
