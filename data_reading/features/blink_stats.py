@@ -6,10 +6,8 @@ class BlinkStats:
 
     # dataframe that has for each group:
     # "group_name" string, the group name
-    # "group_size" int, group size,
-    # "blinks" list (series) of booleans for blinks
-    #  "blinks_onset" list (series) of booleans for  blinks_onset,
-    # "timestamps" list or series of timestamps
+    # "group_size" int, group size
+    # 'blinks_dataframe': index: timestamp, columns (bool): 'P{1, 2, or 3}_valid_blink_onsets', 'P{1, 2, or 3}_valid_blinks'
     groups_blinks_with_timestamps: list[pd.DataFrame]
 
     # list of with the group name, group size, blink rate (list of 2 or 3)
@@ -42,6 +40,7 @@ class BlinkStats:
         data_for_calculating_subsets = pd.read_csv(fullpath, sep=';')
 
         for index, row in data_for_calculating_subsets.iterrows():
+            current_group_dataframe = pd.DataFrame()
             my_groups_manager = GroupsManager(self.path_prefix_file, self.data_folder_path, specific_group=row['Group'],
                                               onlyTorch=False, load_individual_p_files=False, print_all_stats=False,
                                               print_blink_stats=False)
@@ -51,22 +50,6 @@ class BlinkStats:
             timestamps_string = group_data.group_features_csv_loader.raw_data['TSGroupNTP']
             timestamps = pd.to_datetime(timestamps_string, utc=True, format='%Y-%m-%d %H:%M:%S.%f')
 
-            # calculate the valid subset of the group conversation
-            # dt = pd.to_datetime("2016-11-13 22:01:25.450")
-            #
-            # s = df.loc[df.index.unique()[df.index.unique().get_loc(dt, method='nearest')]]
-
-            start_time_timestamp = pd.to_datetime(row['Start'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
-            index_of_start_timestamp = timestamps.index.get_indexer([start_time_timestamp], method='nearest')
-            # index_of_start_timestamp = timestamps.loc[timestamps.index.unique()[timestamps.index.unique().get_loc(start_time_timestamp, method='nearest')]]
-
-            end_time_timestamp = pd.to_datetime(row['End'])
-            index_of_end_timestamp = timestamps.index.get_indexer([end_time_timestamp], method='nearest')
-
-            subset_timestamps = timestamps.loc[index_of_start_timestamp:index_of_end_timestamp]
-            subset_valid_blinks = dict
-            subset_valid_blink_onset = dict
-
             if "DYAD" in row['Group']:
                 group_size = 2
             else:
@@ -74,25 +57,54 @@ class BlinkStats:
 
             # calculate the subsets for each participant
             for participant in range(group_size):
-                participant_subset_valid_blinks = valid_blinks[participant][index_of_start_timestamp, index_of_end_timestamp]
-                participant_subset_valid_blink_onset = valid_blink_onsets[participant][index_of_start_timestamp, index_of_end_timestamp]
 
-            #   add to the dict:
-                subset_valid_blinks[participant] = participant_subset_valid_blinks
-                subset_valid_blink_onset[participant] = participant_subset_valid_blink_onset
+                # get the blink info for each participant
+                participant_valid_blinks = valid_blinks[participant]
+                participant_valid_blink_onsets = valid_blink_onsets[participant]
 
+                # turn the blink info into a df
+                participant_valid_blinks_df = pd.DataFrame({f'P{participant+1}_valid_blinks': participant_valid_blinks})
+                participant_valid_blink_onsets_df = pd.DataFrame({f'P{participant+1}_valid_blink_onsets': participant_valid_blink_onsets})
+
+                # add the blink info to a dataframe
+                current_group_dataframe = pd.concat([current_group_dataframe, participant_valid_blinks_df,
+                                                  participant_valid_blink_onsets_df], axis='columns')
+
+            # after all participants data finished, add the timestamp to the df
+            current_group_dataframe = pd.concat([current_group_dataframe, timestamps], axis='columns')
+
+            # drop any repeated timestamps
+            current_group_dataframe = current_group_dataframe.drop_duplicates(subset=['TSGroupNTP'])
+
+            # set the index to the timestamp to easily get a subset of it based on the correct group conversation
+            current_group_dataframe = current_group_dataframe.set_index('TSGroupNTP')
+
+            # sorting the index (timestamps) as the next fuction won't work on a non-soted list. even though it is sorted
+            current_group_dataframe.sort_index(inplace=True)
+
+            # get the correct subset of the dataframe
+            start_time_timestamp = pd.to_datetime(row['Start'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
+            # get the index of the start timestamp for the subset window
+            index_of_start_timestamp = current_group_dataframe.index.get_indexer([start_time_timestamp], method='nearest')
+            start_timestamp_available_in_df = current_group_dataframe.index[index_of_start_timestamp[0]]
+
+            end_time_timestamp = pd.to_datetime(row['End'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
+            # get the index of the end timestamp for the subset window
+            index_of_end_timestamp = current_group_dataframe.index.get_indexer([end_time_timestamp], method='nearest')
+            end_timestamp_available_in_df = current_group_dataframe.index[index_of_end_timestamp[0]]
+
+            # get the dataframe subset
+            valid_subset_data = current_group_dataframe[start_timestamp_available_in_df:end_timestamp_available_in_df]
 
             # put all the info into a ndarray and then add it to a dataframe
-            d = {'group_name': row['Group'], 'group_size': group_size, 'blinks': subset_valid_blinks,
-                 'blinks_onset': subset_valid_blink_onset, 'timestamps': subset_timestamps}
-            # individual_group_blinks_data = pd.DataFrame(data=d)
+            d = {'group_name': row['Group'], 'group_size': group_size, 'blinks_dataframe': valid_subset_data}
 
             # append the dataframe to the list of all the groups.
             self.groups_blinks_with_timestamps.append(d)
 
     def populate_groups_blinks_dataset_with_a_the_full_timeline (self, group_names:list[str]):
         for group_name in group_names:
-
+            current_group_dataframe = pd.DataFrame()
             my_groups_manager = GroupsManager(self.path_prefix_file, self.data_folder_path, specific_group= group_name,
                                               onlyTorch=False, load_individual_p_files=False, print_all_stats=False,
                                               print_blink_stats=False)
@@ -107,29 +119,48 @@ class BlinkStats:
             else:
                 group_size = 3
 
+            for participant in range(group_size):
+                # get the blink info for each participant
+                participant_valid_blinks = valid_blinks[participant]
+                participant_valid_blink_onsets = valid_blink_onsets[participant]
+
+                # turn the blink info into a df
+                participant_valid_blinks_df = pd.DataFrame({f'P{participant+1}_valid_blinks': participant_valid_blinks})
+                participant_valid_blink_onsets_df = pd.DataFrame({f'P{participant+1}_valid_blink_onsets': participant_valid_blink_onsets})
+
+                # add the blink info to a dataframe
+                current_group_dataframe = pd.concat([current_group_dataframe, participant_valid_blinks_df,
+                                                  participant_valid_blink_onsets_df], axis='columns')
+
+            # after all participants data finished, add the timestamp to the df
+            current_group_dataframe = pd.concat([current_group_dataframe, timestamps], axis='columns')
+
+            # drop any repeated timestamps
+            current_group_dataframe = current_group_dataframe.drop_duplicates(subset=['TSGroupNTP'])
+
+            # set the index to the timestamp
+            current_group_dataframe = current_group_dataframe.set_index('TSGroupNTP')
+
             # put all the info into a ndarray and then add it to a dataframe
-            d = {'group_name': group_name, 'group_size': group_size, 'blinks': valid_blinks,
-                 'blinks_onset':valid_blink_onsets, 'timestamps':timestamps}
-            # individual_group_blinks_data = pd.DataFrame(data=d)
+            d = {'group_name': group_name, 'group_size': group_size, 'blinks_dataframe': current_group_dataframe}
 
-            # append the dataframe to the list of all the groups.
             self.groups_blinks_with_timestamps.append(d)
-
 
 
     def calculate_blink_rate(self):
         for group in self.groups_blinks_with_timestamps:
             # calculate here the self.groups_blink_rate
-            timestamps = group['timestamps']
-            blinks_onset = group['blinks_onset']
+            blinks_df = group['blinks_dataframe']
+            timestamps = blinks_df.index.tolist()
 
-            total_minutes_within_the_timespan = (timestamps.values[-1] - timestamps.values[0]).astype('timedelta64[m]')
+            total_minutes_within_the_timespan = (timestamps[-1] - timestamps[0]).total_seconds()/60
 
             blink_rates = []
 
             for participant_number in range(group["group_size"]):
-                individual_blinks_rate = sum(blinks_onset[participant_number]) / total_minutes_within_the_timespan.astype('int')
-                # print(total_minutes_within_the_timespan, " ", sum(blinks_onset[participant_number]), " ", blink_rates)
+
+                participant_blink_onsets = blinks_df[f'P{participant_number+1}_valid_blink_onsets'].tolist()
+                individual_blinks_rate = sum(participant_blink_onsets) / total_minutes_within_the_timespan
                 blink_rates.append(individual_blinks_rate)
 
             d = {'group_name': group["group_name"],
@@ -184,8 +215,8 @@ if __name__ == "__main__":
     # blink_rates_triads = blink_stats_triads.get_groups_blink_rate()
     # print(blink_rates_triads)
     #
-    # blinks_file_path = blink_stats_dyads.data_folder_path + 'blinks_rates_all_groups.csv'
-    # blink_rates_file = open(blinks_file_path, 'a')
-    # blink_rates_file.write(blink_rates_dyads.to_string())
-    # blink_rates_file.write(blink_rates_triads.to_string())
-    # blink_rates_file.close()
+    # # blinks_file_path = blink_stats_dyads.data_folder_path + 'blinks_rates_all_groups.csv'
+    # # blink_rates_file = open(blinks_file_path, 'a')
+    # # blink_rates_file.write(blink_rates_dyads.to_string())
+    # # blink_rates_file.write(blink_rates_triads.to_string())
+    # # blink_rates_file.close()
