@@ -92,8 +92,11 @@ class GroupCSVDataLoader:
             for index_row, row in self.raw_data.iterrows():
                 # Participant per row
                 for p_index in range(num_participants):
-                    #current_blink = row[f'BlinkP{p_index+1}']
-                    current_blink = row[f'LeftEyeOpennesP{p_index+1}'] and row[f'LeftEyeOpennesConfidenceP{p_index+1}'] and row[f'RightEyeOpennesP{p_index+1}'] and row[f'RightEyeOpennesConfidenceP{p_index+1}']
+                    current_blink = row[f'BlinkP{p_index+1}']
+                    # current_blink = ((row[f'LeftEyeOpennesP{p_index+1}']<1) and
+                    #                  row[f'LeftEyeOpennesConfidenceP{p_index+1}'] and
+                    #                  (row[f'RightEyeOpennesP{p_index+1}']<1) and
+                    #                  row[f'RightEyeOpennesConfidenceP{p_index+1}'])
                     # Three conditions
                     #   1. Start of blink window 
                     #   2. Continue blink window
