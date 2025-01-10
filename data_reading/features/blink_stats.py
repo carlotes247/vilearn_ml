@@ -11,7 +11,9 @@ class BlinkStats:
     groups_blinks_with_timestamps: list[pd.DataFrame]
 
     # list of with the group name, group size, blink rate (list of 2 or 3)
-    groups_blink_rate = pd.Series() #this is not good as a Series. It needs to be changed
+    # groups_blink_rate = pd.DataFrame() #this is not good as a Series. It needs to be changed
+    groups_blink_rate = pd.DataFrame(columns=['group_name', 'group_size', 'P1_blink_rate', 'P2_blink_rate',
+                                        'P3_blink_rate'])
 
     path_going_up_two_folders = "../../"
     path_prefix_file = path_going_up_two_folders + "data/_path_prefix.txt"
@@ -163,12 +165,15 @@ class BlinkStats:
                 individual_blinks_rate = sum(participant_blink_onsets) / total_minutes_within_the_timespan
                 blink_rates.append(individual_blinks_rate)
 
-            d = {'group_name': group["group_name"],
-                 'group_size': group["group_size"],
-                 'blink_rates': blink_rates}
-            temp_series = pd.Series(d)
+            if group["group_size"] == 2:
+                temp_df = pd.DataFrame({'group_name': group['group_name'], 'group_size': group['group_size'],
+                                        'P1_blink_rate': blink_rates[0], 'P2_blink_rate': blink_rates[1]}, index = [0])
+            else:
+                temp_df = pd.DataFrame({'group_name': group['group_name'], 'group_size': group['group_size'],
+                                        'P1_blink_rate': blink_rates[0], 'P2_blink_rate': blink_rates[1],
+                                        'P3_blink_rate': blink_rates[2]}, index=[0])
 
-            self.groups_blink_rate = pd.concat([self.groups_blink_rate, temp_series], ignore_index=True)
+            self.groups_blink_rate = pd.concat([self.groups_blink_rate, temp_df], ignore_index=True)
         return
 
     def get_groups_blinks_data(self):
@@ -215,8 +220,8 @@ if __name__ == "__main__":
     # blink_rates_triads = blink_stats_triads.get_groups_blink_rate()
     # print(blink_rates_triads)
     #
-    # # blinks_file_path = blink_stats_dyads.data_folder_path + 'blinks_rates_all_groups.csv'
-    # # blink_rates_file = open(blinks_file_path, 'a')
-    # # blink_rates_file.write(blink_rates_dyads.to_string())
-    # # blink_rates_file.write(blink_rates_triads.to_string())
-    # # blink_rates_file.close()
+    blinks_file_path = blink_stats_subsets.data_folder_path + 'blinks_rates_all_groups.csv'
+    blink_rates_file = open(blinks_file_path, 'a')
+    blink_rates_file.write(blink_rates_subsets.to_string())
+    # blink_rates_file.write(blink_rates_triads.to_string())
+    blink_rates_file.close()
