@@ -4,11 +4,18 @@ from data_reading.groups_manager import GroupsManager
 
 class BlinkStats:
 
-    # dataframe that has for each group:
+    # dict that has for each group:
     # "group_name" string, the group name
     # "group_size" int, group size
+    # 'group_blink_collisions' list of BlinkCollisionsList;
+    #              this collisions list will have one element if a dyad (collisions of P1 to P2) or 3 elements if a triad (P1-P2, P2-P3, P1-P3)
     # 'blinks_dataframe': index: timestamp, columns (bool): 'P{1, 2, or 3}_valid_blink_onsets', 'P{1, 2, or 3}_valid_blinks'
-    groups_blinks_with_timestamps: list[pd.DataFrame]
+    groups_blinks_with_timestamps: list[dict]
+
+    # df with the columns: 'group_name':str, group_size: int, 'count_blinks_participant_reference':float, 'count_sync_blinks':float,
+    # 'percent_sync_blinks':float. For triads, these values are averaged.
+    group_synced_blinks_percent = pd.DataFrame(columns=['group_name', 'group_size', 'count_blinks_participant_reference',
+                                                      'count_sync_blinks', 'percent_sync_blinks'])
 
     # list of with the group name, group size, blink rate (list of 2 or 3)
     # groups_blink_rate = pd.DataFrame() #this is not good as a Series. It needs to be changed
@@ -52,6 +59,7 @@ class BlinkStats:
             timestamps_string = group_data.group_features_csv_loader.raw_data['TSGroupNTP']
             timestamps = pd.to_datetime(timestamps_string, utc=True, format='%Y-%m-%d %H:%M:%S.%f')
 
+
             if "DYAD" in row['Group']:
                 group_size = 2
             else:
@@ -68,7 +76,7 @@ class BlinkStats:
                 participant_valid_blinks_df = pd.DataFrame({f'P{participant+1}_valid_blinks': participant_valid_blinks})
                 participant_valid_blink_onsets_df = pd.DataFrame({f'P{participant+1}_valid_blink_onsets': participant_valid_blink_onsets})
 
-                # add the blink info to a dataframe
+                # add the blink info to the dataframe as another column
                 current_group_dataframe = pd.concat([current_group_dataframe, participant_valid_blinks_df,
                                                   participant_valid_blink_onsets_df], axis='columns')
 
@@ -98,8 +106,32 @@ class BlinkStats:
             # get the dataframe subset
             valid_subset_data = current_group_dataframe[start_timestamp_available_in_df:end_timestamp_available_in_df]
 
-            # put all the info into a ndarray and then add it to a dataframe
-            d = {'group_name': row['Group'], 'group_size': group_size, 'blinks_dataframe': valid_subset_data}
+
+            # TODO: add to this valid subset data info about the sync blinks; see notebook for more notes
+            if group_size == 2:
+                collisions_dyad = (group_data.group_features_csv_loader.get_blink_onset_collisions
+                                   (valid_subset_data['P1_valid_blink_onsets'].tolist(),valid_subset_data['P2_valid_blink_onsets'].tolist(),
+                                    valid_subset_data.index.tolist(), "P1", "P2"))
+                group_collisions = [collisions_dyad]
+            else:
+                collisions_triad_P1P2 = (group_data.group_features_csv_loader.get_blink_onset_collisions
+                                   (valid_subset_data['P1_valid_blink_onsets'].tolist(),
+                                    valid_subset_data['P2_valid_blink_onsets'].tolist(),
+                                    valid_subset_data.index.tolist(), "P1", "P2"))
+                collisions_triad_P1P3 = (group_data.group_features_csv_loader.get_blink_onset_collisions
+                                   (valid_subset_data['P1_valid_blink_onsets'].tolist(),
+                                    valid_subset_data['P3_valid_blink_onsets'].tolist(),
+                                    valid_subset_data.index.tolist(), "P1", "P3"))
+                collisions_triad_P3P2 = (group_data.group_features_csv_loader.get_blink_onset_collisions
+                                   (valid_subset_data['P3_valid_blink_onsets'].tolist(),
+                                    valid_subset_data['P2_valid_blink_onsets'].tolist(),
+                                    valid_subset_data.index.tolist(), "P3", "P2"))
+                group_collisions = [collisions_triad_P1P2, collisions_triad_P1P3, collisions_triad_P3P2]
+
+
+            # put all the info into a dictionary and then add it to a list
+            d = {'group_name': row['Group'], 'group_size': group_size, 'group_blink_collisions': group_collisions,
+                 'blinks_dataframe': valid_subset_data}
 
             # append the dataframe to the list of all the groups.
             self.groups_blinks_with_timestamps.append(d)
@@ -148,6 +180,61 @@ class BlinkStats:
 
             self.groups_blinks_with_timestamps.append(d)
 
+    def calculate_synced_blinks_percent_from_all_blinks(self):
+        for group in self.groups_blinks_with_timestamps:
+            if group['group_size'] == 2:
+                collisions_data = group['group_blink_collisions'][0]
+
+                # calculate the total collisions
+                total_collisions = len(collisions_data.collisions)
+
+                ref_count_blink_onsets = group['blinks_dataframe'][f'{collisions_data.ref_name}_valid_blink_onsets'].tolist().count(True)
+                adv_count_blink_onsets = group['blinks_dataframe'][f'{collisions_data.adv_name}_valid_blink_onsets'].tolist().count(True)
+
+                # tTotal synced blinks over all blinks in the group. All the blinks are from all participants.
+                # The synced ones are happening on both paticipants, hence the multiplication by 2
+                percent_sync_blinks = (total_collisions*2)/(ref_count_blink_onsets + adv_count_blink_onsets)
+
+
+                synced_blinks_group_info = pd.DataFrame({'group_name':group['group_name'], 'group_size':group['group_size'],
+                                                          'count_blinks_participant_reference':ref_count_blink_onsets,
+                                                          'count_sync_blinks':total_collisions, 'percent_sync_blinks':percent_sync_blinks},
+                                                        index=[0])
+
+                # add the blink info to a dataframe
+                self.group_synced_blinks_percent = pd.concat([self.group_synced_blinks_percent, synced_blinks_group_info], ignore_index=True)
+
+            else:
+                sum_values = {'count_blink_onsets':0, 'total_collisions':0, 'percent_sync_blinks':0}
+                for collisions_data in group['group_blink_collisions']:
+                    # calculate the total collisions
+                    total_collisions = len(collisions_data.collisions)
+
+                    ref_count_blink_onsets = group['blinks_dataframe'][
+                        f'{collisions_data.ref_name}_valid_blink_onsets'].tolist().count(True)
+                    adv_count_blink_onsets = group['blinks_dataframe'][
+                        f'{collisions_data.adv_name}_valid_blink_onsets'].tolist().count(True)
+
+                    # tTotal synced blinks over all blinks in the group. All the blinks are from all participants.
+                    # The synced ones are happening on both participants, hence the multiplication by 2
+                    percent_sync_blinks = (total_collisions * 2) / (ref_count_blink_onsets + adv_count_blink_onsets)
+
+                    #udpate sum_values
+                    sum_values['count_blink_onsets'] += ref_count_blink_onsets
+                    sum_values['total_collisions'] += total_collisions
+                    sum_values['percent_sync_blinks'] += percent_sync_blinks
+
+
+                synced_blinks_group_info = pd.DataFrame(
+                    {'group_name': group['group_name'], 'group_size': group['group_size'],
+                     'count_blinks_participant_reference': sum_values['count_blink_onsets']/3,
+                     'count_sync_blinks': sum_values['total_collisions']/3,
+                     'percent_sync_blinks': sum_values['percent_sync_blinks']/3}, index =[0])
+                # add the blink info to a dataframe
+                self.group_synced_blinks_percent = pd.concat(
+                    [self.group_synced_blinks_percent, synced_blinks_group_info], ignore_index=True)
+
+
 
     def calculate_blink_rate(self):
         for group in self.groups_blinks_with_timestamps:
@@ -186,6 +273,15 @@ class BlinkStats:
         else:
             return self.groups_blink_rate
 
+    def get_group_synced_blink_percent(self):
+        if self.group_synced_blinks_percent.empty:
+            self.calculate_synced_blinks_percent_from_all_blinks()
+            return self.group_synced_blinks_percent
+            print ('donre')
+        else:
+            return self.group_synced_blinks_percent
+
+
 
 
 # testing below to see if it works
@@ -193,9 +289,12 @@ if __name__ == "__main__":
 
     group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
     blink_stats_subsets = BlinkStats(group_names_filename=group_data_time_subset_filename)
-    blink_rates_subsets = blink_stats_subsets.get_groups_blink_rate()
-    print(blink_rates_subsets)
+    # get blinks rate
+    # blink_rates_subsets = blink_stats_subsets.get_groups_blink_rate()
+    # print(blink_rates_subsets)
 
+    # get blinks sync percent
+    synced_blinks_percent = blink_stats_subsets.get_group_synced_blink_percent()
 
 
     # groups_list_dyads = ["DYAD_2024_06_14_Seminar_Wue_Session_3_Group_5_TS", "DYAD_2024_06_14_Seminar_Wue_Session_1_Group_2_TS",
@@ -219,9 +318,11 @@ if __name__ == "__main__":
     # blink_stats_triads = BlinkStats(groups_list_triads)
     # blink_rates_triads = blink_stats_triads.get_groups_blink_rate()
     # print(blink_rates_triads)
-    #
+
+
     blinks_file_path = blink_stats_subsets.data_folder_path + 'blinks_rates_all_groups.csv'
     blink_rates_file = open(blinks_file_path, 'a')
-    blink_rates_file.write(blink_rates_subsets.to_string())
-    # blink_rates_file.write(blink_rates_triads.to_string())
+
+    # blink_rates_file.write(blink_rates_subsets.to_string())
+    blink_rates_file.write(synced_blinks_percent.to_string())
     blink_rates_file.close()
