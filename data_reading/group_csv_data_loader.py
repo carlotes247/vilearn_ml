@@ -172,6 +172,11 @@ class GroupCSVDataLoader:
                     # TODO: calculate closest collision in a window of 3 seconds from onset ref origin    
                     lower_bound_idx = df_onsets.index.searchsorted(onset_TS + (timedelta(seconds=-1.5)))
                     upper_bound_idx = df_onsets.index.searchsorted(onset_TS + (timedelta(seconds=1.5)))
+
+                    # adding a check in case the upper_bound_idx or lower_bound_idx go over the len of the df_onset
+                    if lower_bound_idx<0: lower_bound_idx = 0
+                    if upper_bound_idx>df_onsets.shape[0]-1 : upper_bound_idx = df_onsets.shape[0]-1 #shape[0]=num of rows
+
                     lower_bound_TS = df_onsets.iloc[lower_bound_idx].name
                     upper_bound_TS = df_onsets.iloc[upper_bound_idx].name
                     # Get only the rows in window (lower and upper bound) where there is an onset
