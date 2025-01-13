@@ -18,9 +18,15 @@ class BlinkStats:
                                                       'count_sync_blinks', 'percent_sync_blinks'])
 
     # list of with the group name, group size, blink rate (list of 2 or 3)
-    # groups_blink_rate = pd.DataFrame() #this is not good as a Series. It needs to be changed
     groups_blink_rate = pd.DataFrame(columns=['group_name', 'group_size', 'P1_blink_rate', 'P2_blink_rate',
                                         'P3_blink_rate'])
+
+    # df for storing info on the blinks async in ms; for triads this is averaged per each couple and then for all three couples.
+    # "group_name" string, the group name
+    # "group_size" int, group size
+    # "count_sync_blinks", float, how many synced blinks are there avged for triads
+    # "avg_blinks_async_ms", float, the average time in ms (blink asynchrony) between the onset time of blinks of partners.
+    groups_avg_blinks_async_ms = pd.DataFrame(columns=['group_name', 'group_size', 'count_sync_blinks', 'avg_blinks_async_ms'])
 
     path_going_up_two_folders = "../../"
     path_prefix_file = path_going_up_two_folders + "data/_path_prefix.txt"
@@ -180,6 +186,52 @@ class BlinkStats:
 
             self.groups_blinks_with_timestamps.append(d)
 
+    def calculate_mean_blink_asynchrony_ms(self):
+        for group in self.groups_blinks_with_timestamps:
+            if group['group_size'] == 2:
+                total_async_ms = 0
+                collisions = group['group_blink_collisions'][0].collisions #this is a list of BlinkCollition
+
+                for collision in collisions:
+                    total_async_ms = total_async_ms + collision.delta_ms
+
+                avg_async_ms = total_async_ms/len(collisions)
+
+                # create the df for the current dyad
+                avg_blinks_async_ms = pd.DataFrame(
+                    {'group_name': group['group_name'], 'group_size': group['group_size'],
+                     'count_sync_blinks': len(collisions), 'avg_blinks_async_ms': avg_async_ms},
+                    index=[0])
+
+                # add the blink info to a dataframe
+                self.groups_avg_blinks_async_ms = pd.concat(
+                    [self.groups_avg_blinks_async_ms, avg_blinks_async_ms], ignore_index=True)
+            else:
+                sum_values = {'total_sync_blinks':0, 'total_avg_blinks_async_ms':0}
+                for collisions_data in group['group_blink_collisions']:
+                    # now this is for one couple within the triad (3 couples in total)
+                    total_async_ms = 0
+                    for collision in collisions_data.collisions:
+                        total_async_ms = total_async_ms + collision.delta_ms
+
+                    avg_async_ms = total_async_ms/len(collisions_data.collisions)
+                    # add this to the dictionary sum; this will be divided by 3 later on
+                    sum_values['total_sync_blinks'] += len(collisions_data.collisions)
+                    sum_values['total_avg_blinks_async_ms'] += avg_async_ms
+
+                # create the df for the current triad
+                avg_blinks_async_ms = pd.DataFrame(
+                    {'group_name': group['group_name'], 'group_size': group['group_size'],
+                     'count_sync_blinks': sum_values['total_sync_blinks']/3,
+                     'avg_blinks_async_ms': sum_values['total_avg_blinks_async_ms']/3}, index=[0])
+                # add it now to the df
+                self.groups_avg_blinks_async_ms = pd.concat(
+                    [self.groups_avg_blinks_async_ms, avg_blinks_async_ms], ignore_index=True)
+    #
+
+
+
+
     def calculate_synced_blinks_percent_from_all_blinks(self):
         for group in self.groups_blinks_with_timestamps:
             if group['group_size'] == 2:
@@ -192,9 +244,8 @@ class BlinkStats:
                 adv_count_blink_onsets = group['blinks_dataframe'][f'{collisions_data.adv_name}_valid_blink_onsets'].tolist().count(True)
 
                 # tTotal synced blinks over all blinks in the group. All the blinks are from all participants.
-                # The synced ones are happening on both paticipants, hence the multiplication by 2
+                # The synced ones are happening on both participants, hence the multiplication by 2
                 percent_sync_blinks = (total_collisions*2)/(ref_count_blink_onsets + adv_count_blink_onsets)
-
 
                 synced_blinks_group_info = pd.DataFrame({'group_name':group['group_name'], 'group_size':group['group_size'],
                                                           'count_blinks_participant_reference':ref_count_blink_onsets,
@@ -223,7 +274,6 @@ class BlinkStats:
                     sum_values['count_blink_onsets'] += ref_count_blink_onsets
                     sum_values['total_collisions'] += total_collisions
                     sum_values['percent_sync_blinks'] += percent_sync_blinks
-
 
                 synced_blinks_group_info = pd.DataFrame(
                     {'group_name': group['group_name'], 'group_size': group['group_size'],
@@ -281,6 +331,12 @@ class BlinkStats:
         else:
             return self.group_synced_blinks_percent
 
+    def get_group_avg_blinks_async_ms(self):
+        if self.groups_avg_blinks_async_ms.empty:
+            self.calculate_mean_blink_asynchrony_ms()
+            return self.groups_avg_blinks_async_ms
+        else:
+            return self.groups_avg_blinks_async_ms
 
 
 
@@ -294,7 +350,10 @@ if __name__ == "__main__":
     # print(blink_rates_subsets)
 
     # get blinks sync percent
-    synced_blinks_percent = blink_stats_subsets.get_group_synced_blink_percent()
+    # synced_blinks_percent = blink_stats_subsets.get_group_synced_blink_percent()
+
+    # get avg blinks async time in ms for each group
+    avg_blinks_async_ms = blink_stats_subsets.get_group_avg_blinks_async_ms()
 
 
     # groups_list_dyads = ["DYAD_2024_06_14_Seminar_Wue_Session_3_Group_5_TS", "DYAD_2024_06_14_Seminar_Wue_Session_1_Group_2_TS",
@@ -324,5 +383,5 @@ if __name__ == "__main__":
     blink_rates_file = open(blinks_file_path, 'a')
 
     # blink_rates_file.write(blink_rates_subsets.to_string())
-    blink_rates_file.write(synced_blinks_percent.to_string())
+    blink_rates_file.write(avg_blinks_async_ms.to_string())
     blink_rates_file.close()
