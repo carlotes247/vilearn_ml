@@ -193,7 +193,7 @@ class BlinkStats:
                 collisions = group['group_blink_collisions'][0].collisions #this is a list of BlinkCollition
 
                 for collision in collisions:
-                    total_async_ms = total_async_ms + collision.delta_ms
+                    total_async_ms = total_async_ms + abs(collision.delta_ms)
 
                 avg_async_ms = total_async_ms/len(collisions)
 
@@ -212,7 +212,7 @@ class BlinkStats:
                     # now this is for one couple within the triad (3 couples in total)
                     total_async_ms = 0
                     for collision in collisions_data.collisions:
-                        total_async_ms = total_async_ms + collision.delta_ms
+                        total_async_ms = total_async_ms + abs(collision.delta_ms)
 
                     avg_async_ms = total_async_ms/len(collisions_data.collisions)
                     # add this to the dictionary sum; this will be divided by 3 later on

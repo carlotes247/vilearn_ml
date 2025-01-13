@@ -196,6 +196,7 @@ class GroupCSVDataLoader:
                     hit = pd.Series()
                     if (not lower_hit.empty):
                         delta_hit = (onset_TS-lower_hit.name).total_seconds()
+                        delta_hit = -delta_hit #(making it negative as it happens before the onset)
                         lower_hit_distance = abs(delta_hit)
                         hit = lower_hit
                     if (not upper_hit.empty):                        
