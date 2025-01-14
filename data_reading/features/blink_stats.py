@@ -1,14 +1,18 @@
 import datetime
 import pandas as pd
 from data_reading.groups_manager import GroupsManager
+import matplotlib.pyplot as plt
 
 class BlinkStats:
 
-    # dict that has for each group:
+    # list of dicts that has for each group:
     # "group_name" string, the group name
     # "group_size" int, group size
     # 'group_blink_collisions' list of BlinkCollisionsList;
     #              this collisions list will have one element if a dyad (collisions of P1 to P2) or 3 elements if a triad (P1-P2, P2-P3, P1-P3)
+    # 'blinks_async_250ms_bins', dict with the keys: -1500, -1250, -1000, -750, -500, -250, 0, 250, 500, 750, 1000, 1250
+    #              and the value an int for the number of synced blinks with that time lag between blinks onset. The keys represent
+    #              the lower bound, the upper bound of that bin is calculated by adding 250ms.
     # 'blinks_dataframe': index: timestamp, columns (bool): 'P{1, 2, or 3}_valid_blink_onsets', 'P{1, 2, or 3}_valid_blinks'
     groups_blinks_with_timestamps: list[dict]
 
@@ -26,7 +30,16 @@ class BlinkStats:
     # "group_size" int, group size
     # "count_sync_blinks", float, how many synced blinks are there avged for triads
     # "avg_blinks_async_ms", float, the average time in ms (blink asynchrony) between the onset time of blinks of partners.
-    groups_avg_blinks_async_ms = pd.DataFrame(columns=['group_name', 'group_size', 'count_sync_blinks', 'avg_blinks_async_ms'])
+    groups_avg_blinks_async_ms = pd.DataFrame(columns=['group_name', 'group_size', 'count_sync_blinks',
+                                                       'avg_blinks_async_ms'])
+
+
+    #dict containing the dyads' synced blinks' timelag between the participant's blinks onset
+    # dyads_blinks_async_250ms_bins = {'-1.50:-1.25':0, '-1.25:-1.00':0,'-1.00:-0.75':0,'-0.75:-0.50':0,'-0.50:-0.25':0,'-0.25:0.00':0,
+    #                                  '0.00:0.25':0,'0.25:0.50':0,'0.50:0.75':0,'0.75:1.00':0,'1.00:1.25':0,'1.25:1.50':0}
+    dyads_blinks_async_250ms_bins = {-1500:0, -1250:0, -1000:0, -750:0, -500:0, -250:0,
+                                     0:0, 250:0, 500:0, 750:0, 1000:0, 1250:0}
+
 
     path_going_up_two_folders = "../../"
     path_prefix_file = path_going_up_two_folders + "data/_path_prefix.txt"
@@ -112,13 +125,28 @@ class BlinkStats:
             # get the dataframe subset
             valid_subset_data = current_group_dataframe[start_timestamp_available_in_df:end_timestamp_available_in_df]
 
-
+            # for calculating the bins for the time lags for each group
+            current_blinks_async_250ms_bins = {-1500: 0, -1250: 0, -1000: 0, -750: 0, -500: 0, -250: 0,
+                                               0: 0, 250: 0, 500: 0, 750: 0, 1000: 0, 1250: 0}
             # TODO: add to this valid subset data info about the sync blinks; see notebook for more notes
             if group_size == 2:
                 collisions_dyad = (group_data.group_features_csv_loader.get_blink_onset_collisions
                                    (valid_subset_data['P1_valid_blink_onsets'].tolist(),valid_subset_data['P2_valid_blink_onsets'].tolist(),
                                     valid_subset_data.index.tolist(), "P1", "P2"))
                 group_collisions = [collisions_dyad]
+
+            #   calculate the time lag bins for the synced blinks:
+                for collision in collisions_dyad.collisions:
+                    bin_timelag = collision.delta_ms/250
+                    if bin_timelag<0:
+                        bin_multiplier = int(bin_timelag-1)
+                    else:
+                        bin_multiplier = int(bin_timelag)
+                    if bin_multiplier == 6: bin_multiplier = 5 #this is the upper bound of the 1250 to 1500 bin
+                    if bin_multiplier == -7: bin_multiplier = -6 #this is the lower bound of the -1500 to -1250 bin
+                    index = bin_multiplier*250
+                    current_blinks_async_250ms_bins[index] += 1
+
             else:
                 collisions_triad_P1P2 = (group_data.group_features_csv_loader.get_blink_onset_collisions
                                    (valid_subset_data['P1_valid_blink_onsets'].tolist(),
@@ -134,10 +162,25 @@ class BlinkStats:
                                     valid_subset_data.index.tolist(), "P3", "P2"))
                 group_collisions = [collisions_triad_P1P2, collisions_triad_P1P3, collisions_triad_P3P2]
 
+                #calculate the time lag bins for the synced blinks:
+                for collisions_data in group_collisions:
+                    for collision in collisions_data.collisions:
+                        bin_timelag = collision.delta_ms / 250
+                        if bin_timelag < 0:
+                            bin_multiplier = int(bin_timelag - 1)
+                        else:
+                            bin_multiplier = int(bin_timelag)
+                        if bin_multiplier == 6: bin_multiplier = 5  # this is the upper bound of the 1250 to 1500 bin
+                        if bin_multiplier == -7: bin_multiplier = -6  # this is the lower bound of the -1500 to -1250 bin
+                        index = bin_multiplier * 250
+                        current_blinks_async_250ms_bins[index] += 1
+
+                # dividing by 3 the value for each bin as each triad has 3 couples, and the bink sync has been calculated per couple
+                current_blinks_async_250ms_bins.update((bin_timelag, value/3) for bin_timelag, value in current_blinks_async_250ms_bins.items())
 
             # put all the info into a dictionary and then add it to a list
             d = {'group_name': row['Group'], 'group_size': group_size, 'group_blink_collisions': group_collisions,
-                 'blinks_dataframe': valid_subset_data}
+                 'blinks_async_250ms_bins':current_blinks_async_250ms_bins, 'blinks_dataframe': valid_subset_data}
 
             # append the dataframe to the list of all the groups.
             self.groups_blinks_with_timestamps.append(d)
@@ -190,7 +233,7 @@ class BlinkStats:
         for group in self.groups_blinks_with_timestamps:
             if group['group_size'] == 2:
                 total_async_ms = 0
-                collisions = group['group_blink_collisions'][0].collisions #this is a list of BlinkCollition
+                collisions = group['group_blink_collisions'][0].collisions # this is a list of BlinkCollision
 
                 for collision in collisions:
                     total_async_ms = total_async_ms + abs(collision.delta_ms)
@@ -200,19 +243,20 @@ class BlinkStats:
                 # create the df for the current dyad
                 avg_blinks_async_ms = pd.DataFrame(
                     {'group_name': group['group_name'], 'group_size': group['group_size'],
-                     'count_sync_blinks': len(collisions), 'avg_blinks_async_ms': avg_async_ms},
-                    index=[0])
+                     'count_sync_blinks': len(collisions), 'avg_blinks_async_ms': avg_async_ms}, index=[0])
 
                 # add the blink info to a dataframe
                 self.groups_avg_blinks_async_ms = pd.concat(
                     [self.groups_avg_blinks_async_ms, avg_blinks_async_ms], ignore_index=True)
             else:
                 sum_values = {'total_sync_blinks':0, 'total_avg_blinks_async_ms':0}
+
                 for collisions_data in group['group_blink_collisions']:
                     # now this is for one couple within the triad (3 couples in total)
                     total_async_ms = 0
                     for collision in collisions_data.collisions:
                         total_async_ms = total_async_ms + abs(collision.delta_ms)
+
 
                     avg_async_ms = total_async_ms/len(collisions_data.collisions)
                     # add this to the dictionary sum; this will be divided by 3 later on
@@ -227,10 +271,31 @@ class BlinkStats:
                 # add it now to the df
                 self.groups_avg_blinks_async_ms = pd.concat(
                     [self.groups_avg_blinks_async_ms, avg_blinks_async_ms], ignore_index=True)
-    #
 
 
 
+    def calculate_blink_asynchrony_ms_per_time_windows(self):
+        # df for dyads 'blinks_async_250ms_bins'
+        dyads_async_250ms_bins = pd.DataFrame(columns=[-1500, -1250, -1000, -750, -500, -250, 0, 250, 500, 750, 1000, 1250])
+        # df for triads
+        triads_async_250ms_bins = pd.DataFrame(columns=[-1500, -1250, -1000, -750, -500, -250, 0, 250, 500, 750, 1000, 1250])
+
+
+        for group in self.groups_blinks_with_timestamps:
+            if group['group_size'] == 2:
+                current_async_dict = group['blinks_async_250ms_bins']
+                current_async_df = pd.DataFrame([current_async_dict])
+                dyads_async_250ms_bins = pd.concat([dyads_async_250ms_bins, current_async_df], ignore_index=True)
+            else:
+                current_async_dict = group['blinks_async_250ms_bins']
+                current_async_df = pd.DataFrame([current_async_dict])
+                triads_async_250ms_bins = pd.concat([triads_async_250ms_bins, current_async_df], ignore_index=True)
+
+        # plot the data
+        #plt.boxplot(dyads_async_250ms_bins, tick_labels=dyads_async_250ms_bins.columns.values.tolist())
+        plt.boxplot(triads_async_250ms_bins, tick_labels=triads_async_250ms_bins.columns.values.tolist())
+
+        plt.show()
 
     def calculate_synced_blinks_percent_from_all_blinks(self):
         for group in self.groups_blinks_with_timestamps:
@@ -313,6 +378,7 @@ class BlinkStats:
             self.groups_blink_rate = pd.concat([self.groups_blink_rate, temp_df], ignore_index=True)
         return
 
+
     def get_groups_blinks_data(self):
         return self.groups_blinks_with_timestamps
 
@@ -353,8 +419,9 @@ if __name__ == "__main__":
     # synced_blinks_percent = blink_stats_subsets.get_group_synced_blink_percent()
 
     # get avg blinks async time in ms for each group
-    avg_blinks_async_ms = blink_stats_subsets.get_group_avg_blinks_async_ms()
+    # avg_blinks_async_ms = blink_stats_subsets.get_group_avg_blinks_async_ms()
 
+    blink_stats_subsets.calculate_blink_asynchrony_ms_per_time_windows()
 
     # groups_list_dyads = ["DYAD_2024_06_14_Seminar_Wue_Session_3_Group_5_TS", "DYAD_2024_06_14_Seminar_Wue_Session_1_Group_2_TS",
     #                      "DYAD_2024_05_07_Seminar_Wue_Session_2_Group_1_TS", "DYAD_2023_12_19_Seminar_Wue_Session_4_Group_5_TS",
@@ -378,10 +445,10 @@ if __name__ == "__main__":
     # blink_rates_triads = blink_stats_triads.get_groups_blink_rate()
     # print(blink_rates_triads)
 
-
-    blinks_file_path = blink_stats_subsets.data_folder_path + 'blinks_rates_all_groups.csv'
-    blink_rates_file = open(blinks_file_path, 'a')
-
-    # blink_rates_file.write(blink_rates_subsets.to_string())
-    blink_rates_file.write(avg_blinks_async_ms.to_string())
-    blink_rates_file.close()
+    # add the data to file
+    # blinks_file_path = blink_stats_subsets.data_folder_path + 'blinks_rates_all_groups.csv'
+    # blink_rates_file = open(blinks_file_path, 'a')
+    #
+    # # blink_rates_file.write(blink_rates_subsets.to_string())
+    # blink_rates_file.write(avg_blinks_async_ms.to_string())
+    # blink_rates_file.close()
