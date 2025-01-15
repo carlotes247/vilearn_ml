@@ -1,7 +1,10 @@
 import datetime
+import statistics
+
 import pandas as pd
 from data_reading.groups_manager import GroupsManager
 import matplotlib.pyplot as plt
+import json
 
 class BlinkStats:
 
@@ -147,6 +150,11 @@ class BlinkStats:
                     index = bin_multiplier*250
                     current_blinks_async_250ms_bins[index] += 1
 
+                #this updates the blinks per 250ms bin to create a rathe of the blinks per minute; this is done by dividing the value in each bin to the len of the interaction in that group
+                total_minutes_within_the_timespan = (end_timestamp_available_in_df - start_timestamp_available_in_df).total_seconds() / 60
+                current_blinks_async_250ms_bins.update(
+                    (bin_timelag, value / total_minutes_within_the_timespan) for bin_timelag, value in current_blinks_async_250ms_bins.items())
+
             else:
                 collisions_triad_P1P2 = (group_data.group_features_csv_loader.get_blink_onset_collisions
                                    (valid_subset_data['P1_valid_blink_onsets'].tolist(),
@@ -175,8 +183,13 @@ class BlinkStats:
                         index = bin_multiplier * 250
                         current_blinks_async_250ms_bins[index] += 1
 
-                # dividing by 3 the value for each bin as each triad has 3 couples, and the bink sync has been calculated per couple
-                current_blinks_async_250ms_bins.update((bin_timelag, value/3) for bin_timelag, value in current_blinks_async_250ms_bins.items())
+                # dividing by 3 the value for each bin as each triad has 3 couples, and the blink sync has been calculated per couple
+                # current_blinks_async_250ms_bins.update((bin_timelag, value/3) for bin_timelag, value in current_blinks_async_250ms_bins.items())
+
+                #this updates the blinks per 250ms bin to create a rather of the blinks per minute; this is done by dividing the value in each bin to the len of the interaction in that group
+                total_minutes_within_the_timespan = (end_timestamp_available_in_df - start_timestamp_available_in_df).total_seconds() / 60
+                current_blinks_async_250ms_bins.update(
+                    (bin_timelag, value / total_minutes_within_the_timespan) for bin_timelag, value in current_blinks_async_250ms_bins.items())
 
             # put all the info into a dictionary and then add it to a list
             d = {'group_name': row['Group'], 'group_size': group_size, 'group_blink_collisions': group_collisions,
@@ -280,7 +293,6 @@ class BlinkStats:
         # df for triads
         triads_async_250ms_bins = pd.DataFrame(columns=[-1500, -1250, -1000, -750, -500, -250, 0, 250, 500, 750, 1000, 1250])
 
-
         for group in self.groups_blinks_with_timestamps:
             if group['group_size'] == 2:
                 current_async_dict = group['blinks_async_250ms_bins']
@@ -291,10 +303,36 @@ class BlinkStats:
                 current_async_df = pd.DataFrame([current_async_dict])
                 triads_async_250ms_bins = pd.concat([triads_async_250ms_bins, current_async_df], ignore_index=True)
 
-        # plot the data
-        #plt.boxplot(dyads_async_250ms_bins, tick_labels=dyads_async_250ms_bins.columns.values.tolist())
-        plt.boxplot(triads_async_250ms_bins, tick_labels=triads_async_250ms_bins.columns.values.tolist())
+        # calculate the chance level of blinks happening in that time bin
+        # and get the mean for each time bin
+        mean_async_vals_per_250ms_bins = pd.DataFrame()
+        dyads_median = 0
+        triads_median = 0
+        for column in dyads_async_250ms_bins.columns.tolist():
+            dyads_median += statistics.median(dyads_async_250ms_bins[column].tolist())
+            triads_median += statistics.median(triads_async_250ms_bins[column].tolist())
 
+            mean_async_vals_per_250ms_bins.loc['dyads', column] = statistics.mean(dyads_async_250ms_bins[column].tolist())
+            mean_async_vals_per_250ms_bins.loc['triads', column] = statistics.mean(triads_async_250ms_bins[column].tolist())
+
+        # dividing the median by the number of bin (12)
+        chance_level_dyads = dyads_median/12
+        chance_level_triads = triads_median/12
+
+
+        # plot the boxplots and the mean graph
+        fig, (dyads_plot, triads_plot) = plt.subplots(2, 1)
+        dyads_plot.boxplot(dyads_async_250ms_bins, tick_labels=dyads_async_250ms_bins.columns.values.tolist())
+        dyads_plot.axhline(y=chance_level_dyads, color='r', linestyle='-')
+
+        triads_plot.boxplot(triads_async_250ms_bins, tick_labels=triads_async_250ms_bins.columns.values.tolist())
+        triads_plot.axhline(y=chance_level_triads, color='r', linestyle='-')
+
+        fig_mean, ax_mean = plt.subplots()
+        # ax_mean.set_xticks(dyads_async_250ms_bins.columns.tolist())
+        ax_mean.plot(dyads_async_250ms_bins.columns.tolist(), mean_async_vals_per_250ms_bins.loc['dyads'].values, color='b', label='Dyads')
+        ax_mean.plot(triads_async_250ms_bins.columns.tolist(),mean_async_vals_per_250ms_bins.loc['triads'].values, color='g', label='Triads')
+        ax_mean.set_xticks(dyads_async_250ms_bins.columns.tolist())
         plt.show()
 
     def calculate_synced_blinks_percent_from_all_blinks(self):
@@ -349,8 +387,6 @@ class BlinkStats:
                 self.group_synced_blinks_percent = pd.concat(
                     [self.group_synced_blinks_percent, synced_blinks_group_info], ignore_index=True)
 
-
-
     def calculate_blink_rate(self):
         for group in self.groups_blinks_with_timestamps:
             # calculate here the self.groups_blink_rate
@@ -393,7 +429,6 @@ class BlinkStats:
         if self.group_synced_blinks_percent.empty:
             self.calculate_synced_blinks_percent_from_all_blinks()
             return self.group_synced_blinks_percent
-            print ('donre')
         else:
             return self.group_synced_blinks_percent
 
@@ -404,12 +439,23 @@ class BlinkStats:
         else:
             return self.groups_avg_blinks_async_ms
 
+    #trying to print to file so it can easily be read afterwards. but the data is a list of dicts, and the dicts also have a df. so I'm not sure if this is the best way to save to file. perhaps the structures should be changed and then reconsider how to save to file
+    def write_group_data_to_csv(self, filename_to_dump_group_data):
+        file = open(filename_to_dump_group_data, 'w+')
+        for group_data_dict in self.groups_blinks_with_timestamps:
+            file.write(json.dumps(group_data_dict))
+
+    def read_group_data_from_csv(self, filename_to_dump_group_data):
+        file = open(filename_to_dump_group_data, 'r')
+
+
 
 
 # testing below to see if it works
 if __name__ == "__main__":
 
-    group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
+    # group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
+    group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
     blink_stats_subsets = BlinkStats(group_names_filename=group_data_time_subset_filename)
     # get blinks rate
     # blink_rates_subsets = blink_stats_subsets.get_groups_blink_rate()
