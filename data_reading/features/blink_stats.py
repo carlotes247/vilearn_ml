@@ -2,6 +2,8 @@ import datetime
 import statistics
 
 import pandas as pd
+from scipy import stats
+
 from data_reading.groups_manager import GroupsManager
 import matplotlib.pyplot as plt
 import json
@@ -293,6 +295,7 @@ class BlinkStats:
         # df for triads
         triads_async_250ms_bins = pd.DataFrame(columns=[-1500, -1250, -1000, -750, -500, -250, 0, 250, 500, 750, 1000, 1250])
 
+        # populate the df dyads_async_250ms_bins and df triads_async_250ms_bins from each group dict
         for group in self.groups_blinks_with_timestamps:
             if group['group_size'] == 2:
                 current_async_dict = group['blinks_async_250ms_bins']
@@ -311,28 +314,58 @@ class BlinkStats:
         for column in dyads_async_250ms_bins.columns.tolist():
             dyads_median += statistics.median(dyads_async_250ms_bins[column].tolist())
             triads_median += statistics.median(triads_async_250ms_bins[column].tolist())
-
             mean_async_vals_per_250ms_bins.loc['dyads', column] = statistics.mean(dyads_async_250ms_bins[column].tolist())
             mean_async_vals_per_250ms_bins.loc['triads', column] = statistics.mean(triads_async_250ms_bins[column].tolist())
 
-        # dividing the median by the number of bin (12)
+        # dividing the median by the number of bin (12) to calculate the chance level
         chance_level_dyads = dyads_median/12
         chance_level_triads = triads_median/12
 
+        # do the on-sample-t-test and save the result in a df, along with the corresponding *s
+        for column in dyads_async_250ms_bins.columns.tolist():
+            dyads_p_value = stats.ttest_1samp(dyads_async_250ms_bins[column].tolist(),
+                                              popmean=chance_level_dyads, alternative='greater').pvalue
+            mean_async_vals_per_250ms_bins.loc['dyads_1sampleTtest', column] = dyads_p_value
+            mean_async_vals_per_250ms_bins.loc['dyads_1sampleTtest_stars', column] = self.get_stars_for_p_value(dyads_p_value)
 
-        # plot the boxplots and the mean graph
+            triads_p_value = stats.ttest_1samp(triads_async_250ms_bins[column].tolist(),
+                                               popmean=chance_level_triads, alternative='greater').pvalue
+            mean_async_vals_per_250ms_bins.loc['triads_1sampleTtest', column] = triads_p_value
+            mean_async_vals_per_250ms_bins.loc['triads_1sampleTtest_stars', column] = self.get_stars_for_p_value(triads_p_value)
+
+        # plot the boxplots for dyads and triads
         fig, (dyads_plot, triads_plot) = plt.subplots(2, 1)
         dyads_plot.boxplot(dyads_async_250ms_bins, tick_labels=dyads_async_250ms_bins.columns.values.tolist())
         dyads_plot.axhline(y=chance_level_dyads, color='r', linestyle='-')
+        y_upper_limit = dyads_async_250ms_bins.max() + 1
+        dyads_plot.set_ylim(0, y_upper_limit.max())#increasing the y axis a bit so that the * would fit
+
+        #add the stars above the max value in the list
+        for column in dyads_async_250ms_bins.columns.tolist():
+            # ax.text requires x,y and the text; x values for boxplots works as an index of the boxplot itself, not the value that exists of the x axis. hence the first boxplot is at index 1, second index 2 and so on
+            dyads_plot.text(dyads_async_250ms_bins.columns.tolist().index(column) + 1,
+                            max(dyads_async_250ms_bins[column])+0.25,
+                            mean_async_vals_per_250ms_bins.loc['dyads_1sampleTtest_stars', column],
+                            horizontalalignment='center')
 
         triads_plot.boxplot(triads_async_250ms_bins, tick_labels=triads_async_250ms_bins.columns.values.tolist())
         triads_plot.axhline(y=chance_level_triads, color='r', linestyle='-')
+        y_upper_limit = triads_async_250ms_bins.max() + 1
+        triads_plot.set_ylim(0, y_upper_limit.max())#increasing the y axis a bit so that the * would fit
+        # add the stars above the max value in the list
+        for column in triads_async_250ms_bins.columns.tolist():
+            triads_plot.text(triads_async_250ms_bins.columns.tolist().index(column) + 1,
+                             max(triads_async_250ms_bins[column])+0.25,
+                             mean_async_vals_per_250ms_bins.loc['triads_1sampleTtest_stars', column],
+                             horizontalalignment='center')
 
+        #create new fig for the line graph with the means
         fig_mean, ax_mean = plt.subplots()
         # ax_mean.set_xticks(dyads_async_250ms_bins.columns.tolist())
         ax_mean.plot(dyads_async_250ms_bins.columns.tolist(), mean_async_vals_per_250ms_bins.loc['dyads'].values, color='b', label='Dyads')
-        ax_mean.plot(triads_async_250ms_bins.columns.tolist(),mean_async_vals_per_250ms_bins.loc['triads'].values, color='g', label='Triads')
+        ax_mean.plot(triads_async_250ms_bins.columns.tolist(), mean_async_vals_per_250ms_bins.loc['triads'].values, color='g', label='Triads')
         ax_mean.set_xticks(dyads_async_250ms_bins.columns.tolist())
+
         plt.show()
 
     def calculate_synced_blinks_percent_from_all_blinks(self):
@@ -439,6 +472,21 @@ class BlinkStats:
         else:
             return self.groups_avg_blinks_async_ms
 
+
+    #determine the number of stars based on the p value. Not sure if it's an automated way to do this, but this should do for now
+    def get_stars_for_p_value(self, p_value: float):
+        if p_value is not None:
+            if p_value < 0.0001:
+                return '****'
+            elif p_value < 0.001:
+                return '***'
+            elif p_value < 0.01:
+                return '**'
+            elif p_value < 0.05:
+                return '*'
+            else:
+                return ' '
+
     #trying to print to file so it can easily be read afterwards. but the data is a list of dicts, and the dicts also have a df. so I'm not sure if this is the best way to save to file. perhaps the structures should be changed and then reconsider how to save to file
     def write_group_data_to_csv(self, filename_to_dump_group_data):
         file = open(filename_to_dump_group_data, 'w+')
@@ -447,6 +495,8 @@ class BlinkStats:
 
     def read_group_data_from_csv(self, filename_to_dump_group_data):
         file = open(filename_to_dump_group_data, 'r')
+
+
 
 
 
