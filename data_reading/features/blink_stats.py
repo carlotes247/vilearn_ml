@@ -18,6 +18,7 @@ class BlinkStats:
     # 'blinks_async_250ms_bins', dict with the keys: -1500, -1250, -1000, -750, -500, -250, 0, 250, 500, 750, 1000, 1250
     #              and the value an int for the number of synced blinks with that time lag between blinks onset. The keys represent
     #              the lower bound, the upper bound of that bin is calculated by adding 250ms.
+    # 'blinks_durations_ms', dict with keys: 1,2,3 based on the group size; the value is a list of floats representing   each blink in ms;
     # 'blinks_dataframe': index: timestamp, columns (bool): 'P{1, 2, or 3}_valid_blink_onsets', 'P{1, 2, or 3}_valid_blinks'
     groups_blinks_with_timestamps: list[dict]
 
@@ -79,6 +80,8 @@ class BlinkStats:
                                               print_blink_stats=False)
             group_data = my_groups_manager.groups[0]
             valid_blinks, valid_blink_onsets = group_data.group_features_csv_loader.extract_valid_blinks_frames()
+
+            current_blinks_durations_ms = dict(group_data.group_features_csv_loader.get_blinks_durations_per_participants())
 
             timestamps_string = group_data.group_features_csv_loader.raw_data['TSGroupNTP']
             timestamps = pd.to_datetime(timestamps_string, utc=True, format='%Y-%m-%d %H:%M:%S.%f')
@@ -195,7 +198,8 @@ class BlinkStats:
 
             # put all the info into a dictionary and then add it to a list
             d = {'group_name': row['Group'], 'group_size': group_size, 'group_blink_collisions': group_collisions,
-                 'blinks_async_250ms_bins':current_blinks_async_250ms_bins, 'blinks_dataframe': valid_subset_data}
+                 'blinks_async_250ms_bins':current_blinks_async_250ms_bins, 'blinks_dataframe': valid_subset_data,
+                 'blinks_durations_ms':current_blinks_durations_ms}
 
             # append the dataframe to the list of all the groups.
             self.groups_blinks_with_timestamps.append(d)
@@ -447,6 +451,36 @@ class BlinkStats:
             self.groups_blink_rate = pd.concat([self.groups_blink_rate, temp_df], ignore_index=True)
         return
 
+    #returns: group name, group size, P1_avg blink duration in ms, P2_avg ..., P3_avg..., group_avg_blink duration_ms,
+    def get_groups_blink_duration(self):
+        group_blink_duration_df = pd.DataFrame(columns=['group_name', 'group_size', 'P1_mean_blink_duration_ms',
+                                        'P2_mean_blink_duration_ms', 'P3_mean_blink_duration_ms','group_mean_blink_duration_ms'])
+        participants_avg_durations = [-1.0, -1.0, -1.0]
+
+        for group in self.groups_blinks_with_timestamps:
+            for participant_index in range(group["group_size"]):
+                participants_avg_durations[participant_index] = statistics.fmean(group['blinks_durations_ms'][participant_index])
+
+            if group['group_size'] == 2:
+                d = pd.DataFrame({'group_name':group['group_name'], 'group_size':group['group_size'],
+                                  'P1_mean_blink_duration_ms': participants_avg_durations[0],
+                                  'P2_mean_blink_duration_ms': participants_avg_durations[1],
+                                  'group_mean_blink_duration_ms':(participants_avg_durations[0] +
+                                                                  participants_avg_durations[1])/2}, index=[0])
+            else:
+                d = pd.DataFrame({'group_name': group['group_name'], 'group_size': group['group_size'],
+                                  'P1_mean_blink_duration_ms': participants_avg_durations[0],
+                                  'P2_mean_blink_duration_ms': participants_avg_durations[1],
+                                  'P3_mean_blink_duration_ms': participants_avg_durations[2],
+                                  'group_mean_blink_duration_ms': (participants_avg_durations[0] +
+                                                                   participants_avg_durations[1] +
+                                                                   participants_avg_durations[2]) / 3}, index=[0])
+            group_blink_duration_df = pd.concat([group_blink_duration_df, d], ignore_index=True)
+
+        return group_blink_duration_df
+
+
+
 
     def get_groups_blinks_data(self):
         return self.groups_blinks_with_timestamps
@@ -507,17 +541,42 @@ if __name__ == "__main__":
     # group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
     group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
     blink_stats_subsets = BlinkStats(group_names_filename=group_data_time_subset_filename)
-    # get blinks rate
-    # blink_rates_subsets = blink_stats_subsets.get_groups_blink_rate()
-    # print(blink_rates_subsets)
+
+    # # get blinks rate
+    # blink_rates_df = blink_stats_subsets.get_groups_blink_rate()
+    # # add blink RATES data to file
+    # blink_rates_file_path = blink_stats_subsets.data_folder_path + 'blink_rates_all_groups.csv'
+    # blink_rates_file = open(blink_rates_file_path, 'a')
+    # blink_rates_file.write(blink_rates_df.to_string())
+    # blink_rates_file.close()
+    #
+    #
+    # # get blinks duration
+    # blink_durations_df = blink_stats_subsets.get_groups_blink_duration()
+    # # add blink DURATIONS data to file
+    # blinks_durations_file_path = blink_stats_subsets.data_folder_path + 'blink_durations_all_groups.csv'
+    # blink_durations_file = open(blinks_durations_file_path, 'a')
+    # blink_durations_file.write(blink_durations_df.to_string())
+    # blink_durations_file.close()
+
+
 
     # get blinks sync percent
-    # synced_blinks_percent = blink_stats_subsets.get_group_synced_blink_percent()
+    synced_blinks_percent = blink_stats_subsets.get_group_synced_blink_percent()
+    synced_blinks_percent_file_path = blink_stats_subsets.data_folder_path + 'synced_blinks_percent_all_groups.csv'
+    synced_blinks_percent_file = open(synced_blinks_percent_file_path, 'a')
+    synced_blinks_percent_file.write(synced_blinks_percent.to_string())
+    synced_blinks_percent_file.close()
 
     # get avg blinks async time in ms for each group
-    # avg_blinks_async_ms = blink_stats_subsets.get_group_avg_blinks_async_ms()
+    avg_blinks_async_ms = blink_stats_subsets.get_group_avg_blinks_async_ms()
+    avg_blinks_async_ms_file_path = blink_stats_subsets.data_folder_path + 'avg_blinks_async_ms_all_groups.csv'
+    avg_blinks_async_ms_file = open(avg_blinks_async_ms_file_path, 'a')
+    avg_blinks_async_ms_file.write(avg_blinks_async_ms.to_string())
+    avg_blinks_async_ms_file.close()
 
-    blink_stats_subsets.calculate_blink_asynchrony_ms_per_time_windows()
+
+    # blink_stats_subsets.calculate_blink_asynchrony_ms_per_time_windows()
 
     # groups_list_dyads = ["DYAD_2024_06_14_Seminar_Wue_Session_3_Group_5_TS", "DYAD_2024_06_14_Seminar_Wue_Session_1_Group_2_TS",
     #                      "DYAD_2024_05_07_Seminar_Wue_Session_2_Group_1_TS", "DYAD_2023_12_19_Seminar_Wue_Session_4_Group_5_TS",
@@ -541,10 +600,7 @@ if __name__ == "__main__":
     # blink_rates_triads = blink_stats_triads.get_groups_blink_rate()
     # print(blink_rates_triads)
 
-    # add the data to file
-    # blinks_file_path = blink_stats_subsets.data_folder_path + 'blinks_rates_all_groups.csv'
-    # blink_rates_file = open(blinks_file_path, 'a')
-    #
-    # # blink_rates_file.write(blink_rates_subsets.to_string())
+
+
     # blink_rates_file.write(avg_blinks_async_ms.to_string())
-    # blink_rates_file.close()
+

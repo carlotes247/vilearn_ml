@@ -23,6 +23,10 @@ class GroupCSVDataLoader:
     group_name: str
     fileLoaded: bool
 
+    # blinks_durations_per_participants: dict
+    blinks_durations_per_participants: {}
+
+
 #endregion
 
 #region Constructor
@@ -79,7 +83,8 @@ class GroupCSVDataLoader:
             prior_blink_happenned: dict[int, bool] = dict()
             blinks_participants: dict[int, list[bool]] = dict()
             blinks_onsets_participants: dict[int, list[bool]] = dict()
-            blinks_indexes_window: dict[int, list[int]] = dict()            
+            blinks_indexes_window: dict[int, list[int]] = dict()
+            current_blinks_durations_participants: dict[int, list[float]] = dict()
             # init blink lists            
             for p_index in range(num_participants):
                 prior_blink_happenned[p_index] = False
@@ -88,6 +93,7 @@ class GroupCSVDataLoader:
                 blinks_participants[p_index] = blinks_list
                 blinks_onsets_participants[p_index] = blinks_onsets_list
                 blinks_indexes_window[p_index] = []
+                current_blinks_durations_participants[p_index] = []
             # Row by row
             for index_row, row in self.raw_data.iterrows():
                 # Participant per row
@@ -125,9 +131,12 @@ class GroupCSVDataLoader:
                             blinks_onsets_participants[p_index][first_blink_index] = False
                             for blink_index in blinks_indexes_window[p_index]:                                
                                 blinks_participants[p_index][blink_index] = False
+                        else:
+                            current_blinks_durations_participants[p_index].append(length_blink_ms)
                         # Regardless of validity we clear window to find a new set of blinks ahead in the data
                         blinks_indexes_window[p_index].clear()  
                         prior_blink_happenned[p_index] = False
+            self.blinks_durations_per_participants = current_blinks_durations_participants
             # Return final list of valid blinks once all rows are computed
             return blinks_participants, blinks_onsets_participants
         else:
@@ -207,5 +216,13 @@ class GroupCSVDataLoader:
                     if (not hit.empty):
                         hits.add_collision(onset_TS, hit.name, delta_hit * 1000)                       
             # Return a datastructure that tells us (1) which is ref-adv, (2) TS for ref-adv, (3) distance in ms
-            return hits                
+            return hits
+
+    def get_blinks_durations_per_participants(self):
+        if not self.blinks_durations_per_participants: #if the dict is empty, get the dict populated
+            x,y = self.extract_valid_blinks_frames()
+            return self.blinks_durations_per_participants
+        else:
+            return self.blinks_durations_per_participants
+
 #endregion

@@ -1,0 +1,26 @@
+group_name group_size  P1_mean_blink_duration_ms  P2_mean_blink_duration_ms  P3_mean_blink_duration_ms  group_mean_blink_duration_ms
+0    DYAD_2023_11_06_Seminar_Munich_Session_1_Group_1_TS          2                 155.283019                 175.886650                        NaN                    165.584834
+1    DYAD_2023_11_06_Seminar_Munich_Session_2_Group_1_TS          2                 218.367521                 259.644836                        NaN                    239.006179
+2       DYAD_2023_12_19_Seminar_Wue_Session_2_Group_2_TS          2                 204.753807                 162.682692                        NaN                    183.718250
+3       DYAD_2023_12_19_Seminar_Wue_Session_2_Group_4_TS          2                 155.450980                 176.070330                        NaN                    165.760655
+4       DYAD_2023_12_19_Seminar_Wue_Session_4_Group_1_TS          2                 241.208955                 190.612994                        NaN                    215.910975
+5       DYAD_2023_12_19_Seminar_Wue_Session_4_Group_2_TS          2                 210.859060                 185.061275                        NaN                    197.960167
+6       DYAD_2023_12_19_Seminar_Wue_Session_4_Group_5_TS          2                 193.806202                 155.073276                        NaN                    174.439739
+7       DYAD_2024_05_07_Seminar_Wue_Session_2_Group_1_TS          2                 158.790974                 193.030303                        NaN                    175.910638
+8       DYAD_2024_06_14_Seminar_Wue_Session_1_Group_2_TS          2                 159.345679                 186.157534                        NaN                    172.751607
+9       DYAD_2024_06_14_Seminar_Wue_Session_3_Group_5_TS          2                 233.864964                 190.471910                        NaN                    212.168437
+10      DYAD_2024_11_04_Seminar_Mun_Session_1_Group_2_TS          2                 162.877193                 201.666667                        NaN                    182.271930
+11  TRIAD_2023_10_23_Seminar_Munich_Session_1_Group_1_TS          3                 192.619883                 153.519520                 166.052301                    170.730568
+12     TRIAD_2023_12_19_Seminar_Wue_Session_2_Group_1_TS          3                 140.052885                 175.771978                 235.840909                    183.888591
+13     TRIAD_2023_12_19_Seminar_Wue_Session_3_Group_1_TS          3                 125.678571                 171.883562                 172.368243                    156.643459
+14     TRIAD_2024_05_07_Seminar_Wue_Session_2_Group_2_TS          3                 197.773333                 165.452174                 156.272011                    173.165839
+15     TRIAD_2024_05_07_Seminar_Wue_Session_2_Group_4_TS          3                 148.419355                 213.963964                 182.364548                    181.582622
+16     TRIAD_2024_06_14_Seminar_Wue_Session_2_Group_1_TS          3                 133.942857                 253.128205                 166.393939                    184.488334
+17     TRIAD_2024_06_14_Seminar_Wue_Session_3_Group_1_TS          3                 206.780220                 174.053846                 162.858696                    181.230921
+18     TRIAD_2024_06_14_Seminar_Wue_Session_3_Group_2_TS          3                 170.885965                 240.303644                 178.344828                    196.511479
+19                TRIAD_2023_10_30_Seminar_Munich_No_VAD          3                 190.143678                 176.796748                 193.951327                    186.963918
+20     TRIAD_2024_05_07_Seminar_Wue_Session_1_Group_4_TS          3                 149.029412                 165.265152                 226.719780                    180.338114
+21     TRIAD_2024_05_07_Seminar_Wue_Session_1_Group_2_TS          3                 179.045455                 181.137931                 153.971831                    171.385072
+22     TRIAD_2024_11_04_Seminar_Mun_Session_1_Group_1_TS          3                 155.252137                 194.527950                 173.758772                    174.512953
+23     TRIAD_2024_11_11_Seminar_Mun_Session_1_Group_1_TS          3                 190.340136                 168.399194                 227.647887                    195.462406
+24     TRIAD_2024_11_18_Seminar_Mun_Session_1_Group_1_TS          3                 150.797015                 156.904977                 177.014218                    161.572070
