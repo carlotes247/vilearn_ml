@@ -292,7 +292,7 @@ class BlinkStats:
                     [self.groups_avg_blinks_async_ms, avg_blinks_async_ms], ignore_index=True)
 
 
-
+    #returns the dataframes: mean_async_vals_per_250ms_bins (containing mean vals for dyads, triads, the result of dyads_1sampleTtest and the stars for the rest (dyads_1sampleTtest_stars)
     def calculate_blink_asynchrony_ms_per_time_windows(self):
         # df for dyads 'blinks_async_250ms_bins'
         dyads_async_250ms_bins = pd.DataFrame(columns=[-1500, -1250, -1000, -750, -500, -250, 0, 250, 500, 750, 1000, 1250])
@@ -371,6 +371,7 @@ class BlinkStats:
         ax_mean.set_xticks(dyads_async_250ms_bins.columns.tolist())
 
         plt.show()
+        return mean_async_vals_per_250ms_bins, dyads_async_250ms_bins, triads_async_250ms_bins
 
     def calculate_synced_blinks_percent_from_all_blinks(self):
         for group in self.groups_blinks_with_timestamps:
@@ -562,21 +563,26 @@ if __name__ == "__main__":
 
 
     # get blinks sync percent
-    synced_blinks_percent = blink_stats_subsets.get_group_synced_blink_percent()
-    synced_blinks_percent_file_path = blink_stats_subsets.data_folder_path + 'synced_blinks_percent_all_groups.csv'
-    synced_blinks_percent_file = open(synced_blinks_percent_file_path, 'a')
-    synced_blinks_percent_file.write(synced_blinks_percent.to_string())
-    synced_blinks_percent_file.close()
+    # synced_blinks_percent = blink_stats_subsets.get_group_synced_blink_percent()
+    # synced_blinks_percent_file_path = blink_stats_subsets.data_folder_path + 'synced_blinks_percent_all_groups.csv'
+    # synced_blinks_percent_file = open(synced_blinks_percent_file_path, 'a')
+    # synced_blinks_percent_file.write(synced_blinks_percent.to_string())
+    # synced_blinks_percent_file.close()
 
     # get avg blinks async time in ms for each group
-    avg_blinks_async_ms = blink_stats_subsets.get_group_avg_blinks_async_ms()
-    avg_blinks_async_ms_file_path = blink_stats_subsets.data_folder_path + 'avg_blinks_async_ms_all_groups.csv'
-    avg_blinks_async_ms_file = open(avg_blinks_async_ms_file_path, 'a')
-    avg_blinks_async_ms_file.write(avg_blinks_async_ms.to_string())
-    avg_blinks_async_ms_file.close()
+    # avg_blinks_async_ms = blink_stats_subsets.get_group_avg_blinks_async_ms()
+    # avg_blinks_async_ms_file_path = blink_stats_subsets.data_folder_path + 'avg_blinks_async_ms_all_groups.csv'
+    # avg_blinks_async_ms_file = open(avg_blinks_async_ms_file_path, 'a')
+    # avg_blinks_async_ms_file.write(avg_blinks_async_ms.to_string())
+    # avg_blinks_async_ms_file.close()
 
-
-    # blink_stats_subsets.calculate_blink_asynchrony_ms_per_time_windows()
+    dyads_ms_per_time_window_df, triads_ms_per_time_window_df, mean_vals_ms_per_time_window_df = blink_stats_subsets.calculate_blink_asynchrony_ms_per_time_windows()
+    async_time_window_ms_file_path = blink_stats_subsets.data_folder_path + 'async_time_window_ms_file_path.csv'
+    async_time_window_ms_file = open(async_time_window_ms_file_path, 'a')
+    async_time_window_ms_file.write(dyads_ms_per_time_window_df.to_string())
+    async_time_window_ms_file.write(triads_ms_per_time_window_df.to_string())
+    async_time_window_ms_file.write(mean_vals_ms_per_time_window_df.to_string())
+    async_time_window_ms_file.close()
 
     # groups_list_dyads = ["DYAD_2024_06_14_Seminar_Wue_Session_3_Group_5_TS", "DYAD_2024_06_14_Seminar_Wue_Session_1_Group_2_TS",
     #                      "DYAD_2024_05_07_Seminar_Wue_Session_2_Group_1_TS", "DYAD_2023_12_19_Seminar_Wue_Session_4_Group_5_TS",
