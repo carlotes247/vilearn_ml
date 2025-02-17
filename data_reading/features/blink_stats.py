@@ -20,6 +20,7 @@ class BlinkStats:
     #              the lower bound, the upper bound of that bin is calculated by adding 250ms.
     # 'blinks_durations_ms', dict with keys: 1,2,3 based on the group size; the value is a list of floats representing   each blink in ms;
     # 'blinks_dataframe': index: timestamp, columns (bool): 'P{1, 2, or 3}_valid_blink_onsets', 'P{1, 2, or 3}_valid_blinks'
+    # 'interaction_duration_seconds' : how long was the valid interaction for that group in seconds
     groups_blinks_with_timestamps: list[dict]
 
     # df with the columns: 'group_name':str, group_size: int, 'count_blinks_participant_reference':float, 'count_sync_blinks':float,
@@ -74,6 +75,7 @@ class BlinkStats:
         data_for_calculating_subsets = pd.read_csv(fullpath, sep=';')
 
         for index, row in data_for_calculating_subsets.iterrows():
+
             current_group_dataframe = pd.DataFrame()
             my_groups_manager = GroupsManager(self.path_prefix_file, self.data_folder_path, specific_group=row['Group'],
                                               onlyTorch=False, load_individual_p_files=False, print_all_stats=False,
@@ -86,6 +88,7 @@ class BlinkStats:
             timestamps_string = group_data.group_features_csv_loader.raw_data['TSGroupNTP']
             timestamps = pd.to_datetime(timestamps_string, utc=True, format='%Y-%m-%d %H:%M:%S.%f')
 
+            current_group_valid_interaction_time_seconds = 0
 
             if "DYAD" in row['Group']:
                 group_size = 2
@@ -132,6 +135,9 @@ class BlinkStats:
 
             # get the dataframe subset
             valid_subset_data = current_group_dataframe[start_timestamp_available_in_df:end_timestamp_available_in_df]
+
+            #calculate the diff between the start and end to get the num of seconds in the interaction
+            current_group_valid_interaction_time_seconds = (end_time_timestamp - start_time_timestamp).total_seconds()
 
             # for calculating the bins for the time lags for each group
             current_blinks_async_250ms_bins = {-1500: 0, -1250: 0, -1000: 0, -750: 0, -500: 0, -250: 0,
@@ -199,7 +205,8 @@ class BlinkStats:
             # put all the info into a dictionary and then add it to a list
             d = {'group_name': row['Group'], 'group_size': group_size, 'group_blink_collisions': group_collisions,
                  'blinks_async_250ms_bins':current_blinks_async_250ms_bins, 'blinks_dataframe': valid_subset_data,
-                 'blinks_durations_ms':current_blinks_durations_ms}
+                 'blinks_durations_ms':current_blinks_durations_ms,
+                 'interaction_duration_seconds':current_group_valid_interaction_time_seconds}
 
             # append the dataframe to the list of all the groups.
             self.groups_blinks_with_timestamps.append(d)
@@ -328,21 +335,43 @@ class BlinkStats:
         # do the on-sample-t-test and save the result in a df, along with the corresponding *s
         for column in dyads_async_250ms_bins.columns.tolist():
             dyads_p_value = stats.ttest_1samp(dyads_async_250ms_bins[column].tolist(),
-                                              popmean=chance_level_dyads, alternative='greater').pvalue
+                              popmean=chance_level_dyads, alternative='greater').pvalue
+
+            dyads_statistic = stats.ttest_1samp(dyads_async_250ms_bins[column].tolist(),
+                                               popmean=chance_level_dyads, alternative='greater').statistic
+            # dyads_p_value = dyads_1samp_ttest_full_result.pvalue
+
             mean_async_vals_per_250ms_bins.loc['dyads_1sampleTtest', column] = dyads_p_value
+            mean_async_vals_per_250ms_bins.loc['dyads_1sampleTtest_statistic', column] = dyads_statistic
             mean_async_vals_per_250ms_bins.loc['dyads_1sampleTtest_stars', column] = self.get_stars_for_p_value(dyads_p_value)
 
             triads_p_value = stats.ttest_1samp(triads_async_250ms_bins[column].tolist(),
-                                               popmean=chance_level_triads, alternative='greater').pvalue
+                                                               popmean=chance_level_triads, alternative='greater').pvalue
+            triads_statistic = stats.ttest_1samp(triads_async_250ms_bins[column].tolist(),
+                                                              popmean=chance_level_triads, alternative='greater').statistic
+            # triads_p_value = triads_1samp_ttest_full_result.pvalue
             mean_async_vals_per_250ms_bins.loc['triads_1sampleTtest', column] = triads_p_value
+            mean_async_vals_per_250ms_bins.loc['triads_1sampleTtest_full', column] = triads_statistic
             mean_async_vals_per_250ms_bins.loc['triads_1sampleTtest_stars', column] = self.get_stars_for_p_value(triads_p_value)
 
         # plot the boxplots for dyads and triads
-        fig, (dyads_plot, triads_plot) = plt.subplots(2, 1)
-        dyads_plot.boxplot(dyads_async_250ms_bins, tick_labels=dyads_async_250ms_bins.columns.values.tolist())
+        # x_axis_labels = ['-1500:\n-1250', '-1250:\n-1000', '-1000:\n-750', '-750:\n-500', '-500:\n-250', '-250:\n0', '0:\n250', '250:\n500', '500:\n750', '750:\n1000', '1000:\n1250', '1250:\n1500']
+        x_axis_labels = ['-1500:-1250', '-1250:-1000', '-1000:-750', '-750:-500', '-500:-250', '-250:0', '0:250', '250:500', '500:750', '750:1000', '1000:1250', '1250:1500']
+
+        plt.rcParams['figure.dpi'] = 500
+        fig, (dyads_plot, triads_plot) = plt.subplots(1, 2)
+        plt.subplots_adjust(hspace=0.55, bottom=0.3)
+
+        fig.set_size_inches(10, 3.5)
+        boxplot = dyads_plot.boxplot(dyads_async_250ms_bins, tick_labels=x_axis_labels)
+        for median in boxplot['medians']:
+            median.set_color('blue')
+        dyads_plot.tick_params('x', rotation=65)
         dyads_plot.axhline(y=chance_level_dyads, color='r', linestyle='-')
         y_upper_limit = dyads_async_250ms_bins.max() + 1
-        dyads_plot.set_ylim(0, y_upper_limit.max())#increasing the y axis a bit so that the * would fit
+        dyads_plot.set_ylim(0, 10) #changing this to 10 to ave the same y axis for both dyads and triads; y_upper_limit.max())#increasing the y axis a bit so that the * would fit
+        dyads_plot.set_title('Dyads', fontsize=14)
+        dyads_plot.set_ylabel('Blink Rate', fontsize=11)
 
         #add the stars above the max value in the list
         for column in dyads_async_250ms_bins.columns.tolist():
@@ -352,7 +381,8 @@ class BlinkStats:
                             mean_async_vals_per_250ms_bins.loc['dyads_1sampleTtest_stars', column],
                             horizontalalignment='center')
 
-        triads_plot.boxplot(triads_async_250ms_bins, tick_labels=triads_async_250ms_bins.columns.values.tolist())
+        triads_plot.boxplot(triads_async_250ms_bins, tick_labels=x_axis_labels)
+        triads_plot.tick_params('x', rotation=65)
         triads_plot.axhline(y=chance_level_triads, color='r', linestyle='-')
         y_upper_limit = triads_async_250ms_bins.max() + 1
         triads_plot.set_ylim(0, y_upper_limit.max())#increasing the y axis a bit so that the * would fit
@@ -362,6 +392,10 @@ class BlinkStats:
                              max(triads_async_250ms_bins[column])+0.25,
                              mean_async_vals_per_250ms_bins.loc['triads_1sampleTtest_stars', column],
                              horizontalalignment='center')
+
+        triads_plot.set_title('Triads', fontsize=14)
+        # triads_plot.set_ylabel('Blink Rate', fontsize=11)
+
 
         #create new fig for the line graph with the means
         fig_mean, ax_mean = plt.subplots()
@@ -425,6 +459,7 @@ class BlinkStats:
                 self.group_synced_blinks_percent = pd.concat(
                     [self.group_synced_blinks_percent, synced_blinks_group_info], ignore_index=True)
 
+
     def calculate_blink_rate(self):
         for group in self.groups_blinks_with_timestamps:
             # calculate here the self.groups_blink_rate
@@ -480,8 +515,16 @@ class BlinkStats:
 
         return group_blink_duration_df
 
+    def get_group_names_and_durations(self):
+        groups_name= []
+        groups_duration = []
 
-
+        for group in self.groups_blinks_with_timestamps:
+            groups_name.append(group['group_name'])
+            groups_duration.append(group['interaction_duration_seconds'])
+        temp_dict = {'names': groups_name, 'durations': groups_duration}
+        df = pd.DataFrame(temp_dict)
+        return df
 
     def get_groups_blinks_data(self):
         return self.groups_blinks_with_timestamps
@@ -550,8 +593,8 @@ if __name__ == "__main__":
     # blink_rates_file = open(blink_rates_file_path, 'a')
     # blink_rates_file.write(blink_rates_df.to_string())
     # blink_rates_file.close()
-    #
-    #
+
+
     # # get blinks duration
     # blink_durations_df = blink_stats_subsets.get_groups_blink_duration()
     # # add blink DURATIONS data to file
@@ -560,10 +603,8 @@ if __name__ == "__main__":
     # blink_durations_file.write(blink_durations_df.to_string())
     # blink_durations_file.close()
 
-
-
     # get blinks sync percent
-    # synced_blinks_percent = blink_stats_subsets.get_group_synced_blink_percent()
+    #synced_blinks_percent = blink_stats_subsets.get_group_synced_blink_percent()
     # synced_blinks_percent_file_path = blink_stats_subsets.data_folder_path + 'synced_blinks_percent_all_groups.csv'
     # synced_blinks_percent_file = open(synced_blinks_percent_file_path, 'a')
     # synced_blinks_percent_file.write(synced_blinks_percent.to_string())
@@ -576,37 +617,20 @@ if __name__ == "__main__":
     # avg_blinks_async_ms_file.write(avg_blinks_async_ms.to_string())
     # avg_blinks_async_ms_file.close()
 
-    dyads_ms_per_time_window_df, triads_ms_per_time_window_df, mean_vals_ms_per_time_window_df = blink_stats_subsets.calculate_blink_asynchrony_ms_per_time_windows()
-    async_time_window_ms_file_path = blink_stats_subsets.data_folder_path + 'async_time_window_ms_file_path.csv'
-    async_time_window_ms_file = open(async_time_window_ms_file_path, 'a')
-    async_time_window_ms_file.write(dyads_ms_per_time_window_df.to_string())
-    async_time_window_ms_file.write(triads_ms_per_time_window_df.to_string())
-    async_time_window_ms_file.write(mean_vals_ms_per_time_window_df.to_string())
-    async_time_window_ms_file.close()
 
-    # groups_list_dyads = ["DYAD_2024_06_14_Seminar_Wue_Session_3_Group_5_TS", "DYAD_2024_06_14_Seminar_Wue_Session_1_Group_2_TS",
-    #                      "DYAD_2024_05_07_Seminar_Wue_Session_2_Group_1_TS", "DYAD_2023_12_19_Seminar_Wue_Session_4_Group_5_TS",
-    #                      "DYAD_2023_12_19_Seminar_Wue_Session_4_Group_2_TS", "DYAD_2023_12_19_Seminar_Wue_Session_4_Group_1_TS",
-    #                      "DYAD_2023_12_19_Seminar_Wue_Session_2_Group_5_TS", "DYAD_2023_12_19_Seminar_Wue_Session_2_Group_4_TS",
-    #                      "DYAD_2023_12_19_Seminar_Wue_Session_2_Group_2_TS", "DYAD_2023_12_19_Seminar_Wue_Session_1_Group_2_TS",
-    #                      "DYAD_2023_11_06_Seminar_Munich_Session_2_Group_1_TS", "DYAD_2023_11_06_Seminar_Munich_Session_1_Group_1_TS"]
-    #
-    # groups_list_triads = ["TRIAD_2024_06_14_Seminar_Wue_Session_3_Group_2_TS", "TRIAD_2024_06_14_Seminar_Wue_Session_3_Group_1_TS",
-    #                       "TRIAD_2024_06_14_Seminar_Wue_Session_2_Group_1_TS", "TRIAD_2024_06_14_Seminar_Wue_Session_1_Group_1_TS",
-    #                       "TRIAD_2024_05_07_Seminar_Wue_Session_2_Group_4_TS", "TRIAD_2024_05_07_Seminar_Wue_Session_2_Group_2_TS",
-    #                       "TRIAD_2023_12_19_Seminar_Wue_Session_3_Group_1_TS", "TRIAD_2023_12_19_Seminar_Wue_Session_2_Group_1_TS",
-    #                       "TRIAD_2023_12_19_Seminar_Wue_Session_1_Group_1_TS", "TRIAD_2023_10_30_Seminar_Munich_No_VAD",
-    #                       "TRIAD_2023_10_23_Seminar_Munich_Session_1_Group_1_TS"]
-    #
-    # blink_stats_dyads = BlinkStats(groups_list_dyads)
-    # blink_rates_dyads = blink_stats_dyads.get_groups_blink_rate()
-    # print(blink_rates_dyads)
-    #
-    # blink_stats_triads = BlinkStats(groups_list_triads)
-    # blink_rates_triads = blink_stats_triads.get_groups_blink_rate()
-    # print(blink_rates_triads)
+    #dyads_ms_per_time_window_df, triads_ms_per_time_window_df, mean_vals_ms_per_time_window_df = blink_stats_subsets.calculate_blink_asynchrony_ms_per_time_windows()
+    # async_time_window_ms_file_path = blink_stats_subsets.data_folder_path + 'async_time_window_ms_file_path.csv'
+    # async_time_window_ms_file = open(async_time_window_ms_file_path, 'a')
+    # async_time_window_ms_file.write(dyads_ms_per_time_window_df.to_string())
+    # async_time_window_ms_file.write(triads_ms_per_time_window_df.to_string())
+    # async_time_window_ms_file.write(mean_vals_ms_per_time_window_df.to_string())
+    # async_time_window_ms_file.close()
 
+    #get the duration of each group
+    names_durations_df = blink_stats_subsets.get_group_names_and_durations()
+    groups_durations_file_path = blink_stats_subsets.data_folder_path + 'group_durations_all_groups.csv'
+    blink_durations_file = open(groups_durations_file_path, 'a')
+    blink_durations_file.write(names_durations_df.to_string())
+    blink_durations_file.close()
 
-
-    # blink_rates_file.write(avg_blinks_async_ms.to_string())
 
