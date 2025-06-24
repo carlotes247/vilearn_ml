@@ -5,6 +5,10 @@ import torch.utils.data
 from plotting.plotterClass import PlotterClass
 import matplotlib.pyplot as plt
 import pandas as pd
+from data_reading.features.blink_stats import BlinkStats
+BlinkStats
+
+#region METHODS
 
 def calculate_stats(list, stringTag, stringMeasurement):
     """
@@ -47,7 +51,7 @@ def calculate_blink_per_minute_rate(timestamps, valid_blink_onsets):
     blinks_rate = sum(valid_blink_onsets) / total_minutes_within_the_timespan.astype('int')
     print (total_minutes_within_the_timespan, " ", sum(valid_blink_onsets), " ", blinks_rate)
 
-
+#endregion 
 
 # create csv_reader obj 
 #reader = ViLearnCSVDataLoader()
@@ -64,13 +68,16 @@ def calculate_blink_per_minute_rate(timestamps, valid_blink_onsets):
 
 # added this comment to check if git hooks work
 
+#region MAIN 
+
 if __name__ == "__main__":
     # Config flags (I might want to move them somewhere else, leave here for the moment)
     train_torch = False
     load_individual_participant_files = False
     print_all_stats_p_files = False
     print_blink_stats_p_files = False
-    plot_eye_openess = True
+    plot_eye_openess = False
+    plot_group_duration = True
 
     # Testing loading data logic 12 April 2024
     path_prefix_file = "data/_path_prefix.txt"
@@ -81,6 +88,7 @@ if __name__ == "__main__":
     my_groups_manager = GroupsManager(path_prefix_file, data_folder_path, specific_group=specific_group, 
                                       onlyTorch=train_torch, load_individual_p_files=load_individual_participant_files, 
                                       print_all_stats=print_all_stats_p_files, print_blink_stats=print_blink_stats_p_files)
+
     if train_torch:
         # Get all groups data as a single dataset
         dataset = my_groups_manager.get_concat_groups_torch_dataset()
@@ -131,7 +139,18 @@ if __name__ == "__main__":
 
         #plotter = PlotterClass()
         #plotter.plot_eye_blinks(my_groups_manager.groups[0])
+    if plot_group_duration:
+        print("attempting to plot...")
+        # group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
+        #group_data_time_subset_filename : str = 'group_names_with_time_subsetsFullVERSION.csv'
+        #blinks_stats_instance : BlinkStats = BlinkStats(group_names_filename=group_data_time_subset_filename)
+        #blinks_stats_instance : BlinkStats = BlinkStats
+        #get the duration of each group
+        #names_durations_df : pd.DataFrame = blinks_stats_instance.get_group_names_and_durations()
+        names_durations_df : pd.DataFrame = pd.read_csv('data/group_durations_all_commas.csv')
+        # plot
+        names_durations_df.hist()   
+
     print("done!")
 
-
-
+#endregion
