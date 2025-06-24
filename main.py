@@ -149,7 +149,7 @@ if __name__ == "__main__":
         #names_durations_df : pd.DataFrame = blinks_stats_instance.get_group_names_and_durations()
         names_durations_df : pd.DataFrame = pd.read_csv('data/group_durations_all_commas.csv', index_col=0)
         # configure plot
-        names_durations_df.plot.hist()
+        names_durations_df.plot.bar()
         # draw plot
         plt.show()
 
