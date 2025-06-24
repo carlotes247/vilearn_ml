@@ -6,7 +6,7 @@ from plotting.plotterClass import PlotterClass
 import matplotlib.pyplot as plt
 import pandas as pd
 from data_reading.features.blink_stats import BlinkStats
-BlinkStats
+
 
 #region METHODS
 
@@ -147,9 +147,11 @@ if __name__ == "__main__":
         #blinks_stats_instance : BlinkStats = BlinkStats
         #get the duration of each group
         #names_durations_df : pd.DataFrame = blinks_stats_instance.get_group_names_and_durations()
-        names_durations_df : pd.DataFrame = pd.read_csv('data/group_durations_all_commas.csv')
-        # plot
-        names_durations_df.hist()   
+        names_durations_df : pd.DataFrame = pd.read_csv('data/group_durations_all_commas.csv', index_col=0)
+        # configure plot
+        names_durations_df.plot.hist()
+        # draw plot
+        plt.show()
 
     print("done!")
 
