@@ -72,23 +72,26 @@ def calculate_blink_per_minute_rate(timestamps, valid_blink_onsets):
 
 if __name__ == "__main__":
     # Config flags (I might want to move them somewhere else, leave here for the moment)
+    load_groups_mngr = False
     train_torch = False
     load_individual_participant_files = False
     print_all_stats_p_files = False
     print_blink_stats_p_files = False
     plot_eye_openess = False
     plot_group_duration = True
+    my_groups_manager : GroupsManager = None
 
     # Testing loading data logic 12 April 2024
     path_prefix_file = "data/_path_prefix.txt"
     data_folder_path = "data/"
     # Leave empty to load data from all groups
     specific_group = "TRIAD_2023_10_30_Seminar_Munich_No_VAD"
-    # Load all groups
-    my_groups_manager = GroupsManager(path_prefix_file, data_folder_path, specific_group=specific_group, 
+    
+    if load_groups_mngr:
+        # Load all groups
+        my_groups_manager = GroupsManager(path_prefix_file, data_folder_path, specific_group=specific_group, 
                                       onlyTorch=train_torch, load_individual_p_files=load_individual_participant_files, 
                                       print_all_stats=print_all_stats_p_files, print_blink_stats=print_blink_stats_p_files)
-
     if train_torch:
         # Get all groups data as a single dataset
         dataset = my_groups_manager.get_concat_groups_torch_dataset()
@@ -150,12 +153,18 @@ if __name__ == "__main__":
         #names_durations_df : pd.DataFrame = blinks_stats_instance.get_group_names_and_durations()
         names_durations_df : pd.DataFrame = pd.read_csv('data/group_durations_all_commas.csv', index_col=0)
 
-        # TODO: sort duration from higher to lower
-        # TODO: distiguish duration dyads vs triads by colour
+        # sort duration from higher to lower
+        names_durations_df = names_durations_df.sort_values(by='durations', ascending=False)
+        # distiguish duration dyads vs triads by colour
+        color_groups : list[str] = names_durations_df['type'].map({'dyad':'r', 'triad':'g'}).to_list()
         # TODO: distinguish f vs line formation with texture or pattern
 
         # configure plot    
-        names_durations_df.plot.bar()
+        #names_durations_df.plot.barh(color=[color_groups])
+        #names_durations_df.pivot(columns='index', values='durations').plot.bar(color=color_groups, stacked=True)
+        # Create bars
+        fig,ax = plt.subplots()
+        ax.bar(names_durations_df.index, names_durations_df['durations'],color=color_groups)
         # draw plot
         plt.show()
 
