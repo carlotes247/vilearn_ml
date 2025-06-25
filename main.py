@@ -4,6 +4,8 @@ from training.vilearn_train import ViLearnTrainLogic
 import torch.utils.data
 from plotting.plotterClass import PlotterClass
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches # to display textured bars in plot legends
+from textwrap import wrap # to wrap plot labels because group names are too long
 import pandas as pd
 from data_reading.features.blink_stats import BlinkStats
 
@@ -156,15 +158,24 @@ if __name__ == "__main__":
         # sort duration from higher to lower
         names_durations_df = names_durations_df.sort_values(by='durations', ascending=False)
         # distiguish duration dyads vs triads by colour
-        color_groups : list[str] = names_durations_df['type'].map({'dyad':'r', 'triad':'g'}).to_list()
-        # TODO: distinguish f vs line formation with texture or pattern
+        color_dyad : str = 'red'
+        color_triad : str = 'green'
+        color_groups : list[str] = names_durations_df['type'].map({'dyad':color_dyad, 'triad':color_triad}).to_list()
+        # distinguish f vs line formation with texture or pattern
+        tex_groups : list[str] = names_durations_df['group_formation'].map({'F':'', 'Line':'/'}).to_list()
 
         # configure plot    
-        #names_durations_df.plot.barh(color=[color_groups])
-        #names_durations_df.pivot(columns='index', values='durations').plot.bar(color=color_groups, stacked=True)
-        # Create bars
+        # create bars
         fig,ax = plt.subplots()
-        ax.bar(names_durations_df.index, names_durations_df['durations'],color=color_groups)
+        ax.bar(names_durations_df.index, names_durations_df['durations'],color=color_groups,hatch=tex_groups)
+        ax.set_title('Group Durations by Type and Formation')
+        # configure legend
+        circ1 = mpatches.Patch(facecolor=color_dyad,hatch='',label='dyad')
+        circ2= mpatches.Patch(facecolor=color_triad,hatch='',label='triad')
+        circ3 = mpatches.Patch(facecolor='white',hatch='///',label='line_formation')
+        ax.legend(handles = [circ1, circ2, circ3], loc=1)
+        # rotate labels for better readability
+        plt.xticks(rotation=90)
         # draw plot
         plt.show()
 
