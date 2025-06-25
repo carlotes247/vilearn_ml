@@ -179,6 +179,11 @@ if __name__ == "__main__":
         # draw plot
         plt.show()
 
+        # TODO: Use dummy recording time for the moment
+        # TODO: Line graphs with all tasks duration. The Y axis has each group; the X axis has the time, where 0 is the recording time,
+        # and the line will start when the interaction (conversation) starts. This way we can see if there is a large time between 
+        # the recording start time and the interaction start time.  Differentiate between line- and F- formation, and between the group size (dyad vs triad).
+
     print("done!")
 
 #endregion
