@@ -145,10 +145,16 @@ if __name__ == "__main__":
         #group_data_time_subset_filename : str = 'group_names_with_time_subsetsFullVERSION.csv'
         #blinks_stats_instance : BlinkStats = BlinkStats(group_names_filename=group_data_time_subset_filename)
         #blinks_stats_instance : BlinkStats = BlinkStats
+        
         #get the duration of each group
         #names_durations_df : pd.DataFrame = blinks_stats_instance.get_group_names_and_durations()
         names_durations_df : pd.DataFrame = pd.read_csv('data/group_durations_all_commas.csv', index_col=0)
-        # configure plot
+
+        # TODO: sort duration from higher to lower
+        # TODO: distiguish duration dyads vs triads by colour
+        # TODO: distinguish f vs line formation with texture or pattern
+
+        # configure plot    
         names_durations_df.plot.bar()
         # draw plot
         plt.show()
