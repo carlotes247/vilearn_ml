@@ -74,7 +74,7 @@ def calculate_blink_per_minute_rate(timestamps, valid_blink_onsets):
 
 if __name__ == "__main__":
     # Config flags (I might want to move them somewhere else, leave here for the moment)
-    load_groups_mngr = False
+    load_groups_mngr = True
     train_torch = False
     load_individual_participant_files = False
     print_all_stats_p_files = False
@@ -86,12 +86,14 @@ if __name__ == "__main__":
     # Testing loading data logic 12 April 2024
     path_prefix_file = "data/_path_prefix.txt"
     data_folder_path = "data/"
+    all_groups_names_file_path = "data/list_of_all_usable_groups.txt"
     # Leave empty to load data from all groups
-    specific_group = "TRIAD_2023_10_30_Seminar_Munich_No_VAD"
-    
+    #specific_group = "TRIAD_2023_10_30_Seminar_Munich_No_VAD"
+    specific_group = ""
+
     if load_groups_mngr:
         # Load all groups
-        my_groups_manager = GroupsManager(path_prefix_file, data_folder_path, specific_group=specific_group, 
+        my_groups_manager = GroupsManager(path_prefix_file, data_folder_path, specific_group=specific_group, all_groups_names_path=all_groups_names_file_path, 
                                       onlyTorch=train_torch, load_individual_p_files=load_individual_participant_files, 
                                       print_all_stats=print_all_stats_p_files, print_blink_stats=print_blink_stats_p_files)
     if train_torch:
@@ -179,7 +181,15 @@ if __name__ == "__main__":
         # draw plot
         plt.show()
 
+        list_group_start_TS = []
+
         # TODO: Use dummy recording time for the moment
+        # TODO: Extract first and last TS from each group features file
+        for group in my_groups_manager.groups:
+            if (not group.group_feature_data_loaded):
+                continue
+            print(f"{group.group_name}, init recording: {group.group_feature_frames[0].ts_group},  end recording: {group.group_feature_frames[-1].ts_group_string}, duration {group.recording_duration.total_seconds()}")
+            print(f"group found in index list name {True if group.group_name in names_durations_df['long_name'].to_list() else False}")
         # TODO: Line graphs with all tasks duration. The Y axis has each group; the X axis has the time, where 0 is the recording time,
         # and the line will start when the interaction (conversation) starts. This way we can see if there is a large time between 
         # the recording start time and the interaction start time.  Differentiate between line- and F- formation, and between the group size (dyad vs triad).

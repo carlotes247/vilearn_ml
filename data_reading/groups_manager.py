@@ -5,6 +5,7 @@ from torch_vilearn.torch_group_dataset import TorchGroupDataset
 from torch_vilearn.torch_group_data_loader import TorchGroupDataLoader
 import os
 from pathlib import Path
+import pandas as pd
 
 class GroupsManager:
     """
@@ -12,6 +13,7 @@ class GroupsManager:
     """
     path_prefix_data: str
     specific_group: str
+    all_groups_names: list[str]
     groups: list[Group]
     group_participant_csv_paths: list[str]
     group_participant_audio_paths: list[str]
@@ -20,17 +22,21 @@ class GroupsManager:
     groups_torch_data: list[TorchGroupDataset]
 
 
-    def __init__(self, path_prefix: str, path_folder_groups: str, specific_group: str, onlyTorch: bool, load_individual_p_files: bool, print_all_stats: bool, print_blink_stats: bool):
+    def __init__(self, path_prefix: str, path_folder_groups: str, specific_group: str, all_groups_names_path: str, onlyTorch: bool, load_individual_p_files: bool, print_all_stats: bool, print_blink_stats: bool):
         self.onlyTorch = onlyTorch
         self.groups_torch_data = []
         self.specific_group = specific_group
+        self.all_groups_names = pd.read_csv(all_groups_names_path).columns.to_list()
         # Ignore lines with the # symbol to read the final uncommented line with the path prefix
         with open(path_prefix) as path_prefix_file:
             for line in path_prefix_file:
                 if not line.startswith('#'):
-                    self.path_prefix_data = line
+                    self.path_prefix_data = line.rstrip()
         self.groups = []
         for group_file_name in os.listdir(path_folder_groups):
+            # if the file is not in the list of group names to work with we skip to avoid loading errors
+            if (not Path(group_file_name).stem in self.all_groups_names):
+                continue
             # if we have a specific group to only load data from, skip until that group is loaded
             if (specific_group and specific_group != "" and specific_group != Path(group_file_name).stem):
                 continue
