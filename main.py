@@ -158,7 +158,7 @@ if __name__ == "__main__":
         names_durations_df : pd.DataFrame = pd.read_csv('data/group_durations_all_commas.csv', index_col=0)
 
         # sort duration from higher to lower
-        names_durations_df = names_durations_df.sort_values(by='durations', ascending=False)
+        names_durations_df = names_durations_df.sort_values(by='duration_interaction', ascending=False)
         # distiguish duration dyads vs triads by colour
         color_dyad : str = 'red'
         color_triad : str = 'green'
@@ -166,18 +166,32 @@ if __name__ == "__main__":
         # distinguish f vs line formation with texture or pattern
         tex_groups : list[str] = names_durations_df['group_formation'].map({'F':'', 'Line':'/'}).to_list()
 
-        # configure plot    
-        # create bars
+        plot_bars : bool = False
+        plot_duration_lines : bool = True
+        # configure plots
         fig,ax = plt.subplots()
-        ax.bar(names_durations_df.index, names_durations_df['durations'],color=color_groups,hatch=tex_groups)
-        ax.set_title('Group Durations by Type and Formation')
-        # configure legend
-        circ1 = mpatches.Patch(facecolor=color_dyad,hatch='',label='dyad')
-        circ2= mpatches.Patch(facecolor=color_triad,hatch='',label='triad')
-        circ3 = mpatches.Patch(facecolor='white',hatch='///',label='line_formation')
-        ax.legend(handles = [circ1, circ2, circ3], loc=1)
-        # rotate labels for better readability
-        plt.xticks(rotation=90)
+        if plot_bars:
+            # create bars
+            ax.bar(names_durations_df.index, names_durations_df['duration_interaction'],color=color_groups,hatch=tex_groups)
+            ax.set_title('Group Durations by Type and Formation')
+            # configure legend
+            circ1 = mpatches.Patch(facecolor=color_dyad,hatch='',label='dyad')
+            circ2= mpatches.Patch(facecolor=color_triad,hatch='',label='triad')
+            circ3 = mpatches.Patch(facecolor='white',hatch='///',label='line_formation')
+            ax.legend(handles = [circ1, circ2, circ3], loc=1)
+            # rotate labels for better readability
+            plt.xticks(rotation=90)
+        if plot_duration_lines:
+            # create bars
+            ax.barh(names_durations_df.index, names_durations_df['duration_recording'],color=color_groups,hatch=tex_groups)
+            ax.set_title('Group Recording vs Interaction Duration')
+            # configure legend
+            circ1 = mpatches.Patch(facecolor=color_dyad,hatch='',label='dyad')
+            circ2= mpatches.Patch(facecolor=color_triad,hatch='',label='triad')
+            circ3 = mpatches.Patch(facecolor='white',hatch='///',label='line_formation')
+            ax.legend(handles = [circ1, circ2, circ3], loc=1)
+            # rotate labels for better readability
+            plt.xticks(rotation=90)
         # draw plot
         plt.show()
 
@@ -193,6 +207,7 @@ if __name__ == "__main__":
         # TODO: Line graphs with all tasks duration. The Y axis has each group; the X axis has the time, where 0 is the recording time,
         # and the line will start when the interaction (conversation) starts. This way we can see if there is a large time between 
         # the recording start time and the interaction start time.  Differentiate between line- and F- formation, and between the group size (dyad vs triad).
+        
 
     print("done!")
 
