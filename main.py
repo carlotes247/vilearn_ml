@@ -70,18 +70,22 @@ def calculate_blink_per_minute_rate(timestamps, valid_blink_onsets):
 
 # added this comment to check if git hooks work
 
-#region MAIN 
-
 if __name__ == "__main__":
+    #region VARS
     # Config flags (I might want to move them somewhere else, leave here for the moment)
-    load_groups_mngr = True
-    train_torch = False
-    load_individual_participant_files = False
-    print_all_stats_p_files = False
-    print_blink_stats_p_files = False
-    plot_eye_openess = False
-    plot_group_duration = True
-    my_groups_manager : GroupsManager = None
+    load_groups_mngr: bool = True
+    train_torch: bool = False
+    load_individual_participant_files: bool = False
+    use_async: bool = False
+    my_groups_manager: GroupsManager
+    # Debug flags
+    print_debug: bool = True
+    print_all_stats_p_files: bool = False
+    print_blink_stats_p_files: bool = False
+    # Plotting flags
+    plot_eye_openess: bool = False
+    plot_group_duration: bool = True
+
 
     # Testing loading data logic 12 April 2024
     path_prefix_file = "data/_path_prefix.txt"
@@ -91,11 +95,17 @@ if __name__ == "__main__":
     #specific_group = "TRIAD_2023_10_30_Seminar_Munich_No_VAD"
     specific_group = ""
 
+    #endregion
+
+    #region MAIN CODE
+    
     if load_groups_mngr:
         # Load all groups
-        my_groups_manager = GroupsManager(path_prefix_file, data_folder_path, specific_group=specific_group, all_groups_names_path=all_groups_names_file_path, 
-                                      onlyTorch=train_torch, load_individual_p_files=load_individual_participant_files, 
-                                      print_all_stats=print_all_stats_p_files, print_blink_stats=print_blink_stats_p_files)
+        my_groups_manager = GroupsManager(path_prefix_file, data_folder_path, specific_group=specific_group, 
+                                    all_groups_names_path=all_groups_names_file_path, onlyTorch=train_torch,
+                                    load_individual_p_files=load_individual_participant_files, 
+                                    print_all_stats=print_all_stats_p_files, print_blink_stats=print_blink_stats_p_files,
+                                    print_debug=print_debug, use_async=use_async)
     if train_torch:
         # Get all groups data as a single dataset
         dataset = my_groups_manager.get_concat_groups_torch_dataset()
@@ -209,6 +219,5 @@ if __name__ == "__main__":
         # the recording start time and the interaction start time.  Differentiate between line- and F- formation, and between the group size (dyad vs triad).
         
 
-    print("done!")
-
-#endregion
+        print("done!")
+    #endregion

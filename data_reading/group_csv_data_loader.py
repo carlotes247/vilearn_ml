@@ -72,7 +72,7 @@ class GroupCSVDataLoader:
             print(f"Can't extract group feature frames because the file {self.group_name} wasn't loaded correctly!")
         return list_feauture_frames
     
-    def extract_valid_blinks_frames(self) -> dict[int, list[bool]]:
+    def extract_valid_blinks_frames(self) -> tuple[dict[int, list[bool]], dict[int, list[bool]]]:
         """
         Returns TWO dicts, one with a list of valid blinks per frame per participant and another with blink onsets per participant
         """

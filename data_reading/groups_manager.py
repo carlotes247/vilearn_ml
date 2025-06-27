@@ -6,6 +6,8 @@ from torch_vilearn.torch_group_data_loader import TorchGroupDataLoader
 import os
 from pathlib import Path
 import pandas as pd
+from typing import Optional
+import datetime
 
 class GroupsManager:
     """
@@ -20,19 +22,73 @@ class GroupsManager:
     group_features_path: str
     onlyTorch: bool = True
     groups_torch_data: list[TorchGroupDataset]
+    use_async: bool = False
+    all_groups_read: bool = False # Flag to check from outside
+    load_individual_p_files: bool = False
+    print_all_stats: bool = False
+    print_blink_stats: bool = False
+    print_debug: bool = False
 
-
-    def __init__(self, path_prefix: str, path_folder_groups: str, specific_group: str, all_groups_names_path: str, onlyTorch: bool, load_individual_p_files: bool, print_all_stats: bool, print_blink_stats: bool):
+    #region INIT
+    def __init__(self, path_prefix: str, path_folder_groups: str, specific_group: str, all_groups_names_path: str, onlyTorch: bool, load_individual_p_files: bool, print_all_stats: bool, print_blink_stats: bool, use_async: bool, print_debug: bool):
         self.onlyTorch = onlyTorch
         self.groups_torch_data = []
         self.specific_group = specific_group
         self.all_groups_names = pd.read_csv(all_groups_names_path).columns.to_list()
+        self.use_async = use_async
+        self.path_folder_groups = path_folder_groups
+        self.load_individual_p_files = load_individual_p_files
+        self.print_all_stats = print_all_stats
+        self.print_blink_stats = print_blink_stats
+        self.print_debug = print_debug
         # Ignore lines with the # symbol to read the final uncommented line with the path prefix
         with open(path_prefix) as path_prefix_file:
             for line in path_prefix_file:
                 if not line.startswith('#'):
                     self.path_prefix_data = line.rstrip()
         self.groups = []
+        
+        # Read all groups if not in async mode
+        if not self.use_async:
+            self.read_all_groups_loop(path_folder_groups=self.path_folder_groups, specific_group=self.specific_group, load_individual_p_files=self.load_individual_p_files, print_all_stats=self.print_all_stats, print_blink_stats=self.print_blink_stats)       
+
+    #endregion
+    
+    def read_group(self, csv_paths_participants: list[str], audio_paths: list[str], csv_path_group_features: str, group_name: str, onlyTorch: bool, load_individual_p_files: bool, print_all_stats: bool, print_blink_stats: bool) -> Group:
+        """ NOT WORKING ASYNC BECAUSE pd.read_csv IS USED TO LOAD A GROUP"""
+        # Instantiate and load group from disk and add to list of groups    
+        aux_group = Group(csv_paths_participants, audio_paths, csv_path_group_features, group_name, onlyTorch=self.onlyTorch, load_individual_p_files=load_individual_p_files, print_all_stats=print_all_stats, print_blink_stats=print_blink_stats, print_debug=self.print_debug)
+        self.groups.append(aux_group)    
+        return aux_group      
+    
+    async def read_all_groups_async(self):
+        """ Needs to be called from outside to trigger the async load """
+        #self.async_event_loop = asyncio.get_running_loop()
+        # Create task to read
+        num_files_to_read: int = 25
+        
+        # THIS SHOULD BE AWAITED BUT I REMOVED THE ASYNC FROM HERE BECAUSE IN THE END pd.read_csv IS NOT ASYNCABLE
+        self.read_all_groups_loop(path_folder_groups=self.path_folder_groups, specific_group=self.specific_group, load_individual_p_files=self.load_individual_p_files, print_all_stats=self.print_all_stats, print_blink_stats=self.print_blink_stats)
+
+        # asyncio.create_task(self.read_all_groups_loop(path_folder_groups=self.path_folder_groups, specific_group=self.specific_group, load_individual_p_files=self.load_individual_p_files, print_all_stats=self.print_all_stats, print_blink_stats=self.print_blink_stats))
+        
+        # the async tasks list gets filled in automatically by passing the event loop to the read all groups list
+        # while num_files_to_read != len(self.async_tasks):
+        #     await asyncio.sleep(0.1)
+        # asyncio.gather(*self.async_tasks)
+        print("Waiting for files to read...")
+        # while num_files_to_read != len(self.groups):
+        #     await asyncio.sleep(10)
+        for aux_group in self.groups:
+            # Add group dataset to internal list of datasets
+            if self.onlyTorch and not (aux_group.group_features_csv_loader is None):
+                self.groups_torch_data.append(aux_group.group_features_csv_loader.torch_dataset)               
+        self.all_groups_read = True
+        print("all groups read!")
+
+    def read_all_groups_loop(self, path_folder_groups: str, specific_group: str, load_individual_p_files: bool, print_all_stats: bool, print_blink_stats: bool) -> int:     
+        """ Reads all groups in a for loop """   
+        num_files: int = 0
         for group_file_name in os.listdir(path_folder_groups):
             # if the file is not in the list of group names to work with we skip to avoid loading errors
             if (not Path(group_file_name).stem in self.all_groups_names):
@@ -64,14 +120,30 @@ class GroupsManager:
                         group_participant_csv_paths.append(full_data_path)
                     elif full_data_path.endswith(".wav"):
                         group_participant_audio_paths.append(full_data_path)
-            # Instantiate group and add to list of groups
-            aux_group = Group(group_participant_csv_paths, group_participant_audio_paths, group_features_path, group_file_name, onlyTorch=self.onlyTorch, load_individual_p_files=load_individual_p_files, print_all_stats=print_all_stats, print_blink_stats=print_blink_stats)
-            # Add group dataset to internal list of datasets
-            if self.onlyTorch and not (aux_group.group_features_csv_loader is None):
-                self.groups_torch_data.append(aux_group.group_features_csv_loader.torch_dataset)
-            self.groups.append(aux_group)
+            # [NOT WORKING] Async load (fast) 
+            if self.use_async:
+                # [IT WILL NOT WORK BECAUSE pd.read_csv IS NOT ASYNC!!!] Define array of all tasks to run
+                # TODO: write reading implementation that does not realy on pd.read_csv or an asyncable version of it                
+                #self.async_tasks.append(task)
+                pass
+                #print(f"Task added! Num tasks: {len(self.async_tasks)}")
+            # Sequential load (slow)
+            else:
+                # Instantiate and load group from disk and add to list of groups
+                aux_group = Group(group_participant_csv_paths, group_participant_audio_paths, group_features_path, group_file_name, onlyTorch=self.onlyTorch, load_individual_p_files=load_individual_p_files, print_all_stats=print_all_stats, print_blink_stats=print_blink_stats, print_debug=self.print_debug)
+                # Add group dataset to internal list of datasets
+                if self.onlyTorch and not (aux_group.group_features_csv_loader is None):
+                    self.groups_torch_data.append(aux_group.group_features_csv_loader.torch_dataset)
+                self.groups.append(aux_group)
+                num_files +=1                            
 
-    def get_concat_groups_torch_dataset(self) -> list[TorchGroupDataset]:
+        # update read flag if not async load 
+        if not self.use_async:
+            self.all_groups_read = True       
+        
+        return num_files
+
+    def get_concat_groups_torch_dataset(self) -> torch.utils.data.ConcatDataset[TorchGroupDataset]:
         if not self.onlyTorch:
             raise Exception("Can't return all torch datasets concatenated because this group manager wasn't created with onlyTorch set to true")        
         return torch.utils.data.ConcatDataset(self.groups_torch_data)

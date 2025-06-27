@@ -24,8 +24,10 @@ class Group:
     # init flags
     group_feature_data_loaded: bool = False
     participant_data_loaded: bool = False
+    # debug flags
+    print_debug: bool = False
 
-    def __init__(self, csv_paths_participants: list[str], audio_paths: list[str], csv_path_group_features: str, group_name: str, onlyTorch: bool, load_individual_p_files: bool, print_all_stats: bool, print_blink_stats: bool):
+    def __init__(self, csv_paths_participants: list[str], audio_paths: list[str], csv_path_group_features: str, group_name: str, onlyTorch: bool, load_individual_p_files: bool, print_all_stats: bool, print_blink_stats: bool, print_debug: bool):
         if len(csv_paths_participants) != len(audio_paths):
             raise Exception(f"Can't create group, lengths of csv and audio paths ({len(csv_paths_participants)} vs {len(audio_paths)}) don't match for group {group_name}")
         self.group_name = Path(group_name).stem
@@ -34,6 +36,7 @@ class Group:
         self.audio_file_paths = audio_paths
         self.csv_group_features_file_path = csv_path_group_features
         self.participants = []
+        self.print_debug = print_debug
         # Populate participant data only if not using pytorch (since we are using pytorch for group feature processing, we don't really need participant data)
         if (load_individual_p_files):            
             for i in range(len(csv_paths_participants)):
@@ -42,11 +45,17 @@ class Group:
                 self.participant_data_loaded = True
         # If a group feature file is present, load file
         if (csv_path_group_features):
+            if self.print_debug: 
+                print(f"Reading {self.group_name}...")
+            start_read_time: datetime.datetime = datetime.datetime.now()
             self.group_features_csv_loader = GroupCSVDataLoader(csv_path_group_features, onlyTorch)
             if (self.group_features_csv_loader.fileLoaded):
                 self.group_feature_frames = self.group_features_csv_loader.extract_group_feature_frames()
                 # Calculate group recording duration
                 self.recording_duration = (self.group_feature_frames[-1].ts_group - self.group_feature_frames[0].ts_group)
-                self.group_feature_data_loaded = True
+                self.group_feature_data_loaded = True                
+                if self.print_debug: 
+                    print(f"Group {self.group_name} read in {(datetime.datetime.now() - start_read_time).total_seconds()} secs")
+
         else:
             self.group_features_csv_loader = None
