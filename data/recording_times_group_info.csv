@@ -1,25 +1,26 @@
-DYAD_2023_11_06_Seminar_Munich_Session_1_Group_1_TS, init recording: 2023-11-06 16:16:26.022000,  end recording: 2023-11-06 16:35:49.304, duration 1163.282
-DYAD_2023_11_06_Seminar_Munich_Session_2_Group_1_TS, init recording: 2023-11-06 17:09:30.404000,  end recording: 2023-11-06 17:20:31.967, duration 661.563
-DYAD_2023_12_19_Seminar_Wue_Session_2_Group_2_TS, init recording: 2023-12-19 11:27:13.950000,  end recording: 2023-12-19 11:39:24.731, duration 730.781
-DYAD_2023_12_19_Seminar_Wue_Session_2_Group_4_TS, init recording: 2023-12-19 11:27:13.885000,  end recording: 2023-12-19 11:39:24.836, duration 730.951
-DYAD_2023_12_19_Seminar_Wue_Session_4_Group_1_TS, init recording: 2023-12-19 15:17:28.471000,  end recording: 2023-12-19 15:28:56.772, duration 688.301
-DYAD_2023_12_19_Seminar_Wue_Session_4_Group_2_TS, init recording: 2023-12-19 15:17:28.305000,  end recording: 2023-12-19 15:28:56.581, duration 688.276
-DYAD_2023_12_19_Seminar_Wue_Session_4_Group_5_TS, init recording: 2023-12-19 15:17:28.361000,  end recording: 2023-12-19 15:28:56.689, duration 688.328
-DYAD_2024_05_07_Seminar_Wue_Session_2_Group_1_TS, init recording: 2024-05-07 13:16:10.778000,  end recording: 2024-05-07 13:31:11.390, duration 900.612
-DYAD_2024_06_14_Seminar_Wue_Session_1_Group_2_TS, init recording: 2024-06-14 11:31:00.349000,  end recording: 2024-06-14 11:44:16.320, duration 795.971
-DYAD_2024_06_14_Seminar_Wue_Session_3_Group_5_TS, init recording: 2024-06-14 15:33:07.624000,  end recording: 2024-06-14 15:42:51.464, duration 583.84
-DYAD_2024_11_04_Seminar_Mun_Session_1_Group_2_TS, init recording: 2024-11-04 17:05:32.730000,  end recording: 2024-11-04 17:15:12.288, duration 579.558
-TRIAD_2023_10_23_Seminar_Munich_Session_1_Group_1_TS, init recording: 2023-10-23 16:02:02.820000,  end recording: 2023-10-23 16:18:09.899, duration 967.079
-TRIAD_2023_10_30_Seminar_Munich_No_VAD, init recording: 2023-10-30 16:08:32.033000,  end recording: 2023-10-30 16:20:11.911, duration 699.878
-TRIAD_2023_12_19_Seminar_Wue_Session_2_Group_1_TS, init recording: 2023-12-19 11:27:13.907000,  end recording: 2023-12-19 11:39:24.726, duration 730.819
-TRIAD_2023_12_19_Seminar_Wue_Session_3_Group_1_TS, init recording: 2023-12-19 13:26:13.876000,  end recording: 2023-12-19 13:39:14.293, duration 780.417
-TRIAD_2024_05_07_Seminar_Wue_Session_1_Group_2_TS, init recording: 2024-05-07 11:36:21.621000,  end recording: 2024-05-07 11:44:08.237, duration 466.616
-TRIAD_2024_05_07_Seminar_Wue_Session_1_Group_4_TS, init recording: 2024-05-07 11:36:21.565000,  end recording: 2024-05-07 11:44:07.040, duration 465.475
-TRIAD_2024_05_07_Seminar_Wue_Session_2_Group_2_TS, init recording: 2024-05-07 13:16:10.754000,  end recording: 2024-05-07 13:31:11.296, duration 900.542
-TRIAD_2024_05_07_Seminar_Wue_Session_2_Group_4_TS, init recording: 2024-05-07 13:16:10.806000,  end recording: 2024-05-07 13:31:11.296, duration 900.49
-TRIAD_2024_06_14_Seminar_Wue_Session_2_Group_1_TS, init recording: 2024-06-14 13:27:59.751000,  end recording: 2024-06-14 13:39:32.751, duration 693.0
-TRIAD_2024_06_14_Seminar_Wue_Session_3_Group_1_TS, init recording: 2024-06-14 15:33:07.569000,  end recording: 2024-06-14 15:42:51.409, duration 583.84
-TRIAD_2024_06_14_Seminar_Wue_Session_3_Group_2_TS, init recording: 2024-06-14 15:33:07.575000,  end recording: 2024-06-14 15:42:51.425, duration 583.85
-TRIAD_2024_11_04_Seminar_Mun_Session_1_Group_1_TS, init recording: 2024-11-04 15:45:58.826000,  end recording: 2024-11-04 16:05:08.326, duration 1149.5
-TRIAD_2024_11_11_Seminar_Mun_Session_1_Group_1_TS, init recording: 2024-11-11 15:48:29.971000,  end recording: 2024-11-11 15:57:31.923, duration 541.952
-TRIAD_2024_11_18_Seminar_Mun_Session_1_Group_1_TS, init recording: 2024-11-18 15:49:43.152000,  end recording: 2024-11-18 16:00:45.857, duration 662.705
+long_name,start_recording,end_recording,duration_recording
+DYAD_2023_11_06_Seminar_Munich_Session_1_Group_1_TS,2023-11-06 16:16:26.022000,2023-11-06 16:35:49.304,1163.282
+DYAD_2023_11_06_Seminar_Munich_Session_2_Group_1_TS,2023-11-06 17:09:30.404000,2023-11-06 17:20:31.967,661.563
+DYAD_2023_12_19_Seminar_Wue_Session_2_Group_2_TS,2023-12-19 11:27:13.950000,2023-12-19 11:39:24.731,730.781
+DYAD_2023_12_19_Seminar_Wue_Session_2_Group_4_TS,2023-12-19 11:27:13.885000,2023-12-19 11:39:24.836,730.951
+DYAD_2023_12_19_Seminar_Wue_Session_4_Group_1_TS,2023-12-19 15:17:28.471000,2023-12-19 15:28:56.772,688.301
+DYAD_2023_12_19_Seminar_Wue_Session_4_Group_2_TS,2023-12-19 15:17:28.305000,2023-12-19 15:28:56.581,688.276
+DYAD_2023_12_19_Seminar_Wue_Session_4_Group_5_TS,2023-12-19 15:17:28.361000,2023-12-19 15:28:56.689,688.328
+DYAD_2024_05_07_Seminar_Wue_Session_2_Group_1_TS,2024-05-07 13:16:10.778000,2024-05-07 13:31:11.390,900.612
+DYAD_2024_06_14_Seminar_Wue_Session_1_Group_2_TS,2024-06-14 11:31:00.349000,2024-06-14 11:44:16.320,795.971
+DYAD_2024_06_14_Seminar_Wue_Session_3_Group_5_TS,2024-06-14 15:33:07.624000,2024-06-14 15:42:51.464,583.84
+DYAD_2024_11_04_Seminar_Mun_Session_1_Group_2_TS,2024-11-04 17:05:32.730000,2024-11-04 17:15:12.288,579.558
+TRIAD_2023_10_23_Seminar_Munich_Session_1_Group_1_TS,2023-10-23 16:02:02.820000,2023-10-23 16:18:09.899,967.079
+TRIAD_2023_10_30_Seminar_Munich_No_VAD,2023-10-30 16:08:32.033000,2023-10-30 16:20:11.911,699.878
+TRIAD_2023_12_19_Seminar_Wue_Session_2_Group_1_TS,2023-12-19 11:27:13.907000,2023-12-19 11:39:24.726,730.819
+TRIAD_2023_12_19_Seminar_Wue_Session_3_Group_1_TS,2023-12-19 13:26:13.876000,2023-12-19 13:39:14.293,780.417
+TRIAD_2024_05_07_Seminar_Wue_Session_1_Group_2_TS,2024-05-07 11:36:21.621000,2024-05-07 11:44:08.237,466.616
+TRIAD_2024_05_07_Seminar_Wue_Session_1_Group_4_TS,2024-05-07 11:36:21.565000,2024-05-07 11:44:07.040,465.475
+TRIAD_2024_05_07_Seminar_Wue_Session_2_Group_2_TS,2024-05-07 13:16:10.754000,2024-05-07 13:31:11.296,900.542
+TRIAD_2024_05_07_Seminar_Wue_Session_2_Group_4_TS,2024-05-07 13:16:10.806000,2024-05-07 13:31:11.296,900.49
+TRIAD_2024_06_14_Seminar_Wue_Session_2_Group_1_TS,2024-06-14 13:27:59.751000,2024-06-14 13:39:32.751,693.0
+TRIAD_2024_06_14_Seminar_Wue_Session_3_Group_1_TS,2024-06-14 15:33:07.569000,2024-06-14 15:42:51.409,583.84
+TRIAD_2024_06_14_Seminar_Wue_Session_3_Group_2_TS,2024-06-14 15:33:07.575000,2024-06-14 15:42:51.425,583.85
+TRIAD_2024_11_04_Seminar_Mun_Session_1_Group_1_TS,2024-11-04 15:45:58.826000,2024-11-04 16:05:08.326,1149.5
+TRIAD_2024_11_11_Seminar_Mun_Session_1_Group_1_TS,2024-11-11 15:48:29.971000,2024-11-11 15:57:31.923,541.952
+TRIAD_2024_11_18_Seminar_Mun_Session_1_Group_1_TS,2024-11-18 15:49:43.152000,2024-11-18 16:00:45.857,662.705

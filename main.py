@@ -73,7 +73,7 @@ def calculate_blink_per_minute_rate(timestamps, valid_blink_onsets):
 if __name__ == "__main__":
     #region VARS
     # Config flags (I might want to move them somewhere else, leave here for the moment)
-    load_groups_mngr: bool = True
+    load_groups_mngr: bool = False
     train_torch: bool = False
     load_individual_participant_files: bool = False
     use_async: bool = False
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     print_blink_stats_p_files: bool = False
     # Plotting flags
     plot_eye_openess: bool = False
-    plot_group_duration: bool = True
+    plot_group_duration: bool = False
 
 
     # Testing loading data logic 12 April 2024
@@ -94,6 +94,13 @@ if __name__ == "__main__":
     # Leave empty to load data from all groups
     #specific_group = "TRIAD_2023_10_30_Seminar_Munich_No_VAD"
     specific_group = ""
+
+    recording_times_df = pd.read_csv("data/recording_times_group_info.csv")
+    interaction_times_df = pd.read_csv("data/group_durations_all_commas.csv")
+
+    for recording_time_group in recording_times_df['long_name']:
+        print(f"Adding duration to")
+        print(f"{recording_time_group} found in interaction times file")
 
     #endregion
 
