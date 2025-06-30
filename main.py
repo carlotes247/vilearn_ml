@@ -5,6 +5,7 @@ import torch.utils.data
 from plotting.plotterClass import PlotterClass
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches # to display textured bars in plot legends
+import matplotlib.ticker as ticker # to control axis ticks
 from textwrap import wrap # to wrap plot labels because group names are too long
 import pandas as pd
 from data_reading.features.blink_stats import BlinkStats
@@ -86,7 +87,9 @@ if __name__ == "__main__":
     print_blink_stats_p_files: bool = False
     # Plotting flags
     plot_eye_openess: bool = False
-    plot_group_duration: bool = False
+    plot_group_duration_plots: bool = True # True if you want any plot to appear
+    plot_total_duration_bars: bool = False
+    plot_offset_duration_lines: bool = True
 
 
     # Testing loading data logic 12 April 2024
@@ -174,7 +177,7 @@ if __name__ == "__main__":
 
         #plotter = PlotterClass()
         #plotter.plot_eye_blinks(my_groups_manager.groups[0])
-    if plot_group_duration:
+    if plot_group_duration_plots:
         print("attempting to plot...")
         # group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
         #group_data_time_subset_filename : str = 'group_names_with_time_subsetsFullVERSION.csv'
@@ -194,11 +197,9 @@ if __name__ == "__main__":
         # distinguish f vs line formation with texture or pattern
         tex_groups : list[str] = names_durations_df['group_formation'].map({'F':'', 'Line':'/'}).to_list()
 
-        plot_bars : bool = False
-        plot_duration_lines : bool = True
         # configure plots
         fig,ax = plt.subplots()
-        if plot_bars:
+        if plot_total_duration_bars:
             # create bars
             ax.bar(names_durations_df.index, names_durations_df['duration_interaction'],color=color_groups,hatch=tex_groups)
             ax.set_title('Group Durations by Type and Formation')
@@ -209,33 +210,55 @@ if __name__ == "__main__":
             ax.legend(handles = [circ1, circ2, circ3], loc=1)
             # rotate labels for better readability
             plt.xticks(rotation=90)
-        if plot_duration_lines:
-            # create bars
-            ax.barh(names_durations_df.index, names_durations_df['duration_recording'],color=color_groups,hatch=tex_groups)
-            ax.set_title('Group Recording vs Interaction Duration')
+        if plot_offset_duration_lines:         
+            # Line graphs with all tasks duration. The Y axis has each group; the X axis has the time, where 0 is the recording time,
+            # and the line will start when the interaction (conversation) starts. This way we can see if there is a large time between 
+            # the recording start time and the interaction start time.  Differentiate between line- and F- formation, and between the group size (dyad vs triad).
+            y: float = 0
+            for index, row in names_durations_df.iterrows():
+                # First line: recording duration starts at 0
+                x1: list[float] = [0, row['duration_interaction']]
+                # Second line: interaction duration starts at offset
+                x2: list[float] = [row['offset_recording_interaction_start'], row['duration_interaction']]
+                
+                color: str = color_dyad
+                hatch: str = ""
+                if row['type'] == 'triad': color = color_triad
+                if row['group_formation'] == 'Line': hatch = '/'
+                
+                # Use barh to plot horizontal bars
+                ax.barh(y=y, width=x1[1], left=x1[0], color=color, hatch=hatch, alpha=0.5, edgecolor='black')
+                ax.barh(y=y, width=x2[1], left=x2[0], color=color, hatch=hatch, alpha=0.5, edgecolor='black')
+
+                # plt.plot(x1, [y,y], label=f'{index}', color=color, hatch=hatch, alpha=0.5, linewidth=7.0)
+                # plt.plot(x2, [y+1, y+1], label=f'{index}', color=color, hatch=hatch, alpha=0.5, linewidth=7.0)
+                y += 1
+
+            # Customize y-ticks
+            ax.set_yticks(range(len(names_durations_df['duration_interaction'])))
+            ax.set_yticklabels([index for index, row in names_durations_df.iterrows()])
+            #ax.yaxis.set_major_locator(ticker.MultipleLocator(base=2))
+            ax.set_xlabel('Time')
+            ax.set_title('Overlapping Bars with Variable Start and End')
+
             # configure legend
             circ1 = mpatches.Patch(facecolor=color_dyad,hatch='',label='dyad')
             circ2= mpatches.Patch(facecolor=color_triad,hatch='',label='triad')
             circ3 = mpatches.Patch(facecolor='white',hatch='///',label='line_formation')
             ax.legend(handles = [circ1, circ2, circ3], loc=1)
-            # rotate labels for better readability
-            plt.xticks(rotation=90)
+
+            plt.grid(axis='x')
+            plt.tight_layout()
+
+            plt.xlabel('Seconds')
+            plt.ylabel('Group')
+            plt.title('Group Durations by Type and Formation')
+            plt.grid(True)
+
         # draw plot
         plt.show()
 
-        list_group_start_TS = []
-
-        # TODO: Use dummy recording time for the moment
-        # TODO: Extract first and last TS from each group features file
-        for group in my_groups_manager.groups:
-            if (not group.group_feature_data_loaded):
-                continue
-            print(f"{group.group_name}, init recording: {group.group_feature_frames[0].ts_group},  end recording: {group.group_feature_frames[-1].ts_group_string}, duration {group.recording_duration.total_seconds()}")
-            print(f"group found in index list name {True if group.group_name in names_durations_df['long_name'].to_list() else False}")
-        # TODO: Line graphs with all tasks duration. The Y axis has each group; the X axis has the time, where 0 is the recording time,
-        # and the line will start when the interaction (conversation) starts. This way we can see if there is a large time between 
-        # the recording start time and the interaction start time.  Differentiate between line- and F- formation, and between the group size (dyad vs triad).
-        
+        list_group_start_TS = []        
 
         print("done!")
     #endregion
