@@ -8,7 +8,8 @@ import matplotlib.patches as mpatches # to display textured bars in plot legends
 from textwrap import wrap # to wrap plot labels because group names are too long
 import pandas as pd
 from data_reading.features.blink_stats import BlinkStats
-
+import datetime 
+from data_reading.group import Group
 
 #region METHODS
 
@@ -77,6 +78,7 @@ if __name__ == "__main__":
     train_torch: bool = False
     load_individual_participant_files: bool = False
     use_async: bool = False
+    modify_dataframes: bool = False
     my_groups_manager: GroupsManager
     # Debug flags
     print_debug: bool = True
@@ -95,13 +97,6 @@ if __name__ == "__main__":
     #specific_group = "TRIAD_2023_10_30_Seminar_Munich_No_VAD"
     specific_group = ""
 
-    recording_times_df = pd.read_csv("data/recording_times_group_info.csv")
-    interaction_times_df = pd.read_csv("data/group_durations_all_commas.csv")
-
-    for recording_time_group in recording_times_df['long_name']:
-        print(f"Adding duration to")
-        print(f"{recording_time_group} found in interaction times file")
-
     #endregion
 
     #region MAIN CODE
@@ -113,6 +108,22 @@ if __name__ == "__main__":
                                     load_individual_p_files=load_individual_participant_files, 
                                     print_all_stats=print_all_stats_p_files, print_blink_stats=print_blink_stats_p_files,
                                     print_debug=print_debug, use_async=use_async)
+    
+    if modify_dataframes:
+        # MODIFYING DATAFRAMES
+        recordings_TS_df = pd.read_csv("data/recording_times_group_info.csv")
+        interactions_TS_df = pd.read_csv("data/group_names_with_time_subsetsFullVERSION.csv", sep=';')
+        durations_df = pd.read_csv("data/group_durations_all_commas.csv")
+        # adding new column to durations_df
+        durations_df['offset_recording_interaction_start'] = 0
+        for recording_time_group in recordings_TS_df['long_name']:
+            record_start_time: datetime.datetime = datetime.datetime.strptime(recordings_TS_df[recordings_TS_df['long_name'] == recording_time_group]['start_recording'].values[0], '%Y-%m-%d %H:%M:%S.%f')
+            interaction_start_time: datetime.datetime = datetime.datetime.strptime(interactions_TS_df[interactions_TS_df['Group'] == recording_time_group]['Start'].values[0], '%Y-%m-%d %H:%M:%S.%f')
+            offset_record_interaction_times: datetime.timedelta = interaction_start_time - record_start_time
+            durations_df.loc[durations_df['long_name'] == recording_time_group, "offset_recording_interaction_start"] = offset_record_interaction_times.total_seconds()
+            print(f"{durations_df.loc[durations_df['long_name'] == recording_time_group, 'offset_recording_interaction_start'].values[0]}")
+        print("df modified")
+    
     if train_torch:
         # Get all groups data as a single dataset
         dataset = my_groups_manager.get_concat_groups_torch_dataset()
