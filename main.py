@@ -88,6 +88,7 @@ if __name__ == "__main__":
     # Plotting flags
     plot_eye_openess: bool = False
     plot_group_duration_plots: bool = True # True if you want any plot to appear
+    descriptive_stats: bool = False
     plot_total_duration_bars: bool = False
     plot_offset_duration_lines: bool = True
 
@@ -196,6 +197,20 @@ if __name__ == "__main__":
         color_groups : list[str] = names_durations_df['type'].map({'dyad':color_dyad, 'triad':color_triad}).to_list()
         # distinguish f vs line formation with texture or pattern
         tex_groups : list[str] = names_durations_df['group_formation'].map({'F':'', 'Line':'/'}).to_list()
+
+        if descriptive_stats: 
+            # mean dyad line
+            mean_dyad_Line = names_durations_df[(names_durations_df['type']=='dyad') & (names_durations_df['group_formation']=='Line')].describe()
+            # mean dyad F formation
+            mean_dyad_F = names_durations_df[(names_durations_df['type']=='dyad') & (names_durations_df['group_formation']=='F')].describe()
+            # mean triad line
+            mean_triad_Line = names_durations_df[(names_durations_df['type']=='triad') & (names_durations_df['group_formation']=='Line')].describe()
+            # mean traid F formation
+            mean_triad_F = names_durations_df[(names_durations_df['type']=='triad') & (names_durations_df['group_formation']=='F')].describe()
+            print(f"dyad Line mean is: {mean_dyad_Line}")
+            print(f"dyad F mean is: {mean_dyad_F}")
+            print(f"triad Line mean is: {mean_triad_Line}")
+            print(f"triad F mean is: {mean_triad_F}")
 
         # configure plots
         fig,ax = plt.subplots()
