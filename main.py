@@ -90,7 +90,8 @@ if __name__ == "__main__":
     plot_group_duration_plots: bool = True # True if you want any plot to appear
     descriptive_stats: bool = False
     plot_total_duration_bars: bool = False
-    plot_offset_duration_lines: bool = True
+    plot_offset_duration_lines: bool = False
+    plot_task_engagement: bool = True
 
 
     # Testing loading data logic 12 April 2024
@@ -269,7 +270,7 @@ if __name__ == "__main__":
             plt.ylabel('Group')
             plt.title('Group Durations by Type and Formation')
             plt.grid(True)
-
+        
         # draw plot
         plt.show()
 
