@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-class EngagementAverager:
+class EngagementProcessor:
 
     col_names = ["task_eng", "conf"]
     path_file_1: str = "data/annotations/dyad_01/group.task engagement.helenrisack.annotation~"
@@ -78,5 +78,5 @@ if __name__ == '__main__':
     path_groups_info: str = "data/group_durations_all_commas.csv"
     group_name: str = "dyad_01"
 
-    processor: EngagementAverager = EngagementAverager(path_groups_info, path_file_1, path_file_2, group_name)
+    processor: EngagementProcessor = EngagementProcessor(path_groups_info, path_file_1, path_file_2, group_name)
     processor.process_task_engagement(save_to_disk=True)
