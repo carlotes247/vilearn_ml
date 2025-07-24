@@ -9,9 +9,11 @@ col_names = ["task_eng", "conf"]
 path_file_1: str = "data/annotations/dyad_01/group.task engagement.helenrisack.annotation~"
 path_file_2: str = "data/annotations/dyad_01/task engagement.group.carlosgonzalez.annotation~"
 path_groups_info: str = "data/group_durations_all_commas.csv"
-offset_interaction_start: float = 0
+interaction_start: float = 0
+interaction_end: float = 0
 interaction_length: float = 0
 group_name: str = "dyad_01"
+save_df: bool = True
 
 
 def avg_eng_files(df_1: pd.DataFrame, df_2: pd.DataFrame) -> pd.DataFrame:
@@ -34,10 +36,21 @@ def avg_eng_files(df_1: pd.DataFrame, df_2: pd.DataFrame) -> pd.DataFrame:
 if __name__ == '__main__':
     df_eng_1: pd.DataFrame = pd.read_csv(path_file_1, sep=";", names=col_names)
     df_eng_2 : pd.DataFrame = pd.read_csv(path_file_2, sep=";", names=col_names)
-
     df_avg: pd.DataFrame = avg_eng_files(df_eng_1, df_eng_2)
+    # add column for seconds per frame
+    ts_secs = [x * (1/90) for x in range(len(df_avg))]
+    df_avg['seconds'] = ts_secs
+    # get start and end of interaction
     df_groups_info = pd.read_csv(path_groups_info)
     col_mask = df_groups_info['name'] == group_name
     offset_interaction_start = df_groups_info[col_mask]['offset_recording_interaction_start'].values[0]
     interaction_length = df_groups_info[col_mask]['duration_interaction'].values[0]
+    interaction_end = offset_interaction_start + interaction_length
+    # slice df to only get interaction time
+    index_interaction_start = (df_avg['seconds']-offset_interaction_start).abs().argsort()[:1]
+    index_interaction_end = (df_avg['seconds']-interaction_end).abs().argsort()[:1]
+    df_interaction = df_avg.loc[index_interaction_start.values[0]:index_interaction_end.values[0]]
+    if save_df:
+        df_avg.to_csv(f"data/annotations/{group_name}/task_engagement_avg_all.csv")
+        df_interaction.to_csv(f"data/annotations/{group_name}/task_engagement_avg_interaction.csv")
     print("done")
