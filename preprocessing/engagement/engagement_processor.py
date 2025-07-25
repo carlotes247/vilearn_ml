@@ -67,8 +67,8 @@ class EngagementProcessor:
         interaction_start, interaction_end = self.__get_start_end_interaction(self.df_groups_info, group_name=group_name)
         df_interaction = self.__slice_interaction_time(df_avg, interaction_start, interaction_end)
         if save_to_disk:
-            df_avg.to_csv(f"data/annotations/{group_name}/task_engagement_avg_all.csv")
-            df_interaction.to_csv(f"data/annotations/{group_name}/task_engagement_avg_interaction.csv")
+            df_avg.to_csv(f"data/annotations/recording_{group_name}/task_engagement_avg_all.csv")
+            df_interaction.to_csv(f"data/annotations/recording_{group_name}/task_engagement_avg_interaction.csv")
 
         return pd.DataFrame()
 
