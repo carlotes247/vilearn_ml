@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<annotation ssi-v="3">
+    <info ftype="ASCII" size="41074" />
+    <meta role="group" annotator="helenrisack" />
+    <scheme name="task engagement" type="CONTINUOUS" sr="90.000000" min="0" max="1" />
+</annotation>

@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<annotation ssi-v="3">
+    <info ftype="ASCII" size="52972" />
+    <meta annotator="" role=""/>
+    <scheme name="task engagement60Hz" type="CONTINUOUS" sr="60" min="0" max="1" mincolor="#FFFFFFFF" maxcolor="#FFADD8E6" />
+</annotation>
