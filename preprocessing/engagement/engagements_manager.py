@@ -1,4 +1,7 @@
-from engagement_processor import EngagementProcessor
+if __name__ != "__main__":
+    from preprocessing.engagement.engagement_processor import EngagementProcessor
+else:
+    from engagement_processor import EngagementProcessor
 import os
 import pandas as pd
 import numpy as np
@@ -9,10 +12,11 @@ class EngagementsManager:
     data_path: str = "data/annotations"
     path_groups_info: str = "data/group_durations_all_commas.csv"
     folders: list[str]
+    df_avg_eng_all: pd.DataFrame
 
     def __init__(self, save_to_disk: bool) -> None:
         self.load_engagements(save_to_disk=save_to_disk)
-        pass
+        self.avg_engagements(save_to_disk=save_to_disk)
 
     def load_engagements(self, save_to_disk: bool):
         self.folders = os.listdir(self.data_path)
@@ -21,8 +25,7 @@ class EngagementsManager:
             folder_path: str = f"{self.data_path}/{folder}"
             eng_processor = EngagementProcessor(path_groups_info=self.path_groups_info, path_folder=folder_path, group_name=folder.replace("recording_", ""))
             eng_processor.process_task_engagement(save_to_disk=save_to_disk)
-            self.engagements_list.append(eng_processor)
-        pass
+            self.engagements_list.append(eng_processor)        
 
     def avg_engagements(self, save_to_disk: bool):
         if len(self.engagements_list) == 0:
@@ -39,12 +42,10 @@ class EngagementsManager:
         df_only_values = df_combined.drop('seconds', axis=1)
         df_combined['average_value'] = df_only_values.mean(axis=1)
         df_combined['groups'] = df_only_values.count(axis=1)
+        self.df_avg_eng_all = df_combined
         if save_to_disk:
-            df_combined.to_csv("data/annotations/all_groups_task_eng.csv")    
-        print("done!!")
-                
+            df_combined.to_csv("data/annotations/all_groups_task_eng.csv")                    
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     mngr_aux: EngagementsManager = EngagementsManager(False)
-    mngr_aux.avg_engagements(False)
     print("done")

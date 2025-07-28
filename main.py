@@ -11,6 +11,7 @@ import pandas as pd
 from data_reading.features.blink_stats import BlinkStats
 import datetime 
 from data_reading.group import Group
+from preprocessing.engagement.engagements_manager import EngagementsManager
 
 #region METHODS
 
@@ -270,7 +271,9 @@ if __name__ == "__main__":
             plt.ylabel('Group')
             plt.title('Group Durations by Type and Formation')
             plt.grid(True)
-        
+        if plot_task_engagement:
+            mngr_aux: EngagementsManager = EngagementsManager(False)
+            mngr_aux.df_avg_eng_all['average_value'].plot()
         # draw plot
         plt.show()
 
