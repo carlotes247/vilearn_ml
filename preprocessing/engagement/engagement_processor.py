@@ -19,6 +19,9 @@ class EngagementProcessor:
     df_eng_1: pd.DataFrame 
     df_eng_2 : pd.DataFrame 
     df_groups_info: pd.DataFrame
+    df_avg_all: pd.DataFrame = pd.DataFrame()
+    df_avg_interaction: pd.DataFrame = pd.DataFrame()
+    finished_processing: bool = False
 
 
     def __init__(self, path_groups_info:str, path_folder: str, group_name: str):
@@ -104,6 +107,9 @@ class EngagementProcessor:
         if save_to_disk:
             df_avg.to_csv(f"data/annotations/recording_{self.group_name}/task_engagement{self.freq}Hz_avg_all.csv")
             df_interaction.to_csv(f"data/annotations/recording_{self.group_name}/task_engagement{self.freq}Hz_avg_interaction.csv")
+        self.df_avg_all = df_avg
+        self.df_avg_interaction = df_interaction
+        self.finished_processing = True
         return df_avg, df_interaction
 
 if __name__ == '__main__':
