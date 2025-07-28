@@ -80,11 +80,25 @@ class EngagementProcessor:
         index_interaction_end = (df['seconds']-end).abs().argsort()[:1]
         df_return = df.loc[index_interaction_start.values[0]:index_interaction_end.values[0]]
         return df_return
+    
+    def __interpolate_eng(self, df: pd.DataFrame, freq_original: float, freq_target: float) -> pd.DataFrame:
+        # Cannot interpolate down
+        if freq_original > freq_target:
+            return pd.DataFrame()
+        # new timesteps        
+        new_seconds = np.arange(df['seconds'].min(), df['seconds'].max(), 1/freq_target)
+        # interpolate
+        interpolated_values = np.interp(new_seconds, df['seconds'], df['task_eng'])
+        df_result = pd.DataFrame({'task_eng': interpolated_values, 'seconds': new_seconds})
+        return df_result
 
     def process_task_engagement(self, save_to_disk:bool) -> tuple[pd.DataFrame, pd.DataFrame]:
         df_avg, result = self.__avg_eng_files_TS_secs(self.df_eng_1, self.df_eng_2)
         if not result:
             return pd.DataFrame(), pd.DataFrame()
+        if self.freq < 90:
+            df_avg = self.__interpolate_eng(df_avg, self.freq, 90)
+            self.freq = 90
         interaction_start, interaction_end = self.__get_start_end_interaction(self.df_groups_info, group_name=self.group_name)
         df_interaction = self.__slice_interaction_time(df_avg, interaction_start, interaction_end)
         if save_to_disk:
