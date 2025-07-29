@@ -272,8 +272,22 @@ if __name__ == "__main__":
             plt.title('Group Durations by Type and Formation')
             plt.grid(True)
         if plot_task_engagement:
-            mngr_aux: EngagementsManager = EngagementsManager(False)
-            mngr_aux.df_avg_eng_all['average_value'].plot()
+            eng_mngr: EngagementsManager = EngagementsManager(False)
+            #eng_mngr.df_avg_eng_all['average_value'].plot()
+            # dyads
+            x = eng_mngr.df_avg_eng_all['seconds']
+            y_dyads = eng_mngr.df_avg_eng_dyads['avg_task_eng']
+            num_dyads = eng_mngr.df_avg_eng_dyads.groups.drop_duplicates()
+            
+            plt.plot(x, y_dyads)
+            for i, num in enumerate(num_dyads):
+                index_num_dyads = num_dyads.index[i]
+                pos_x: float = x[index_num_dyads].item()
+                plt.text(pos_x, 0.6, f'{num}')
+                plt.axvline(pos_x)
+            # triads
+            y_triads = eng_mngr.df_avg_eng_triads['avg_task_eng']
+
         # draw plot
         plt.show()
 

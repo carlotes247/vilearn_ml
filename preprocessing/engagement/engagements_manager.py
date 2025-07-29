@@ -13,6 +13,8 @@ class EngagementsManager:
     path_groups_info: str = "data/group_durations_all_commas.csv"
     folders: list[str]
     df_avg_eng_all: pd.DataFrame
+    df_avg_eng_dyads: pd.DataFrame
+    df_avg_eng_triads: pd.DataFrame
 
     def __init__(self, save_to_disk: bool) -> None:
         self.load_engagements(save_to_disk=save_to_disk)
@@ -38,11 +40,27 @@ class EngagementsManager:
         # Add each value series to the merged DataFrame
         for i, processor in enumerate(finished_list):
             df_combined = df_combined.merge(processor.df_avg_all, on='seconds', how='left', suffixes=('', f'_{processor.group_name}'))            
+        df_combined.rename(columns={'task_eng' : 'task_eng_dyad_01'}, inplace=True)
+        # dataframes for dyads and triads
+        cols_dyads = df_combined.columns[df_combined.columns.str.contains('dyad')]
+        df_eng_dyads: pd.DataFrame = df_combined[cols_dyads]
+        avg_eng_dyads = df_eng_dyads.mean(axis=1)
+        df_eng_dyads['groups'] = df_eng_dyads.count(axis=1)
+        df_eng_dyads['avg_task_eng'] = avg_eng_dyads
+        df_eng_dyads['seconds'] = df_combined['seconds']
+        cols_triads = df_combined.columns[df_combined.columns.str.contains('triad')]
+        df_eng_triads: pd.DataFrame = df_combined[cols_triads]
+        avg_eng_triads = df_eng_triads.mean(axis=1)
+        df_eng_triads['groups'] = df_eng_triads.count(axis=1)
+        df_eng_triads['avg_task_eng'] = avg_eng_triads
+        df_eng_triads['seconds'] = df_combined['seconds']
         # drop seconds to not skew mean and get number of groups that still have values
         df_only_values = df_combined.drop('seconds', axis=1)
         df_combined['average_value'] = df_only_values.mean(axis=1)
         df_combined['groups'] = df_only_values.count(axis=1)
         self.df_avg_eng_all = df_combined
+        self.df_avg_eng_dyads = df_eng_dyads
+        self.df_avg_eng_triads = df_eng_triads
         if save_to_disk:
             df_combined.to_csv("data/annotations/all_groups_task_eng.csv")                    
 
