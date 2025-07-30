@@ -14,16 +14,17 @@ class GazeStats:
     # "group_size" int, group size
     # 'gaze_df': index: timestamp, columns (int:[0,1,2,3]): 'P{1, 2, or 3}_DG_target' (it can take the following values:
     #                           0: no direct gaze, 1: direct gaze towards P1, 2: direct gaze towards P2, 3: direct gaze towards P3)
-    # 'mutual_gaze_dataframe': index: timestamp, columns (bool): 'P1P2_MG', 'P1P3_MG', 'P2P3_MG',
+    #                           and columns (int 0 or 1): 'P1P2_MG', 'P1P3_MG', 'P2P3_MG',
     groups_gaze_with_timestamps: list[dict]
 
     path_going_up_two_folders = "../../"
     path_prefix_file = path_going_up_two_folders + "data/_path_prefix.txt"
     data_folder_path = path_going_up_two_folders + "data/"
 
+    use_interaction_time:bool = True
 
-
-    def __init__(self, group_names: list[str] = [], group_names_filename: str = ""):
+    def __init__(self, group_names: list[str] = [], group_names_filename: str = "", use_interaction_time: bool = True):
+        self.use_interaction_time = use_interaction_time
         self.groups_gaze_with_timestamps = []
         raw_data = pd.DataFrame
 
@@ -75,28 +76,27 @@ class GazeStats:
             # sorting the index (timestamps) as the next fuction won't work on a non-soted list. even though it is sorted
             current_group_dataframe.sort_index(inplace=True)
 
-            # get the correct subset of the dataframe
-            start_time_timestamp = pd.to_datetime(row['Start'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
-            end_time_timestamp = pd.to_datetime(row['End'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
-            interaction_subset_dataframe = group_data.get_subset_df_based_on_interaction_start_and_end(start_time_timestamp,
-                                                                                            end_time_timestamp,
-                                                                                            current_group_dataframe)
+            if self.use_interaction_time:
+                # get the correct subset of the dataframe
+                start_time_timestamp = pd.to_datetime(row['Start'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
+                end_time_timestamp = pd.to_datetime(row['End'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
+                current_group_dataframe = group_data.get_subset_df_based_on_interaction_start_and_end(start_time_timestamp,
+                                                                                                end_time_timestamp,
+                                                                                                current_group_dataframe)
 
-            # calculate the MG and add new collumns to the df:
-            interaction_subset_dataframe["MG_P1P2"] =((interaction_subset_dataframe['DG_P1_target'] == 2)
-                                                      & (interaction_subset_dataframe['DG_P2_target'] == 1)).astype(int)
+            # calculate the MG and add new columns to the df:
+            current_group_dataframe["MG_P1P2"] =((current_group_dataframe['DG_P1_target'] == 2)
+                                                      & (current_group_dataframe['DG_P2_target'] == 1)).astype(int)
             if group_data.num_participants>2:
-                interaction_subset_dataframe["MG_P1P3"] = ((interaction_subset_dataframe['DG_P1_target'] == 3)
-                                                           & (interaction_subset_dataframe[
-                                                                  'DG_P3_target'] == 1)).astype(int)
-                interaction_subset_dataframe["MG_P2P3"] = ((interaction_subset_dataframe['DG_P2_target'] == 3)
-                                                           & (interaction_subset_dataframe[
-                                                                  'DG_P3_target'] == 2)).astype(int)
+                current_group_dataframe["MG_P1P3"] = ((current_group_dataframe['DG_P1_target'] == 3)
+                                                           & (current_group_dataframe['DG_P3_target'] == 1)).astype(int)
+                current_group_dataframe["MG_P2P3"] = ((current_group_dataframe['DG_P2_target'] == 3)
+                                                           & (current_group_dataframe['DG_P3_target'] == 2)).astype(int)
 
 
             # put all the info into a dictionary and then add it to a list
             d = {'group_name': group_data.group_name, 'group_size': group_data.num_participants,
-                 'gaze_df': interaction_subset_dataframe}
+                 'gaze_df': current_group_dataframe}
 
             # append the dataframe to the list of all the groups.
             self.groups_gaze_with_timestamps.append(d)
