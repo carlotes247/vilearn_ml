@@ -81,7 +81,10 @@ class EngagementProcessor:
         # slice df to only get interaction time
         index_interaction_start = (df['seconds']-start).abs().argsort()[:1]
         index_interaction_end = (df['seconds']-end).abs().argsort()[:1]
-        df_return = df.loc[index_interaction_start.values[0]:index_interaction_end.values[0]]
+        df_return: pd.DataFrame = pd.DataFrame(df.loc[index_interaction_start.values[0]:index_interaction_end.values[0]])
+        # add column for seconds per frame for interaction time
+        ts_secs: list[float] = [x * (1/self.freq) for x in range(len(df_return))]
+        df_return['seconds_interaction'] = ts_secs
         return df_return
     
     def __interpolate_eng(self, df: pd.DataFrame, freq_original: float, freq_target: float) -> pd.DataFrame:
