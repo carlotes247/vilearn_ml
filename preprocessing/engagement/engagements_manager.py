@@ -30,7 +30,16 @@ class EngagementsManager:
             folder_path: str = f"{self.data_path}/{folder}"
             eng_processor = EngagementProcessor(path_groups_info=self.path_groups_info, path_folder=folder_path, group_name=folder.replace("recording_", ""))
             eng_processor.process_task_engagement(save_to_disk=save_to_disk)
-            self.engagements_list.append(eng_processor)        
+            self.engagements_list.append(eng_processor)   
+
+    def __slice_process_avg_df(self, df_combined: pd.DataFrame, keyword_cols: str):
+        cols = df_combined.columns[df_combined.columns.str.contains(keyword_cols)]
+        df_eng: pd.DataFrame = pd.DataFrame(df_combined[cols])
+        avg_eng = df_eng.mean(axis=1)
+        df_eng['groups'] = df_eng.count(axis=1)
+        df_eng['avg_task_eng'] = avg_eng
+        df_eng['seconds'] = df_combined['seconds']     
+        return df_eng
 
     def avg_engagements(self, save_to_disk: bool):
         if len(self.engagements_list) == 0:
@@ -47,39 +56,18 @@ class EngagementsManager:
             df_combined = df_combined.merge(processor.df_avg_all, on='seconds', how='left', suffixes=('', f'_{processor.group_name}'))            
             df_combined_interaction = df_combined_interaction.merge(processor.df_avg_interaction, on='seconds_interaction', how='left', suffixes=('', f'_{processor.group_name}'))            
         df_combined.rename(columns={'task_eng' : 'task_eng_dyad_01'}, inplace=True)
-        df_combined_interaction.rename(columns={'task_eng' : 'task_eng_dyad_01', 'seconds' : 'seconds_dyad_01'}, inplace=True)
+        df_combined_interaction.rename(columns={'task_eng' : 'task_eng_dyad_01', 'seconds' : 'seconds_dyad_01'}, inplace=True)        
+        df_combined_interaction.rename(columns={'seconds_interaction' : 'seconds'}, inplace=True)
         # dataframes for dyads and triads
         # dyads
-        cols_dyads = df_combined.columns[df_combined.columns.str.contains('dyad')]
-        df_eng_dyads: pd.DataFrame = pd.DataFrame(df_combined[cols_dyads])
-        df_eng_dyads_interaction: pd.DataFrame = pd.DataFrame(df_combined_interaction[cols_dyads])
-        avg_eng_dyads = df_eng_dyads.mean(axis=1)
-        avg_eng_dyads_interaction = df_eng_dyads_interaction.mean(axis=1)
-        df_eng_dyads['groups'] = df_eng_dyads.count(axis=1)
-        df_eng_dyads_interaction['groups'] = df_eng_dyads_interaction.count(axis=1)
-        df_eng_dyads['avg_task_eng'] = avg_eng_dyads
-        df_eng_dyads_interaction['avg_task_eng'] = avg_eng_dyads_interaction
-        df_eng_dyads['seconds'] = df_combined['seconds']
-        df_eng_dyads_interaction['seconds_interaction'] = df_combined_interaction['seconds_interaction']
+        df_eng_dyads: pd.DataFrame = self.__slice_process_avg_df(df_combined=df_combined, keyword_cols='dyad')
+        df_eng_dyads_interaction: pd.DataFrame = self.__slice_process_avg_df(df_combined=df_combined_interaction, keyword_cols='task_eng_dyad')
         # triads
-        cols_triads = df_combined.columns[df_combined.columns.str.contains('triad')]
-        df_eng_triads: pd.DataFrame = pd.DataFrame(df_combined[cols_triads])
-        df_eng_triads_interaction: pd.DataFrame = pd.DataFrame(df_combined_interaction[cols_triads])
-        avg_eng_triads = df_eng_triads.mean(axis=1)
-        avg_eng_triads_interaction = df_eng_triads_interaction.mean(axis=1)
-        df_eng_triads['groups'] = df_eng_triads.count(axis=1)
-        df_eng_triads_interaction['groups'] = df_eng_triads_interaction.count(axis=1)
-        df_eng_triads['avg_task_eng'] = avg_eng_triads
-        df_eng_triads_interaction['avg_task_eng'] = avg_eng_triads_interaction
-        df_eng_triads['seconds'] = df_combined['seconds']
-        df_eng_triads_interaction['seconds_interaction'] = df_combined_interaction['seconds_interaction']
-        # drop seconds to not skew mean and get number of groups that still have values
-        df_only_values: pd.DataFrame = df_combined.drop('seconds', axis=1)
-        df_only_values_interaction: pd.DataFrame = df_combined_interaction.drop(list(df_combined_interaction.filter(regex='seconds')), axis=1)
-        df_combined['avg_task_eng'] = df_only_values.mean(axis=1)
-        df_combined_interaction['avg_task_eng'] = df_only_values_interaction.mean(axis=1)
-        df_combined['groups'] = df_only_values.count(axis=1)
-        df_combined_interaction['groups'] = df_only_values_interaction.count(axis=1)
+        df_eng_triads: pd.DataFrame = self.__slice_process_avg_df(df_combined=df_combined, keyword_cols='triad')
+        df_eng_triads_interaction: pd.DataFrame = self.__slice_process_avg_df(df_combined=df_combined_interaction, keyword_cols='task_eng_triad')
+        # both
+        df_combined = self.__slice_process_avg_df(df_combined=df_combined, keyword_cols='task_eng')
+        df_combined_interaction = self.__slice_process_avg_df(df_combined=df_combined_interaction, keyword_cols='task_eng')
         self.df_avg_eng_all = df_combined
         self.df_avg_eng_dyads = df_eng_dyads
         self.df_avg_eng_triads = df_eng_triads
@@ -95,5 +83,5 @@ class EngagementsManager:
             df_eng_triads_interaction.to_csv("data/annotations/triads_interaction_task_eng90Hz.csv")
 
 if __name__ == "__main__":    
-    mngr_aux: EngagementsManager = EngagementsManager(True)
+    mngr_aux: EngagementsManager = EngagementsManager(False)
     print("done")
