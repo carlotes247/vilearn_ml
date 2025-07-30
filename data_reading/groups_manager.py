@@ -34,7 +34,6 @@ class GroupsManager:
         self.onlyTorch = onlyTorch
         self.groups_torch_data = []
         self.specific_group = specific_group
-        # modify this to populate the list of all_groups_names from a list;
         if all_groups_names_path and all_groups_names_path != "":
             self.all_groups_names = pd.read_csv(all_groups_names_path).columns.to_list()
         else:
