@@ -14,17 +14,16 @@ class GazeStats:
     # "group_size" int, group size
     # 'gaze_df': index: timestamp, columns (int:[0,1,2,3]): 'P{1, 2, or 3}_DG_target' (it can take the following values:
     #                           0: no direct gaze, 1: direct gaze towards P1, 2: direct gaze towards P2, 3: direct gaze towards P3)
-    #                           and columns (int 0 or 1): 'P1P2_MG', 'P1P3_MG', 'P2P3_MG',
+    #                           and columns (int 0 or 1): 'P1P2_MG', 'P1P3_MG', 'P2P3_MG'
+    #           seconds_interaction, seconds_recording: time since the interaction or the recording started
     groups_gaze_with_timestamps: list[dict]
 
     path_going_up_two_folders = "../../"
     path_prefix_file = path_going_up_two_folders + "data/_path_prefix.txt"
     data_folder_path = path_going_up_two_folders + "data/"
 
-    use_interaction_time:bool = True
 
-    def __init__(self, group_names: list[str] = [], group_names_filename: str = "", use_interaction_time: bool = True):
-        self.use_interaction_time = use_interaction_time
+    def __init__(self, group_names: list[str] = [], group_names_filename: str = ""):
         self.groups_gaze_with_timestamps = []
         raw_data = pd.DataFrame
 
@@ -47,7 +46,7 @@ class GazeStats:
         for index, row in data_for_calculating_subsets.iterrows():
 
             current_group_dataframe = pd.DataFrame()
-            my_groups_manager = GroupsManager(self.path_prefix_file, self.data_folder_path, specific_group=row['Group'], all_groups_names_path="",
+            my_groups_manager = GroupsManager(self.path_prefix_file, self.data_folder_path, specific_group=row['Group_Name_Long'], all_groups_names_path="",
                                               onlyTorch=False, load_individual_p_files=False, print_all_stats=False, print_blink_stats=False, use_async=False, print_debug=False)
             group_data = my_groups_manager.groups[0]
             group_data_raw_df = group_data.group_features_csv_loader.raw_data
@@ -69,20 +68,27 @@ class GazeStats:
 
             # adding the timestap to the df
             current_group_dataframe = pd.concat([current_group_dataframe, timestamps], axis='columns')
-            # drop any repeated timestamps
-            current_group_dataframe = current_group_dataframe.drop_duplicates(subset=['TSGroupNTP'])
-            # set the index to the timestamp to easily get a subset of it based on the correct group conversation
-            current_group_dataframe = current_group_dataframe.set_index('TSGroupNTP')
-            # sorting the index (timestamps) as the next fuction won't work on a non-soted list. even though it is sorted
-            current_group_dataframe.sort_index(inplace=True)
+            # add the recording time in seconds as another column
+            current_group_dataframe['seconds_recording'] = (current_group_dataframe['TSGroupNTP'] -
+                                                              current_group_dataframe['TSGroupNTP'][0]).dt.total_seconds()
 
-            if self.use_interaction_time:
-                # get the correct subset of the dataframe
-                start_time_timestamp = pd.to_datetime(row['TS_Start_Interaction'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
-                end_time_timestamp = pd.to_datetime(row['TS_End_Interaction'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
-                current_group_dataframe = group_data.get_subset_df_based_on_interaction_start_and_end(start_time_timestamp,
-                                                                                                end_time_timestamp,
-                                                                                                current_group_dataframe)
+            #get the info to calculate the interaction time in seconds
+            start_interaction_timestamp = pd.to_datetime(row['TS_Start_Interaction'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
+            end_interaction_timestamp = pd.to_datetime(row['TS_End_Interaction'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
+            duration_interaction = (end_interaction_timestamp - start_interaction_timestamp).total_seconds()
+
+            # add the interaction time in seconds as another column; this will sort out the start (0, negative vals will
+            # be removed) and the end will be removed using the duration value
+            current_group_dataframe['seconds_interaction'] = (current_group_dataframe['TSGroupNTP'] -
+                                                              start_interaction_timestamp).dt.total_seconds()
+            #setting to NAN the negative values
+            current_group_dataframe['seconds_interaction'] = (current_group_dataframe['seconds_interaction'].mask
+                                                              (current_group_dataframe['seconds_interaction'] < 0))
+            #setting to NAN the values larger than the duration of the interaction
+            current_group_dataframe['seconds_interaction'] = (current_group_dataframe['seconds_interaction'].mask
+                                                              (current_group_dataframe['seconds_interaction'] >
+                                                               duration_interaction))
+
 
             # calculate the MG and add new columns to the df:
             current_group_dataframe["MG_P1P2"] =((current_group_dataframe['DG_P1_target'] == 2)
@@ -95,7 +101,7 @@ class GazeStats:
 
 
             # put all the info into a dictionary and then add it to a list
-            d = {'group_name': group_data.group_name, 'group_size': group_data.num_participants,
+            d = {'group_name': row['Group_Name'], 'group_size': group_data.num_participants,
                  'gaze_df': current_group_dataframe}
 
             # append the dataframe to the list of all the groups.
