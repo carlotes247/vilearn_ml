@@ -78,8 +78,8 @@ class GazeStats:
 
             if self.use_interaction_time:
                 # get the correct subset of the dataframe
-                start_time_timestamp = pd.to_datetime(row['Start'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
-                end_time_timestamp = pd.to_datetime(row['End'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
+                start_time_timestamp = pd.to_datetime(row['TS_Start_Interaction'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
+                end_time_timestamp = pd.to_datetime(row['TS_End_Interaction'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
                 current_group_dataframe = group_data.get_subset_df_based_on_interaction_start_and_end(start_time_timestamp,
                                                                                                 end_time_timestamp,
                                                                                                 current_group_dataframe)
