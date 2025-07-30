@@ -77,7 +77,7 @@ class BlinkStats:
         for index, row in data_for_calculating_subsets.iterrows():
 
             current_group_dataframe = pd.DataFrame()
-            my_groups_manager = GroupsManager(self.path_prefix_file, self.data_folder_path, specific_group=row['Group'],
+            my_groups_manager = GroupsManager(self.path_prefix_file, self.data_folder_path, specific_group=row['Group_Name_Long'],
                                               onlyTorch=False, load_individual_p_files=False, print_all_stats=False,
                                               print_blink_stats=False)
             group_data = my_groups_manager.groups[0]
@@ -90,7 +90,7 @@ class BlinkStats:
 
             current_group_valid_interaction_time_seconds = 0
 
-            if "DYAD" in row['Group']:
+            if "DYAD" in row['Group_Name_Long']:
                 group_size = 2
             else:
                 group_size = 3
@@ -123,12 +123,12 @@ class BlinkStats:
             current_group_dataframe.sort_index(inplace=True)
 
             # get the correct subset of the dataframe
-            start_time_timestamp = pd.to_datetime(row['Start'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
+            start_time_timestamp = pd.to_datetime(row['TS_Start_Interaction'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
             # get the index of the start timestamp for the subset window
             index_of_start_timestamp = current_group_dataframe.index.get_indexer([start_time_timestamp], method='nearest')
             start_timestamp_available_in_df = current_group_dataframe.index[index_of_start_timestamp[0]]
 
-            end_time_timestamp = pd.to_datetime(row['End'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
+            end_time_timestamp = pd.to_datetime(row['TS_End_Interaction'], utc=True, format='%Y-%m-%d %H:%M:%S.%f')
             # get the index of the end timestamp for the subset window
             index_of_end_timestamp = current_group_dataframe.index.get_indexer([end_time_timestamp], method='nearest')
             end_timestamp_available_in_df = current_group_dataframe.index[index_of_end_timestamp[0]]
@@ -203,7 +203,7 @@ class BlinkStats:
                     (bin_timelag, value / total_minutes_within_the_timespan) for bin_timelag, value in current_blinks_async_250ms_bins.items())
 
             # put all the info into a dictionary and then add it to a list
-            d = {'group_name': row['Group'], 'group_size': group_size, 'group_blink_collisions': group_collisions,
+            d = {'group_name': row['Group_Name_Long'], 'group_size': group_size, 'group_blink_collisions': group_collisions,
                  'blinks_async_250ms_bins':current_blinks_async_250ms_bins, 'blinks_dataframe': valid_subset_data,
                  'blinks_durations_ms':current_blinks_durations_ms,
                  'interaction_duration_seconds':current_group_valid_interaction_time_seconds}

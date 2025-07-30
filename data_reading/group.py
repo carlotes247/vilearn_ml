@@ -1,3 +1,5 @@
+import pandas
+
 from data_reading.participant import Participant
 from data_reading.features.group_feature_frame import GroupFeatureFrame
 from data_reading.group_csv_data_loader import GroupCSVDataLoader
@@ -59,3 +61,18 @@ class Group:
 
         else:
             self.group_features_csv_loader = None
+
+
+    # start and end time are in this format: utc = True, format = '%Y-%m-%d %H:%M:%S.%f'
+    def get_subset_df_based_on_interaction_start_and_end(self, start_time_timestamp:datetime, end_time_timestamp:datetime,
+                                                         recorded_group_dataframe:pandas.DataFrame):
+        # get the index of the start timestamp for the subset window
+        index_of_start_timestamp = recorded_group_dataframe.index.get_indexer([start_time_timestamp], method='nearest')
+        start_timestamp_available_in_df = recorded_group_dataframe.index[index_of_start_timestamp[0]]
+
+        # get the index of the end timestamp for the subset window
+        index_of_end_timestamp = recorded_group_dataframe.index.get_indexer([end_time_timestamp], method='nearest')
+        end_timestamp_available_in_df = recorded_group_dataframe.index[index_of_end_timestamp[0]]
+
+        # get the dataframe subset
+        return recorded_group_dataframe[start_timestamp_available_in_df:end_timestamp_available_in_df]
