@@ -34,7 +34,11 @@ class GroupsManager:
         self.onlyTorch = onlyTorch
         self.groups_torch_data = []
         self.specific_group = specific_group
-        self.all_groups_names = pd.read_csv(all_groups_names_path).columns.to_list()
+        # modify this to populate the list of all_groups_names from a list;
+        if all_groups_names_path and all_groups_names_path != "":
+            self.all_groups_names = pd.read_csv(all_groups_names_path).columns.to_list()
+        else:
+            self.all_groups_names = []
         self.use_async = use_async
         self.path_folder_groups = path_folder_groups
         self.load_individual_p_files = load_individual_p_files
@@ -89,12 +93,13 @@ class GroupsManager:
     def read_all_groups_loop(self, path_folder_groups: str, specific_group: str, load_individual_p_files: bool, print_all_stats: bool, print_blink_stats: bool) -> int:     
         """ Reads all groups in a for loop """   
         num_files: int = 0
+        specific_group_exists: bool = (specific_group and specific_group != "")
         for group_file_name in os.listdir(path_folder_groups):
-            # if the file is not in the list of group names to work with we skip to avoid loading errors
-            if (not Path(group_file_name).stem in self.all_groups_names):
-                continue
             # if we have a specific group to only load data from, skip until that group is loaded
-            if (specific_group and specific_group != "" and specific_group != Path(group_file_name).stem):
+            if (specific_group_exists and specific_group != Path(group_file_name).stem):
+                continue
+            # if the file is not in the list of group names to work with we skip to avoid loading errors
+            if ((not specific_group_exists) and (not Path(group_file_name).stem in self.all_groups_names)):
                 continue
             # Construct the full file path
             group_file_path = os.path.join(path_folder_groups, group_file_name)
