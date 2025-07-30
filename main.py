@@ -6,6 +6,7 @@ from plotting.plotterClass import PlotterClass
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches # to display textured bars in plot legends
 import matplotlib.ticker as ticker # to control axis ticks
+import matplotlib.lines as lines # to display lines in plot legends
 from textwrap import wrap # to wrap plot labels because group names are too long
 import pandas as pd
 from data_reading.features.blink_stats import BlinkStats
@@ -92,7 +93,9 @@ if __name__ == "__main__":
     descriptive_stats: bool = False
     plot_total_duration_bars: bool = False
     plot_offset_duration_lines: bool = False
-    plot_task_engagement: bool = True
+    plot_task_engagement: bool = True # true if you want any task engagement plot
+    plot_task_engagement_dyads: bool = True # for dyads task engagement
+    plot_task_engagement_triads: bool = False # for triads task engagement
 
 
     # Testing loading data logic 12 April 2024
@@ -271,23 +274,50 @@ if __name__ == "__main__":
             plt.ylabel('Group')
             plt.title('Group Durations by Type and Formation')
             plt.grid(True)
+        #region TASK ENG PLOTS
         if plot_task_engagement:
             eng_mngr: EngagementsManager = EngagementsManager(False)
-            #eng_mngr.df_avg_eng_all['average_value'].plot()
-            # dyads
+            #eng_mngr.df_avg_eng_all['average_value'].plot()            
             x = eng_mngr.df_avg_eng_all['seconds']
-            y_dyads = eng_mngr.df_avg_eng_dyads['avg_task_eng']
-            num_dyads = eng_mngr.df_avg_eng_dyads.groups.drop_duplicates()
-            
-            plt.plot(x, y_dyads)
-            for i, num in enumerate(num_dyads):
-                index_num_dyads = num_dyads.index[i]
-                pos_x: float = x[index_num_dyads].item()
-                plt.text(pos_x, 0.6, f'{num}')
-                plt.axvline(pos_x)
+            legend_info = []
+            # dyads
+            if plot_task_engagement_dyads:
+                y_dyads = eng_mngr.df_avg_eng_dyads['avg_task_eng']
+                num_dyads = eng_mngr.df_avg_eng_dyads.groups.drop_duplicates()
+                plt.plot(x, y_dyads, color_dyad)
+                for i, num in enumerate(num_dyads):
+                    index_num_dyads = num_dyads.index[i]
+                    pos_x: float = x[index_num_dyads].item()
+                    eng_level: float = eng_mngr.df_avg_eng_dyads[eng_mngr.df_avg_eng_dyads['seconds'] == pos_x]['avg_task_eng'].values[0]
+                    plt.text(pos_x, 0.58, f'{num}')
+                    plt.axvline(pos_x, ymax=0.9, ymin=0, color=color_dyad, linestyle='--', alpha=0.8, linewidth=0.7)
+                # configure legend
+                line1_legend_d = lines.Line2D([0], [0], color=color_dyad, lw=1, label='Task Engagement Dyads')
+                line2_legend_d = lines.Line2D([0], [0], color=color_dyad, lw=0.7, linestyle='--', alpha=0.7, label='Num Groups in Avg Triads')
+                legend_info.extend([line1_legend_d, line2_legend_d])
             # triads
-            y_triads = eng_mngr.df_avg_eng_triads['avg_task_eng']
-
+            if plot_task_engagement_triads:
+                y_triads = eng_mngr.df_avg_eng_triads['avg_task_eng']
+                num_triads = eng_mngr.df_avg_eng_triads.groups.drop_duplicates()
+                plt.plot(x, y_triads, color_triad)
+                for i, num in enumerate(num_triads):
+                    index_num_triads = num_triads.index[i]
+                    pos_x: float = x[index_num_triads].item()
+                    eng_level: float = eng_mngr.df_avg_eng_triads[eng_mngr.df_avg_eng_triads['seconds'] == pos_x]['avg_task_eng'].values[0]
+                    plt.text(pos_x, 0.62, f'{num}')
+                    plt.axvline(pos_x, ymax=0.96, ymin=0, color='g', linestyle='--', alpha=0.7, linewidth=0.7)
+                # configure legend
+                line1_legend_t = lines.Line2D([0], [0], color=color_triad, lw=1, label='Task Engagement Triads')
+                line2_legend_t = lines.Line2D([0], [0], color=color_triad, lw=0.7, linestyle='--', alpha=0.8, label='Num Groups in Avg Triads')
+                legend_info.extend([line1_legend_t, line2_legend_t])
+            condition_text: str = ""
+            if plot_task_engagement_dyads: condition_text += " Dyads"
+            if plot_task_engagement_triads: condition_text += " Triads"
+            ax.legend(handles = legend_info, loc=1)
+            plt.xlabel('Seconds')
+            plt.ylabel(f'Task Engagement{condition_text}')
+            plt.title(f'Average Task Engagement{condition_text}')
+        # endregion
         # draw plot
         plt.show()
 
