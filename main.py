@@ -184,6 +184,7 @@ if __name__ == "__main__":
 
         #plotter = PlotterClass()
         #plotter.plot_eye_blinks(my_groups_manager.groups[0])
+    #region PLOTTING
     if plot_group_duration_plots:
         print("attempting to plot...")
         # group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
@@ -220,6 +221,7 @@ if __name__ == "__main__":
 
         # configure plots
         fig,ax = plt.subplots()
+        #region PLOT DURATION BARS
         if plot_total_duration_bars:
             # create bars
             ax.bar(names_durations_df.index, names_durations_df['duration_interaction'],color=color_groups,hatch=tex_groups)
@@ -231,6 +233,8 @@ if __name__ == "__main__":
             ax.legend(handles = [circ1, circ2, circ3], loc=1)
             # rotate labels for better readability
             plt.xticks(rotation=90)
+        #enregion
+        #region PLOT OFFSET DURATION LINES
         if plot_offset_duration_lines:         
             # Line graphs with all tasks duration. The Y axis has each group; the X axis has the time, where 0 is the recording time,
             # and the line will start when the interaction (conversation) starts. This way we can see if there is a large time between 
@@ -275,7 +279,8 @@ if __name__ == "__main__":
             plt.ylabel('Group')
             plt.title('Group Durations by Type and Formation')
             plt.grid(True)
-        #region TASK ENG PLOTS
+        #endregion
+        #region PLOT TASK ENG
         if plot_task_engagement:
             eng_mngr: EngagementsManager = EngagementsManager(False)            
             #eng_mngr.df_avg_eng_all['average_value'].plot()
@@ -287,7 +292,10 @@ if __name__ == "__main__":
             if plot_task_engagement_dyads:
                 df_eng_dyads = eng_mngr.df_avg_eng_dyads if not plot_task_engagement_in_interaction_time else eng_mngr.df_avg_eng_dyads_interaction
                 y_dyads = df_eng_dyads['avg_task_eng']
+                y_std_dyads = df_eng_dyads['std_avg_task_eng']
+                y_std_dyads = y_std_dyads/2 # divide by two to plot around center of y
                 num_dyads = df_eng_dyads.groups.drop_duplicates()
+                ax.fill_between(x, y_dyads-y_std_dyads, y_dyads+y_std_dyads, facecolor = color_dyad, alpha=0.3)
                 plt.plot(x, y_dyads, color_dyad)
                 for i, num in enumerate(num_dyads):
                     index_num_dyads = num_dyads.index[i]
@@ -303,14 +311,17 @@ if __name__ == "__main__":
             if plot_task_engagement_triads:
                 df_eng_triads = eng_mngr.df_avg_eng_triads if not plot_task_engagement_in_interaction_time else eng_mngr.df_avg_eng_triads_interaction
                 y_triads = df_eng_triads['avg_task_eng']
+                y_std_triads = df_eng_triads['std_avg_task_eng']
+                y_std_triads = y_std_triads/2 # divide by two to plot around center of y
                 num_triads = df_eng_triads.groups.drop_duplicates()
+                ax.fill_between(x, y_triads-y_std_triads, y_triads+y_std_triads, facecolor = color_triad, alpha=0.3)
                 plt.plot(x, y_triads, color_triad)
                 for i, num in enumerate(num_triads):
                     index_num_triads = num_triads.index[i]
                     pos_x: float = x[index_num_triads].item()
                     eng_level: float = df_eng_triads[df_eng_triads['seconds'] == pos_x]['avg_task_eng'].values[0]
                     plt.text(pos_x, y_triads.max(), f'{num}')
-                    plt.axvline(pos_x, ymax=0.94, ymin=0, color='g', linestyle='--', alpha=0.7, linewidth=0.7)
+                    plt.axvline(pos_x, ymax=0.92, ymin=0, color='g', linestyle='--', alpha=0.7, linewidth=0.7)
                 # configure legend
                 line1_legend_t = lines.Line2D([0], [0], color=color_triad, lw=1, label='Task Engagement Triads')
                 line2_legend_t = lines.Line2D([0], [0], color=color_triad, lw=0.7, linestyle='--', alpha=0.8, label='Num Groups in Avg Triads')
@@ -330,4 +341,5 @@ if __name__ == "__main__":
         list_group_start_TS = []        
 
         print("done!")
+    #endregion
     #endregion
