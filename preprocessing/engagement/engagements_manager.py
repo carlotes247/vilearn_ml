@@ -36,8 +36,11 @@ class EngagementsManager:
         cols = df_combined.columns[df_combined.columns.str.contains(keyword_cols)]
         df_eng: pd.DataFrame = pd.DataFrame(df_combined[cols])
         avg_eng = df_eng.mean(axis=1)
-        df_eng['groups'] = df_eng.count(axis=1)
+        std_eng = df_eng.std(axis=1)
+        count_groups = df_eng.count(axis=1)
+        df_eng['groups'] = count_groups
         df_eng['avg_task_eng'] = avg_eng
+        df_eng['std_avg_task_eng'] = std_eng
         df_eng['seconds'] = df_combined['seconds']     
         return df_eng
 
@@ -55,19 +58,20 @@ class EngagementsManager:
         for i, processor in enumerate(finished_list):
             df_combined = df_combined.merge(processor.df_avg_all, on='seconds', how='left', suffixes=('', f'_{processor.group_name}'))            
             df_combined_interaction = df_combined_interaction.merge(processor.df_avg_interaction, on='seconds_interaction', how='left', suffixes=('', f'_{processor.group_name}'))            
-        df_combined.rename(columns={'task_eng' : 'task_eng_dyad_01'}, inplace=True)
-        df_combined_interaction.rename(columns={'task_eng' : 'task_eng_dyad_01', 'seconds' : 'seconds_dyad_01'}, inplace=True)        
+        df_combined.rename(columns={'task_eng' : 'task_eng_dyad_01', 'std' : 'std_dyad_01'}, inplace=True)
+        df_combined_interaction.rename(columns={'task_eng' : 'task_eng_dyad_01', 'seconds' : 'seconds_dyad_01', 'std' : 'std_dyad_01'}, inplace=True)        
         df_combined_interaction.rename(columns={'seconds_interaction' : 'seconds'}, inplace=True)
         # dataframes for dyads and triads
         # dyads
-        df_eng_dyads: pd.DataFrame = self.__slice_process_avg_df(df_combined=df_combined, keyword_cols='dyad')
+        df_eng_dyads: pd.DataFrame = self.__slice_process_avg_df(df_combined=df_combined, keyword_cols='task_eng_dyad')
         df_eng_dyads_interaction: pd.DataFrame = self.__slice_process_avg_df(df_combined=df_combined_interaction, keyword_cols='task_eng_dyad')
         # triads
-        df_eng_triads: pd.DataFrame = self.__slice_process_avg_df(df_combined=df_combined, keyword_cols='triad')
+        df_eng_triads: pd.DataFrame = self.__slice_process_avg_df(df_combined=df_combined, keyword_cols='task_eng_triad')
         df_eng_triads_interaction: pd.DataFrame = self.__slice_process_avg_df(df_combined=df_combined_interaction, keyword_cols='task_eng_triad')
         # both
         df_combined = self.__slice_process_avg_df(df_combined=df_combined, keyword_cols='task_eng')
         df_combined_interaction = self.__slice_process_avg_df(df_combined=df_combined_interaction, keyword_cols='task_eng')
+        # TODO: include a method in the future to keep the std from each group (which now is lost the average std)
         self.df_avg_eng_all = df_combined
         self.df_avg_eng_dyads = df_eng_dyads
         self.df_avg_eng_triads = df_eng_triads

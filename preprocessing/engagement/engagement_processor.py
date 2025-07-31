@@ -59,6 +59,7 @@ class EngagementProcessor:
         df_merged.replace('-nan(ind)', np.nan, inplace=True)
         df_merged = df_merged.fillna(0)
         df_avg: pd.DataFrame = pd.DataFrame(df_merged.mean(axis=1), columns=['task_eng'])
+        df_avg['std'] = df_merged.std(axis=1)
         # add column for seconds per frame
         ts_secs: list[float] = [x * (1/self.freq) for x in range(len(df_avg))]
         df_avg['seconds'] = ts_secs
@@ -94,8 +95,9 @@ class EngagementProcessor:
         # new timesteps        
         new_seconds = np.arange(df['seconds'].min(), df['seconds'].max(), 1/freq_target)
         # interpolate
-        interpolated_values = np.interp(new_seconds, df['seconds'], df['task_eng'])
-        df_result = pd.DataFrame({'task_eng': interpolated_values, 'seconds': new_seconds})
+        interpolated_eng = np.interp(new_seconds, df['seconds'], df['task_eng'])
+        interpolated_std = np.interp(new_seconds, df['seconds'], df['std'])
+        df_result = pd.DataFrame({'task_eng': interpolated_eng , 'std' : interpolated_std, 'seconds': new_seconds})
         return df_result
 
     def process_task_engagement(self, save_to_disk:bool) -> tuple[pd.DataFrame, pd.DataFrame]:
