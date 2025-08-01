@@ -61,12 +61,12 @@ def plot_task_engagement_method(fig, ax, df: pd.DataFrame, label: str, legend_in
     y = df['avg_task_eng']
     y_std = df['std_avg_task_eng']
     y_std = y_std/2 # divide by two to plot around center of y
-    num_dyads = df.groups.drop_duplicates()
+    num_groups = df.groups.drop_duplicates()
     text_y = text_y if text_y > 0 else y.max()
     ax.fill_between(x, y-y_std, y+y_std, facecolor = color, alpha=0.3)
     ax.plot(x, y, color)
-    for i, num in enumerate(num_dyads):
-        index_num_dyads = num_dyads.index[i]
+    for i, num in enumerate(num_groups):
+        index_num_dyads = num_groups.index[i]
         pos_x: float = x[index_num_dyads].item()
         eng_level: float = df[df['seconds'] == pos_x]['avg_task_eng'].values[0]
         ax.text(pos_x, text_y, f'{num}')
@@ -75,6 +75,8 @@ def plot_task_engagement_method(fig, ax, df: pd.DataFrame, label: str, legend_in
     line1_legend_d = lines.Line2D([0], [0], color=color, lw=1, label=f'Task Engagement {label}')
     line2_legend_d = lines.Line2D([0], [0], color=color, lw=0.7, linestyle='--', alpha=0.7, label=f'Num Groups in Avg {label}')
     legend_info.extend([line1_legend_d, line2_legend_d])
+    # print descriptive stats
+    print(f"Avg Task Eng for {label}: {df['avg_task_eng'].mean()}, std: {df['avg_task_eng'].std()}, groups: {num_groups.max()} ")
 
 def plot_task_engagement_formation(fig, ax, group_names: list[str], df: pd.DataFrame, label: str, legend_info, hvline: float, color: str, text_y: float = 0):
     cols = df.columns[df.columns.str.contains('|'.join(group_names))]
@@ -125,8 +127,8 @@ if __name__ == "__main__":
     plot_total_duration_bars: bool = False
     plot_offset_duration_lines: bool = False
     plot_task_engagement: bool = True # true if you want any task engagement plot
-    plot_task_engagement_dyads: bool = True # for dyads task engagement
-    plot_task_engagement_triads: bool = False # for triads task engagement
+    plot_task_engagement_dyads: bool = False # for dyads task engagement
+    plot_task_engagement_triads: bool = True # for triads task engagement
     plot_task_engagement_in_interaction_time: bool = True # to plot in interaction time instead of recording time
     discriminate_group_formation: bool = True # to plot depending on group formation (F or Line)
 
