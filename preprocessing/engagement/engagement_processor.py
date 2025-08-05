@@ -1,13 +1,20 @@
 import pandas as pd
 import numpy as np
+import os.path
 
 class EngagementProcessor:
 
     col_names = ["task_eng", "conf"]
     data_path: str = "data/annotations"
     path_groups_info: str = "data/group_durations_all_commas.csv"
+    filename_1_90Hz: str = "group.task engagement.helenrisack.annotation~"
+    filename_2_90Hz: str = "task engagement.group.carlosgonzalez.annotation~"
+    filename_1_60Hz: str = "task engagement60Hz.group.helenrisack.annotation~"
+    filename_2_60Hz: str = "task engagement60Hz.group.carlosgonzalez.annotation~"
     filename_1: str 
     filename_2: str 
+    is_file_1_90Hz: bool = False
+    is_file_2_90Hz: bool = False
     path_file_1: str
     path_file_2: str 
     interaction_start: float = 0
@@ -32,27 +39,48 @@ class EngagementProcessor:
         
         self.freq = self.__get_annotation_freq(self.df_groups_info, self.group_name)
         if self.freq == 90:
-            self.filename_1 = "group.task engagement.helenrisack.annotation~"
-            self.filename_2 = "task engagement.group.carlosgonzalez.annotation~"
+            self.filename_1 = self.filename_1_90Hz
+            self.filename_2 = self.filename_2_90Hz
+            self.is_file_1_90Hz = True; self.is_file_2_90Hz = True
         elif self.freq == 60:
-            self.filename_1 = "task engagement60Hz.group.helenrisack.annotation~"
-            self.filename_2 = "task engagement60Hz.group.carlosgonzalez.annotation~"
+            if os.path.isfile(f"{self.data_path}/{self.filename_1_90Hz}"):
+                self.filename_1 = self.filename_1_90Hz; self.is_file_1_90Hz = True
+            else:
+                self.filename_1 = self.filename_1_60Hz
+            if os.path.isfile("{self.data_path}/{self.filename_2_90Hz}"):
+                self.filename_2 = self.filename_2_90Hz; self.is_file_2_90Hz = True
+            else:
+                self.filename_2 = self.filename_2_60Hz
+            if self.is_file_1_90Hz and self.is_file_2_90Hz: 
+                self.freq = 90
         
         self.path_file_1: str = f"{self.data_path}/{self.filename_1}"
         self.path_file_2: str = f"{self.data_path}/{self.filename_2}"
 
         self.df_eng_1: pd.DataFrame = pd.read_csv(self.path_file_1, sep=";", names=self.col_names)
         self.df_eng_2 : pd.DataFrame = pd.read_csv(self.path_file_2, sep=";", names=self.col_names)
-
+    
     def __avg_eng_files_TS_secs(self, df_1: pd.DataFrame, df_2: pd.DataFrame) -> tuple[pd.DataFrame, bool]:
         print(f"{self.group_name}: File 1 has {len(df_1)} lines and File 2 has {len(df_2)} lines")
-        if len(df_1) != len(df_2):
-            print(f"{self.group_name}: Engagement files are not of equal size! Aborting processing")
-            return pd.DataFrame(), False
+        diff_dfs: int = len(df_1) - len(df_2)
+        if diff_dfs != 0:
+            if abs(diff_dfs) < 10: 
+                if diff_dfs > 0: 
+                    df_1.drop(df_1.tail(diff_dfs).index, inplace=True)
+                else:
+                    df_2.drop(df_2.tail(abs(diff_dfs)).index, inplace=True)
+            else:
+                print(f"{self.group_name}: Engagement files are not of equal size! Aborting processing")
+                return pd.DataFrame(), False
         # drop conf column and make sure both dataframes are numeric
-        df_1.drop("conf", axis=1, inplace=True)
+        cols_to_drop: list[str] = ['conf', 'seconds', 'std']
+        df_1.drop(cols_to_drop, axis=1, errors='ignore', inplace=True)
+        df_2.drop(cols_to_drop, axis=1, errors='ignore', inplace=True)
+        # if "conf" in df_1.columns: 
+        #     df_1.drop("conf", axis=1, inplace=True)
         df_1['task_eng'] = pd.to_numeric(df_1['task_eng'], errors='coerce')
-        df_2.drop("conf", axis=1, inplace=True)
+        # if "conf" in df_2.columns: 
+            # df_2.drop("conf", axis=1, inplace=True)
         df_2['task_eng'] = pd.to_numeric(df_2['task_eng'], errors='coerce')
         # clean nans
         df_merged: pd.DataFrame = pd.concat([df_1, df_2], axis=1)
@@ -88,10 +116,23 @@ class EngagementProcessor:
         df_return['seconds_interaction'] = ts_secs
         return df_return
     
-    def __interpolate_eng(self, df: pd.DataFrame, freq_original: float, freq_target: float) -> pd.DataFrame:
+    def __interpolate_eng(self, df: pd.DataFrame, freq_original: float, freq_target: float, force_numeric: bool = False) -> pd.DataFrame:
         # Cannot interpolate down
         if freq_original > freq_target:
+            print(f"Error: you are trying to interpolate down {freq_original} to {freq_target}. Aborting interpolation...")
             return pd.DataFrame()
+        if force_numeric:
+            # drop conf column and make sure dataframe is numeric
+            df.drop("conf", axis=1, inplace=True)
+            df['task_eng'] = pd.to_numeric(df['task_eng'], errors='coerce')
+            df.replace('-nan(ind)', np.nan, inplace=True)
+            df = df.fillna(0)
+        if 'std' not in df.columns:
+            std = df.std(axis=1)
+            df['std'] = std
+        if 'seconds' not in df.columns:
+            old_seconds: list[float] = [x * (1/freq_original) for x in range(len(df))]
+            df['seconds'] = old_seconds    
         # new timesteps        
         new_seconds = np.arange(df['seconds'].min(), df['seconds'].max(), 1/freq_target)
         # interpolate
@@ -101,6 +142,11 @@ class EngagementProcessor:
         return df_result
 
     def process_task_engagement(self, save_to_disk:bool) -> tuple[pd.DataFrame, pd.DataFrame]:
+        if self.freq < 90:
+            if not self.is_file_1_90Hz:
+                self.df_eng_1 = self.__interpolate_eng(self.df_eng_1, self.freq, 90, force_numeric=True)
+            if not self.is_file_2_90Hz:
+                self.df_eng_2 = self.__interpolate_eng(self.df_eng_2, self.freq, 90, force_numeric=True)
         df_avg, result = self.__avg_eng_files_TS_secs(self.df_eng_1, self.df_eng_2)
         if not result:
             return pd.DataFrame(), pd.DataFrame()

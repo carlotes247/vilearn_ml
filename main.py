@@ -127,10 +127,10 @@ if __name__ == "__main__":
     plot_total_duration_bars: bool = False
     plot_offset_duration_lines: bool = False
     plot_task_engagement: bool = True # true if you want any task engagement plot
-    plot_task_engagement_dyads: bool = False # for dyads task engagement
+    plot_task_engagement_dyads: bool = True # for dyads task engagement
     plot_task_engagement_triads: bool = True # for triads task engagement
     plot_task_engagement_in_interaction_time: bool = True # to plot in interaction time instead of recording time
-    discriminate_group_formation: bool = True # to plot depending on group formation (F or Line)
+    discriminate_group_formation: bool = False # to plot depending on group formation (F or Line)
 
     # Testing loading data logic 12 April 2024
     path_prefix_file = "data/_path_prefix.txt"
@@ -334,7 +334,7 @@ if __name__ == "__main__":
                     plot_task_engagement_formation(fig=fig, group_names=F_group_names, ax=ax, df=df_eng_dyads, label='Dyads F formation', legend_info=legend_info, hvline=0.88, color=color_dyad)
                     plot_task_engagement_formation(fig=fig, group_names=Line_group_names, ax=ax, df=df_eng_dyads, label='Dyads Line formation', legend_info=legend_info, hvline=0.39, color='darkred', text_y=0.3)
                 else:
-                    plot_task_engagement_method(fig=fig, ax=ax, df=df_eng_dyads, label='Dyads', legend_info=legend_info, hvline=0.88, color=color_dyad)                
+                    plot_task_engagement_method(fig=fig, ax=ax, df=df_eng_dyads, label='Dyads', legend_info=legend_info, hvline=0.96, color=color_dyad, text_y=0.8)                
             # triads
             if plot_task_engagement_triads:
                 df_eng_triads = eng_mngr.df_avg_eng_triads if not plot_task_engagement_in_interaction_time else eng_mngr.df_avg_eng_triads_interaction
@@ -348,7 +348,7 @@ if __name__ == "__main__":
             if plot_task_engagement_dyads: condition_text += " Dyads"
             if plot_task_engagement_triads: condition_text += " Triads"
             if plot_task_engagement_in_interaction_time: condition_text += " Interaction Time"
-            ax.legend(handles = legend_info, loc=0)
+            ax.legend(handles = legend_info, loc=4)
             plt.xlabel('Seconds')
             plt.ylabel(f'Task Engagement{condition_text}')
             plt.title(f'Average Task Engagement{condition_text}')
