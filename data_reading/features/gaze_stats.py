@@ -125,9 +125,10 @@ class GazeStats:
         for group in self.groups_gaze_with_timestamps:
             print (group['group_name'])
             # change the second column to have only 2 decimal points. That means there would be at most 100 frames per second
-            # group['gaze_df']['seconds_interaction'] = group['gaze_df']['seconds_interaction'].apply(lambda x: "{:.2f}".format(x))
+            group['gaze_df']['seconds_interaction'] = group['gaze_df']['seconds_interaction'].apply(lambda x: "{:.2f}".format(x))
+            group['gaze_df']['seconds_interaction'] = group['gaze_df']['seconds_interaction'].astype(float)
             # group['gaze_df']['seconds_recording'] = group['gaze_df']['seconds_recording'].apply(lambda x: "{:.2f}".format(x))
-            # group['gaze_df'].drop_duplicates(subset=['seconds_recording'], inplace=True)
+            group['gaze_df'].drop_duplicates(subset=['seconds_interaction'], inplace=True)
 
             if df_for_all_dyads_data and group['group_size'] == 2:
                 dyads_df[group['group_name']+'_MG_P1P2'] = group['gaze_df']["MG_P1P2"]
@@ -139,7 +140,7 @@ class GazeStats:
                 current_inter_dyad = pd.concat([dyads_df[group['group_name'] + '_MG_P1P2'],
                                           group['gaze_df']["seconds_interaction"]], axis=1)
 
-                current_inter_dyad.dropna(axis=0, how='any', inplace=True)
+                current_inter_dyad.dropna(axis=0, how='any', inplace=True, ignore_index=True)
 
                 # dyads_merged_rec_df = pd.merge_ordered(dyads_merged_rec_df, current_rec_dyad, on='seconds_recording')
                 print("STOP")
@@ -163,7 +164,7 @@ class GazeStats:
                                            triads_df[group['group_name'] + '_MG_P2P3'],
                                            group['gaze_df']["seconds_interaction"]], axis=1)
 
-                current_inter_triad.dropna(axis=0, how='any', inplace=True)
+                current_inter_triad.dropna(axis=0, how='any', inplace=True, ignore_index=True)
 
                 # triads_merged_rec_df = pd.merge_ordered(triads_merged_rec_df, current_rec_triad, on='seconds_recording')
                 triads_merged_inter_df = pd.merge_ordered(triads_merged_inter_df, current_inter_triad, on='seconds_interaction')
