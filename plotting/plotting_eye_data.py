@@ -53,36 +53,50 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False, acco
     df_data = pd.read_csv(file_path, index_col=0)
 
     df_data_ts = convert_seconds_to_timestamp(df_data)
-    df_resampled = resample_avg_seconds_using_timeframe(df_data_ts)
+    df_resampled = resample_avg_seconds_using_timeframe(df_data_ts, timeframe=timewindow)
     df_resampled.set_index('seconds_interaction_window', inplace=True)
 
     #make a list with all the dyads
     col_dyads = list(df_resampled.filter(regex='dyad').columns)
-    df_dyads = pd.DataFrame({'Dyads: Avg MG': df_resampled[col_dyads].mean(axis=1)})
-    df_triads = pd.DataFrame({'Triads: Avg MG': df_resampled.drop(col_dyads, axis=1).mean(axis=1)})
+    df_dyads = pd.DataFrame({'Dyads: Avg MG': df_resampled[col_dyads].mean(axis=1),
+                             'Dyads: Std MG': df_resampled[col_dyads].std(axis=1)/2})
 
-    df_avg_all_groups = pd.concat([df_dyads, df_triads], axis=1)
+    df_triads = pd.DataFrame({'Triads: Avg MG': df_resampled.drop(col_dyads, axis=1).mean(axis=1),
+                              'Triads: Std MG': df_resampled.drop(col_dyads, axis=1).std(axis=1)/2})
+    df_avg_all_groups = pd.concat([df_dyads['Dyads: Avg MG'], df_triads['Triads: Avg MG']], axis=1)
+
+
     # get the duration_interaction, a list of all interaction times
     dyads_durations = get_grups_interaction_times()[1].sort_values(ascending=False).tolist()
     triads_durations = get_grups_interaction_times()[2].sort_values(ascending=False).tolist()
-    # f_groups_names, l_groups_names = get_groups_names_and_formation()
-    # df_l_formation =
 
-    ax = df_avg_all_groups.plot.line()
+    ax = df_avg_all_groups.plot.line(color=['red', 'green'], figsize=(12,5))
 
+    ax.fill_between(df_dyads.index, df_dyads['Dyads: Avg MG'] - df_dyads['Dyads: Std MG'],
+                    df_dyads['Dyads: Avg MG'] + df_dyads['Dyads: Std MG'], facecolor='red', alpha=0.2)
     for current_duration in dyads_durations:
         current_index = dyads_durations.index(current_duration)
-        text_y = 0.3 - (current_index%2)/10
-        line_y = 0.8
+        offset = (current_index%2)/20 #adds an offset every other time so it can be readable
+        text_y = 0.5 - offset
+        line_y = 0.8 - offset
         ax.text(current_duration, text_y, current_index + 1)
-        ax.axvline(current_duration, ymax=line_y, ymin=0, color='blue', linestyle='--', alpha=0.8, linewidth=0.7)
+        ax.axvline(current_duration, ymax=line_y, ymin=0, color='red', linestyle='--', alpha=0.8, linewidth=0.7)
 
+    ax.fill_between(df_triads.index, df_triads['Triads: Avg MG'] - df_triads['Triads: Std MG'],
+                    df_triads['Triads: Avg MG'] + df_triads['Triads: Std MG'], facecolor='green', alpha=0.2)
     for current_duration in triads_durations:
         current_index = triads_durations.index(current_duration)
-        text_y = 0.1 - (current_index%2)/20
-        line_y = 0.3
+        offset = (current_index % 2) / 20  # adds an offset every other time so it can be readable
+        text_y = 0.1 - offset
+        line_y = 0.3 - offset
         ax.text(current_duration, text_y, current_index + 1)
-        ax.axvline(current_duration, ymax=line_y, ymin=0, color='orange', linestyle='--', alpha=0.8, linewidth=0.7)
+        ax.axvline(current_duration, ymax=line_y, ymin=0, color='green', linestyle='--', alpha=0.8, linewidth=0.7)
+
+    plt.xlabel('Interaction Time in Seconds ('+ 'windows of ' +str(timewindow)+ 's)' )
+    plt.ylabel('Mutual Gaze %')
+    plt.title('Mutual Gaze in Dyads and Triads')
+    plt.tight_layout()
+
     plt.show()
 
 
@@ -98,4 +112,4 @@ if __name__ == "__main__":
     # to do: make lists of the dyads and triads including their formation in order to discriminate over them when plotting
     # create_line_plot(dyads_df_path)
     # create_line_plot(triads_df_path)
-    create_line_plot(all_groups_df_path)
+    create_line_plot(all_groups_df_path, timewindow=5
