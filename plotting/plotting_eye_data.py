@@ -23,13 +23,35 @@ def resample_avg_seconds_using_timeframe(df_default_time_frequency:pd.DataFrame,
     return df_resampled
 
 
-def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False):
+def get_groups_names_and_formation():
+    # get the duration of each group
+    names_durations_df: pd.DataFrame = pd.read_csv('data/group_durations_all_commas.csv', index_col=0)
+    # dyads_names: list[str] = names_durations_df.loc[names_durations_df['type']=='dyad', "name"]
+    # tridas_names: list[str] = names_durations_df.loc[names_durations_df['type']=='triad', "name"]
+    f_groups_names: list[str] = names_durations_df.loc[names_durations_df['formation']=='F', "name"]
+    l_groups_names: list[str] = names_durations_df.loc[names_durations_df['formation']=='Line', "name"]
+
+    return f_groups_names, l_groups_names
+
+def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False, account_for_group_formation = False,
+                     plot_dyads: bool = True, plot_triads: bool = True, plot_all_groups: bool = True):
     df_data = pd.read_csv(file_path, index_col=0)
 
     df_data_ts = convert_seconds_to_timestamp(df_data)
-    df_plot_ready = resample_avg_seconds_using_timeframe(df_data_ts)
-    print ("plotting")
-    line_plot = df_plot_ready.plot.line(x='seconds_interaction_window').legend(loc='center left',bbox_to_anchor=(1.0, 0.5))
+    df_resampled = resample_avg_seconds_using_timeframe(df_data_ts)
+    df_resampled.set_index('seconds_interaction_window', inplace=True)
+
+    #make a list with all the dyads
+    col_dyads = list(df_resampled.filter(regex='dyad').columns)
+    df_dyads = pd.DataFrame({'Dyads: Avg MG': df_resampled[col_dyads].mean(axis=1)})
+    df_triads = pd.DataFrame({'Triads: Avg MG': df_resampled.drop(col_dyads, axis=1).mean(axis=1)})
+
+    df_avg_all_groups = pd.concat([df_dyads, df_triads], axis=1)
+
+    # f_groups_names, l_groups_names = get_groups_names_and_formation()
+    # df_l_formation =
+
+    line_plot = df_avg_all_groups.plot.line()
     plt.show()
 
 
@@ -43,6 +65,6 @@ if __name__ == "__main__":
     all_groups_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
 
     # to do: make lists of the dyads and triads including their formation in order to discriminate over them when plotting
-    create_line_plot(dyads_df_path)
-    create_line_plot(triads_df_path)
+    # create_line_plot(dyads_df_path)
+    # create_line_plot(triads_df_path)
     create_line_plot(all_groups_df_path)
