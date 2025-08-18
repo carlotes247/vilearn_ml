@@ -22,14 +22,29 @@ def resample_avg_seconds_using_timeframe(df_default_time_frequency:pd.DataFrame,
     df_resampled.drop([seconds_col_name, seconds_col_name[:-3]], axis=1, inplace=True)
     return df_resampled
 
+def get_grups_interaction_times():
+    names_durations_df: pd.DataFrame = pd.read_csv('../data/group_durations_all_commas.csv', index_col=0)
+
+    all_groups_interaction_time:list[float] = names_durations_df['duration_interaction']
+
+    dyads_interaction_time:list[float] = names_durations_df.loc[names_durations_df['type']=='dyad', "duration_interaction"]
+    triads_interaction_time:list[float] = names_durations_df.loc[names_durations_df['type']=='triad', "duration_interaction"]
+
+    f_dyads_interaction_time: list[float] = names_durations_df.loc[(names_durations_df['group_formation']=='F')
+                                                        & (names_durations_df['type']=='dyad'), "duration_interaction"]
+
+    f_triads_interaction_time: list[float] = names_durations_df.loc[(names_durations_df['group_formation']=='F')
+                                                        & (names_durations_df['type']=='triad'), "duration_interaction"]
+
+    return [all_groups_interaction_time, dyads_interaction_time, triads_interaction_time, f_dyads_interaction_time, f_triads_interaction_time]
 
 def get_groups_names_and_formation():
     # get the duration of each group
     names_durations_df: pd.DataFrame = pd.read_csv('data/group_durations_all_commas.csv', index_col=0)
     # dyads_names: list[str] = names_durations_df.loc[names_durations_df['type']=='dyad', "name"]
     # tridas_names: list[str] = names_durations_df.loc[names_durations_df['type']=='triad', "name"]
-    f_groups_names: list[str] = names_durations_df.loc[names_durations_df['formation']=='F', "name"]
-    l_groups_names: list[str] = names_durations_df.loc[names_durations_df['formation']=='Line', "name"]
+    f_groups_names: list[str] = names_durations_df.loc[names_durations_df['group_formation']=='F', "name"]
+    l_groups_names: list[str] = names_durations_df.loc[names_durations_df['group_formation']=='Line', "name"]
 
     return f_groups_names, l_groups_names
 
@@ -47,11 +62,27 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False, acco
     df_triads = pd.DataFrame({'Triads: Avg MG': df_resampled.drop(col_dyads, axis=1).mean(axis=1)})
 
     df_avg_all_groups = pd.concat([df_dyads, df_triads], axis=1)
-
+    # get the duration_interaction, a list of all interaction times
+    dyads_durations = get_grups_interaction_times()[1].sort_values(ascending=False).tolist()
+    triads_durations = get_grups_interaction_times()[2].sort_values(ascending=False).tolist()
     # f_groups_names, l_groups_names = get_groups_names_and_formation()
     # df_l_formation =
 
-    line_plot = df_avg_all_groups.plot.line()
+    ax = df_avg_all_groups.plot.line()
+
+    for current_duration in dyads_durations:
+        current_index = dyads_durations.index(current_duration)
+        text_y = 0.3 - (current_index%2)/10
+        line_y = 0.8
+        ax.text(current_duration, text_y, current_index + 1)
+        ax.axvline(current_duration, ymax=line_y, ymin=0, color='blue', linestyle='--', alpha=0.8, linewidth=0.7)
+
+    for current_duration in triads_durations:
+        current_index = triads_durations.index(current_duration)
+        text_y = 0.1 - (current_index%2)/20
+        line_y = 0.3
+        ax.text(current_duration, text_y, current_index + 1)
+        ax.axvline(current_duration, ymax=line_y, ymin=0, color='orange', linestyle='--', alpha=0.8, linewidth=0.7)
     plt.show()
 
 
