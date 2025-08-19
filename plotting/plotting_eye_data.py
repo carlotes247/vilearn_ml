@@ -82,26 +82,33 @@ def plot_avg_and_std_to_existing_graph(ax, main_df:pd.DataFrame, df_column_avg:s
 
     return ax
 
+#potentially, this can be called also with a list of triad names. but so far I think I can just creat the triads names based on the number of triads existing (14)
+def sum_triads_MG_per_group(main_df: pd.DataFrame, group_names:list):
+    df_triads_MG_summed = pd.DataFrame(index=main_df.index)
+    for triad_name in group_names:
+        columns_MG = list(main_df.filter(regex=triad_name).columns)
+        df_triads_MG_summed[columns_MG[0]] = main_df[columns_MG].sum(axis=1) #keeping the name of the first MG as it is used further in the code and it works like that for the dyads too
+    return df_triads_MG_summed
+
+
 def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
-                                dyads:bool = True, triads:bool = True, separate_by_group_formation:bool = True,
+                     dyads:bool = True, triads:bool = True, separate_by_group_formation:bool = True,
+                     sum_triads_for_mutual_gaze:bool = True,
                      y_axis_text:str='', figure_title:str=''):
 
     df_data = pd.read_csv(file_path, index_col=0)
     df_data_ts = convert_seconds_to_timestamp(df_data)
     df_resampled = resample_avg_seconds_using_timeframe(df_data_ts, timeframe=timewindow)
     df_resampled.set_index('seconds_interaction_window', inplace=True)
-
-    if separate_by_group_formation:
-        df_group_formations = get_groups_names_and_formation()
-        col_dyads_l = get_formation_grups_names_from_eye_df(df_resampled, df_group_formations, 'dyad', 'Line')
-        col_dyads_f = get_formation_grups_names_from_eye_df(df_resampled, df_group_formations, 'dyad', 'F')
-        col_triads_l = get_formation_grups_names_from_eye_df(df_resampled, df_group_formations, 'triad', 'Line')
-        col_triads_f = get_formation_grups_names_from_eye_df(df_resampled, df_group_formations, 'triad', 'F')
+    df_group_formations = get_groups_names_and_formation()
 
     fig, ax = plt.subplots(figsize=(12,5))
 
     if dyads:
         if separate_by_group_formation:
+            col_dyads_l = get_formation_grups_names_from_eye_df(df_resampled, df_group_formations, 'dyad', 'Line')
+            col_dyads_f = get_formation_grups_names_from_eye_df(df_resampled, df_group_formations, 'dyad', 'F')
+
             df_dyads_l = pd.DataFrame({'Dyads-L Avg': df_resampled[col_dyads_l].mean(axis=1),
                                      'Dyads-L Std': df_resampled[col_dyads_l].std(axis=1) / 2})
             df_dyads_f = pd.DataFrame({'Dyads-F Avg': df_resampled[col_dyads_f].mean(axis=1),
@@ -134,7 +141,14 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
                                                fill_alpha = 0.2, fill_color='red')
 
     if triads:
+        if (sum_triads_for_mutual_gaze):
+            triads_group_names = df_group_formations.loc[df_group_formations['type'] == 'triad'].index
+            df_resampled = sum_triads_MG_per_group(df_resampled, triads_group_names)
+
         if separate_by_group_formation:
+            col_triads_l = get_formation_grups_names_from_eye_df(df_resampled, df_group_formations, 'triad', 'Line')
+            col_triads_f = get_formation_grups_names_from_eye_df(df_resampled, df_group_formations, 'triad', 'F')
+
             df_triads_l = pd.DataFrame({'Triads-L Avg': df_resampled[col_triads_l].mean(axis=1),
                                        'Triads-L Std': df_resampled[col_triads_l].std(axis=1) / 2})
             df_triads_f = pd.DataFrame({'Triads-F Avg': df_resampled[col_triads_f].mean(axis=1),
@@ -145,13 +159,13 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df=df_triads_l, df_column_avg='Triads-L Avg',
                                                     df_column_std='Triads-L Std',
                                                     list_interaction_duration_descending_order=triads_durations_l,
-                                                    line_colour='green', text_y=0.1, line_y=0.3,
+                                                    line_colour='green', text_y=0.08, line_y=0.4,
                                                     fill_alpha=0.2, fill_color='green')
 
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df=df_triads_f, df_column_avg='Triads-F Avg',
                                                     df_column_std='Triads-F Std',
                                                     list_interaction_duration_descending_order=triads_durations_f,
-                                                    line_colour='blue', text_y=0.1, line_y=0.3,
+                                                    line_colour='blue', text_y=0.15, line_y=0.6,
                                                     fill_alpha=0.2, fill_color='blue')
 
         else:
@@ -180,13 +194,8 @@ if __name__ == "__main__":
 
 
     root_path= "../Recordings/SavedData/"
-    dyads_df_path = root_path+"all_dyads_mutual_gaze_interaction_time.csv"
-    triads_df_path = root_path+"all_triads_mutual_gaze_interaction_time.csv"
-    all_groups_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
+    all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
 
-    # to do: make lists of the dyads and triads including their formation in order to discriminate over them when plotting
-    # create_line_plot(dyads_df_path)
-    # create_line_plot(triads_df_path)
-    create_line_plot(all_groups_df_path, timewindow=10,
-                     y_axis_text = "Mutual Gaze %",
-                     figure_title = "Mutual Gaze")
+    create_line_plot(all_groups_MG_df_path, timewindow=1,
+                     y_axis_text="Mutual Gaze %",
+                     figure_title="Mutual Gaze")
