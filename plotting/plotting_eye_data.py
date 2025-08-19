@@ -119,13 +119,13 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df=df_dyads_l, df_column_avg='Dyads-L Avg',
                                                     df_column_std='Dyads-L Std',
                                                     list_interaction_duration_descending_order=dyads_durations_l,
-                                                    line_colour='red', text_y=0.5, line_y=0.8,
+                                                    line_colour='red', text_y=0.4, line_y=0.6,
                                                     fill_alpha=0.2, fill_color='red')
 
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df=df_dyads_f, df_column_avg='Dyads-F Avg',
                                                     df_column_std='Dyads-F Std',
                                                     list_interaction_duration_descending_order=dyads_durations_f,
-                                                    line_colour='orange', text_y=0.5, line_y=0.8,
+                                                    line_colour='orange', text_y=0.6, line_y=0.8,
                                                     fill_alpha=0.2, fill_color='orange')
 
         else:
@@ -137,7 +137,7 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df = df_dyads, df_column_avg='Dyads Avg',
                                                df_column_std='Dyads Std',
                                                list_interaction_duration_descending_order = dyads_durations,
-                                               line_colour = 'red', text_y =  0.5, line_y=0.8,
+                                               line_colour = 'red', text_y =  0.7, line_y=0.8,
                                                fill_alpha = 0.2, fill_color='red')
 
     if triads:
@@ -159,13 +159,13 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df=df_triads_l, df_column_avg='Triads-L Avg',
                                                     df_column_std='Triads-L Std',
                                                     list_interaction_duration_descending_order=triads_durations_l,
-                                                    line_colour='green', text_y=0.08, line_y=0.2,
+                                                    line_colour='green', text_y=0.1, line_y=0.25,
                                                     fill_alpha=0.2, fill_color='green')
 
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df=df_triads_f, df_column_avg='Triads-F Avg',
                                                     df_column_std='Triads-F Std',
                                                     list_interaction_duration_descending_order=triads_durations_f,
-                                                    line_colour='blue', text_y=0.2, line_y=0.4,
+                                                    line_colour='blue', text_y=0.3, line_y=0.5,
                                                     fill_alpha=0.2, fill_color='blue')
 
         else:
@@ -178,7 +178,7 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df = df_triads, df_column_avg='Triads Avg',
                                                df_column_std='Triads Std',
                                                list_interaction_duration_descending_order = triads_durations,
-                                               line_colour = 'green', text_y =  0.1, line_y=0.3,
+                                               line_colour = 'green', text_y =  0.2, line_y=0.3,
                                                fill_alpha = 0.2, fill_color='green')
 
     plt.xlabel('Interaction Time in Seconds ('+ 'windows of ' +str(timewindow)+ 's)' )
@@ -195,7 +195,11 @@ if __name__ == "__main__":
 
     root_path= "../Recordings/SavedData/"
     all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
+    all_groups_DG_df_path = root_path+"all_groups_direct_gaze_interaction_time.csv"
 
-    create_line_plot(all_groups_MG_df_path, timewindow=20, separate_by_group_formation=True,
-                     y_axis_text="Mutual Gaze %",
-                     figure_title="Mutual Gaze")
+    # create_line_plot(all_groups_MG_df_path, timewindow=20, separate_by_group_formation=True,
+    #                  y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
+
+    create_line_plot(all_groups_DG_df_path, timewindow=5, separate_by_group_formation=True,
+                     sum_triads_for_mutual_gaze=False, triads=False,
+                     y_axis_text="Direct Gaze %",  figure_title="Direct Gaze")
