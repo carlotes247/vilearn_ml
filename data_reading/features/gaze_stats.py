@@ -109,7 +109,7 @@ class GazeStats:
 
     #created dfs for all dyads, all triads and all the groups and returns them; if one of the bool is false, it doesn't return that df
     def populate_dfs_with_group_data(self, df_for_all_dyads_data:bool, df_for_all_triads_data:bool,
-                                     df_for_all_group_data:bool):
+                                     df_for_all_group_data:bool, mutual_gaze:bool, direct_gaze:bool):
         dyads_df = pd.DataFrame()
         # dyads_merged_rec_df = pd.DataFrame({'seconds_recording':[]})
         dyads_merged_inter_df = pd.DataFrame({'seconds_interaction':[]})
@@ -129,39 +129,58 @@ class GazeStats:
             group['gaze_df']['seconds_interaction'] = group['gaze_df']['seconds_interaction'].astype(float)
             # group['gaze_df']['seconds_recording'] = group['gaze_df']['seconds_recording'].apply(lambda x: "{:.2f}".format(x))
             group['gaze_df'].drop_duplicates(subset=['seconds_interaction'], inplace=True)
+            group['gaze_df'].reset_index(inplace=True)
 
             if df_for_all_dyads_data and group['group_size'] == 2:
-                dyads_df[group['group_name']+'_MG_P1P2'] = group['gaze_df']["MG_P1P2"]
                 # dyads_df[group['group_name'] + '_seconds_recording'] = group['gaze_df']["seconds_recording"]
                 dyads_df[group['group_name'] + '_seconds_interaction'] = group['gaze_df']["seconds_interaction"]
 
-                # current_rec_dyad = pd.concat([dyads_df[group['group_name']+'_MG_P1P2'], group['gaze_df']["seconds_recording"]], axis=1)
+                #setting a keyword for MG or DG
+                if mutual_gaze:
+                    dyads_col_keyword = ['MG_P1P2']
+                else:
+                    dyads_col_keyword = ['DG_P1_target', 'DG_P2_target']
 
-                current_inter_dyad = pd.concat([dyads_df[group['group_name'] + '_MG_P1P2'],
+                # dyads_df[group['group_name']+'_MG_P1P2'] = group['gaze_df']["MG_P1P2"]
+                dyads_df[group['group_name']+'_'+ dyads_col_keyword[0]] = group['gaze_df'][dyads_col_keyword[0]].clip(0, 1)#clipping here overcomes the isue with values of 2 (or 3 in triads)denoting whom the person was looking at. At this point we only care about a DG, regardless of where that is directed to.
+                if direct_gaze:
+                    dyads_df[group['group_name'] + '_' + dyads_col_keyword[1]] = group['gaze_df'][dyads_col_keyword[1]].clip(0, 1)
+
+
+                current_inter_dyad = pd.concat([dyads_df[group['group_name'] +'_'+ dyads_col_keyword[0]],
                                           group['gaze_df']["seconds_interaction"]], axis=1)
+                if direct_gaze:
+                    current_inter_dyad = pd.concat([dyads_df[group['group_name'] + '_' + dyads_col_keyword[0]],
+                                                    dyads_df[group['group_name'] + '_' + dyads_col_keyword[1]],
+                                                    group['gaze_df']["seconds_interaction"]], axis=1)
 
                 current_inter_dyad.dropna(axis=0, how='any', inplace=True, ignore_index=True)
-
                 # dyads_merged_rec_df = pd.merge_ordered(dyads_merged_rec_df, current_rec_dyad, on='seconds_recording')
-                print("STOP")
                 dyads_merged_inter_df = pd.merge_ordered(dyads_merged_inter_df, current_inter_dyad, on='seconds_interaction')
 
 
             if df_for_all_triads_data and group['group_size'] == 3:
-                triads_df[group['group_name']+'_MG_P1P2'] = group['gaze_df']["MG_P1P2"]
-                triads_df[group['group_name'] + '_MG_P1P3'] = group['gaze_df']["MG_P1P3"]
-                triads_df[group['group_name'] + '_MG_P2P3'] = group['gaze_df']["MG_P2P3"]
                 # triads_df[group['group_name'] + '_seconds_recording'] = group['gaze_df']["seconds_recording"]
                 triads_df[group['group_name'] + '_seconds_interaction'] = group['gaze_df']["seconds_interaction"]
+                # setting a keyword for MG or DG
+                if mutual_gaze:
+                    triads_col_keyword = ['MG_P1P2', 'MG_P1P3', 'MG_P2P3']
+                else:
+                    triads_col_keyword = ['DG_P1_target', 'DG_P2_target', 'DG_P3_target']
+
+                triads_df[group['group_name']+'_'+triads_col_keyword[0]] = group['gaze_df'][triads_col_keyword[0]].clip(0,1)
+                triads_df[group['group_name']+'_'+triads_col_keyword[1]] = group['gaze_df'][triads_col_keyword[1]].clip(0,1)
+                triads_df[group['group_name']+'_'+triads_col_keyword[2]] = group['gaze_df'][triads_col_keyword[2]].clip(0,1)
+
 
                 # current_rec_triad = pd.concat([triads_df[group['group_name']+'_MG_P1P2'],
                 #                            triads_df[group['group_name'] + '_MG_P1P3'],
                 #                            triads_df[group['group_name'] + '_MG_P2P3'],
                 #                            group['gaze_df']["seconds_recording"]], axis=1)
 
-                current_inter_triad = pd.concat([triads_df[group['group_name']+'_MG_P1P2'],
-                                           triads_df[group['group_name'] + '_MG_P1P3'],
-                                           triads_df[group['group_name'] + '_MG_P2P3'],
+                current_inter_triad = pd.concat([triads_df[group['group_name']+'_'+triads_col_keyword[0]],
+                                           triads_df[group['group_name'] + '_'+triads_col_keyword[1]],
+                                           triads_df[group['group_name'] + '_'+triads_col_keyword[2]],
                                            group['gaze_df']["seconds_interaction"]], axis=1)
 
                 current_inter_triad.dropna(axis=0, how='any', inplace=True, ignore_index=True)
@@ -175,33 +194,34 @@ class GazeStats:
             # all_groups_merged_rec_df = pd.merge_ordered(dyads_merged_rec_df, triads_merged_rec_df, on='seconds_recording')
             all_groups_merged_inter_df = pd.merge_ordered(dyads_merged_inter_df, triads_merged_inter_df, on='seconds_interaction')
 
-        # return a list with each df
+
+
         return [dyads_df, triads_df, all_groups_df,
-                # dyads_merged_rec_df, triads_merged_rec_df, all_groups_merged_rec_df,
-                dyads_merged_inter_df, triads_merged_inter_df, all_groups_merged_inter_df]
+                    dyads_merged_inter_df, triads_merged_inter_df, all_groups_merged_inter_df]
 
 
 if __name__ == "__main__":
     save_to_file = False
-    group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
-    # group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
+    # group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
+    group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
     gaze_stats_subsets = GazeStats(group_names_filename=group_data_time_subset_filename)
     (dyads_df, triads_df, all_groups_df,
      # dyads_merged_rec_df, triads_merged_rec_df, all_groups_merged_rec_df,
      dyads_merged_inter_df, triads_merged_inter_df, all_groups_merged_inter_df) = (
-        gaze_stats_subsets.populate_dfs_with_group_data(True, True, True))
+        gaze_stats_subsets.populate_dfs_with_group_data(True, True, True,
+                                                        direct_gaze=True, mutual_gaze=False))
 
     if save_to_file:
         root_path= "../../Recordings/SavedData/"
-        dyads_df.to_csv(root_path+"all_dyads_mutual_gaze_individualTS.csv")
-        triads_df.to_csv(root_path+"all_triads_mutual_gaze_individualTS.csv")
-        all_groups_df.to_csv(root_path+"all_groups_mutual_gaze_individualTS.csv")
+        dyads_df.to_csv(root_path+"all_dyads_direct_gaze_individualTS.csv")
+        triads_df.to_csv(root_path+"all_triads_direct_gaze_individualTS.csv")
+        all_groups_df.to_csv(root_path+"all_groups_direct_gaze_individualTS.csv")
 
         # dyads_merged_rec_df.to_csv(root_path+"all_dyads_mutual_gaze_recording_time.csv")
         # triads_merged_rec_df.to_csv(root_path+"all_triads_mutual_gaze_recording_time.csv")
         # all_groups_merged_rec_df.to_csv(root_path+"all_groups_mutual_gaze_recording_time.csv")
 
-        dyads_merged_inter_df.to_csv(root_path+"all_dyads_mutual_gaze_interaction_time.csv")
-        triads_merged_inter_df.to_csv(root_path+"all_triads_mutual_gaze_interaction_time.csv")
-        all_groups_merged_inter_df.to_csv(root_path+"all_groups_mutual_gaze_interaction_time.csv")
+        dyads_merged_inter_df.to_csv(root_path+"all_dyads_direct_gaze_interaction_time.csv")
+        triads_merged_inter_df.to_csv(root_path+"all_triads_direct_gaze_interaction_time.csv")
+        all_groups_merged_inter_df.to_csv(root_path+"all_groups_direct_gaze_interaction_time.csv")
 
