@@ -87,7 +87,7 @@ def sum_triads_MG_per_group(main_df: pd.DataFrame, group_names:list):
     df_triads_MG_summed = pd.DataFrame(index=main_df.index)
     for triad_name in group_names:
         columns_MG = list(main_df.filter(regex=triad_name).columns)
-        df_triads_MG_summed[columns_MG[0]] = main_df[columns_MG].sum(axis=1) #keeping the name of the first MG as it is used further in the code and it works like that for the dyads too
+        df_triads_MG_summed[columns_MG[0]] = main_df[columns_MG].sum(axis=1,min_count=1) #keeping the name of the first MG as it is used further in the code and it works like that for the dyads too
     return df_triads_MG_summed
 
 
@@ -159,13 +159,13 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df=df_triads_l, df_column_avg='Triads-L Avg',
                                                     df_column_std='Triads-L Std',
                                                     list_interaction_duration_descending_order=triads_durations_l,
-                                                    line_colour='green', text_y=0.08, line_y=0.4,
+                                                    line_colour='green', text_y=0.08, line_y=0.2,
                                                     fill_alpha=0.2, fill_color='green')
 
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df=df_triads_f, df_column_avg='Triads-F Avg',
                                                     df_column_std='Triads-F Std',
                                                     list_interaction_duration_descending_order=triads_durations_f,
-                                                    line_colour='blue', text_y=0.15, line_y=0.6,
+                                                    line_colour='blue', text_y=0.2, line_y=0.4,
                                                     fill_alpha=0.2, fill_color='blue')
 
         else:
@@ -196,6 +196,6 @@ if __name__ == "__main__":
     root_path= "../Recordings/SavedData/"
     all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
 
-    create_line_plot(all_groups_MG_df_path, timewindow=1,
+    create_line_plot(all_groups_MG_df_path, dyads=False, timewindow=10, separate_by_group_formation=True,
                      y_axis_text="Mutual Gaze %",
                      figure_title="Mutual Gaze")
