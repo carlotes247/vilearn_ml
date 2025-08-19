@@ -196,6 +196,6 @@ if __name__ == "__main__":
     root_path= "../Recordings/SavedData/"
     all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
 
-    create_line_plot(all_groups_MG_df_path, dyads=False, timewindow=10, separate_by_group_formation=True,
+    create_line_plot(all_groups_MG_df_path, timewindow=20, separate_by_group_formation=True,
                      y_axis_text="Mutual Gaze %",
                      figure_title="Mutual Gaze")
