@@ -72,6 +72,15 @@ def get_formation_grups_names_from_eye_df(main_df:pd.DataFrame, group_formation_
         name_columns.extend(list(main_df.filter(regex=name).columns))
     return name_columns
 
+def plot_vline_num_groups(ax, current_duration: float, current_index: int, text_y:float, line_y:float, line_colour:str):        
+        offset = (current_index % 2) / 20  # adds an offset every other time so it can be readable
+        text_y_offset = text_y - offset
+        line_y_offset = line_y - offset
+        num_groups = current_index
+        ax.text(current_duration, text_y_offset, num_groups, color=line_colour)
+        ax.axvline(current_duration, ymax=line_y_offset, ymin=0, color=line_colour, linestyle='--', alpha=0.8, linewidth=0.7)
+
+
 def plot_avg_and_std_to_existing_graph(ax, main_df:pd.DataFrame, df_column_avg:str, df_column_std:str,
                            list_interaction_duration_descending_order:list,
                            line_colour:str, text_y:float, line_y:float,
@@ -80,16 +89,19 @@ def plot_avg_and_std_to_existing_graph(ax, main_df:pd.DataFrame, df_column_avg:s
     ax.plot(main_df[df_column_avg], color=line_colour, label=df_column_avg)
     ax.fill_between(main_df.index, main_df[df_column_avg] - main_df[df_column_std],
                     main_df[df_column_avg] + main_df[df_column_std], facecolor=fill_color, alpha=fill_alpha, label = df_column_std)
-    num_groups: int = 0
+    
+    plot_vline_num_groups(ax=ax, current_duration=0, current_index=len(list_interaction_duration_descending_order), text_y=text_y, line_y=line_y, line_colour=line_colour)
     for current_duration in list_interaction_duration_descending_order:
         current_index = list_interaction_duration_descending_order.index(current_duration)
-        offset = (current_index % 2) / 20  # adds an offset every other time so it can be readable
-        text_y_offset = text_y - offset
-        line_y_offset = line_y - offset
-        num_groups = current_index + 1
-        ax.text(current_duration, text_y_offset, current_index + 1, color=line_colour)
-        ax.axvline(current_duration, ymax=line_y_offset, ymin=0, color=line_colour, linestyle='--', alpha=0.8, linewidth=0.7)
+        plot_vline_num_groups(ax=ax, current_duration=current_duration, current_index=current_index, text_y=text_y, line_y=line_y, line_colour=line_colour)
+        # offset = (current_index % 2) / 20  # adds an offset every other time so it can be readable
+        # text_y_offset = text_y - offset
+        # line_y_offset = line_y - offset
+        # num_groups = current_index
+        # ax.text(current_duration, text_y_offset, num_groups, color=line_colour)
+        # ax.axvline(current_duration, ymax=line_y_offset, ymin=0, color=line_colour, linestyle='--', alpha=0.8, linewidth=0.7)
 
+    num_groups = len(list_interaction_duration_descending_order)
     # print descriptive stats
     print(f"{figure_title} for {df_column_avg}: {main_df[df_column_avg].mean()}, std: {main_df[df_column_std].mean()}, groups: {num_groups}, timewindow: {timewindow} secs ")
 
@@ -214,9 +226,10 @@ if __name__ == "__main__":
     all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
     all_groups_DG_df_path = root_path+"all_groups_direct_gaze_interaction_time.csv"
 
-    create_line_plot(all_groups_MG_df_path, timewindow=10, separate_by_group_formation=False,
+    create_line_plot(all_groups_MG_df_path, timewindow=10, separate_by_group_formation=True,
+                     dyads=False, triads=True,
                       y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
 
-    # create_line_plot(all_groups_DG_df_path, timewindow=10, separate_by_group_formation=False,
-    #                  sum_triads_for_mutual_gaze=False, triads=True,
+    # create_line_plot(all_groups_DG_df_path, timewindow=10, separate_by_group_formation=True,
+    #                  sum_triads_for_mutual_gaze=False, dyads=False, triads=True,
     #                  y_axis_text="Direct Gaze %",  figure_title="Direct Gaze")
