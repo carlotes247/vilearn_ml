@@ -1,5 +1,5 @@
 # Uncomment the line at the bottom to state where the data is located on your machine
 # Each single group file follows the convention 'Recordings/...'
 # So this path prefix will be used to construct the full path, for instance 'C:\Users\gonzacar\Documents\Unity_Projects\ViLearn\Recordings\...' 
-# C:\Users\gonzacar\Documents\Unity_Projects\ViLearn\
-C:\Users\crist\OneDrive\Documents\ViLearnMoreWork\GitRepos\vilearn_ml\
+C:\Users\gonzacar\Documents\Unity_Projects\ViLearn\
+#C:\Users\crist\OneDrive\Documents\ViLearnMoreWork\GitRepos\vilearn_ml\

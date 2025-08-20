@@ -5,6 +5,7 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 def convert_seconds_to_timestamp(df_with_seconds:pd.DataFrame,seconds_col_name:str='seconds_interaction') -> pd.DataFrame:
     df_with_seconds[seconds_col_name+'_ts'] = pd.to_timedelta(df_with_seconds[seconds_col_name], unit='s')
@@ -23,7 +24,11 @@ def resample_avg_seconds_using_timeframe(df_default_time_frequency:pd.DataFrame,
     return df_resampled
 
 def get_grups_interaction_times():
-    names_durations_df: pd.DataFrame = pd.read_csv('../data/group_durations_all_commas.csv', index_col=0)
+    file_path = '../data/group_durations_all_commas.csv'
+    # clean path in case it expects the directory at root level    
+    if not os.path.exists(file_path) and "../" in file_path:
+        file_path = file_path[3:]
+    names_durations_df: pd.DataFrame = pd.read_csv(file_path, index_col=0)
 
     all_groups_interaction_time:list[float] = names_durations_df['duration_interaction']
 
@@ -50,7 +55,11 @@ def get_grups_interaction_times():
 
 def get_groups_names_and_formation()->pd.DataFrame:
     # get the duration of each group
-    names_durations_df: pd.DataFrame = pd.read_csv('../data/group_durations_all_commas.csv', index_col=0)
+    file_path: str = "../data/group_durations_all_commas.csv"
+    # clean path in case it expects the directory at root level
+    if not os.path.exists(file_path) and "../" in file_path:
+        file_path = file_path[3:]
+    names_durations_df: pd.DataFrame = pd.read_csv(file_path, index_col=0)
     df_names_formations = names_durations_df [['group_formation', 'type']]
     return df_names_formations
 
@@ -66,19 +75,23 @@ def get_formation_grups_names_from_eye_df(main_df:pd.DataFrame, group_formation_
 def plot_avg_and_std_to_existing_graph(ax, main_df:pd.DataFrame, df_column_avg:str, df_column_std:str,
                            list_interaction_duration_descending_order:list,
                            line_colour:str, text_y:float, line_y:float,
-                           fill_alpha:float, fill_color:str):
+                           fill_alpha:float, fill_color:str, figure_title:str, timewindow: int):
 
     ax.plot(main_df[df_column_avg], color=line_colour, label=df_column_avg)
     ax.fill_between(main_df.index, main_df[df_column_avg] - main_df[df_column_std],
                     main_df[df_column_avg] + main_df[df_column_std], facecolor=fill_color, alpha=fill_alpha, label = df_column_std)
-
+    num_groups: int = 0
     for current_duration in list_interaction_duration_descending_order:
         current_index = list_interaction_duration_descending_order.index(current_duration)
         offset = (current_index % 2) / 20  # adds an offset every other time so it can be readable
         text_y_offset = text_y - offset
         line_y_offset = line_y - offset
+        num_groups = current_index + 1
         ax.text(current_duration, text_y_offset, current_index + 1, color=line_colour)
         ax.axvline(current_duration, ymax=line_y_offset, ymin=0, color=line_colour, linestyle='--', alpha=0.8, linewidth=0.7)
+
+    # print descriptive stats
+    print(f"{figure_title} for {df_column_avg}: {main_df[df_column_avg].mean()}, std: {main_df[df_column_std].mean()}, groups: {num_groups}, timewindow: {timewindow} secs ")
 
     return ax
 
@@ -96,6 +109,10 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
                      sum_triads_for_mutual_gaze:bool = True,
                      y_axis_text:str='', figure_title:str=''):
 
+    # clean path in case it expects the directory at root level
+    if not os.path.exists(file_path) and "../" in file_path:
+        file_path = file_path[3:]
+    
     df_data = pd.read_csv(file_path, index_col=0)
     df_data_ts = convert_seconds_to_timestamp(df_data)
     df_resampled = resample_avg_seconds_using_timeframe(df_data_ts, timeframe=timewindow)
@@ -120,13 +137,13 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
                                                     df_column_std='Dyads-L Std',
                                                     list_interaction_duration_descending_order=dyads_durations_l,
                                                     line_colour='red', text_y=0.4, line_y=0.6,
-                                                    fill_alpha=0.2, fill_color='red')
+                                                    fill_alpha=0.2, fill_color='red', figure_title=figure_title, timewindow=timewindow)
 
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df=df_dyads_f, df_column_avg='Dyads-F Avg',
                                                     df_column_std='Dyads-F Std',
                                                     list_interaction_duration_descending_order=dyads_durations_f,
                                                     line_colour='orange', text_y=0.6, line_y=0.8,
-                                                    fill_alpha=0.2, fill_color='orange')
+                                                    fill_alpha=0.2, fill_color='orange', figure_title=figure_title, timewindow=timewindow)
 
         else:
             col_dyads = list(df_resampled.filter(regex='dyad').columns)
@@ -138,7 +155,7 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
                                                df_column_std='Dyads Std',
                                                list_interaction_duration_descending_order = dyads_durations,
                                                line_colour = 'red', text_y =  0.7, line_y=0.8,
-                                               fill_alpha = 0.2, fill_color='red')
+                                               fill_alpha = 0.2, fill_color='red', figure_title=figure_title, timewindow=timewindow)
 
     if triads:
         if (sum_triads_for_mutual_gaze):
@@ -160,13 +177,13 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
                                                     df_column_std='Triads-L Std',
                                                     list_interaction_duration_descending_order=triads_durations_l,
                                                     line_colour='green', text_y=0.1, line_y=0.25,
-                                                    fill_alpha=0.2, fill_color='green')
+                                                    fill_alpha=0.2, fill_color='green', figure_title=figure_title, timewindow=timewindow)
 
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df=df_triads_f, df_column_avg='Triads-F Avg',
                                                     df_column_std='Triads-F Std',
                                                     list_interaction_duration_descending_order=triads_durations_f,
                                                     line_colour='blue', text_y=0.3, line_y=0.5,
-                                                    fill_alpha=0.2, fill_color='blue')
+                                                    fill_alpha=0.2, fill_color='blue', figure_title=figure_title, timewindow=timewindow)
 
         else:
             col_triads = list(df_resampled.filter(regex='triad').columns)
@@ -179,7 +196,7 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
                                                df_column_std='Triads Std',
                                                list_interaction_duration_descending_order = triads_durations,
                                                line_colour = 'green', text_y =  0.2, line_y=0.3,
-                                               fill_alpha = 0.2, fill_color='green')
+                                               fill_alpha = 0.2, fill_color='green', figure_title=figure_title, timewindow=timewindow)
 
     plt.xlabel('Interaction Time in Seconds ('+ 'windows of ' +str(timewindow)+ 's)' )
     plt.ylabel(y_axis_text)
@@ -197,9 +214,9 @@ if __name__ == "__main__":
     all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
     all_groups_DG_df_path = root_path+"all_groups_direct_gaze_interaction_time.csv"
 
-    # create_line_plot(all_groups_MG_df_path, timewindow=20, separate_by_group_formation=True,
-    #                  y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
+    create_line_plot(all_groups_MG_df_path, timewindow=10, separate_by_group_formation=False,
+                      y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
 
-    create_line_plot(all_groups_DG_df_path, timewindow=5, separate_by_group_formation=True,
-                     sum_triads_for_mutual_gaze=False, triads=False,
-                     y_axis_text="Direct Gaze %",  figure_title="Direct Gaze")
+    # create_line_plot(all_groups_DG_df_path, timewindow=10, separate_by_group_formation=False,
+    #                  sum_triads_for_mutual_gaze=False, triads=True,
+    #                  y_axis_text="Direct Gaze %",  figure_title="Direct Gaze")
