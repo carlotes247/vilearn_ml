@@ -166,7 +166,7 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
             ax = plot_avg_and_std_to_existing_graph(ax=ax, main_df = df_dyads, df_column_avg='Dyads Avg',
                                                df_column_std='Dyads Std',
                                                list_interaction_duration_descending_order = dyads_durations,
-                                               line_colour = 'red', text_y =  0.7, line_y=0.8,
+                                               line_colour = 'red', text_y =  0.6, line_y=0.8,
                                                fill_alpha = 0.2, fill_color='red', figure_title=figure_title, timewindow=timewindow)
 
     if triads:
@@ -226,10 +226,10 @@ if __name__ == "__main__":
     all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
     all_groups_DG_df_path = root_path+"all_groups_direct_gaze_interaction_time.csv"
 
-    create_line_plot(all_groups_MG_df_path, timewindow=10, separate_by_group_formation=True,
-                     dyads=False, triads=True,
-                      y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
+    # create_line_plot(all_groups_MG_df_path, timewindow=10, separate_by_group_formation=False,
+    #                  dyads=True, triads=True,
+    #                   y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
 
-    # create_line_plot(all_groups_DG_df_path, timewindow=10, separate_by_group_formation=True,
-    #                  sum_triads_for_mutual_gaze=False, dyads=False, triads=True,
-    #                  y_axis_text="Direct Gaze %",  figure_title="Direct Gaze")
+    create_line_plot(all_groups_DG_df_path, timewindow=10, separate_by_group_formation=True,
+                     sum_triads_for_mutual_gaze=False, dyads=True, triads=False,
+                     y_axis_text="Direct Gaze %",  figure_title="Direct Gaze")
