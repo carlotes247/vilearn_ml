@@ -99,6 +99,28 @@ class GazeStats:
                 current_group_dataframe["MG_P2P3"] = ((current_group_dataframe['DG_P2_target'] == 3)
                                                            & (current_group_dataframe['DG_P3_target'] == 2)).astype(int)
 
+            #perhaps here is a good place to add the calculation of a 1d_DG
+            #1d_DG -> one directional direct gaze, P1 looks at P2, but P2 doesn't look at P1 (and viceversa)
+            current_group_dataframe["1d_DG_P1"] = ((current_group_dataframe['DG_P1_target'] == 2)
+                                                  & (current_group_dataframe['DG_P2_target'] != 1)).astype(int)
+            current_group_dataframe["1d_DG_P2"] = ((current_group_dataframe['DG_P2_target'] == 1)
+                                                   & (current_group_dataframe['DG_P1_target'] != 2)).astype(int)
+            if group_data.num_participants>2:
+                current_group_dataframe["1d_DG_P1"] = (((current_group_dataframe['DG_P1_target'] == 2)
+                                                       & (current_group_dataframe['DG_P2_target'] != 1))
+                                                       | ((current_group_dataframe['DG_P1_target'] == 3)
+                                                       & (current_group_dataframe['DG_P3_target'] != 1))).astype(int)
+
+                current_group_dataframe["1d_DG_P2"] = (((current_group_dataframe['DG_P2_target'] == 1)
+                                                        & (current_group_dataframe['DG_P1_target'] != 2))
+                                                       | ((current_group_dataframe['DG_P2_target'] == 3)
+                                                          & (current_group_dataframe['DG_P3_target'] != 2))).astype(int)
+
+                current_group_dataframe["1d_DG_P3"] = (((current_group_dataframe['DG_P3_target'] == 1)
+                                                        & (current_group_dataframe['DG_P1_target'] != 3))
+                                                       |  ((current_group_dataframe['DG_P3_target'] == 2)
+                                                          & (current_group_dataframe['DG_P2_target'] != 3))).astype(int)
+
 
             # put all the info into a dictionary and then add it to a list
             d = {'group_name': row['Group_Name'], 'group_size': group_data.num_participants,
@@ -139,19 +161,19 @@ class GazeStats:
                 if mutual_gaze:
                     dyads_col_keyword = ['MG_P1P2']
                 else:
-                    dyads_col_keyword = ['DG_P1_target', 'DG_P2_target']
+                    dyads_col_keyword = ['DG_P1_target', 'DG_P2_target', '1d_DG_P1', '1d_DG_P2']
 
                 # dyads_df[group['group_name']+'_MG_P1P2'] = group['gaze_df']["MG_P1P2"]
-                dyads_df[group['group_name']+'_'+ dyads_col_keyword[0]] = group['gaze_df'][dyads_col_keyword[0]].clip(0, 1)#clipping here overcomes the isue with values of 2 (or 3 in triads)denoting whom the person was looking at. At this point we only care about a DG, regardless of where that is directed to.
-                if direct_gaze:
-                    dyads_df[group['group_name'] + '_' + dyads_col_keyword[1]] = group['gaze_df'][dyads_col_keyword[1]].clip(0, 1)
-
+                for col_key in dyads_col_keyword:
+                    dyads_df[group['group_name']+'_'+ col_key] = group['gaze_df'][col_key].clip(0, 1)#clipping here overcomes the isue with values of 2 (or 3 in triads)denoting whom the person was looking at. At this point we only care about a DG, regardless of where that is directed to.
 
                 current_inter_dyad = pd.concat([dyads_df[group['group_name'] +'_'+ dyads_col_keyword[0]],
                                           group['gaze_df']["seconds_interaction"]], axis=1)
                 if direct_gaze:
                     current_inter_dyad = pd.concat([dyads_df[group['group_name'] + '_' + dyads_col_keyword[0]],
                                                     dyads_df[group['group_name'] + '_' + dyads_col_keyword[1]],
+                                                    dyads_df[group['group_name'] + '_' + dyads_col_keyword[2]],
+                                                    dyads_df[group['group_name'] + '_' + dyads_col_keyword[3]],
                                                     group['gaze_df']["seconds_interaction"]], axis=1)
 
                 current_inter_dyad.dropna(axis=0, how='any', inplace=True, ignore_index=True)
@@ -166,12 +188,10 @@ class GazeStats:
                 if mutual_gaze:
                     triads_col_keyword = ['MG_P1P2', 'MG_P1P3', 'MG_P2P3']
                 else:
-                    triads_col_keyword = ['DG_P1_target', 'DG_P2_target', 'DG_P3_target']
+                    triads_col_keyword = ['DG_P1_target', 'DG_P2_target', 'DG_P3_target','1d_DG_P1', '1d_DG_P2', '1d_DG_P3']
 
-                triads_df[group['group_name']+'_'+triads_col_keyword[0]] = group['gaze_df'][triads_col_keyword[0]].clip(0,1)
-                triads_df[group['group_name']+'_'+triads_col_keyword[1]] = group['gaze_df'][triads_col_keyword[1]].clip(0,1)
-                triads_df[group['group_name']+'_'+triads_col_keyword[2]] = group['gaze_df'][triads_col_keyword[2]].clip(0,1)
-
+                for col_keyword in triads_col_keyword:
+                    triads_df[group['group_name']+'_'+col_keyword] = group['gaze_df'][col_keyword].clip(0,1)
 
                 # current_rec_triad = pd.concat([triads_df[group['group_name']+'_MG_P1P2'],
                 #                            triads_df[group['group_name'] + '_MG_P1P3'],
@@ -182,6 +202,15 @@ class GazeStats:
                                            triads_df[group['group_name'] + '_'+triads_col_keyword[1]],
                                            triads_df[group['group_name'] + '_'+triads_col_keyword[2]],
                                            group['gaze_df']["seconds_interaction"]], axis=1)
+
+                if direct_gaze:
+                    current_inter_triad = pd.concat([triads_df[group['group_name'] + '_' + triads_col_keyword[0]],
+                                                     triads_df[group['group_name'] + '_' + triads_col_keyword[1]],
+                                                     triads_df[group['group_name'] + '_' + triads_col_keyword[2]],
+                                                     triads_df[group['group_name'] + '_' + triads_col_keyword[3]],
+                                                     triads_df[group['group_name'] + '_' + triads_col_keyword[4]],
+                                                     triads_df[group['group_name'] + '_' + triads_col_keyword[5]],
+                                                     group['gaze_df']["seconds_interaction"]], axis=1)
 
                 current_inter_triad.dropna(axis=0, how='any', inplace=True, ignore_index=True)
 
@@ -201,7 +230,7 @@ class GazeStats:
 
 
 if __name__ == "__main__":
-    save_to_file = False
+    save_to_file = True
     # group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
     group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
     gaze_stats_subsets = GazeStats(group_names_filename=group_data_time_subset_filename)
@@ -212,7 +241,7 @@ if __name__ == "__main__":
                                                         direct_gaze=True, mutual_gaze=False))
 
     if save_to_file:
-        root_path= "../../Recordings/SavedData/"
+        root_path= "../../Recordings/SavedData/1d_DG/"
         dyads_df.to_csv(root_path+"all_dyads_direct_gaze_individualTS.csv")
         triads_df.to_csv(root_path+"all_triads_direct_gaze_individualTS.csv")
         all_groups_df.to_csv(root_path+"all_groups_direct_gaze_individualTS.csv")

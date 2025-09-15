@@ -2,6 +2,7 @@
 # transform the seconds column into the correct data type
 # create the plot
 # show and save the plot
+import re
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -119,7 +120,8 @@ def sum_triads_MG_per_group(main_df: pd.DataFrame, group_names:list):
 def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
                      dyads:bool = True, triads:bool = True, separate_by_group_formation:bool = True,
                      sum_triads_for_mutual_gaze:bool = True,
-                     y_axis_text:str='', figure_title:str=''):
+                     y_axis_text:str='', figure_title:str='',
+                     one_directioned_direct_gaze = True):
 
     # clean path in case it expects the directory at root level
     if not os.path.exists(file_path) and "../" in file_path:
@@ -129,6 +131,12 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
     df_data_ts = convert_seconds_to_timestamp(df_data)
     df_resampled = resample_avg_seconds_using_timeframe(df_data_ts, timeframe=timewindow)
     df_resampled.set_index('seconds_interaction_window', inplace=True)
+    # not ideal, but for 1d direct gaze, I'll drop the columns of DG (not the one directioned ones);
+    if one_directioned_direct_gaze:
+        r = re.compile(".*1d_DG")
+        one_DG_cols = list(filter(r.match,list(df_resampled.columns)))
+        DG_cols = list (set(df_resampled.columns) - set(one_DG_cols))
+        df_resampled.drop(DG_cols, axis=1, inplace=True)
     df_group_formations = get_groups_names_and_formation()
 
     fig, ax = plt.subplots(figsize=(12,5))
@@ -137,11 +145,11 @@ def create_line_plot(file_path:str, timewindow:int = 30, save_plot = False,
         if separate_by_group_formation:
             col_dyads_l = get_formation_grups_names_from_eye_df(df_resampled, df_group_formations, 'dyad', 'Line')
             col_dyads_f = get_formation_grups_names_from_eye_df(df_resampled, df_group_formations, 'dyad', 'F')
-
             df_dyads_l = pd.DataFrame({'Dyads-L Avg': df_resampled[col_dyads_l].mean(axis=1),
                                      'Dyads-L Std': df_resampled[col_dyads_l].std(axis=1) / 2})
             df_dyads_f = pd.DataFrame({'Dyads-F Avg': df_resampled[col_dyads_f].mean(axis=1),
                                        'Dyads-F Std': df_resampled[col_dyads_f].std(axis=1) / 2})
+
             dyads_durations_f = get_grups_interaction_times()['dyads_f'].sort_values(ascending=False).tolist()
             dyads_durations_l = get_grups_interaction_times()['dyads_l'].sort_values(ascending=False).tolist()
 
@@ -223,13 +231,15 @@ if __name__ == "__main__":
 
 
     root_path= "../Recordings/SavedData/"
+    root_path_1d_DG= "../Recordings/SavedData/1d_DG/"
     all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
-    all_groups_DG_df_path = root_path+"all_groups_direct_gaze_interaction_time.csv"
+    all_groups_DG_df_path = root_path_1d_DG+"all_groups_direct_gaze_interaction_time.csv"
 
     # create_line_plot(all_groups_MG_df_path, timewindow=10, separate_by_group_formation=False,
     #                  dyads=True, triads=True,
     #                   y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
 
-    create_line_plot(all_groups_DG_df_path, timewindow=10, separate_by_group_formation=True,
-                     sum_triads_for_mutual_gaze=False, dyads=True, triads=False,
-                     y_axis_text="Direct Gaze %",  figure_title="Direct Gaze")
+    create_line_plot(all_groups_DG_df_path, timewindow=10, separate_by_group_formation=False,
+                     sum_triads_for_mutual_gaze=False,one_directioned_direct_gaze=True,
+                     dyads=True,  triads=True,
+                     y_axis_text="One Direction Direct Gaze %",  figure_title="One Direction Direct Gaze")
