@@ -2,6 +2,7 @@
 # transform the seconds column into the correct data type
 # create the plot
 # show and save the plot
+import re
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -126,7 +127,8 @@ class PlottingEyeData:
                         dyads:bool = True, triads:bool = True, separate_by_group_formation:bool = True,
                         sum_triads_for_mutual_gaze:bool = True,
                         y_axis_text:str='', figure_title:str='', color_dyad:str='red', color_triad:str='green',
-                        plt_show: bool = True, plot_std: bool = True):
+                        plt_show: bool = True, plot_std: bool = True, 
+                        one_directioned_direct_gaze = True):
 
         # clean path in case it expects the directory at root level
         if not os.path.exists(file_path) and "../" in file_path:
@@ -136,8 +138,13 @@ class PlottingEyeData:
         df_data_ts = self.convert_seconds_to_timestamp(df_data)
         df_resampled = self.resample_avg_seconds_using_timeframe(df_data_ts, timeframe=timewindow)
         df_resampled.set_index('seconds_interaction_window', inplace=True)
-        df_group_formations = self.get_groups_names_and_formation()        
-
+        # not ideal, but for 1d direct gaze, I'll drop the columns of DG (not the one directioned ones);
+        if one_directioned_direct_gaze:
+            r = re.compile(".*1d_DG")
+            one_DG_cols = list(filter(r.match,list(df_resampled.columns)))
+            DG_cols = list (set(df_resampled.columns) - set(one_DG_cols))
+            df_resampled.drop(DG_cols, axis=1, inplace=True)
+        df_group_formations = self.get_groups_names_and_formation()
         if dyads:
             if separate_by_group_formation:
                 col_dyads_l = self.get_formation_grups_names_from_eye_df(df_resampled, df_group_formations, 'dyad', 'Line')
@@ -235,8 +242,9 @@ if __name__ == "__main__":
 
 
     root_path= "../Recordings/SavedData/"
+    root_path_1d_DG= "../Recordings/SavedData/1d_DG/"
     all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
-    all_groups_DG_df_path = root_path+"all_groups_direct_gaze_interaction_time.csv"
+    all_groups_DG_df_path = root_path_1d_DG+"all_groups_direct_gaze_interaction_time.csv"
 
     fig, ax = plt.subplots(figsize=(12,5))
     eye_plotter: PlottingEyeData = PlottingEyeData()
@@ -245,6 +253,6 @@ if __name__ == "__main__":
     #                  dyads=True, triads=True,
     #                   y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
 
-    eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_DG_df_path, timewindow=10, separate_by_group_formation=True,
-                     sum_triads_for_mutual_gaze=False, dyads=True, triads=False,
-                     y_axis_text="Direct Gaze %",  figure_title="Direct Gaze")
+    eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_DG_df_path, timewindow=10, separate_by_group_formation=False,
+                     sum_triads_for_mutual_gaze=False, dyads=True, triads=True, one_directioned_direct_gaze=True,
+                     y_axis_text="One Direction Direct Gaze %",  figure_title="One Direction Direct Gaze")
