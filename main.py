@@ -13,6 +13,7 @@ from data_reading.features.blink_stats import BlinkStats
 import datetime 
 from data_reading.group import Group
 from preprocessing.engagement.engagements_manager import EngagementsManager
+from plotting.plotting_eye_data import PlottingEyeData
 
 #region METHODS
 
@@ -57,14 +58,15 @@ def calculate_blink_per_minute_rate(timestamps, valid_blink_onsets):
     blinks_rate = sum(valid_blink_onsets) / total_minutes_within_the_timespan.astype('int')
     print (total_minutes_within_the_timespan, " ", sum(valid_blink_onsets), " ", blinks_rate)
 
-def plot_task_engagement_method(fig, ax, df: pd.DataFrame, label: str, legend_info, hvline: float, color: str, text_y: float = 0):
+def plot_task_engagement_method(fig, ax, df: pd.DataFrame, label: str, legend_info, hvline: float, color: str, text_y: float = 0, plot_std: bool = True):
     y = df['avg_task_eng']
     y_std = df['std_avg_task_eng']
     y_std = y_std/2 # divide by two to plot around center of y
     num_groups = df.groups.drop_duplicates()
     text_y = text_y if text_y > 0 else y.max()
-    ax.fill_between(x, y-y_std, y+y_std, facecolor = color, alpha=0.3)
-    ax.plot(x, y, color)
+    if plot_std:
+        ax.fill_between(x, y-y_std, y+y_std, facecolor = color, alpha=0.3)
+    ax.plot(x, y, color, label=f'Task Engagement {label}')
     for i, num in enumerate(num_groups):
         index_num_dyads = num_groups.index[i]
         pos_x: float = x[index_num_dyads].item()
@@ -72,13 +74,14 @@ def plot_task_engagement_method(fig, ax, df: pd.DataFrame, label: str, legend_in
         ax.text(pos_x, text_y, f'{num}')
         ax.axvline(pos_x, ymax=hvline, ymin=0, color=color, linestyle='--', alpha=0.8, linewidth=0.7)
     # configure legend
-    line1_legend_d = lines.Line2D([0], [0], color=color, lw=1, label=f'Task Engagement {label}')
-    line2_legend_d = lines.Line2D([0], [0], color=color, lw=0.7, linestyle='--', alpha=0.7, label=f'Num Groups in Avg {label}')
-    legend_info.extend([line1_legend_d, line2_legend_d])
+    if custom_legend:
+        line1_legend_d = lines.Line2D([0], [0], color=color, lw=1, label=f'Task Engagement {label}')
+        line2_legend_d = lines.Line2D([0], [0], color=color, lw=0.7, linestyle='--', alpha=0.7, label=f'Num Groups in Avg {label}')
+        legend_info.extend([line1_legend_d, line2_legend_d])
     # print descriptive stats
     print(f"Avg Task Eng for {label}: {df['avg_task_eng'].mean()}, std: {df['avg_task_eng'].std()}, groups: {num_groups.max()} ")
 
-def plot_task_engagement_formation(fig, ax, group_names: list[str], df: pd.DataFrame, label: str, legend_info, hvline: float, color: str, text_y: float = 0):
+def plot_task_engagement_formation(fig, ax, group_names: list[str], df: pd.DataFrame, label: str, legend_info, hvline: float, color: str, text_y: float = 0, plot_std: bool = True):
     cols = df.columns[df.columns.str.contains('|'.join(group_names))]
     df_formation: pd.DataFrame = pd.DataFrame(df[cols] )
     avg = df_formation.mean(axis=1)
@@ -88,7 +91,7 @@ def plot_task_engagement_formation(fig, ax, group_names: list[str], df: pd.DataF
     df_formation['std_avg_task_eng'] = std
     df_formation['groups'] = num_groups
     df_formation['seconds'] = df['seconds']
-    plot_task_engagement_method(fig=fig, ax=ax, df=df_formation, label=label, legend_info=legend_info, hvline=hvline, color=color, text_y=text_y)   
+    plot_task_engagement_method(fig=fig, ax=ax, df=df_formation, label=label, legend_info=legend_info, hvline=hvline, color=color, text_y=text_y, plot_std=plot_std)   
 
 #endregion 
 
@@ -127,10 +130,15 @@ if __name__ == "__main__":
     plot_total_duration_bars: bool = False
     plot_offset_duration_lines: bool = False
     plot_task_engagement: bool = True # true if you want any task engagement plot
-    plot_task_engagement_dyads: bool = True # for dyads task engagement
-    plot_task_engagement_triads: bool = True # for triads task engagement
     plot_task_engagement_in_interaction_time: bool = True # to plot in interaction time instead of recording time
-    discriminate_group_formation: bool = False # to plot depending on group formation (F or Line)
+    plot_mutual_gaze: bool = True
+    plot_direct_gaze: bool = False
+    # general plotting vars
+    custom_legend: bool = False
+    plot_dyads: bool = False
+    plot_triads: bool = True 
+    plot_std: bool = False
+    discriminate_group_formation: bool = True # to plot depending on group formation (F or Line)
 
     # Testing loading data logic 12 April 2024
     path_prefix_file = "data/_path_prefix.txt"
@@ -319,6 +327,49 @@ if __name__ == "__main__":
             plt.title('Group Durations by Type and Formation')
             plt.grid(True)
         #endregion
+        #region PLOT GAZE
+        if plot_mutual_gaze or plot_direct_gaze:
+            # We only show plot if we don't need to wait for anything else            
+            something_else_plot: bool = False
+            show_both: bool = False
+            if plot_task_engagement:
+                something_else_plot = True  
+            # If we are only going to plot together gaze, we prepare to show both graphs
+            show_both = (not something_else_plot) and plot_mutual_gaze and plot_direct_gaze       
+
+            color_dyad_mg: str = color_dyad
+            color_triad_mg: str = color_triad
+            color_dyad_dg: str = color_dyad
+            color_triad_dg: str = color_triad
+            # If we are going to stack graphs distinguish lines
+            if (something_else_plot and not show_both) or show_both:
+                color_dyad_mg: str = 'chocolate'
+                color_triad_mg: str = 'seagreen'
+                color_dyad_dg: str = 'sienna'
+                color_triad_dg: str = 'mediumaquamarine'
+
+
+            root_path= "../Recordings/SavedData/"
+            all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
+            all_groups_DG_df_path = root_path+"all_groups_direct_gaze_interaction_time.csv"
+
+            eye_plotter: PlottingEyeData = PlottingEyeData()
+
+            # create_line_plot(all_groups_MG_df_path, timewindow=10, separate_by_group_formation=False,
+            #                  dyads=True, triads=True,
+            #                   y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
+            if plot_mutual_gaze:
+                eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_MG_df_path, timewindow=10, separate_by_group_formation=discriminate_group_formation,
+                            sum_triads_for_mutual_gaze=False, dyads=plot_dyads, triads=plot_triads,
+                            y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze", color_dyad=color_dyad_mg, color_triad=color_triad_mg,
+                              plt_show=(not something_else_plot and not show_both), plot_std=plot_std)
+            if plot_direct_gaze:                 
+                eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_DG_df_path, timewindow=10, separate_by_group_formation=discriminate_group_formation,
+                            sum_triads_for_mutual_gaze=False, dyads=plot_dyads, triads=plot_triads,
+                            y_axis_text="Direct Gaze %",  figure_title="Direct Gaze", color_dyad=color_dyad_dg, color_triad=color_triad_dg,
+                              plt_show=(show_both), plot_std=plot_std)
+            pass
+        #endregion
         #region PLOT TASK ENG
         if plot_task_engagement:
             eng_mngr: EngagementsManager = EngagementsManager(False)            
@@ -328,27 +379,30 @@ if __name__ == "__main__":
             x = df_eng_all['seconds'] 
             legend_info = []
             # dyads
-            if plot_task_engagement_dyads:
+            if plot_dyads:
                 df_eng_dyads = eng_mngr.df_avg_eng_dyads if not plot_task_engagement_in_interaction_time else eng_mngr.df_avg_eng_dyads_interaction
                 if discriminate_group_formation:
-                    plot_task_engagement_formation(fig=fig, group_names=F_group_names, ax=ax, df=df_eng_dyads, label='Dyads F formation', legend_info=legend_info, hvline=0.88, color=color_dyad)
-                    plot_task_engagement_formation(fig=fig, group_names=Line_group_names, ax=ax, df=df_eng_dyads, label='Dyads Line formation', legend_info=legend_info, hvline=0.39, color='darkred', text_y=0.3)
+                    plot_task_engagement_formation(fig=fig, group_names=F_group_names, ax=ax, df=df_eng_dyads, label='Dyads F formation', legend_info=legend_info, hvline=0.88, color=color_dyad, plot_std=plot_std)
+                    plot_task_engagement_formation(fig=fig, group_names=Line_group_names, ax=ax, df=df_eng_dyads, label='Dyads Line formation', legend_info=legend_info, hvline=0.39, color='darkred', text_y=0.3, plot_std=plot_std)
                 else:
-                    plot_task_engagement_method(fig=fig, ax=ax, df=df_eng_dyads, label='Dyads', legend_info=legend_info, hvline=0.96, color=color_dyad, text_y=0.8)                
+                    plot_task_engagement_method(fig=fig, ax=ax, df=df_eng_dyads, label='Dyads', legend_info=legend_info, hvline=0.96, color=color_dyad, text_y=0.8, plot_std=plot_std)                
             # triads
-            if plot_task_engagement_triads:
+            if plot_triads:
                 df_eng_triads = eng_mngr.df_avg_eng_triads if not plot_task_engagement_in_interaction_time else eng_mngr.df_avg_eng_triads_interaction
                 if discriminate_group_formation:
-                    plot_task_engagement_formation(fig=fig, group_names=F_group_names, ax=ax, df=df_eng_triads, label='Triads F formation', legend_info=legend_info, hvline=0.88, color='mediumseagreen', text_y=0.74)
-                    plot_task_engagement_formation(fig=fig, group_names=Line_group_names, ax=ax, df=df_eng_triads, label='Triads Line formation', legend_info=legend_info, hvline=0.75, color='darkgreen', text_y=0.62)
+                    plot_task_engagement_formation(fig=fig, group_names=F_group_names, ax=ax, df=df_eng_triads, label='Triads F formation', legend_info=legend_info, hvline=0.88, color='mediumseagreen', text_y=0.74, plot_std=plot_std)
+                    plot_task_engagement_formation(fig=fig, group_names=Line_group_names, ax=ax, df=df_eng_triads, label='Triads Line formation', legend_info=legend_info, hvline=0.75, color='darkgreen', text_y=0.62, plot_std=plot_std)
                 else:
-                    plot_task_engagement_method(fig=fig, ax=ax, df=df_eng_triads, label='Triads', legend_info=legend_info, hvline=0.92, color=color_triad)
+                    plot_task_engagement_method(fig=fig, ax=ax, df=df_eng_triads, label='Triads', legend_info=legend_info, hvline=0.92, color=color_triad, plot_std=plot_std)
 
             condition_text: str = ""
-            if plot_task_engagement_dyads: condition_text += " Dyads"
-            if plot_task_engagement_triads: condition_text += " Triads"
+            if plot_dyads: condition_text += " Dyads"
+            if plot_triads: condition_text += " Triads"
             if plot_task_engagement_in_interaction_time: condition_text += " Interaction Time"
-            ax.legend(handles = legend_info, loc=4)
+            if custom_legend:
+                ax.legend(handles = legend_info, loc=4)
+            else:                
+                ax.legend(loc='best')
             plt.xlabel('Seconds')
             plt.ylabel(f'Task Engagement{condition_text}')
             plt.title(f'Average Task Engagement{condition_text}')
