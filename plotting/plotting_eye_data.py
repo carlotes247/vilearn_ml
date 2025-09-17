@@ -249,10 +249,12 @@ if __name__ == "__main__":
     fig, ax = plt.subplots(figsize=(12,5))
     eye_plotter: PlottingEyeData = PlottingEyeData()
 
-    # create_line_plot(all_groups_MG_df_path, timewindow=10, separate_by_group_formation=False,
-    #                  dyads=True, triads=True,
-    #                   y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
+    # Mutual Gaze Plotting
+    eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_MG_df_path, timewindow=10, separate_by_group_formation=False,
+                    sum_triads_for_mutual_gaze=True, dyads=True, triads=True, one_directioned_direct_gaze=False,
+                    y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
 
-    eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_DG_df_path, timewindow=10, separate_by_group_formation=False,
-                     sum_triads_for_mutual_gaze=False, dyads=True, triads=True, one_directioned_direct_gaze=True,
-                     y_axis_text="One Direction Direct Gaze %",  figure_title="One Direction Direct Gaze")
+    # Direct Gaze plotting
+    # eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_DG_df_path, timewindow=10, separate_by_group_formation=False,
+    #                  sum_triads_for_mutual_gaze=True, dyads=True, triads=True, one_directioned_direct_gaze=False,
+    #                  y_axis_text="One Direction Direct Gaze %",  figure_title="One Direction Direct Gaze")
