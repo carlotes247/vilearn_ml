@@ -2,6 +2,7 @@ import statistics
 from pathlib import Path
 
 import pandas as pd
+import seaborn as sns
 from scipy import stats
 
 from data_reading.groups_manager import GroupsManager
@@ -23,6 +24,7 @@ class LinearRegressionTE(object):
         if Path(filepath_all_measures_on_groups_level).is_file():
             # load file
             self.df_all_measures_on_groups_level = pd.read_csv(filepath_all_measures_on_groups_level)
+            self.remove_dyad_line_formation()
         else:
           # This means that the file is not created yet so get all the data needed and add it to a df and then print it to file.
             # get MG
@@ -48,9 +50,20 @@ class LinearRegressionTE(object):
             df_formation = self.get_group_formations()
             self.df_all_measures_on_groups_level = pd.concat([self.df_all_measures_on_groups_level, df_formation],
                                                              axis=1)
+            # add another column for the group type (dyads or triads)
+            self.df_all_measures_on_groups_level['group_type'] = self.df_all_measures_on_groups_level.index.str.slice_replace(start=-3)
             # save to file
             self.df_all_measures_on_groups_level.to_csv(self.path_going_up_one_folder + self.path_prefix_gaze_data +
                                                         "all_groups_features_for_regression.csv")
+
+
+        print("")
+
+    def remove_dyad_line_formation(self):
+        #find the index of the rows to be removed
+        index_to_remove = self.df_all_measures_on_groups_level[(self.df_all_measures_on_groups_level['group_formation'] == 'Line')
+                                                               & (self.df_all_measures_on_groups_level['group_type'] == 'dyad')].index
+        self.df_all_measures_on_groups_level.drop(index_to_remove, inplace=True)
 
     def return_MG_avg_per_group(self)-> pd.DataFrame:
         MG_filepath = self.path_going_up_one_folder + self.path_prefix_gaze_data + 'all_groups_mutual_gaze_interaction_time.csv'
@@ -165,4 +178,15 @@ if __name__ == "__main__":
     path_going_up_one_folder = "../"
     path_prefix_gaze_data = "Recordings/SavedData/"
     data_filepath = path_going_up_one_folder + path_prefix_gaze_data + "all_groups_features_for_regression.csv"
-    l_regression = LinearRegressionTE(data_filepath)
+    data = LinearRegressionTE(data_filepath)
+    # data = LinearRegressionTE("")
+
+    # fig, ax = plt.subplots()
+    # bplot = data.df_all_measures_on_groups_level.boxplot(column=['TE'], by = ['group_type','group_formation'])
+    sns.lmplot(data=data.df_all_measures_on_groups_level,
+               x='blink_sync', y='TE', hue='group_type', #col="group_type",
+               fit_reg=True)
+    # outliners = bplot['fliers'][0].get_ydata()
+    # loc = data.df_all_measures_on_groups_level.loc[data.df_all_measures_on_groups_level['TE'] == outliners].index[0]
+    # print (outliners)
+    plt.show()

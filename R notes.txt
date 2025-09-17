@@ -1,0 +1,26 @@
+R notes:
+install.packages("readr")
+library(readr)
+my_data = read_csv('C:/Users/dobregeo/Documents/GitHub/vilearn_ml/Recordings/SavedData/all_groups_features_for_regression.csv')
+my_data<-my_data[-c(9),] #removed the l-dyad
+
+TE_model = lm(formula = TE ~ MG + '`1d_DG` + BRM + blink_duration + 'blink_sync', data=my_data)
+summary(TE_model)
+
+
+X < split(my_data, my_data$group_type)
+dyads_data<-X[[1]]
+triads_data<-X[[2]]
+
+
+install.packages("ggcorrplot")
+library(ggcorrplot)
+install.packages("ggplot2")
+library("ggplot2")
+
+reduced_dyads_data = subset(dyads_data, select= - TE)
+reduced_dyads_data = subset(reduced_dyads_data, select= - group_type)
+reduced_dyads_data = subset(reduced_dyads_data, select= - group_formation)
+dyads_corr_matrix = round(cor(reduced_dyads_data),3)
+ggcorrplot(dyads_corr_matrix, hc.order = TRUE, type='lower', lab=TRUE)
+
