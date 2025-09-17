@@ -113,11 +113,11 @@ class GroupsManager:
                 # Ignore comments
                 if data_path_line.startswith("#"):
                     continue
-                # Group features file if one available. It will not load individual participant files
+                # Group features file if one available. 
                 if data_path_line.startswith("GroupFeatures: "):
                     group_features_path = os.path.normpath(os.path.join(self.path_prefix_data, data_path_line.removeprefix("GroupFeatures: ")))
-                # Participant individual files if no group file
-                else:
+                # Participant individual files 
+                elif load_individual_p_files:
                     # Construct full path
                     full_data_path = os.path.normpath(os.path.join(self.path_prefix_data, data_path_line))
                     if full_data_path.endswith(".csv"):

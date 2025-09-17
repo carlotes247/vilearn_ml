@@ -14,6 +14,7 @@ import datetime
 from data_reading.group import Group
 from preprocessing.engagement.engagements_manager import EngagementsManager
 from plotting.plotting_eye_data import PlottingEyeData
+from data_reading.vilearn_csv_data_loader import ViLearnParticipantCSVLoader
 
 #region METHODS
 
@@ -41,13 +42,13 @@ def calculate_stats(list, stringTag, stringMeasurement):
     print(stringTag + "Percentage of deltas above 500ms: " + str(np.count_nonzero(deltaArray > 500) / count * 100) + " %")
     print(stringTag + "Percentage of deltas above 900ms: " + str(np.count_nonzero(deltaArray > 900) / count * 100) + " %")
 
-def read_data_and_calculate_stats (reader, fileName, stringTag):
+def read_data_and_calculate_stats (reader: ViLearnParticipantCSVLoader, stringTag):
     """
     Calls all functions written so far to understand the data
     """ 
-    listOfDeltas = reader.getDeltasBetweenTimestamps(fileName)
-    calculate_stats(listOfDeltas, stringTag, "ms")
-    reader.getEyeTrackingData(fileName)
+    listOfDeltas = reader.get_deltas_between_timestamps()
+    calculate_stats(listOfDeltas, stringTag, "ms")    
+    #reader.print_eye_tracking_data()
 
 # gets called with a series of timestamps and a list for a particular person
 def calculate_blink_per_minute_rate(timestamps, valid_blink_onsets):
@@ -115,7 +116,7 @@ if __name__ == "__main__":
     # Config flags (I might want to move them somewhere else, leave here for the moment)
     load_groups_mngr: bool = False
     train_torch: bool = False
-    load_individual_participant_files: bool = False
+    load_individual_participant_files: bool = True
     use_async: bool = False
     modify_dataframes: bool = False
     my_groups_manager: GroupsManager
@@ -123,6 +124,7 @@ if __name__ == "__main__":
     print_debug: bool = True
     print_all_stats_p_files: bool = False
     print_blink_stats_p_files: bool = False
+    print_deltas_p_files: bool = False
     # Plotting flags
     plot_eye_openess: bool = False
     plot_group_duration_plots: bool = True # True if you want any plot to appear
@@ -159,6 +161,13 @@ if __name__ == "__main__":
                                     load_individual_p_files=load_individual_participant_files, 
                                     print_all_stats=print_all_stats_p_files, print_blink_stats=print_blink_stats_p_files,
                                     print_debug=print_debug, use_async=use_async)
+        if print_deltas_p_files:
+            # Calculate file stats
+            for group in my_groups_manager.groups:
+                if len(group.participants) > 0:
+                    for i, participant in enumerate(group.participants):
+                        reader = participant.movement_data
+                        read_data_and_calculate_stats(reader, f"{group.group_name} P{i}: ")
     
     if modify_dataframes:
         # MODIFYING DATAFRAMES

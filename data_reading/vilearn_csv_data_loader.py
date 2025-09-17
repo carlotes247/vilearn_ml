@@ -113,54 +113,51 @@ class ViLearnParticipantCSVLoader:
     #endregion
     
     #region Methods
-    def get_deltas_between_timestamps(self, path):
+    def get_deltas_between_timestamps(self):
         """
         (Uses CSV module) Returns a list of deltas between the timestamps
         of a csv file where the first column are the timestamps
         """
-        with open(path, "r") as file:
-            # Create a csv reader object
-            reader = csv.reader(file)
-            # Skip the header row
-            next(reader)
+        # Skip the header row
+        #next(reader)
 
-            previousMiliseconds = 0
-            currentMiliseconds = 0
-            listOfDeltas = []
-            listOfTimeStamps = []
-            timestamptRepeated = False
-            firstInit = True
-            # Loop through each row in the file
-            for row in reader:
-                # Get the first column as timestamp
-                timestamp = row[0]
-                # Parse the timestamp string into a datetime object
-                dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")
-                if (not firstInit):
-                    prevTimestamp = listOfTimeStamps[-1]
-                    timestamptRepeated = timestamp == prevTimestamp
-                    #print("dtDiff is: " + str(timestamptRepeated))
+        previousMiliseconds = 0
+        currentMiliseconds = 0
+        listOfDeltas = []
+        listOfTimeStamps = []
+        timestamptRepeated = False
+        firstInit = True
+        # Loop through each row in the file
+        for index, row in self.raw_data.iterrows():
+            # Get the first column as timestamp
+            timestamp = row[0]
+            # Parse the timestamp string into a datetime object
+            dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")
+            if (not firstInit):
+                prevTimestamp = listOfTimeStamps[-1]
+                timestamptRepeated = timestamp == prevTimestamp
+                #print("dtDiff is: " + str(timestamptRepeated))
 
-                # Avoid duplicate timestamps
-                if (firstInit or not timestamptRepeated):
-                    # Print the timestamp
-                    #print(timestamp)
-                    # Add timestamp into list
-                    listOfTimeStamps.append(timestamp)
-                    # Get the microseconds part
-                    microseconds = dt.microsecond
-                    # Convert microseconds to milliseconds
-                    milliseconds = microseconds // 1000
-                    # Print the milliseconds delta
-                    currentMiliseconds = milliseconds
-                    if(not firstInit):
-                        delta = abs(currentMiliseconds - previousMiliseconds)
-                        #print(delta)
-                        if (delta < 0):
-                            print("This delta is negative. What's going on?")
-                        listOfDeltas.append(delta)
-                    previousMiliseconds = currentMiliseconds
-                    firstInit = False
+            # Avoid duplicate timestamps
+            if (firstInit or not timestamptRepeated):
+                # Print the timestamp
+                #print(timestamp)
+                # Add timestamp into list
+                listOfTimeStamps.append(timestamp)
+                # Get the microseconds part
+                microseconds = dt.microsecond
+                # Convert microseconds to milliseconds
+                milliseconds = microseconds / 1000
+                # Print the milliseconds delta
+                currentMiliseconds = milliseconds
+                if(not firstInit):
+                    delta = abs(currentMiliseconds - previousMiliseconds)
+                    #print(delta)
+                    if (delta < 0):
+                        print("This delta is negative. What's going on?")
+                    listOfDeltas.append(delta)
+                previousMiliseconds = currentMiliseconds
+                firstInit = False
 
         return listOfDeltas
 
