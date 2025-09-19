@@ -147,10 +147,10 @@ class GazeStats:
         for group in self.groups_gaze_with_timestamps:
             print (group['group_name'])
             # change the second column to have only 2 decimal points. That means there would be at most 100 frames per second
-            group['gaze_df']['seconds_interaction'] = group['gaze_df']['seconds_interaction'].apply(lambda x: "{:.2f}".format(x))
+            ##### group['gaze_df']['seconds_interaction'] = group['gaze_df']['seconds_interaction'].apply(lambda x: "{:.2f}".format(x))
             group['gaze_df']['seconds_interaction'] = group['gaze_df']['seconds_interaction'].astype(float)
             # group['gaze_df']['seconds_recording'] = group['gaze_df']['seconds_recording'].apply(lambda x: "{:.2f}".format(x))
-            group['gaze_df'].drop_duplicates(subset=['seconds_interaction'], inplace=True)
+            #### group['gaze_df'].drop_duplicates(subset=['seconds_interaction'], inplace=True)
             group['gaze_df'].reset_index(inplace=True)
 
             if df_for_all_dyads_data and group['group_size'] == 2:
@@ -238,19 +238,19 @@ if __name__ == "__main__":
      # dyads_merged_rec_df, triads_merged_rec_df, all_groups_merged_rec_df,
      dyads_merged_inter_df, triads_merged_inter_df, all_groups_merged_inter_df) = (
         gaze_stats_subsets.populate_dfs_with_group_data(True, True, True,
-                                                        direct_gaze=True, mutual_gaze=False))
+                                                        direct_gaze=False, mutual_gaze=True))
 
     if save_to_file:
-        root_path= "../../Recordings/SavedData/1d_DG/"
-        dyads_df.to_csv(root_path+"all_dyads_direct_gaze_individualTS.csv")
-        triads_df.to_csv(root_path+"all_triads_direct_gaze_individualTS.csv")
-        all_groups_df.to_csv(root_path+"all_groups_direct_gaze_individualTS.csv")
+        root_path= "../../Recordings/SavedData/v2/"
+        dyads_df.to_csv(root_path+"all_dyads_mutual_gaze_individualTS.csv")
+        triads_df.to_csv(root_path+"all_triads_mutual_gaze_individualTS.csv")
+        all_groups_df.to_csv(root_path+"all_groups_mutual_gaze_individualTS.csv")
 
         # dyads_merged_rec_df.to_csv(root_path+"all_dyads_mutual_gaze_recording_time.csv")
         # triads_merged_rec_df.to_csv(root_path+"all_triads_mutual_gaze_recording_time.csv")
         # all_groups_merged_rec_df.to_csv(root_path+"all_groups_mutual_gaze_recording_time.csv")
 
-        dyads_merged_inter_df.to_csv(root_path+"all_dyads_direct_gaze_interaction_time.csv")
-        triads_merged_inter_df.to_csv(root_path+"all_triads_direct_gaze_interaction_time.csv")
-        all_groups_merged_inter_df.to_csv(root_path+"all_groups_direct_gaze_interaction_time.csv")
+        dyads_merged_inter_df.to_csv(root_path+"all_dyads_mutual_gaze_interaction_time.csv")
+        triads_merged_inter_df.to_csv(root_path+"all_triads_mutual_gaze_interaction_time.csv")
+        all_groups_merged_inter_df.to_csv(root_path+"all_groups_mutual_gaze_interaction_time.csv")
 

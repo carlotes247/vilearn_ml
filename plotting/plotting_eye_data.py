@@ -128,7 +128,7 @@ class PlottingEyeData:
                         sum_triads_for_mutual_gaze:bool = True,
                         y_axis_text:str='', figure_title:str='', color_dyad:str='red', color_triad:str='green',
                         plt_show: bool = True, plot_std: bool = True, 
-                        one_directioned_direct_gaze = True):
+                        one_directioned_direct_gaze = True, save_df_resampled_to_file:bool=True):
 
         # clean path in case it expects the directory at root level
         if not os.path.exists(file_path) and "../" in file_path:
@@ -228,6 +228,15 @@ class PlottingEyeData:
                                                 fill_alpha = 0.2, fill_color=color_triad, figure_title=figure_title, timewindow=timewindow, 
                                                 plot_std=plot_std)
 
+        if save_df_resampled_to_file:
+            filepath_path = "../Recordings/SavedData/v2_no_low_sampled/"
+            if one_directioned_direct_gaze:
+                filepath_path += "oneD_DG_"
+            else:
+                filepath_path += "MG_"
+            filepath_path = filepath_path + str(timewindow) + "s_" + "resampled.csv"
+            df_resampled.to_csv(filepath_path)
+
         if plt_show:
             plt.xlabel('Interaction Time in Seconds ('+ 'windows of ' +str(timewindow)+ 's)' )
             plt.ylabel(y_axis_text)
@@ -237,21 +246,23 @@ class PlottingEyeData:
             plt.show()
 
 
+
+
 if __name__ == "__main__":
     save_plot = False
 
 
-    root_path= "../Recordings/SavedData/"
-    root_path_1d_DG= "../Recordings/SavedData/1d_DG/"
+    root_path= "../Recordings/SavedData/v2_no_low_sampled/"
+    # root_path_1d_DG= "../Recordings/SavedData/1d_DG/"
     all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
-    all_groups_DG_df_path = root_path_1d_DG+"all_groups_direct_gaze_interaction_time.csv"
+    all_groups_DG_df_path = root_path+"all_groups_direct_gaze_interaction_time.csv"
 
     fig, ax = plt.subplots(figsize=(12,5))
     eye_plotter: PlottingEyeData = PlottingEyeData()
 
     # Mutual Gaze Plotting
-    eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_MG_df_path, timewindow=10, separate_by_group_formation=False,
-                    sum_triads_for_mutual_gaze=True, dyads=True, triads=True, one_directioned_direct_gaze=False,
+    eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_MG_df_path, timewindow=5, separate_by_group_formation=False,
+                    sum_triads_for_mutual_gaze=False, dyads=True, triads=True, one_directioned_direct_gaze=False,
                     y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
 
     # Direct Gaze plotting
