@@ -2,10 +2,17 @@ import statistics
 
 import pandas as pd
 from scipy import stats
-
-from data_reading.groups_manager import GroupsManager
+# Added this try catch because on some machines it cannot find data_reading module from this script
+try:
+    from data_reading.groups_manager import GroupsManager
+except ImportError:
+    import sys
+    sys.path.append(sys.path[0] + '/../..')
+    from data_reading.groups_manager import GroupsManager
+# from data_reading.groups_manager import GroupsManager
 import matplotlib.pyplot as plt
 import json
+import os
 
 class GazeStats:
 
@@ -19,9 +26,11 @@ class GazeStats:
     groups_gaze_with_timestamps: list[dict]
 
     path_going_up_two_folders = "../../"
-    path_prefix_file = path_going_up_two_folders + "data/_path_prefix.txt"
-    data_folder_path = path_going_up_two_folders + "data/"
-
+    path_prefix_file = "data/_path_prefix.txt"
+    data_folder_path = "data/"
+    if not os.path.exists("data"):
+        path_prefix_file = path_going_up_two_folders + path_prefix_file
+        data_folder_path = path_going_up_two_folders + data_folder_path
 
     def __init__(self, group_names: list[str] = [], group_names_filename: str = ""):
         self.groups_gaze_with_timestamps = []
@@ -230,15 +239,16 @@ class GazeStats:
 
 
 if __name__ == "__main__":
-    save_to_file = True
-    # group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
-    group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
+    save_to_file = False
+    group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
+    # group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
     gaze_stats_subsets = GazeStats(group_names_filename=group_data_time_subset_filename)
+    
     (dyads_df, triads_df, all_groups_df,
      # dyads_merged_rec_df, triads_merged_rec_df, all_groups_merged_rec_df,
      dyads_merged_inter_df, triads_merged_inter_df, all_groups_merged_inter_df) = (
         gaze_stats_subsets.populate_dfs_with_group_data(True, True, True,
-                                                        direct_gaze=False, mutual_gaze=True))
+                                                        direct_gaze=True, mutual_gaze=False))
 
     if save_to_file:
         root_path= "../../Recordings/SavedData/v2/"
