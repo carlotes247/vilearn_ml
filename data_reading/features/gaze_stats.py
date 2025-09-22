@@ -48,7 +48,7 @@ class GazeStats:
             # self.populate_groups_gaze_dataset_with_a_the_full_timeline(group_names)
 
 
-    def populate_groups_gaze_dataset_with_a_subset_timeline(self, group_names_filename:str):
+    def populate_groups_gaze_dataset_with_a_subset_timeline(self, group_names_filename:str, debug_print:bool=False):
         fullpath = self.data_folder_path + group_names_filename
         data_for_calculating_subsets = pd.read_csv(fullpath, sep=';')
 
@@ -69,7 +69,7 @@ class GazeStats:
                 # It can take one of the values: either 0 (no DG), 1 (looking at P1), 2 (P2), or 3 (P3) '
                 # in the raw file: 'TargetGazeP1' 'TargetGazeP2' 'TargetGazeP3'
                 participant_DG_target = group_data_raw_df[f'TargetGazeP{participant+1}']
-                # turning it into a df
+                # turning it into a d
                 participant_DG_target_df = pd.DataFrame({f'DG_P{participant + 1}_target': participant_DG_target})
                 # adding the df to the large one
                 current_group_dataframe = pd.concat([current_group_dataframe, participant_DG_target_df], axis='columns')
@@ -98,6 +98,8 @@ class GazeStats:
                                                               (current_group_dataframe['seconds_interaction'] >
                                                                duration_interaction))
 
+            # TODO: slice dataframe to only have interaction time
+            current_group_dataframe = current_group_dataframe[current_group_dataframe['seconds_interaction'].notnull()]
 
             # calculate the MG and add new columns to the df:
             current_group_dataframe["MG_P1P2"] =((current_group_dataframe['DG_P1_target'] == 2)
@@ -130,10 +132,107 @@ class GazeStats:
                                                        |  ((current_group_dataframe['DG_P3_target'] == 2)
                                                           & (current_group_dataframe['DG_P2_target'] != 3))).astype(int)
 
+                # Logic for triad dynamics configurations
+                # 0 D1 (Nobody looks at the other participants)
+                current_group_dataframe['0_D1'] = ((current_group_dataframe['DG_P1_target'] == 0) 
+                                                        & (current_group_dataframe['DG_P2_target'] == 0)
+                                                        & (current_group_dataframe['DG_P3_target'] == 0)).astype(int)
+                # 1 D1 (One looks at the other. two, don’t)
+                # P1 to anybody, P2 & P3 to nothing
+                current_group_dataframe['1_D1'] = (
+                    # P1 to anybody, P2 & P3 to nothing
+                    (current_group_dataframe['DG_P1_target'] > 0) & (current_group_dataframe['DG_P2_target'] == 0) & (current_group_dataframe['DG_P3_target'] == 0)
+                    # P2 to anybody, P1 & P3 to nothing
+                    | (current_group_dataframe['DG_P2_target'] > 0) & (current_group_dataframe['DG_P1_target'] == 0) & (current_group_dataframe['DG_P3_target'] == 0)
+                    # P3 to anybody, P1 & P2 to nothing
+                    | (current_group_dataframe['DG_P3_target'] > 0) & (current_group_dataframe['DG_P1_target'] == 0) & (current_group_dataframe['DG_P2_target'] == 0)
+                    ).astype(int)
+                # 2 D1 same (Two to the same person, which to nothing;
+                current_group_dataframe['2_D1_same'] = (
+                    # P1 & P2 to P3, P3 to nothing
+                    (current_group_dataframe['DG_P1_target'] == 3) & (current_group_dataframe['DG_P2_target'] == 3) & (current_group_dataframe['DG_P3_target'] == 0)
+                    # P1 & P3 to P2, P2 to nothing
+                    | (current_group_dataframe['DG_P1_target'] == 2) & (current_group_dataframe['DG_P3_target'] == 2) & (current_group_dataframe['DG_P2_target'] == 0)
+                    # P2 & P3 to P1, P1 to nothing
+                    | (current_group_dataframe['DG_P2_target'] == 1) & (current_group_dataframe['DG_P3_target'] == 1) & (current_group_dataframe['DG_P1_target'] == 0)
+                    ).astype(int)                   
+                # 2 D1 different (One to nothing and their two each to a different person)
+                current_group_dataframe['2_D1_different'] = (
+                    # P1 to nothing, P2 to P3, P3 to P1
+                    (current_group_dataframe['DG_P1_target'] == 0) & (current_group_dataframe['DG_P2_target'] == 3) & (current_group_dataframe['DG_P3_target'] == 1)
+                    # P1 to nothing, P2 to P1, P3 to P2
+                    | (current_group_dataframe['DG_P1_target'] == 0) & (current_group_dataframe['DG_P2_target'] == 1) & (current_group_dataframe['DG_P3_target'] == 2)
+                    # P2 to nothing, P1 to P2, P3 to P1
+                    | (current_group_dataframe['DG_P2_target'] == 0) & (current_group_dataframe['DG_P1_target'] == 2) & (current_group_dataframe['DG_P3_target'] == 1)
+                    # P2 to nothing, P1 to P3, P3 to P2
+                    | (current_group_dataframe['DG_P2_target'] == 0) & (current_group_dataframe['DG_P1_target'] == 3) & (current_group_dataframe['DG_P3_target'] == 2)
+                    # P3 to nothing, P1 to P2, P2 to P3
+                    | (current_group_dataframe['DG_P3_target'] == 0) & (current_group_dataframe['DG_P1_target'] == 2) & (current_group_dataframe['DG_P2_target'] == 3)
+                    # P3 to nothing, P1 to P3, P2 to P1
+                    | (current_group_dataframe['DG_P3_target'] == 0) & (current_group_dataframe['DG_P1_target'] == 3) & (current_group_dataframe['DG_P2_target'] == 1)                                        
+                    ).astype(int)                  
+                # 3 D1 (Each to the different one - circle of gaze)
+                current_group_dataframe['3_D1'] = (
+                    # P1 to P2, P2 to P3, P3 to P1
+                    (current_group_dataframe['DG_P1_target'] == 2) & (current_group_dataframe['DG_P2_target'] == 3) & (current_group_dataframe['DG_P3_target'] == 1)
+                    # P1 to P3, P2 to P1, P3 to P2
+                    | (current_group_dataframe['DG_P1_target'] == 3) & (current_group_dataframe['DG_P2_target'] == 1) & (current_group_dataframe['DG_P3_target'] == 2)
+                    ).astype(int) 
+                # MG D1 (The third left out is looking at one of the two engaged in MG)
+                current_group_dataframe['MG_D1'] = (
+                    # P1 to P2, P2 to P1, P3 to anyone
+                    (current_group_dataframe['DG_P1_target'] == 2) & (current_group_dataframe['DG_P2_target'] == 1) & (current_group_dataframe['DG_P3_target'] > 0)
+                    # P1 to P3, P3 to P1, P2 to anyone
+                    | (current_group_dataframe['DG_P1_target'] == 3) & (current_group_dataframe['DG_P3_target'] == 1) & (current_group_dataframe['DG_P2_target'] > 0)
+                    # P2 to P3, P3 to P2, P1 to anyone
+                    | (current_group_dataframe['DG_P2_target'] == 3) & (current_group_dataframe['DG_P3_target'] == 2) & (current_group_dataframe['DG_P1_target'] > 0)                    
+                    ).astype(int) 
+                # MG D0  (The third does not look at any of the other 2)
+                current_group_dataframe['MG_D0'] = (
+                    # P1 to P2, P2 to P1, P3 to nothing
+                    (current_group_dataframe['DG_P1_target'] == 2) & (current_group_dataframe['DG_P2_target'] == 1) & (current_group_dataframe['DG_P3_target'] == 0)
+                    # P1 to P3, P3 to P1, P2 to nothing
+                    | (current_group_dataframe['DG_P1_target'] == 3) & (current_group_dataframe['DG_P3_target'] == 1) & (current_group_dataframe['DG_P2_target'] == 0)
+                    # P2 to P3, P3 to P2, P1 to nothing
+                    | (current_group_dataframe['DG_P2_target'] == 3) & (current_group_dataframe['DG_P3_target'] == 2) & (current_group_dataframe['DG_P1_target'] == 0)                    
+                    ).astype(int)
+                # TODO: add original target values to df
+                # TODO: add a string column describing which hit was this frame e.g. "P1:P2;P2:XX;P3:P1--2_D1_different"
+            
+            # counts of occurrences 
+            cases_df = current_group_dataframe.drop(['TSGroupNTP', 'seconds_recording', 'seconds_interaction'], axis=1)
+            counts: list[pd.Series[int]] = []            
+            counts_df: pd.DataFrame = pd.DataFrame()
+            counts_list: list[dict] = []
+            percentage: float = 0.0
+            if debug_print:
+                print(f"---- {row['Group_Name']} ---")
+            for column in cases_df.columns:
+                if debug_print:
+                    print(f"---- {column} ---")
+                count = cases_df[column].value_counts()     
+                count_df = pd.DataFrame(count)           
+                dict_info = {'case_name' : f"{row['Group_Name']}_{count.index.name}"}
+                for i, value in enumerate(count):
+                    index:str = f"{count.index[i]}"
+                    dict_info[index] = value
+                if len(count) == 2:                            
+                    percentage = min(count) / count.sum()
+                    dict_info['Percentage'] = percentage 
+                    percentage = 0.0                            
+                if debug_print:
+                    print(count)
+                    print(f"Percentage of cases {percentage}")                                               
+                counts.append(count)
+                counts_list.append(dict_info)
 
+            # reordering the counts df so that percentage is the last column
+            counts_df: pd.DataFrame = pd.DataFrame(counts_list)
+            cols = ['case_name', '0','1','2', 'Percentage']
+            counts_df = counts_df[cols]
             # put all the info into a dictionary and then add it to a list
             d = {'group_name': row['Group_Name'], 'group_size': group_data.num_participants,
-                 'gaze_df': current_group_dataframe}
+                 'gaze_df': current_group_dataframe, 'counts': counts, 'counts_df': counts_df}            
 
             # append the dataframe to the list of all the groups.
             self.groups_gaze_with_timestamps.append(d)
@@ -240,10 +339,17 @@ class GazeStats:
 
 if __name__ == "__main__":
     save_to_file = False
-    group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
+    save_count_df_to_file = True
+    group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
     # group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
     gaze_stats_subsets = GazeStats(group_names_filename=group_data_time_subset_filename)
     
+    if save_count_df_to_file:
+        for group in gaze_stats_subsets.groups_gaze_with_timestamps:
+            group_counts_df: pd.DataFrame = group['counts_df']
+            path_gaze_counts = os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"{group['group_name']}_counts_gaze.csv")
+            group_counts_df.to_csv(path_gaze_counts)
+
     (dyads_df, triads_df, all_groups_df,
      # dyads_merged_rec_df, triads_merged_rec_df, all_groups_merged_rec_df,
      dyads_merged_inter_df, triads_merged_inter_df, all_groups_merged_inter_df) = (
@@ -251,7 +357,7 @@ if __name__ == "__main__":
                                                         direct_gaze=True, mutual_gaze=False))
 
     if save_to_file:
-        root_path= "../../Recordings/SavedData/v2/"
+        root_path= "../../Recordings/SavedData/v2"
         dyads_df.to_csv(root_path+"all_dyads_mutual_gaze_individualTS.csv")
         triads_df.to_csv(root_path+"all_triads_mutual_gaze_individualTS.csv")
         all_groups_df.to_csv(root_path+"all_groups_mutual_gaze_individualTS.csv")
