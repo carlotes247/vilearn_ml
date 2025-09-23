@@ -172,6 +172,14 @@ class LinearRegressionTE(object):
         return df_info
 
 
+def resampled_df_by_seconds(df_to_be_resampled: pd.DataFrame, timeframe_seconds: int=5,
+                            seconds_col_name:str='seconds_interaction_ts'):
+    df_to_be_resampled[seconds_col_name]= pd.to_timedelta(df_to_be_resampled[seconds_col_name], unit='s')
+    df_resampled = df_to_be_resampled.resample(str(timeframe_seconds) + 's', on=seconds_col_name).mean().reset_index()
+    df_resampled[seconds_col_name] = df_resampled[seconds_col_name].dt.total_seconds()
+    df_resampled.set_index(seconds_col_name, inplace=True)
+    return df_resampled
+
 
 if __name__ == "__main__":
 
@@ -190,3 +198,9 @@ if __name__ == "__main__":
     # loc = data.df_all_measures_on_groups_level.loc[data.df_all_measures_on_groups_level['TE'] == outliners].index[0]
     # print (outliners)
     plt.show()
+
+    # resampling TE for plotting linear regression; resampling on a 5s window;
+    TE_filepath = '../data/annotations/all_groups_interaction_task_eng90Hz.csv'
+    df_TE = pd.read_csv(TE_filepath)
+    df_TE_resampled = resampled_df_by_seconds(df_TE, seconds_col_name='seconds', timeframe_seconds=60)
+    df_TE_resampled.to_csv('../data/annotations/TE_60s_resampled.csv')
