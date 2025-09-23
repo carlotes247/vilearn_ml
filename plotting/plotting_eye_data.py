@@ -10,6 +10,11 @@ import os
 
 class PlottingEyeData:
 
+    all_groups_gaze_counts_df: pd.DataFrame
+    dyads_gaze_counts_df: pd.DataFrame
+    triads_gaze_counts_df: pd.DataFrame
+    gaze_counts_loaded: bool = False
+
     def __init__(self) -> None:
         pass
 
@@ -245,12 +250,50 @@ class PlottingEyeData:
             ax.legend(loc='best')
             plt.show()
 
+    def load_gaze_counts(self, folder_path: str, floor_level: bool):
+        if os.path.exists(folder_path):
+            floor_level_suffix: str = "_floorlevel" if floor_level else ""
+            self.all_groups_gaze_counts_df = pd.read_csv(os.path.join(folder_path, f"all_groups_counts_gaze{floor_level_suffix}.csv"), index_col=0)
+            self.dyads_gaze_counts_df = pd.read_csv(os.path.join(folder_path, f"dyads_counts_gaze{floor_level_suffix}.csv"), index_col=0)
+            self.triads_gaze_counts_df = pd.read_csv(os.path.join(folder_path, f"triads_counts_gaze{floor_level_suffix}.csv"), index_col=0)
+            self.gaze_counts_loaded = True
+    
+    def calculate_gaze_count_stats(self, df: pd.DataFrame, configuration: str) -> pd.DataFrame:
+        config_df = df.loc[:, 'Percentage':][df.index.str.contains(configuration)].fillna(0)
+        result_df = config_df.describe()
+        result_df.rename(columns={"Percentage":f"Percentage_{configuration}"}, inplace=True)
+        return result_df
+    
+    def calculate_dyads_gaze_count_stats(self, dyads_df: pd.DataFrame, path_save: str):
+        pass
 
+    def calculate_triads_gaze_count_stats(self, triads_df: pd.DataFrame, path_save:str, floor_level: bool) -> pd.DataFrame:
+        result_df_list: list[pd.DataFrame] = []
+        # 0 D1 (Nobody looks at the other participants)
+        result_df_list.append(self.calculate_gaze_count_stats(triads_df, "0_D1"))
+        # 1 D1 (One looks at the other. two, don’t)
+        result_df_list.append(self.calculate_gaze_count_stats(triads_df, "1_D1"))
+        # 2 D1 same (Two to the same person, which to nothing)
+        result_df_list.append(self.calculate_gaze_count_stats(triads_df, "2_D1_same"))
+        # 2 D1 different (One to nothing and their two each to a different person)
+        result_df_list.append(self.calculate_gaze_count_stats(triads_df, "2_D1_different"))
+        # 3 D1 (Each to the different one - circle of gaze)
+        result_df_list.append(self.calculate_gaze_count_stats(triads_df, "3_D1"))
+        # MG D1 (The third left out is looking at one of the two engaged in MG)
+        result_df_list.append(self.calculate_gaze_count_stats(triads_df, "MG_D1"))
+        # MG D0  (The third does not look at any of the other 2)
+        result_df_list.append(self.calculate_gaze_count_stats(triads_df, "MG_D0"))
+        counts_df = pd.concat(result_df_list, axis=1)
+        if path_save:
+            floor_level_suffix: str = "_floorlevel" if floor_level else ""
+            counts_df.to_csv(os.path.join(path_save, f"triads_gaze_counts_stats{floor_level_suffix}.csv"))
+        return counts_df
+        
 
 
 if __name__ == "__main__":
-    save_plot = False
-
+    save_plot = False 
+    gaze_configs_stats = True
 
     root_path= "../Recordings/SavedData/v2_no_low_sampled/"
     # root_path_1d_DG= "../Recordings/SavedData/1d_DG/"
@@ -260,10 +303,16 @@ if __name__ == "__main__":
     fig, ax = plt.subplots(figsize=(12,5))
     eye_plotter: PlottingEyeData = PlottingEyeData()
 
+    # Gaze conditions stats
+    if gaze_configs_stats:
+        data_folder: str = os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts")
+        eye_plotter.load_gaze_counts(data_folder, floor_level=False)
+        eye_plotter.calculate_triads_gaze_count_stats(eye_plotter.triads_gaze_counts_df, data_folder, floor_level=False)
+
     # Mutual Gaze Plotting
-    eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_MG_df_path, timewindow=5, separate_by_group_formation=False,
-                    sum_triads_for_mutual_gaze=False, dyads=True, triads=True, one_directioned_direct_gaze=False,
-                    y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
+    # eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_MG_df_path, timewindow=5, separate_by_group_formation=False,
+    #                 sum_triads_for_mutual_gaze=False, dyads=True, triads=True, one_directioned_direct_gaze=False,
+    #                 y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
 
     # Direct Gaze plotting
     # eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_DG_df_path, timewindow=10, separate_by_group_formation=False,
