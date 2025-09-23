@@ -354,15 +354,15 @@ if __name__ == "__main__":
     save_count_df_to_file = True
     save_count_df_each_group = False
     # group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
-    group_data_time_subset_filename = 'group_names_with_time_floorlevel.csv'   
-    # group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
+    # group_data_time_subset_filename = 'group_names_with_time_floorlevel.csv'   
+    group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
     gaze_stats_subsets = GazeStats(group_names_filename=group_data_time_subset_filename)
     
     # save gaze counts
     if save_count_df_to_file:
         gaze_stats_subsets.dyads_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"dyads_counts_gaze.csv"))
         gaze_stats_subsets.triads_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"triads_counts_gaze.csv"))
-        gaze_stats_subsets.all_groups_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"all_groups_counts_gaze.csv"))
+        gaze_stats_subsets.all_groups_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"all_groups_counts.csv"))
         if save_count_df_each_group:
             for group in gaze_stats_subsets.groups_gaze_with_timestamps:
                 group_counts_df: pd.DataFrame = group['counts_df']
