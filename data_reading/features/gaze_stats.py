@@ -24,6 +24,10 @@ class GazeStats:
     #                           and columns (int 0 or 1): 'P1P2_MG', 'P1P3_MG', 'P2P3_MG'
     #           seconds_interaction, seconds_recording: time since the interaction or the recording started
     groups_gaze_with_timestamps: list[dict]
+    dyads_counts_df: pd.DataFrame
+    triads_counts_df: pd.DataFrame
+    all_groups_counts_df: pd.DataFrame
+
 
     path_going_up_two_folders = "../../"
     path_prefix_file = "data/_path_prefix.txt"
@@ -52,8 +56,7 @@ class GazeStats:
         fullpath = self.data_folder_path + group_names_filename
         data_for_calculating_subsets = pd.read_csv(fullpath, sep=';')
 
-        for index, row in data_for_calculating_subsets.iterrows():
-
+        for index, row in data_for_calculating_subsets.iterrows():            
             current_group_dataframe = pd.DataFrame()
             my_groups_manager = GroupsManager(self.path_prefix_file, self.data_folder_path, specific_group=row['Group_Name_Long'], all_groups_names_path="",
                                               onlyTorch=False, load_individual_p_files=False, print_all_stats=False, print_blink_stats=False, use_async=False, print_debug=False)
@@ -230,12 +233,21 @@ class GazeStats:
             counts_df: pd.DataFrame = pd.DataFrame(counts_list)
             cols = ['case_name', '0','1','2', 'Percentage']
             counts_df = counts_df[cols]
-            # put all the info into a dictionary and then add it to a list
+            # construct a list of dicts with the info (very pythonic)
             d = {'group_name': row['Group_Name'], 'group_size': group_data.num_participants,
-                 'gaze_df': current_group_dataframe, 'counts': counts, 'counts_df': counts_df}            
-
-            # append the dataframe to the list of all the groups.
+                 'gaze_df': current_group_dataframe, 'counts': counts, 'counts_df': counts_df}    
+                
+            # append the dict list to the list of all the groups.
             self.groups_gaze_with_timestamps.append(d)
+
+        # Separate groups in dfs for analysis
+        if len(self.groups_gaze_with_timestamps) > 0:
+            all_groups_list: list[dict] = [d['counts_df'] for d in self.groups_gaze_with_timestamps]
+            self.all_groups_counts_df = pd.concat(all_groups_list, ignore_index=True).set_index('case_name')
+            dyads_list: list[dict] = [d['counts_df'] for d in self.groups_gaze_with_timestamps if 'dyad' in d['group_name']]
+            self.dyads_counts_df = pd.concat(dyads_list, ignore_index=True).set_index('case_name')
+            triads_list: list[dict] = [d['counts_df'] for d in self.groups_gaze_with_timestamps if 'triad' in d['group_name']]
+            self.triads_counts_df = pd.concat(triads_list, ignore_index=True).set_index('case_name')
 
     #created dfs for all dyads, all triads and all the groups and returns them; if one of the bool is false, it doesn't return that df
     def populate_dfs_with_group_data(self, df_for_all_dyads_data:bool, df_for_all_triads_data:bool,
@@ -340,15 +352,22 @@ class GazeStats:
 if __name__ == "__main__":
     save_to_file = False
     save_count_df_to_file = True
-    group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
+    save_count_df_each_group = False
+    # group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
+    group_data_time_subset_filename = 'group_names_with_time_floorlevel.csv'   
     # group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
     gaze_stats_subsets = GazeStats(group_names_filename=group_data_time_subset_filename)
     
+    # save gaze counts
     if save_count_df_to_file:
-        for group in gaze_stats_subsets.groups_gaze_with_timestamps:
-            group_counts_df: pd.DataFrame = group['counts_df']
-            path_gaze_counts = os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"{group['group_name']}_counts_gaze.csv")
-            group_counts_df.to_csv(path_gaze_counts)
+        gaze_stats_subsets.dyads_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"dyads_counts_gaze.csv"))
+        gaze_stats_subsets.triads_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"triads_counts_gaze.csv"))
+        gaze_stats_subsets.all_groups_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"all_groups_counts_gaze.csv"))
+        if save_count_df_each_group:
+            for group in gaze_stats_subsets.groups_gaze_with_timestamps:
+                group_counts_df: pd.DataFrame = group['counts_df']
+                path_gaze_counts = os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"{group['group_name']}_counts_gaze.csv")
+                group_counts_df.to_csv(path_gaze_counts)
 
     (dyads_df, triads_df, all_groups_df,
      # dyads_merged_rec_df, triads_merged_rec_df, all_groups_merged_rec_df,
