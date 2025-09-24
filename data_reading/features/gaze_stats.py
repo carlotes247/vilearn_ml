@@ -107,6 +107,12 @@ class GazeStats:
             # calculate the MG and add new columns to the df:
             current_group_dataframe["MG_P1P2"] =((current_group_dataframe['DG_P1_target'] == 2)
                                                       & (current_group_dataframe['DG_P2_target'] == 1)).astype(int)
+            # 0 D1 dyads
+            if group_data.num_participants == 2:
+                current_group_dataframe["0_D1"] =((current_group_dataframe['DG_P1_target'] == 0) 
+                                                        & (current_group_dataframe['DG_P2_target'] == 0)).astype(int)
+
+            # triads exclusive configurations
             if group_data.num_participants>2:
                 current_group_dataframe["MG_P1P3"] = ((current_group_dataframe['DG_P1_target'] == 3)
                                                            & (current_group_dataframe['DG_P3_target'] == 1)).astype(int)
@@ -350,23 +356,36 @@ class GazeStats:
 
 
 if __name__ == "__main__":
+    # save config flags
     save_to_file = False
     save_count_df_to_file = True
     save_count_df_each_group = False
-    # group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
-    # group_data_time_subset_filename = 'group_names_with_time_floorlevel.csv'   
-    group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
+    # how many groups to include in logic
+    small_subset_groups = False
+    floorlevel_subset_groups = False
+    all_groups = True
+    # path vars depending on group size
+    group_data_time_subset_filename = ""
+    path_suffix = ""
+    if small_subset_groups:
+        group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
+        path_suffix = "_small_subset"
+    elif floorlevel_subset_groups:
+        group_data_time_subset_filename = 'group_names_with_time_floorlevel.csv'
+        path_suffix = "_floorlevel"
+    elif all_groups:
+        group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'        
     gaze_stats_subsets = GazeStats(group_names_filename=group_data_time_subset_filename)
     
     # save gaze counts
     if save_count_df_to_file:
-        gaze_stats_subsets.dyads_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"dyads_counts_gaze.csv"))
-        gaze_stats_subsets.triads_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"triads_counts_gaze.csv"))
-        gaze_stats_subsets.all_groups_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"all_groups_counts.csv"))
+        gaze_stats_subsets.dyads_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"dyads_counts_gaze{path_suffix}.csv"))
+        gaze_stats_subsets.triads_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"triads_counts_gaze{path_suffix}.csv"))
+        gaze_stats_subsets.all_groups_counts_df.to_csv(os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"all_groups_counts_gaze{path_suffix}.csv"))
         if save_count_df_each_group:
             for group in gaze_stats_subsets.groups_gaze_with_timestamps:
                 group_counts_df: pd.DataFrame = group['counts_df']
-                path_gaze_counts = os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"{group['group_name']}_counts_gaze.csv")
+                path_gaze_counts = os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts", f"{group['group_name']}_counts_gaze{path_suffix}.csv")
                 group_counts_df.to_csv(path_gaze_counts)
 
     (dyads_df, triads_df, all_groups_df,
@@ -377,15 +396,15 @@ if __name__ == "__main__":
 
     if save_to_file:
         root_path= "../../Recordings/SavedData/v2"
-        dyads_df.to_csv(root_path+"all_dyads_mutual_gaze_individualTS.csv")
-        triads_df.to_csv(root_path+"all_triads_mutual_gaze_individualTS.csv")
-        all_groups_df.to_csv(root_path+"all_groups_mutual_gaze_individualTS.csv")
+        dyads_df.to_csv(root_path+f"all_dyads_mutual_gaze_individualTS{path_suffix}.csv")
+        triads_df.to_csv(root_path+f"all_triads_mutual_gaze_individualTS{path_suffix}.csv")
+        all_groups_df.to_csv(root_path+f"all_groups_mutual_gaze_individualTS{path_suffix}.csv")
 
         # dyads_merged_rec_df.to_csv(root_path+"all_dyads_mutual_gaze_recording_time.csv")
         # triads_merged_rec_df.to_csv(root_path+"all_triads_mutual_gaze_recording_time.csv")
         # all_groups_merged_rec_df.to_csv(root_path+"all_groups_mutual_gaze_recording_time.csv")
 
-        dyads_merged_inter_df.to_csv(root_path+"all_dyads_mutual_gaze_interaction_time.csv")
-        triads_merged_inter_df.to_csv(root_path+"all_triads_mutual_gaze_interaction_time.csv")
-        all_groups_merged_inter_df.to_csv(root_path+"all_groups_mutual_gaze_interaction_time.csv")
+        dyads_merged_inter_df.to_csv(root_path+f"all_dyads_mutual_gaze_interaction_time{path_suffix}.csv")
+        triads_merged_inter_df.to_csv(root_path+f"all_triads_mutual_gaze_interaction_time{path_suffix}.csv")
+        all_groups_merged_inter_df.to_csv(root_path+f"all_groups_mutual_gaze_interaction_time{path_suffix}.csv")
 
