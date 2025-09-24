@@ -306,6 +306,7 @@ class GazeStats:
                 if all_features:
                     for i, feature in enumerate(dyads_col_keyword):
                         list_df.append(dyads_df[group['group_name'] + '_' + dyads_col_keyword[i]])
+                    list_df.append(group['gaze_df']["seconds_interaction"])
                     current_inter_dyad = pd.concat(list_df, axis=1)                    
                 if direct_gaze:
                     current_inter_dyad = pd.concat([dyads_df[group['group_name'] + '_' + dyads_col_keyword[0]],
@@ -341,11 +342,12 @@ class GazeStats:
                 #                            group['gaze_df']["seconds_recording"]], axis=1)
 
                 list_df: list[pd.DataFrame] = []
-                current_inter_dyad: pd.DataFrame = pd.DataFrame()
+                current_inter_triad: pd.DataFrame = pd.DataFrame()
                 if all_features:
                     for i, feature in enumerate(triads_col_keyword):
-                        list_df.append(triads_df[group['group_name'] + '_' + triads_df[i]])
-                    current_inter_dyad = pd.concat(list_df, axis=1) 
+                        list_df.append(triads_df[group['group_name'] + '_' + triads_col_keyword[i]])
+                    list_df.append(group['gaze_df']["seconds_interaction"])
+                    current_inter_triad = pd.concat(list_df, axis=1) 
                 elif mutual_gaze:
                     current_inter_triad = pd.concat([triads_df[group['group_name']+'_'+triads_col_keyword[0]],
                                            triads_df[group['group_name'] + '_'+triads_col_keyword[1]],
@@ -379,13 +381,13 @@ class GazeStats:
 
 if __name__ == "__main__":
     # save config flags
-    save_to_file = False
-    save_count_df_to_file = True
+    save_to_file = True
+    save_count_df_to_file = False
     save_count_df_each_group = False
     # how many groups to include in logic
-    small_subset_groups = True
+    small_subset_groups = False
     floorlevel_subset_groups = False
-    all_groups = False
+    all_groups = True
     # path vars depending on group size
     group_data_time_subset_filename = ""
     path_suffix = ""
@@ -417,16 +419,16 @@ if __name__ == "__main__":
                                                         direct_gaze=False, mutual_gaze=False, all_features=True))
 
     if save_to_file:
-        root_path= "../../Recordings/SavedData/v2"
-        dyads_df.to_csv(root_path+f"all_dyads_mutual_gaze_individualTS{path_suffix}.csv")
-        triads_df.to_csv(root_path+f"all_triads_mutual_gaze_individualTS{path_suffix}.csv")
-        all_groups_df.to_csv(root_path+f"all_groups_mutual_gaze_individualTS{path_suffix}.csv")
+        root_path= os.path.join(os.getcwd(), "Recordings", "SavedData", "v2_no_low_sampled")
+        dyads_df.to_csv(os.path.join(root_path, f"all_dyads_mutual_gaze_individualTS{path_suffix}.csv"))
+        triads_df.to_csv(os.path.join(root_path, f"all_triads_mutual_gaze_individualTS{path_suffix}.csv"))
+        all_groups_df.to_csv(os.path.join(root_path, f"all_groups_mutual_gaze_individualTS{path_suffix}.csv"))
 
-        # dyads_merged_rec_df.to_csv(root_path+"all_dyads_mutual_gaze_recording_time.csv")
-        # triads_merged_rec_df.to_csv(root_path+"all_triads_mutual_gaze_recording_time.csv")
-        # all_groups_merged_rec_df.to_csv(root_path+"all_groups_mutual_gaze_recording_time.csv")
+        # dyads_merged_rec_df.to_csv(os.path.join(root_path, "all_dyads_mutual_gaze_recording_time.csv"))
+        # triads_merged_rec_df.to_csv(os.path.join(root_path, "all_triads_mutual_gaze_recording_time.csv"))
+        # all_groups_merged_rec_df.to_csv(os.path.join(root_path, "all_groups_mutual_gaze_recording_time.csv"))
 
-        dyads_merged_inter_df.to_csv(root_path+f"all_dyads_mutual_gaze_interaction_time{path_suffix}.csv")
-        triads_merged_inter_df.to_csv(root_path+f"all_triads_mutual_gaze_interaction_time{path_suffix}.csv")
-        all_groups_merged_inter_df.to_csv(root_path+f"all_groups_mutual_gaze_interaction_time{path_suffix}.csv")
+        dyads_merged_inter_df.to_csv(os.path.join(root_path, f"all_dyads_mutual_gaze_interaction_time{path_suffix}.csv"))
+        triads_merged_inter_df.to_csv(os.path.join(root_path, f"all_triads_mutual_gaze_interaction_time{path_suffix}.csv"))
+        all_groups_merged_inter_df.to_csv(os.path.join(root_path, f"all_groups_mutual_gaze_interaction_time{path_suffix}.csv"))
 
