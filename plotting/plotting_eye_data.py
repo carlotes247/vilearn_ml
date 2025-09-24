@@ -264,7 +264,19 @@ class PlottingEyeData:
         result_df.rename(columns={"Percentage":f"Percentage_{configuration}"}, inplace=True)
         return result_df
     
-    def calculate_dyads_gaze_count_stats(self, dyads_df: pd.DataFrame, path_save: str):
+    def calculate_dyads_gaze_count_stats(self, dyads_df: pd.DataFrame, path_save: str, floor_level: bool) -> pd.DataFrame:
+        result_df_list: list[pd.DataFrame] = []
+        # MG 
+        result_df_list.append(self.calculate_gaze_count_stats(dyads_df, "MG_P"))
+        # 0 D1
+        result_df_list.append(self.calculate_gaze_count_stats(dyads_df, "0_D1"))
+        # 1 D1 (1d_DG)
+        result_df_list.append(self.calculate_gaze_count_stats(dyads_df, "1d_DG"))
+        counts_df = pd.concat(result_df_list, axis=1)
+        if path_save:
+            floor_level_suffix: str = "_floorlevel" if floor_level else ""
+            counts_df.to_csv(os.path.join(path_save, f"dyads_gaze_counts_stats{floor_level_suffix}.csv"))
+        return counts_df
         pass
 
     def calculate_triads_gaze_count_stats(self, triads_df: pd.DataFrame, path_save:str, floor_level: bool) -> pd.DataFrame:
@@ -283,6 +295,10 @@ class PlottingEyeData:
         result_df_list.append(self.calculate_gaze_count_stats(triads_df, "MG_D1"))
         # MG D0  (The third does not look at any of the other 2)
         result_df_list.append(self.calculate_gaze_count_stats(triads_df, "MG_D0"))
+        # MG (it includes both MG_D1 and MG_D0)
+        result_df_list.append(self.calculate_gaze_count_stats(triads_df, "MG_P"))
+        # 1d_DG (it includes all D1 dynamics except 0_D1)
+        result_df_list.append(self.calculate_gaze_count_stats(triads_df, "1d_DG"))
         counts_df = pd.concat(result_df_list, axis=1)
         if path_save:
             floor_level_suffix: str = "_floorlevel" if floor_level else ""
@@ -294,7 +310,7 @@ class PlottingEyeData:
 if __name__ == "__main__":
     save_plot = False 
     gaze_configs_stats = True
-
+    floorlevel = False
     root_path= "../Recordings/SavedData/v2_no_low_sampled/"
     # root_path_1d_DG= "../Recordings/SavedData/1d_DG/"
     all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
@@ -307,7 +323,8 @@ if __name__ == "__main__":
     if gaze_configs_stats:
         data_folder: str = os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts")
         eye_plotter.load_gaze_counts(data_folder, floor_level=False)
-        eye_plotter.calculate_triads_gaze_count_stats(eye_plotter.triads_gaze_counts_df, data_folder, floor_level=False)
+        eye_plotter.calculate_dyads_gaze_count_stats(eye_plotter.dyads_gaze_counts_df, data_folder, floor_level=floorlevel)
+        eye_plotter.calculate_triads_gaze_count_stats(eye_plotter.triads_gaze_counts_df, data_folder, floor_level=floorlevel)
 
     # Mutual Gaze Plotting
     # eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_MG_df_path, timewindow=5, separate_by_group_formation=False,
