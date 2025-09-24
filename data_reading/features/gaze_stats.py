@@ -259,7 +259,7 @@ class GazeStats:
 
     #created dfs for all dyads, all triads and all the groups and returns them; if one of the bool is false, it doesn't return that df
     def populate_dfs_with_group_data(self, df_for_all_dyads_data:bool, df_for_all_triads_data:bool,
-                                     df_for_all_group_data:bool, mutual_gaze:bool, direct_gaze:bool):
+                                     df_for_all_group_data:bool, mutual_gaze:bool, direct_gaze:bool, all_features:bool):
         dyads_df = pd.DataFrame()
         # dyads_merged_rec_df = pd.DataFrame({'seconds_recording':[]})
         dyads_merged_inter_df = pd.DataFrame({'seconds_interaction':[]})
@@ -281,14 +281,18 @@ class GazeStats:
             #### group['gaze_df'].drop_duplicates(subset=['seconds_interaction'], inplace=True)
             group['gaze_df'].reset_index(inplace=True)
 
+            # dyads logic
             if df_for_all_dyads_data and group['group_size'] == 2:
                 # dyads_df[group['group_name'] + '_seconds_recording'] = group['gaze_df']["seconds_recording"]
                 dyads_df[group['group_name'] + '_seconds_interaction'] = group['gaze_df']["seconds_interaction"]
 
                 #setting a keyword for MG or DG
-                if mutual_gaze:
+                dyads_col_keyword = []
+                if all_features:
+                    dyads_col_keyword = ['MG_P1P2', 'DG_P1_target', 'DG_P2_target', '1d_DG_P1', '1d_DG_P2', '0_D1']
+                elif mutual_gaze:
                     dyads_col_keyword = ['MG_P1P2']
-                else:
+                elif direct_gaze:
                     dyads_col_keyword = ['DG_P1_target', 'DG_P2_target', '1d_DG_P1', '1d_DG_P2']
 
                 # dyads_df[group['group_name']+'_MG_P1P2'] = group['gaze_df']["MG_P1P2"]
@@ -297,6 +301,12 @@ class GazeStats:
 
                 current_inter_dyad = pd.concat([dyads_df[group['group_name'] +'_'+ dyads_col_keyword[0]],
                                           group['gaze_df']["seconds_interaction"]], axis=1)
+                
+                list_df: list[pd.DataFrame] = []
+                if all_features:
+                    for i, feature in enumerate(dyads_col_keyword):
+                        list_df.append(dyads_df[group['group_name'] + '_' + dyads_col_keyword[i]])
+                    current_inter_dyad = pd.concat(list_df, axis=1)                    
                 if direct_gaze:
                     current_inter_dyad = pd.concat([dyads_df[group['group_name'] + '_' + dyads_col_keyword[0]],
                                                     dyads_df[group['group_name'] + '_' + dyads_col_keyword[1]],
@@ -308,14 +318,18 @@ class GazeStats:
                 # dyads_merged_rec_df = pd.merge_ordered(dyads_merged_rec_df, current_rec_dyad, on='seconds_recording')
                 dyads_merged_inter_df = pd.merge_ordered(dyads_merged_inter_df, current_inter_dyad, on='seconds_interaction')
 
-
+            # triads
             if df_for_all_triads_data and group['group_size'] == 3:
                 # triads_df[group['group_name'] + '_seconds_recording'] = group['gaze_df']["seconds_recording"]
                 triads_df[group['group_name'] + '_seconds_interaction'] = group['gaze_df']["seconds_interaction"]
                 # setting a keyword for MG or DG
-                if mutual_gaze:
+                triads_col_keyword = []
+                if all_features:
+                    triads_col_keyword = ['MG_P1P2', 'MG_P1P3', 'MG_P2P3','DG_P1_target', 'DG_P2_target', 'DG_P3_target','1d_DG_P1', '1d_DG_P2', '1d_DG_P3',
+                                          '0_D1','1_D1','2_D1_same','2_D1_different','3_D1','MG_D1','MG_D0']
+                elif mutual_gaze:
                     triads_col_keyword = ['MG_P1P2', 'MG_P1P3', 'MG_P2P3']
-                else:
+                elif direct_gaze:
                     triads_col_keyword = ['DG_P1_target', 'DG_P2_target', 'DG_P3_target','1d_DG_P1', '1d_DG_P2', '1d_DG_P3']
 
                 for col_keyword in triads_col_keyword:
@@ -326,12 +340,18 @@ class GazeStats:
                 #                            triads_df[group['group_name'] + '_MG_P2P3'],
                 #                            group['gaze_df']["seconds_recording"]], axis=1)
 
-                current_inter_triad = pd.concat([triads_df[group['group_name']+'_'+triads_col_keyword[0]],
+                list_df: list[pd.DataFrame] = []
+                current_inter_dyad: pd.DataFrame = pd.DataFrame()
+                if all_features:
+                    for i, feature in enumerate(triads_col_keyword):
+                        list_df.append(triads_df[group['group_name'] + '_' + triads_df[i]])
+                    current_inter_dyad = pd.concat(list_df, axis=1) 
+                elif mutual_gaze:
+                    current_inter_triad = pd.concat([triads_df[group['group_name']+'_'+triads_col_keyword[0]],
                                            triads_df[group['group_name'] + '_'+triads_col_keyword[1]],
                                            triads_df[group['group_name'] + '_'+triads_col_keyword[2]],
                                            group['gaze_df']["seconds_interaction"]], axis=1)
-
-                if direct_gaze:
+                elif direct_gaze:
                     current_inter_triad = pd.concat([triads_df[group['group_name'] + '_' + triads_col_keyword[0]],
                                                      triads_df[group['group_name'] + '_' + triads_col_keyword[1]],
                                                      triads_df[group['group_name'] + '_' + triads_col_keyword[2]],
@@ -363,9 +383,9 @@ if __name__ == "__main__":
     save_count_df_to_file = True
     save_count_df_each_group = False
     # how many groups to include in logic
-    small_subset_groups = False
+    small_subset_groups = True
     floorlevel_subset_groups = False
-    all_groups = True
+    all_groups = False
     # path vars depending on group size
     group_data_time_subset_filename = ""
     path_suffix = ""
@@ -393,8 +413,8 @@ if __name__ == "__main__":
     (dyads_df, triads_df, all_groups_df,
      # dyads_merged_rec_df, triads_merged_rec_df, all_groups_merged_rec_df,
      dyads_merged_inter_df, triads_merged_inter_df, all_groups_merged_inter_df) = (
-        gaze_stats_subsets.populate_dfs_with_group_data(True, True, True,
-                                                        direct_gaze=True, mutual_gaze=False))
+        gaze_stats_subsets.populate_dfs_with_group_data(df_for_all_dyads_data=True, df_for_all_triads_data=True, df_for_all_group_data=True,
+                                                        direct_gaze=False, mutual_gaze=False, all_features=True))
 
     if save_to_file:
         root_path= "../../Recordings/SavedData/v2"
