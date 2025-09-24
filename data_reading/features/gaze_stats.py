@@ -225,8 +225,10 @@ class GazeStats:
                 for i, value in enumerate(count):
                     index:str = f"{count.index[i]}"
                     dict_info[index] = value
-                if len(count) == 2:                            
-                    percentage = min(count) / count.sum()
+                if len(count) == 2:    
+                    name_case: str = count.index.name                        
+                    if "target" not in name_case and 1 in count:                        
+                        percentage = count[1] / count.sum()
                     dict_info['Percentage'] = percentage 
                     percentage = 0.0                            
                 if debug_print:
