@@ -277,7 +277,16 @@ class PlottingEyeData:
         # 0 D1
         result_df_list.append(self.calculate_gaze_count_stats(dyads_df, "0_D1"))
         # 1 D1 (1d_DG)
-        result_df_list.append(self.calculate_gaze_count_stats(dyads_df, "1d_DG"))
+        #result_df_list.append(self.calculate_gaze_count_stats(dyads_df, "1d_DG"))
+        # This needs custom logic because we need to combine the percentage of 1_DG of P1 and P2
+        d1_1_P1_df = dyads_df.loc[:, 'Percentage':][dyads_df.index.str.contains("1d_DG_P1")].fillna(0) 
+        d1_1_P2_df = dyads_df.loc[:, 'Percentage':][dyads_df.index.str.contains("1d_DG_P2")].fillna(0)
+        sum_d1 = d1_1_P1_df['Percentage'].values + d1_1_P2_df['Percentage'].values
+        d1_1_sum = d1_1_P1_df
+        d1_1_sum['Percentage'] = sum_d1
+        d1_1_sum = d1_1_sum.describe()
+        d1_1_sum.rename(columns={"Percentage":f"Percentage_{'1d_DG'}"}, inplace=True)
+        result_df_list.append(d1_1_sum)
         counts_df = pd.concat(result_df_list, axis=1)
         if path_save:
             floor_level_suffix: str = "_floorlevel" if floor_level else ""
@@ -315,12 +324,12 @@ class PlottingEyeData:
 
 if __name__ == "__main__":
     save_plot = False 
-    gaze_configs_stats = False
-    floorlevel = False
+    gaze_configs_counts_stats = True
+    floorlevel = True
     save_gaze_counts = False
-    save_resampled_file = True
-    # which features to plot
-    all_features_plotting = True
+    save_resampled_file = False
+    # which features to plot (nothing to do with gaze counts)
+    all_features_plotting = False
     mutual_gaze_plotting = False
     direct_gate_plotting = False
     root_path= "../Recordings/SavedData/v2_no_low_sampled/"
@@ -333,7 +342,7 @@ if __name__ == "__main__":
     eye_plotter: PlottingEyeData = PlottingEyeData()
 
     # Gaze conditions stats
-    if gaze_configs_stats:
+    if gaze_configs_counts_stats:
         data_folder: str =  os.path.join(os.getcwd(), "Recordings", "SavedData", "gaze_counts")
         eye_plotter.load_gaze_counts(data_folder, floor_level=floorlevel)
         eye_plotter.calculate_dyads_gaze_count_stats(eye_plotter.dyads_gaze_counts_df, data_folder, floor_level=floorlevel, save=save_gaze_counts)
