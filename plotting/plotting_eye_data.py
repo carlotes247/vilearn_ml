@@ -123,7 +123,7 @@ class PlottingEyeData:
     def sum_triads_MG_per_group(self, main_df: pd.DataFrame, group_names:list):
         df_triads_MG_summed = pd.DataFrame(index=main_df.index)
         for triad_name in group_names:
-            columns_MG = list(main_df.filter(regex=triad_name).columns)
+            columns_MG = list(main_df.filter(regex=f'{triad_name}_MG_P').columns)
             df_triads_MG_summed[columns_MG[0]] = main_df[columns_MG].sum(axis=1,min_count=1) #keeping the name of the first MG as it is used further in the code and it works like that for the dyads too
         return df_triads_MG_summed
 
@@ -133,7 +133,7 @@ class PlottingEyeData:
                         sum_triads_for_mutual_gaze:bool = True,
                         y_axis_text:str='', figure_title:str='', color_dyad:str='red', color_triad:str='green',
                         plt_show: bool = True, plot_std: bool = True, 
-                        one_directioned_direct_gaze = True, save_df_resampled_to_file:bool=True):
+                        one_directioned_direct_gaze = True, all_features: bool = False, save_df_resampled_to_file:bool=True):
 
         # clean path in case it expects the directory at root level
         if not os.path.exists(file_path) and "../" in file_path:
@@ -192,7 +192,8 @@ class PlottingEyeData:
         if triads:
             if (sum_triads_for_mutual_gaze):
                 triads_group_names = df_group_formations.loc[df_group_formations['type'] == 'triad'].index
-                df_resampled = self.sum_triads_MG_per_group(df_resampled, triads_group_names)
+                df_MG_P_resampled = self.sum_triads_MG_per_group(df_resampled, triads_group_names)
+                df_resampled.update(df_MG_P_resampled)            
 
             if separate_by_group_formation:
                 col_triads_l = self.get_formation_grups_names_from_eye_df(df_resampled, df_group_formations, 'triad', 'Line')
@@ -235,10 +236,15 @@ class PlottingEyeData:
 
         if save_df_resampled_to_file:
             filepath_path = "../Recordings/SavedData/v2_no_low_sampled/"
-            if one_directioned_direct_gaze:
-                filepath_path += "oneD_DG_"
+            filepath_path = os.path.join(os.getcwd(), "Recordings", "SavedData", "v2_no_low_sampled")
+            extra_filename = ""
+            if all_features:
+                extra_filename += "all_features_"
+            elif one_directioned_direct_gaze:
+                extra_filename += "oneD_DG_"
             else:
-                filepath_path += "MG_"
+                extra_filename += "MG_"
+            filepath_path = os.path.join(filepath_path, extra_filename)
             filepath_path = filepath_path + str(timewindow) + "s_" + "resampled.csv"
             df_resampled.to_csv(filepath_path)
 
@@ -309,13 +315,19 @@ class PlottingEyeData:
 
 if __name__ == "__main__":
     save_plot = False 
-    gaze_configs_stats = True
+    gaze_configs_stats = False
     floorlevel = False
-    save_gaze_counts = True
+    save_gaze_counts = False
+    save_resampled_file = True
+    # which features to plot
+    all_features_plotting = True
+    mutual_gaze_plotting = False
+    direct_gate_plotting = False
     root_path= "../Recordings/SavedData/v2_no_low_sampled/"
     # root_path_1d_DG= "../Recordings/SavedData/1d_DG/"
     all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
     all_groups_DG_df_path = root_path+"all_groups_direct_gaze_interaction_time.csv"
+    all_groups_all_features_df_path = root_path+"all_groups_all_features_interaction_time.csv"
 
     fig, ax = plt.subplots(figsize=(12,5))
     eye_plotter: PlottingEyeData = PlottingEyeData()
@@ -336,3 +348,9 @@ if __name__ == "__main__":
     # eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_DG_df_path, timewindow=10, separate_by_group_formation=False,
     #                  sum_triads_for_mutual_gaze=True, dyads=True, triads=True, one_directioned_direct_gaze=False,
     #                  y_axis_text="One Direction Direct Gaze %",  figure_title="One Direction Direct Gaze")
+
+    # All Features plotting
+    if all_features_plotting:
+        eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_all_features_df_path, timewindow=60, separate_by_group_formation=False,
+                     sum_triads_for_mutual_gaze=True, dyads=True, triads=True, one_directioned_direct_gaze=False, all_features=True,
+                     y_axis_text="All Eye Gaze Features %",  figure_title="All Eye Gaze Features", save_df_resampled_to_file=save_resampled_file)
