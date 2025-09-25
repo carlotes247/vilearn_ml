@@ -388,6 +388,10 @@ if __name__ == "__main__":
     small_subset_groups = False
     floorlevel_subset_groups = False
     all_groups = True
+    # which features flag
+    direct_gaze = False
+    mutual_gaze = False
+    all_features = True
     # path vars depending on group size
     group_data_time_subset_filename = ""
     path_suffix = ""
@@ -416,19 +420,26 @@ if __name__ == "__main__":
      # dyads_merged_rec_df, triads_merged_rec_df, all_groups_merged_rec_df,
      dyads_merged_inter_df, triads_merged_inter_df, all_groups_merged_inter_df) = (
         gaze_stats_subsets.populate_dfs_with_group_data(df_for_all_dyads_data=True, df_for_all_triads_data=True, df_for_all_group_data=True,
-                                                        direct_gaze=False, mutual_gaze=False, all_features=True))
+                                                        direct_gaze=direct_gaze, mutual_gaze=mutual_gaze, all_features=all_features))
 
     if save_to_file:
+        feature_suffix = ""
+        if all_features:
+            feature_suffix = "all_features"
+        elif mutual_gaze:
+            feature_suffix = "mutual_gaze"
+        elif direct_gaze:
+            feature_suffix = "direct_gaze"
         root_path= os.path.join(os.getcwd(), "Recordings", "SavedData", "v2_no_low_sampled")
-        dyads_df.to_csv(os.path.join(root_path, f"all_dyads_mutual_gaze_individualTS{path_suffix}.csv"))
-        triads_df.to_csv(os.path.join(root_path, f"all_triads_mutual_gaze_individualTS{path_suffix}.csv"))
-        all_groups_df.to_csv(os.path.join(root_path, f"all_groups_mutual_gaze_individualTS{path_suffix}.csv"))
+        dyads_df.to_csv(os.path.join(root_path, f"all_dyads_{feature_suffix}_individualTS{path_suffix}.csv"))
+        triads_df.to_csv(os.path.join(root_path, f"all_triads_{feature_suffix}_individualTS{path_suffix}.csv"))
+        all_groups_df.to_csv(os.path.join(root_path, f"all_groups_{feature_suffix}_individualTS{path_suffix}.csv"))
 
         # dyads_merged_rec_df.to_csv(os.path.join(root_path, "all_dyads_mutual_gaze_recording_time.csv"))
         # triads_merged_rec_df.to_csv(os.path.join(root_path, "all_triads_mutual_gaze_recording_time.csv"))
         # all_groups_merged_rec_df.to_csv(os.path.join(root_path, "all_groups_mutual_gaze_recording_time.csv"))
 
-        dyads_merged_inter_df.to_csv(os.path.join(root_path, f"all_dyads_mutual_gaze_interaction_time{path_suffix}.csv"))
-        triads_merged_inter_df.to_csv(os.path.join(root_path, f"all_triads_mutual_gaze_interaction_time{path_suffix}.csv"))
-        all_groups_merged_inter_df.to_csv(os.path.join(root_path, f"all_groups_mutual_gaze_interaction_time{path_suffix}.csv"))
+        dyads_merged_inter_df.to_csv(os.path.join(root_path, f"all_dyads_{feature_suffix}_interaction_time{path_suffix}.csv"))
+        triads_merged_inter_df.to_csv(os.path.join(root_path, f"all_triads_{feature_suffix}_interaction_time{path_suffix}.csv"))
+        all_groups_merged_inter_df.to_csv(os.path.join(root_path, f"all_groups_{feature_suffix}_interaction_time{path_suffix}.csv"))
 
