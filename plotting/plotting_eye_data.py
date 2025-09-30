@@ -205,47 +205,52 @@ class PlottingEyeData:
             df_data_dyads = df1_aligned[seconds_col.append(dyads_cols)]
             df_data_triads = df1_aligned[seconds_col.append(triads_cols)]
             print("calculating stuff")
-            # Features dyads
-            eng_dyads_cols = df_data_dyads.columns[df_data_dyads.columns.str.contains('task_eng_dyad')]
-            MG_cols = df_data_dyads.columns[df_data_dyads.columns.str.contains('MG')]
-            df_MG_dyads = df_data_dyads[seconds_col.append(MG_cols.append(eng_dyads_cols))]
-            # do group by group
-            # group names
+            # Features dyads            
             df_details_floorlevel = pd.read_csv(os.path.join(os.getcwd(), 'data', 'group_names_with_time_floorlevel.csv'), sep=';')
             groups_floorlevel = df_details_floorlevel['Group_Name'].to_list()
             dyad_names = [group for group in groups_floorlevel if 'dyad' in group]
-            self.feature_engagement_avg(dyad_names, group_label='dyad', df=df_data_dyads, feature='MG_P1P2', seconds_col=seconds_col)
-
-            # diff_rows_te = []
-            # for group in dyad_names:
-            #     group_cols = df_MG_dyads.columns.str.contains(group)
-            #     df_group = df_MG_dyads[df_MG_dyads.columns[group_cols]]
-            #     mask_feature_true = df_group[f'{group}_MG_P1P2'] > 0
-            #     #print(dyad)
-            #     diff: int = df_group[f'{group}_MG_P1P2'].last_valid_index() - df_group[f'task_eng_{group}'].last_valid_index()
-            #     diff_rows_te.append(diff)
-            #     print(f'Diff for group {group} in between TE and feature row index is: {diff} rows, or {0.011*diff} secs approx.')
-            # avg_diff = sum(diff_rows_te)/len(diff_rows_te)
-            # print(f'AVG diff in between TE and feature row index is: {avg_diff}, or {0.011*avg_diff} secs approx.')
-            
+            # MG
+            self.feature_engagement_avg(dyad_names, group_label='dyad', df=df_data_dyads, feature='MG_P1P2', seconds_col=seconds_col)            
+            # 0 D1
+            self.feature_engagement_avg(dyad_names, group_label='dyad', df=df_data_dyads, feature='0_D1', seconds_col=seconds_col)
+            # 1 D1 (1d_DG)
+            #result_df_list.append(self.calculate_gaze_count_stats(dyads_df, "1d_DG"))
+            # This needs custom logic because we need to combine the percentage of 1_DG of P1 and P2
+            r1 = self.feature_engagement_avg(dyad_names, group_label='dyad', df=df_data_dyads, feature='1d_DG_P1', seconds_col=seconds_col)
+            r2 = self.feature_engagement_avg(dyad_names, group_label='dyad', df=df_data_dyads, feature='1d_DG_P2', seconds_col=seconds_col)
+            r_both = pd.concat([r1, r2], axis=1)
+            df_describe = r_both.loc['mean'].describe()
+            print(f'Feature dyad_1d_DG task engagement mean is: {df_describe}')
+        
             # Features triads
             print(f'triads')
             triad_names = [group for group in groups_floorlevel if 'triad' in group]
-            #eng_triads_cols = df_data_triads.columns[df_data_triads.columns.str.contains('task_eng_triad')]
+            # 0 D1 (Nobody looks at the other participants)
+            self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='0_D1', seconds_col=seconds_col)
+            # 1 D1 (One looks at the other. two, don’t)
+            self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='1_D1', seconds_col=seconds_col)
+            # 2 D1 same (Two to the same person, which to nothing)
+            self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='2_D1_same', seconds_col=seconds_col)
+            # 2 D1 different (One to nothing and their two each to a different person)
+            self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='2_D1_different', seconds_col=seconds_col)
+            # 3 D1 (Each to the different one - circle of gaze)
+            self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='3_D1', seconds_col=seconds_col)
+            # MG D1 (The third left out is looking at one of the two engaged in MG)
+            self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='MG_D1', seconds_col=seconds_col)
+            # MG D0  (The third does not look at any of the other 2)
+            self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='MG_D0', seconds_col=seconds_col)
+            # MG (it includes both MG_D1 and MG_D0)
+            r1 = self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='MG_P1P2', seconds_col=seconds_col)
+            r2 = self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='MG_P1P3', seconds_col=seconds_col)
+            r3 = self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='MG_P2P3', seconds_col=seconds_col)
+            r_all = pd.concat([r1, r2, r3], axis=1)
+            df_describe = r_all.loc['mean'].describe()
+            print(f'Feature triad_MG task engagement mean is: {df_describe}')
+            # 1d_DG (it includes all D1 dynamics except 0_D1)
             self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='1d_DG_P1', seconds_col=seconds_col)
-            # feature_cols = df_data_triads.columns[df_data_triads.columns.str.contains('1d_DG_P1')]
-            # df_feature_triads = df_data_triads[seconds_col.append(feature_cols.append(eng_triads_cols))]
-            # diff_rows_te = []
-            # for group in triad_names:
-            #     group_cols = df_feature_triads.columns.str.contains(group)
-            #     df_group = df_feature_triads[df_feature_triads.columns[group_cols]]
-            #     mask_feature_true = df_group[f'{group}_1d_DG_P1'] > 0
-            #     #print(dyad)
-            #     diff: int = df_group[f'{group}_1d_DG_P1'].last_valid_index() - df_group[f'task_eng_{group}'].last_valid_index()
-            #     diff_rows_te.append(diff)
-            #     print(f'Diff for group {group} in between TE and feature row index is: {diff} rows, or {0.011*diff} secs approx.')
-            # avg_diff = sum(diff_rows_te)/len(diff_rows_te)
-            # print(f'AVG diff in between TE and feature row index is: {avg_diff}, or {0.011*avg_diff} secs approx.')
+            self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='1d_DG_P2', seconds_col=seconds_col)
+            self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='1d_DG_P3', seconds_col=seconds_col)
+            
             print("ajajaj")
 
 
@@ -364,21 +369,30 @@ class PlottingEyeData:
             ax.legend(loc='best')
             plt.show()
 
-    def feature_engagement_avg(self, group_names: list[str], df: pd.DataFrame, group_label: str, feature: str, seconds_col):    
+    def feature_engagement_avg(self, group_names: list[str], df: pd.DataFrame, group_label: str, feature: str, seconds_col, print_diff_rows: bool = False) -> pd.DataFrame:    
         eng_group_cols = df.columns[df.columns.str.contains(f'task_eng_{group_label}')]
         feature_cols = df.columns[df.columns.str.contains(feature)]
         df_feature = df[seconds_col.append(feature_cols.append(eng_group_cols))]
         diff_rows_te = []
+        dfs_mean: list[pd.DataFrame] = []
         for group in group_names:
             group_cols = df_feature.columns.str.contains(group)
             df_group = df_feature[df_feature.columns[group_cols]]
             mask_feature_true = df_group[f'{group}_{feature}'] > 0
+            df_mean = df_group[mask_feature_true][[f'task_eng_{group}']].describe()
+            dfs_mean.append(df_mean)
             #print(dyad)
-            diff: int = df_group[f'{group}_{feature}'].last_valid_index() - df_group[f'task_eng_{group}'].last_valid_index()
-            diff_rows_te.append(diff)
-            print(f'Diff for group {group} in between TE and feature row index is: {diff} rows, or {0.011*diff} secs approx.')
-        avg_diff = sum(diff_rows_te)/len(diff_rows_te)
-        print(f'AVG diff in between TE and feature row index is: {avg_diff}, or {0.011*avg_diff} secs approx.')
+            if print_diff_rows:
+                diff: int = df_group[f'{group}_{feature}'].last_valid_index() - df_group[f'task_eng_{group}'].last_valid_index()
+                diff_rows_te.append(diff)
+                print(f'Diff for group {group} in between TE and feature row index is: {diff} rows, or {0.011*diff} secs approx.')      
+        df_all_means = pd.concat(dfs_mean, axis=1)
+        df_result = pd.DataFrame(df_all_means.loc['mean'].describe())
+        print(f'Feature {group_label}_{feature} task engagement mean is: {df_result}')
+        if print_diff_rows:
+            avg_diff = sum(diff_rows_te)/len(diff_rows_te)  
+            print(f'AVG diff in between TE and feature row index is: {avg_diff}, or {0.011*avg_diff} secs approx.')
+        return df_result
 
     def load_gaze_counts(self, folder_path: str, floor_level: bool):
         if os.path.exists(folder_path):

@@ -1,0 +1,191 @@
+Feature dyad_MG_P1P2 task engagement mean is:            mean
+count  7.000000
+mean   0.521034
+std    0.156578
+min    0.308894
+25%    0.437187
+50%    0.515134
+75%    0.578459
+max    0.791921
+
+Feature dyad_0_D1 task engagement mean is:            mean
+count  8.000000
+mean   0.466250
+std    0.158251
+min    0.218931
+25%    0.359318
+50%    0.526079
+75%    0.586075
+max    0.620711
+
+Feature dyad_1d_DG_P1 task engagement mean is:            mean
+count  8.000000
+mean   0.474441
+std    0.199628
+min    0.071928
+25%    0.402608
+50%    0.515334
+75%    0.584369
+max    0.736437
+
+Feature dyad_1d_DG_P2 task engagement mean is:            mean
+count  7.000000
+mean   0.544517
+std    0.122473
+min    0.384733
+25%    0.462278
+50%    0.524161
+75%    0.622362
+max    0.733444
+
+Feature dyad_1d_DG task engagement mean is: count    2.000000
+mean     0.509479
+std      0.049551
+min      0.474441
+25%      0.491960
+50%      0.509479
+75%      0.526998
+max      0.544517
+Name: mean, dtype: float64
+
+TRIADS
+
+Feature triad_0_D1 task engagement mean is:             mean
+count  12.000000
+mean    0.410841
+std     0.151505
+min     0.080060
+25%     0.311083
+50%     0.440865
+75%     0.499201
+max     0.625662
+
+Feature triad_1_D1 task engagement mean is:             mean
+count  12.000000
+mean    0.398916
+std     0.132773
+min     0.113082
+25%     0.325305
+50%     0.417663
+75%     0.469769
+max     0.588728
+
+Feature triad_2_D1_same task engagement mean is:             mean
+count  12.000000
+mean    0.384839
+std     0.153380
+min     0.035699
+25%     0.358529
+50%     0.423432
+75%     0.461917
+max     0.616735
+
+Feature triad_2_D1_different task engagement mean is:             mean
+count  11.000000
+mean    0.418989
+std     0.155973
+min     0.129576
+25%     0.342375
+50%     0.444474
+75%     0.516652
+max     0.670550
+
+Feature triad_3_D1 task engagement mean is:            mean
+count  9.000000
+mean   0.425107
+std    0.218050
+min    0.015138
+25%    0.359781
+50%    0.434151
+75%    0.550614
+max    0.727256
+
+Feature triad_MG_D1 task engagement mean is:             mean
+count  10.000000
+mean    0.451200
+std     0.168716
+min     0.154401
+25%     0.326345
+50%     0.474138
+75%     0.573802
+max     0.716627
+
+Feature triad_MG_D0 task engagement mean is:             mean
+count  11.000000
+mean    0.421829
+std     0.123954
+min     0.158962
+25%     0.366214
+50%     0.424744
+75%     0.499380
+max     0.618690
+
+Feature triad_MG_P1P2 task engagement mean is:             mean
+count  10.000000
+mean    0.409018
+std     0.173725
+min     0.109644
+25%     0.319385
+50%     0.394672
+75%     0.498951
+max     0.761945
+
+Feature triad_MG_P1P3 task engagement mean is:            mean
+count  9.000000
+mean   0.442205
+std    0.189086
+min    0.012857
+25%    0.425548
+50%    0.492841
+75%    0.545794
+max    0.644264
+
+Feature triad_MG_P2P3 task engagement mean is:            mean
+count  9.000000
+mean   0.397659
+std    0.112000
+min    0.184628
+25%    0.325445
+50%    0.407246
+75%    0.460158
+max    0.528339
+
+Feature triad_MG task engagement mean is: count    3.000000
+mean     0.416294
+std      0.023147
+min      0.397659
+25%      0.403338
+50%      0.409018
+75%      0.425611
+max      0.442205
+Name: mean, dtype: float64
+
+Feature triad_1d_DG_P1 task engagement mean is:             mean
+count  12.000000
+mean    0.407413
+std     0.134277
+min     0.137552
+25%     0.326999
+50%     0.420138
+75%     0.518233
+max     0.550865
+
+Feature triad_1d_DG_P2 task engagement mean is:             mean
+count  12.000000
+mean    0.401073
+std     0.167671
+min     0.092734
+25%     0.380019
+50%     0.415888
+75%     0.464811
+max     0.698657
+
+Feature triad_1d_DG_P3 task engagement mean is:             mean
+count  12.000000
+mean    0.375007
+std     0.135955
+min     0.116979
+25%     0.278767
+50%     0.420671
+75%     0.446798
+max     0.564576
