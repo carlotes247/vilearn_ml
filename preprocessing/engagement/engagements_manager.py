@@ -11,6 +11,13 @@ class EngagementsManager:
     engagements_list: list[EngagementProcessor] = []
     data_path: str = "data/annotations"
     path_groups_info: str = "data/group_durations_all_commas.csv"
+    filename_all_groups_rec_time: str = "all_groups_task_eng90Hz.csv"
+    filename_dyads_rec_time: str ="dyads_task_eng90Hz.csv"                    
+    filename_triads_rec_time: str ="triads_task_eng90Hz.csv"
+    filename_all_groups_interaction_time: str ="all_groups_interaction_task_eng90Hz.csv"
+    filename_dyads_interaction_time: str ="dyads_interaction_task_eng90Hz.csv"                    
+    filename_triads_interaction_time: str ="triads_interaction_task_eng90Hz.csv"
+    loaded_from_disk: bool
     folders: list[str]
     df_avg_eng_all: pd.DataFrame
     df_avg_eng_dyads: pd.DataFrame
@@ -19,18 +26,33 @@ class EngagementsManager:
     df_avg_eng_dyads_interaction: pd.DataFrame
     df_avg_eng_triads_interaction: pd.DataFrame
 
-    def __init__(self, save_to_disk: bool) -> None:
-        self.load_engagements(save_to_disk=save_to_disk)
+    def __init__(self, save_to_disk: bool, load_from_disk:bool, floor_level: bool) -> None:
+        self.load_engagements(save_to_disk=save_to_disk, load_from_disk=load_from_disk)
         self.avg_engagements(save_to_disk=save_to_disk)
+        # drop columns that are not in floor level if true
+        if floor_level:
+            self.__drop_floorlevel()
+            
 
-    def load_engagements(self, save_to_disk: bool):
-        self.folders = os.listdir(self.data_path)
-        self.folders = [folder for folder in self.folders if not os.path.isfile(f"{self.data_path}/{folder}")]
-        for folder in self.folders:
-            folder_path: str = f"{self.data_path}/{folder}"
-            eng_processor = EngagementProcessor(path_groups_info=self.path_groups_info, path_folder=folder_path, group_name=folder.replace("recording_", ""))
-            eng_processor.process_task_engagement(save_to_disk=save_to_disk)
-            self.engagements_list.append(eng_processor)   
+
+    def load_engagements(self, save_to_disk: bool, load_from_disk: bool):
+        self.loaded_from_disk = False
+        if load_from_disk:            
+            self.df_avg_eng_all = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_all_groups_rec_time))
+            self.df_avg_eng_dyads = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_dyads_rec_time))
+            self.df_avg_eng_triads = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_triads_rec_time))
+            self.df_avg_eng_all_interaction = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_all_groups_interaction_time))
+            self.df_avg_eng_dyads_interaction = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_dyads_interaction_time))
+            self.df_avg_eng_triads_interaction = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_triads_interaction_time))
+            self.loaded_from_disk = True
+        else:
+            self.folders = os.listdir(self.data_path)
+            self.folders = [folder for folder in self.folders if not os.path.isfile(f"{self.data_path}/{folder}")]
+            for folder in self.folders:
+                folder_path: str = f"{self.data_path}/{folder}"
+                eng_processor = EngagementProcessor(path_groups_info=self.path_groups_info, path_folder=folder_path, group_name=folder.replace("recording_", ""))
+                eng_processor.process_task_engagement(save_to_disk=save_to_disk)
+                self.engagements_list.append(eng_processor)       
 
     def __slice_process_avg_df(self, df_combined: pd.DataFrame, keyword_cols: str):
         cols = df_combined.columns[df_combined.columns.str.contains(keyword_cols)]
@@ -45,7 +67,7 @@ class EngagementsManager:
         return df_eng
 
     def avg_engagements(self, save_to_disk: bool):
-        if len(self.engagements_list) == 0:
+        if len(self.engagements_list) == 0 or self.loaded_from_disk:
             return
         # remove processors that couldn't finish processing
         finished_list: list[EngagementProcessor] = [processor for processor in self.engagements_list if processor.finished_processing]
@@ -86,6 +108,21 @@ class EngagementsManager:
             df_eng_dyads_interaction.to_csv("data/annotations/dyads_interaction_task_eng90Hz.csv")                    
             df_eng_triads_interaction.to_csv("data/annotations/triads_interaction_task_eng90Hz.csv")
 
+    def __drop_floorlevel(self):
+        df_details_floorlevel = pd.read_csv(os.path.join(os.getcwd(), 'data', 'group_names_with_time_floorlevel.csv'), sep=';')
+        groups_floorlevel = df_details_floorlevel['Group_Name'].to_list()
+        self.df_avg_eng_all = self.__drop_cols_not_in(self.df_avg_eng_all, groups_floorlevel)
+        self.df_avg_eng_dyads = self.__drop_cols_not_in(self.df_avg_eng_dyads, groups_floorlevel)
+        self.df_avg_eng_triads = self.__drop_cols_not_in(self.df_avg_eng_triads, groups_floorlevel)
+        self.df_avg_eng_all_interaction = self.__drop_cols_not_in(self.df_avg_eng_all_interaction, groups_floorlevel)
+        self.df_avg_eng_dyads_interaction = self.__drop_cols_not_in(self.df_avg_eng_dyads_interaction, groups_floorlevel)
+        self.df_avg_eng_triads_interaction = self.__drop_cols_not_in(self.df_avg_eng_triads_interaction, groups_floorlevel)
+    
+    def __drop_cols_not_in(self, df: pd.DataFrame, cols: list[str]) -> pd.DataFrame:
+        cols.append(df.columns[df.columns.str.contains('seconds')][0])
+        cols_to_keep = df.columns.str.contains("|".join(cols))
+        return df[df.columns[cols_to_keep]]
+        
 if __name__ == "__main__":    
-    mngr_aux: EngagementsManager = EngagementsManager(False)
+    mngr_aux: EngagementsManager = EngagementsManager(save_to_disk=False, load_from_disk=True, floor_level=True)
     print("done")
