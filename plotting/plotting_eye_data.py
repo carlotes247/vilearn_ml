@@ -7,6 +7,13 @@ import re
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+# Added this try catch because on some machines it cannot find folders from working directory 
+try:
+    from preprocessing.engagement.engagements_manager import EngagementsManager
+except ImportError:
+    import sys
+    sys.path.append(os.getcwd())
+    from preprocessing.engagement.engagements_manager import EngagementsManager
 
 class PlottingEyeData:
 
@@ -133,7 +140,8 @@ class PlottingEyeData:
                         sum_triads_for_mutual_gaze:bool = True,
                         y_axis_text:str='', figure_title:str='', color_dyad:str='red', color_triad:str='green',
                         plt_show: bool = True, plot_std: bool = True, 
-                        one_directioned_direct_gaze = True, all_features: bool = False, save_df_resampled_to_file:bool=True):
+                        one_directioned_direct_gaze = True, all_features: bool = False, load_task_engagement: bool = False, 
+                        save_df_resampled_to_file:bool=True):
 
         # clean path in case it expects the directory at root level
         if not os.path.exists(file_path) and "../" in file_path:
@@ -141,6 +149,106 @@ class PlottingEyeData:
         
         df_data = pd.read_csv(file_path, index_col=0)
         df_data_ts = self.convert_seconds_to_timestamp(df_data)
+
+        if load_task_engagement:
+            load_all_processed = True # <-- Loads the big merged file from disk
+            df1_aligned: pd.DataFrame = pd.DataFrame()
+            # loading or processing common dataframe
+            if load_all_processed:
+                df1_aligned = pd.read_csv(os.path.join(os.getcwd(), "data", "all_features_gaze_eng_all_groups_90Hz.csv"))
+            else:
+                eng_mngr: EngagementsManager = EngagementsManager(save_to_disk=False, load_from_disk=True, floor_level=True)
+                # Merge both df_data together with engagements
+                # Start with only the 'second' column
+                df1_aligned = eng_mngr.df_avg_eng_all_interaction[["seconds"]].copy()
+                df1_aligned.rename(columns={'seconds':'seconds_interaction'}, inplace=True)
+                df_aux = df_data_ts
+                df_aux['seconds_interaction'] *= 1000 # <-- increasing the dimension of time so we adjust the tolerance of the merge down to the ms
+                df1_aligned['seconds_interaction'] *= 1000
+                # Merge features with tolerance
+                max_tolerance: int = 15  # <-- maximum allowed difference in milliseconds (because the time has increased in magnitude and we need an int here)
+                # Loop over features and merge one by one
+                diffs = []
+                for col in df_aux.columns:
+                    if not 'seconds' in col:
+                        temp = df_aux.dropna(subset=[col])[["seconds_interaction", col]]                    
+                        df1_aligned = pd.merge_asof(
+                            df1_aligned.sort_values("seconds_interaction"),
+                            temp.sort_values("seconds_interaction"),
+                            on="seconds_interaction",
+                            direction="nearest",
+                            tolerance=max_tolerance
+                        )
+                        og_last_sec = df_aux['seconds_interaction'][df_aux[col].last_valid_index()]/1000
+                        new_last_sec = df1_aligned['seconds_interaction'][df1_aligned[col].last_valid_index()]/1000
+                        diff = og_last_sec - new_last_sec
+                        #print(f"{col}: og last valid time: {og_last_sec} VS new last sec: {new_last_sec}. Diff = {diff}")
+                        diffs.append(diff)
+                avg_diff = sum(diffs) / len(diffs)
+                # Merge now with actual task engagement
+                df1_aligned.rename(columns={'seconds_interaction':'seconds'}, inplace=True)
+                df1_aligned['seconds'] /= 1000 # <-- reducing the dimension of time so we adjust the tolerance of the merge down to the ms
+                df1_aligned = pd.merge_asof(
+                            df1_aligned.sort_values("seconds"),
+                            eng_mngr.df_avg_eng_all_interaction.sort_values("seconds"),
+                            on="seconds",
+                            direction="nearest",
+                            tolerance=max_tolerance
+                        )            
+                print(f"Dfs merged! Avg diff is {avg_diff}")
+                df1_aligned.to_csv(os.path.join(os.getcwd(), "data", "all_features_gaze_eng_all_groups_90Hz.csv"))
+
+            # do stuff with it
+            seconds_col = df1_aligned.columns[df1_aligned.columns.str.contains('second')]
+            dyads_cols = df1_aligned.columns[df1_aligned.columns.str.contains('dyad')]
+            triads_cols = df1_aligned.columns[df1_aligned.columns.str.contains('triad')]
+            df_data_dyads = df1_aligned[seconds_col.append(dyads_cols)]
+            df_data_triads = df1_aligned[seconds_col.append(triads_cols)]
+            print("calculating stuff")
+            # Features dyads
+            eng_dyads_cols = df_data_dyads.columns[df_data_dyads.columns.str.contains('task_eng_dyad')]
+            MG_cols = df_data_dyads.columns[df_data_dyads.columns.str.contains('MG')]
+            df_MG_dyads = df_data_dyads[seconds_col.append(MG_cols.append(eng_dyads_cols))]
+            # do group by group
+            # group names
+            df_details_floorlevel = pd.read_csv(os.path.join(os.getcwd(), 'data', 'group_names_with_time_floorlevel.csv'), sep=';')
+            groups_floorlevel = df_details_floorlevel['Group_Name'].to_list()
+            dyad_names = [group for group in groups_floorlevel if 'dyad' in group]
+            self.feature_engagement_avg(dyad_names, group_label='dyad', df=df_data_dyads, feature='MG_P1P2', seconds_col=seconds_col)
+
+            # diff_rows_te = []
+            # for group in dyad_names:
+            #     group_cols = df_MG_dyads.columns.str.contains(group)
+            #     df_group = df_MG_dyads[df_MG_dyads.columns[group_cols]]
+            #     mask_feature_true = df_group[f'{group}_MG_P1P2'] > 0
+            #     #print(dyad)
+            #     diff: int = df_group[f'{group}_MG_P1P2'].last_valid_index() - df_group[f'task_eng_{group}'].last_valid_index()
+            #     diff_rows_te.append(diff)
+            #     print(f'Diff for group {group} in between TE and feature row index is: {diff} rows, or {0.011*diff} secs approx.')
+            # avg_diff = sum(diff_rows_te)/len(diff_rows_te)
+            # print(f'AVG diff in between TE and feature row index is: {avg_diff}, or {0.011*avg_diff} secs approx.')
+            
+            # Features triads
+            print(f'triads')
+            triad_names = [group for group in groups_floorlevel if 'triad' in group]
+            #eng_triads_cols = df_data_triads.columns[df_data_triads.columns.str.contains('task_eng_triad')]
+            self.feature_engagement_avg(triad_names, group_label='triad', df=df_data_triads, feature='1d_DG_P1', seconds_col=seconds_col)
+            # feature_cols = df_data_triads.columns[df_data_triads.columns.str.contains('1d_DG_P1')]
+            # df_feature_triads = df_data_triads[seconds_col.append(feature_cols.append(eng_triads_cols))]
+            # diff_rows_te = []
+            # for group in triad_names:
+            #     group_cols = df_feature_triads.columns.str.contains(group)
+            #     df_group = df_feature_triads[df_feature_triads.columns[group_cols]]
+            #     mask_feature_true = df_group[f'{group}_1d_DG_P1'] > 0
+            #     #print(dyad)
+            #     diff: int = df_group[f'{group}_1d_DG_P1'].last_valid_index() - df_group[f'task_eng_{group}'].last_valid_index()
+            #     diff_rows_te.append(diff)
+            #     print(f'Diff for group {group} in between TE and feature row index is: {diff} rows, or {0.011*diff} secs approx.')
+            # avg_diff = sum(diff_rows_te)/len(diff_rows_te)
+            # print(f'AVG diff in between TE and feature row index is: {avg_diff}, or {0.011*avg_diff} secs approx.')
+            print("ajajaj")
+
+
         df_resampled = self.resample_avg_seconds_using_timeframe(df_data_ts, timeframe=timewindow)
         df_resampled.set_index('seconds_interaction_window', inplace=True)
         # not ideal, but for 1d direct gaze, I'll drop the columns of DG (not the one directioned ones);
@@ -256,6 +364,22 @@ class PlottingEyeData:
             ax.legend(loc='best')
             plt.show()
 
+    def feature_engagement_avg(self, group_names: list[str], df: pd.DataFrame, group_label: str, feature: str, seconds_col):    
+        eng_group_cols = df.columns[df.columns.str.contains(f'task_eng_{group_label}')]
+        feature_cols = df.columns[df.columns.str.contains(feature)]
+        df_feature = df[seconds_col.append(feature_cols.append(eng_group_cols))]
+        diff_rows_te = []
+        for group in group_names:
+            group_cols = df_feature.columns.str.contains(group)
+            df_group = df_feature[df_feature.columns[group_cols]]
+            mask_feature_true = df_group[f'{group}_{feature}'] > 0
+            #print(dyad)
+            diff: int = df_group[f'{group}_{feature}'].last_valid_index() - df_group[f'task_eng_{group}'].last_valid_index()
+            diff_rows_te.append(diff)
+            print(f'Diff for group {group} in between TE and feature row index is: {diff} rows, or {0.011*diff} secs approx.')
+        avg_diff = sum(diff_rows_te)/len(diff_rows_te)
+        print(f'AVG diff in between TE and feature row index is: {avg_diff}, or {0.011*avg_diff} secs approx.')
+
     def load_gaze_counts(self, folder_path: str, floor_level: bool):
         if os.path.exists(folder_path):
             floor_level_suffix: str = "_floorlevel" if floor_level else ""
@@ -324,19 +448,22 @@ class PlottingEyeData:
 
 if __name__ == "__main__":
     save_plot = False 
-    gaze_configs_counts_stats = True
+    gaze_configs_counts_stats = False
     floorlevel = True
     save_gaze_counts = False
     save_resampled_file = False
+    # Task Engagement
+    load_TE: bool = True
     # which features to plot (nothing to do with gaze counts)
-    all_features_plotting = False
+    all_features_plotting = True
     mutual_gaze_plotting = False
     direct_gate_plotting = False
     root_path= "../Recordings/SavedData/v2_no_low_sampled/"
     # root_path_1d_DG= "../Recordings/SavedData/1d_DG/"
-    all_groups_MG_df_path = root_path+"all_groups_mutual_gaze_interaction_time.csv"
-    all_groups_DG_df_path = root_path+"all_groups_direct_gaze_interaction_time.csv"
-    all_groups_all_features_df_path = root_path+"all_groups_all_features_interaction_time.csv"
+    path_suffix = "_floorlevel" if floorlevel else ""
+    all_groups_MG_df_path = root_path+f"all_groups_mutual_gaze_interaction_time.csv"
+    all_groups_DG_df_path = root_path+f"all_groups_direct_gaze_interaction_time.csv"
+    all_groups_all_features_df_path = root_path+f"all_groups_all_features_interaction_time{path_suffix}.csv"
 
     fig, ax = plt.subplots(figsize=(12,5))
     eye_plotter: PlottingEyeData = PlottingEyeData()
@@ -362,4 +489,6 @@ if __name__ == "__main__":
     if all_features_plotting:
         eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_all_features_df_path, timewindow=60, separate_by_group_formation=False,
                      sum_triads_for_mutual_gaze=True, dyads=True, triads=True, one_directioned_direct_gaze=False, all_features=True,
-                     y_axis_text="All Eye Gaze Features %",  figure_title="All Eye Gaze Features", save_df_resampled_to_file=save_resampled_file)
+                     y_axis_text="All Eye Gaze Features %",  figure_title="All Eye Gaze Features", 
+                     load_task_engagement=load_TE,
+                     save_df_resampled_to_file=save_resampled_file)
