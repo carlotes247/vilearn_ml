@@ -1,4 +1,4 @@
-seconds_interaction_window;group_type ;grup_formation; group_name;TE;MG;1d_DG;BPM;blink_durations
+seconds_interaction_window;group_type;group_formation;group_name;TE;MG;1d_DG;BPM;blink_durations
 0;dyad;F;dyad_01;0.699891326;0.006741983;0.058855685;4;153
 60;dyad;F;dyad_01;0.75052897;0;0.031550317;17;149.0416667
 120;dyad;F;dyad_01;0.719429787;0;0.025512983;17.5;134.6333333

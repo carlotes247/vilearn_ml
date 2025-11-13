@@ -12,28 +12,47 @@ import os
 # This script is a test for Knn regression
 
 if __name__ == '__main__':
-    # load vilearn windowed data
-    working_dir = os.getcwd()
-    data_folder = 'Recordings/SavedData/v2_no_low_sampled'
-    data_file = 'all_features_60s_resampled.csv'
-    full_data_path = os.path.join(working_dir, data_folder, data_file)
-    data = pd.read_csv(full_data_path)
-    # names for x, y cols
-    dyad_cols = [col for col in data.columns if 'dyad' in col]
-    triad_cols = [col for col in data.columns if 'triad' in col]
-    dyad_X_cols = [col for col in dyad_cols if not 'target' in col]
-    triad_X_cols = [col for col in triad_cols if not 'target' in col]
-    dyad_target_cols = [col for col in dyad_cols if 'target' in col]
-    triad_target_cols = [col for col in triad_cols if 'target' in col]
+    # config flags
+    use_file_TE: bool = True
+    # bining vars
     bins = [-0.1, 0.3, 0.7, 1]
     labels = [0, 1, 2]
     labels_text = ['low', 'middle', 'high']
-    dyads_y = data[dyad_target_cols]
-    dyads_y_categorical= data[dyad_target_cols].apply(pd.cut, bins=bins, labels=labels_text)
-    triads_y_categorical= data[triad_target_cols].apply(pd.cut, bins=bins, labels=labels_text)
+    # paths
+    working_dir = os.getcwd()
+    data_folder = 'Recordings/SavedData/v2_no_low_sampled'
+    data_file = 'all_features_60s_resampled.csv'
+    data_file_with_TE = '60s_TE_correlation.csv'
+    sep = ";" if use_file_TE else ","
+    full_data_path = ""
+    # load vilearn windowed data
+    if use_file_TE:
+        full_data_path = os.path.join(working_dir, data_folder, data_file_with_TE)
+    else:
+        full_data_path = os.path.join(working_dir, data_folder, data_file)
+    data = pd.read_csv(full_data_path, sep=";")
+    if use_file_TE:
+        # binning TE
+        df_TE = data.loc[:, ['TE']].apply(pd.cut, bins=bins, labels=labels_text)
+        data['TE'] = df_TE
+        # separating into dyads and triads
+        dyads_df = data.loc[data['group_name'].str.contains("dyad")]
+        triads_df = data.loc[data['group_name'].str.contains("triad")]
+    else:
+        # names for x, y cols
+        dyad_cols = [col for col in data.columns if 'dyad' in col]
+        triad_cols = [col for col in data.columns if 'triad' in col]
+        dyad_X_cols = [col for col in dyad_cols if not 'target' in col]
+        triad_X_cols = [col for col in triad_cols if not 'target' in col]
+        dyad_target_cols = [col for col in dyad_cols if 'target' in col]
+        triad_target_cols = [col for col in triad_cols if 'target' in col]
     
-    print(dyads_y_categorical.stack().value_counts())
-    print(triads_y_categorical.stack().value_counts())
+        dyads_y = data[dyad_target_cols]
+        dyads_y_categorical= data[dyad_target_cols].apply(pd.cut, bins=bins, labels=labels_text)
+        triads_y_categorical= data[triad_target_cols].apply(pd.cut, bins=bins, labels=labels_text)
+    
+        print(dyads_y_categorical.stack().value_counts())
+        print(triads_y_categorical.stack().value_counts())
 
     # plt.bar(dyads_y_categorical.stack().value_counts(), height=1)
     # plt.show()
