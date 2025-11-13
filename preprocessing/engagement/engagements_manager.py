@@ -9,8 +9,8 @@ import numpy as np
 class EngagementsManager:
 
     engagements_list: list[EngagementProcessor] = []
-    data_path: str = "data/annotations"
-    path_groups_info: str = "data/group_durations_all_commas.csv"
+    data_path: str = "../../data/annotations"
+    path_groups_info: str = "../../data/group_durations_all_commas.csv"
     filename_all_groups_rec_time: str = "all_groups_task_eng90Hz.csv"
     filename_dyads_rec_time: str ="dyads_task_eng90Hz.csv"                    
     filename_triads_rec_time: str ="triads_task_eng90Hz.csv"
@@ -25,9 +25,10 @@ class EngagementsManager:
     df_avg_eng_all_interaction: pd.DataFrame
     df_avg_eng_dyads_interaction: pd.DataFrame
     df_avg_eng_triads_interaction: pd.DataFrame
+    df_percent_TE_discrete: pd.DataFrame
 
-    def __init__(self, save_to_disk: bool, load_from_disk:bool, floor_level: bool) -> None:
-        self.load_engagements(save_to_disk=save_to_disk, load_from_disk=load_from_disk)
+    def __init__(self, save_to_disk: bool, load_from_disk:bool, floor_level: bool, discretised_data = False) -> None:
+        self.load_engagements(save_to_disk=save_to_disk, load_from_disk=load_from_disk, discretised_data = discretised_data)
         self.avg_engagements(save_to_disk=save_to_disk)
         # drop columns that are not in floor level if true
         if floor_level:
@@ -35,7 +36,7 @@ class EngagementsManager:
             
 
 
-    def load_engagements(self, save_to_disk: bool, load_from_disk: bool):
+    def load_engagements(self, save_to_disk: bool, load_from_disk: bool, discretised_data = False):
         self.loaded_from_disk = False
         if load_from_disk:            
             self.df_avg_eng_all = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_all_groups_rec_time))
@@ -52,6 +53,8 @@ class EngagementsManager:
                 folder_path: str = f"{self.data_path}/{folder}"
                 eng_processor = EngagementProcessor(path_groups_info=self.path_groups_info, path_folder=folder_path, group_name=folder.replace("recording_", ""))
                 eng_processor.process_task_engagement(save_to_disk=save_to_disk)
+                if discretised_data:
+                    eng_processor.process_discretise_task_engagement(testing_10_bins=True)
                 self.engagements_list.append(eng_processor)       
 
     def __slice_process_avg_df(self, df_combined: pd.DataFrame, keyword_cols: str):
@@ -108,8 +111,22 @@ class EngagementsManager:
             df_eng_dyads_interaction.to_csv("data/annotations/dyads_interaction_task_eng90Hz.csv")                    
             df_eng_triads_interaction.to_csv("data/annotations/triads_interaction_task_eng90Hz.csv")
 
+    def calculate_discrete_TE_stats(self, save_to_disk=False):
+        df_interaction_data = pd.DataFrame()
+        for engagement_group_data in self.engagements_list:
+            percent_TE_anno1 = engagement_group_data.df_eng_discretised_anno1_interaction.task_eng.value_counts()/len(engagement_group_data.df_eng_discretised_anno1_interaction)
+            percent_TE_anno2 = engagement_group_data.df_eng_discretised_anno2_interaction.task_eng.value_counts()/len(engagement_group_data.df_eng_discretised_anno2_interaction)
+            df_interaction_data[engagement_group_data.group_name+'_anno01'] = percent_TE_anno1
+            df_interaction_data[engagement_group_data.group_name+'_anno02'] = percent_TE_anno2
+
+        self.df_percent_TE_discrete = df_interaction_data
+        if save_to_disk:
+            df_interaction_data.to_csv("../../data/annotations/TE_discrete_percentages.csv")
+        return df_interaction_data
+
     def __drop_floorlevel(self):
-        df_details_floorlevel = pd.read_csv(os.path.join(os.getcwd(), 'data', 'group_names_with_time_floorlevel.csv'), sep=';')
+        # df_details_floorlevel = pd.read_csv(os.path.join(os.getcwd(), 'data', 'group_names_with_time_floorlevel.csv'), sep=';')
+        df_details_floorlevel = pd.read_csv('..\..\data\group_names_with_time_floorlevel.csv', sep=';')
         groups_floorlevel = df_details_floorlevel['Group_Name'].to_list()
         self.df_avg_eng_all = self.__drop_cols_not_in(self.df_avg_eng_all, groups_floorlevel)
         self.df_avg_eng_dyads = self.__drop_cols_not_in(self.df_avg_eng_dyads, groups_floorlevel)
@@ -124,5 +141,6 @@ class EngagementsManager:
         return df[df.columns[cols_to_keep]]
         
 if __name__ == "__main__":    
-    mngr_aux: EngagementsManager = EngagementsManager(save_to_disk=False, load_from_disk=True, floor_level=True)
+    mngr_aux: EngagementsManager = EngagementsManager(save_to_disk=False, load_from_disk=False, floor_level=True, discretised_data = True)
+    mngr_aux.calculate_discrete_TE_stats(save_to_disk=True)
     print("done")
