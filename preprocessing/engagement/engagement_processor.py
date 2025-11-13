@@ -24,7 +24,11 @@ class EngagementProcessor:
     group_name: str
     save_df: bool = False
     df_eng_1: pd.DataFrame 
-    df_eng_2 : pd.DataFrame 
+    df_eng_2: pd.DataFrame
+    df_eng_discretised_anno1: pd.DataFrame = pd.DataFrame()
+    df_eng_discretised_anno2: pd.DataFrame = pd.DataFrame()
+    df_eng_discretised_anno1_interaction: pd.DataFrame = pd.DataFrame()
+    df_eng_discretised_anno2_interaction: pd.DataFrame = pd.DataFrame()
     df_groups_info: pd.DataFrame
     df_avg_all: pd.DataFrame = pd.DataFrame()
     df_avg_interaction: pd.DataFrame = pd.DataFrame()
@@ -163,12 +167,67 @@ class EngagementProcessor:
         self.finished_processing = True
         return df_avg, df_interaction
 
+    def process_discretise_task_engagement(self, process_individual_TE: bool = True, save_to_disk: bool = False,
+                                           testing_10_bins = False):
+        # discretise first(Helen) and second(Laura) files
+        bins_list = [0, .33, .66, 1] #3 windows of equal sizes, from 0 to 1
+        bins_list_10 = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1] #10 windows of equal sizes, from 0 to 1 to check the data distribution
+
+        labels = ['low', 'mid', 'high']
+        labels_10 = ['0-.1', '.1-.2', '.2-.3', '.3-.4', '.4-.5', '.5-.6',
+                     '.6-.7', '.7-.8', '.8-.9', '.9-1']
+
+        if process_individual_TE:
+
+            df_eng_1 = self.__replace_TE_strings_with_nan(self.df_eng_1)
+            df_eng_2 = self.__replace_TE_strings_with_nan(self.df_eng_2)
+
+            interaction_start, interaction_end = self.__get_start_end_interaction(self.df_groups_info,
+                                                                                  group_name=self.group_name)
+            df_eng_1['seconds']= [x * (1 / self.freq) for x in range(len(df_eng_1))]
+            df_eng_2['seconds']= [x * (1 / self.freq) for x in range(len(df_eng_2))]
+
+
+
+            if testing_10_bins:
+                df_eng_1['task_eng'] = pd.cut(df_eng_1['task_eng'], bins=bins_list_10, labels=labels_10, include_lowest=True)
+                df_eng_2['task_eng'] = pd.cut(df_eng_2['task_eng'], bins=bins_list_10, labels=labels_10, include_lowest=True)
+            else:
+                df_eng_1['task_eng'] = pd.cut(df_eng_1['task_eng'], bins=bins_list, labels=labels, include_lowest=True)
+                df_eng_2['task_eng'] = pd.cut(df_eng_2['task_eng'], bins=bins_list, labels=labels, include_lowest=True)
+
+
+            df_eng1_interaction = self.__slice_interaction_time(df_eng_1, interaction_start, interaction_end)
+            df_eng2_interaction = self.__slice_interaction_time(df_eng_2, interaction_start, interaction_end)
+
+            if save_to_disk:
+                df_eng1_interaction.to_csv(
+                    f"../../data/annotations/recording_{self.group_name}/task_engagement_anno1_discretised{self.freq}Hz.csv")
+                df_eng2_interaction.to_csv(
+                    f"../../data/annotations/recording_{self.group_name}/task_engagement_anno2_discretised{self.freq}Hz.csv")
+
+            self.df_eng_discretised_anno1_interaction = df_eng1_interaction
+            self.df_eng_discretised_anno2_interaction = df_eng2_interaction
+            return df_eng1_interaction, df_eng2_interaction
+        # print ('Done')
+        # else:
+        # TODO: check if the df_avg is created already, or if I need to call a fuction firstto create it and then to discretise it.
+        # pd.cut(self.df_avg_interaction, bins=bins_list, labels=labels, include_lowest=True)
+
+
+    def __replace_TE_strings_with_nan(self, df: pd.DataFrame):
+        df.replace(to_replace=r'[^.0-9]', value=np.nan, regex=True, inplace=True)
+        df['task_eng'] = pd.to_numeric(df['task_eng'])
+        return df
+
+
 if __name__ == '__main__':
     path_file_1: str = "data/annotations/dyad_01/group.task engagement.helenrisack.annotation~"
     path_file_2: str = "data/annotations/dyad_01/task engagement.group.carlosgonzalez.annotation~"
-    path_groups_info: str = "data/group_durations_all_commas.csv"
-    folder_path = "data/annotations/dyad_01/"
+    path_groups_info: str = "../../data/group_durations_all_commas.csv"
+    folder_path = "../../data/annotations/recording_dyad_01"
     group_name: str = "dyad_01"
 
     processor: EngagementProcessor = EngagementProcessor(path_groups_info=path_groups_info, path_folder=folder_path, group_name=group_name)
-    processor.process_task_engagement(save_to_disk=True)
+    processor.process_discretise_task_engagement(save_to_disk=False)
+    # processor.process_task_engagement(save_to_disk=True)
