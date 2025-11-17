@@ -7,6 +7,7 @@ from sklearn import model_selection
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.inspection import DecisionBoundaryDisplay
+from sklearn import metrics
 import os
 
 # This script is a test for Knn regression
@@ -22,6 +23,10 @@ if __name__ == '__main__':
     # dataframes
     df_X: pd.DataFrame = pd.DataFrame()
     df_y: pd.DataFrame = pd.DataFrame()
+    X_train: pd.DataFrame = pd.DataFrame()
+    y_train: pd.DataFrame = pd.DataFrame()
+    X_test: pd.DataFrame = pd.DataFrame()
+    y_test: pd.DataFrame = pd.DataFrame()
     # paths
     working_dir = os.getcwd()
     data_folder = 'Recordings/SavedData/v2_no_low_sampled'
@@ -69,6 +74,7 @@ if __name__ == '__main__':
         # since we want whole groups and not individual windows, we use a proxy var to calculate the split
         group_names = df_X['group_name'].unique()
         # TODO: crossvalidation loop where we leave one group out and train on the others
+        # TODO: probably suffle groups eaech iteration?
         X_train_names, X_test_names = model_selection.train_test_split(group_names)
         df_train = df_data.loc[df_data['group_name'].isin(X_train_names)]
         df_test = df_data.loc[df_data['group_name'].isin(X_test_names)]
@@ -77,35 +83,27 @@ if __name__ == '__main__':
         X_test = df_test.drop(columns=['seconds_interaction_window','group_type','group_formation','group_name' ,'TE'])
         y_test = df_test.loc[:, 'TE']
     # knn with scaling
-    clf = Pipeline(
+    knn_scaler = Pipeline(
     steps=[("scaler", StandardScaler()), ("knn", neighbors.KNeighborsClassifier(n_neighbors=11))]
     )
     #knn without scaling
     knn_simple = neighbors.KNeighborsClassifier(n_neighbors=11)
     
-    # for ax, weights in zip(axs, ("uniform", "distance")):
-    # clf.set_params(knn__weights=weights).fit(X_train, y_train)
-    # disp = DecisionBoundaryDisplay.from_estimator(
-    #     clf,
-    #     X_test,
-    #     response_method="predict",
-    #     plot_method="pcolormesh",
-    #     xlabel=iris.feature_names[0],
-    #     ylabel=iris.feature_names[1],
-    #     shading="auto",
-    #     alpha=0.5,
-    #     ax=ax,
-    # )
-    # scatter = disp.ax_.scatter(X.iloc[:, 0], X.iloc[:, 1], c=y, edgecolors="k")
-    # disp.ax_.legend(
-    #     scatter.legend_elements()[0],
-    #     iris.target_names,
-    #     loc="lower left",
-    #     title="Classes",
-    # )
-    # _ = disp.ax_.set_title(
-    #     f"3-Class classification\n(k={clf[-1].n_neighbors}, weights={weights!r})"
-    # )
+    for weights in ("uniform", "distance"):
+        knn_scaler.set_params(knn__weights=weights).fit(X_train, y_train)
+        knn_simple.__weights = weights
+        knn_simple.fit(X_train,y_train)
+        # evaluate
+        y_pred_simple = knn_simple.predict(X_test)
+        y_pred_scaler = knn_scaler.predict(X_test)
+        acc_simple = metrics.accuracy_score(y_test, y_pred_simple)   
+        acc_scaler = metrics.accuracy_score(y_test, y_pred_scaler)   
+        print("========SIMPLE========")
+        print(f"KNN accuracy {weights} simple: {acc_simple}")
+        print(metrics.classification_report(y_test, y_pred_simple, zero_division=np.nan))
+        print("========SCALER=========")
+        print(f"KNN accuracy {weights} scaler: {acc_scaler}")
+        print(metrics.classification_report(y_test, y_pred_scaler, zero_division=np.nan))
+        print("=======================")
 
 
-    print('hello')
