@@ -16,7 +16,7 @@ if __name__ == '__main__':
     # config flags
     use_file_TE: bool = True
     separate_groups: bool = False
-    print_folds: bool = True
+    print_folds: bool = False
     # bining vars
     bins = [-0.1, 0.3, 0.7, 1]
     labels = [0, 1, 2]
@@ -105,6 +105,10 @@ if __name__ == '__main__':
         groups = df_data['group_name']
         group_kfold = model_selection.GroupKFold(n_splits=len(group_names))
         n_splits = group_kfold.get_n_splits(X, y, groups)
+        acc_list_simple_uniform = []
+        acc_list_scaler_uniform = []
+        acc_list_simple_distance = []
+        acc_list_scaler_distance = []
         if print_folds:
             print(f"Num folds: {n_splits}")
             print(group_kfold)
@@ -128,7 +132,13 @@ if __name__ == '__main__':
                 y_pred_simple = knn_simple.predict(X.iloc[test_index])
                 y_pred_scaler = knn_scaler.predict(X.iloc[test_index])
                 acc_simple = metrics.accuracy_score(y.iloc[test_index], y_pred_simple)   
-                acc_scaler = metrics.accuracy_score(y.iloc[test_index], y_pred_scaler)   
+                acc_scaler = metrics.accuracy_score(y.iloc[test_index], y_pred_scaler)
+                if weights == "uniform":
+                    acc_list_simple_uniform.append(acc_simple)
+                    acc_list_scaler_uniform.append(acc_scaler) 
+                else:
+                    acc_list_simple_distance.append(acc_simple)
+                    acc_list_scaler_distance.append(acc_scaler) 
                 print("========SIMPLE========")
                 print(f"KNN accuracy {weights} simple: {acc_simple}")
                 print(metrics.classification_report(y.iloc[test_index], y_pred_simple, zero_division=np.nan))
@@ -137,10 +147,20 @@ if __name__ == '__main__':
                 print(metrics.classification_report(y.iloc[test_index], y_pred_scaler, zero_division=np.nan))
                 print("=======================")
 
+            # calculate avg accuracies over all folds
+            print(f"Avg accuracy KNN simple uniform: {np.average(acc_list_simple_uniform)}")
+            print(f"Avg accuracy KNN scaler uniform: {np.average(acc_list_scaler_uniform)}")
+            print(f"Avg accuracy KNN simple distance: {np.average(acc_list_simple_distance)}")
+            print(f"Avg accuracy KNN scaler distance: {np.average(acc_list_scaler_distance)}")
+
     print("Cross val score knn_SIMPLE")
-    print(model_selection.cross_val_score(knn_simple, X, y, cv=group_kfold, groups=groups, verbose=1))
+    accuracies = model_selection.cross_val_score(knn_simple, X, y, cv=group_kfold, groups=groups, verbose=1)
+    print(accuracies)
+    print(f"Avg acc: {np.average(accuracies)}")
     print("Cross val score knn_SCALER")
-    print(model_selection.cross_val_score(knn_scaler, X, y, cv=group_kfold, groups=groups, verbose=1))
+    accuracies = model_selection.cross_val_score(knn_scaler, X, y, cv=group_kfold, groups=groups, verbose=1)
+    print(accuracies)
+    print(f"Avg acc: {np.average(accuracies)}")
     
     for weights in ("uniform", "distance"):
         knn_scaler.set_params(knn__weights=weights).fit(X_train, y_train)
