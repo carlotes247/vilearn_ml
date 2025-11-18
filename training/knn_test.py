@@ -16,7 +16,7 @@ if __name__ == '__main__':
     # config flags
     use_file_TE: bool = True
     separate_groups: bool = False
-    print_folds: bool = False
+    print_folds: bool = True
     # bining vars
     bins = [-0.1, 0.3, 0.7, 1]
     labels = [0, 1, 2]
@@ -41,6 +41,15 @@ if __name__ == '__main__':
     data_file_with_TE = '60s_TE_correlation.csv'
     sep = ";" if use_file_TE else ","
     full_data_path = ""
+    
+    # Defining knn models
+    # knn with scaling
+    knn_scaler = Pipeline(
+    steps=[("scaler", StandardScaler()), ("knn", neighbors.KNeighborsClassifier(n_neighbors=11))]
+    )
+    #knn without scaling
+    knn_simple = neighbors.KNeighborsClassifier(n_neighbors=11)
+    
     # load vilearn windowed data
     if use_file_TE:
         full_data_path = os.path.join(working_dir, data_folder, data_file_with_TE)
@@ -100,7 +109,7 @@ if __name__ == '__main__':
             print(f"Num folds: {n_splits}")
             print(group_kfold)
         # loop through each fold
-        for i, (train_index, test_index) in enumerate(group_kfold.split(X, y, groups)):            
+        for i, (train_index, test_index) in enumerate(group_kfold.split(X, y, groups)):                                    
             # debug info
             if print_folds:
                 print(f"Fold {i}:")            
@@ -109,14 +118,24 @@ if __name__ == '__main__':
                 print(f"  TEST: groups={groups[test_index].unique()}, count={len(groups[test_index].unique())}")
                 if len(groups[test_index].unique()) > 1:
                     print("THIS FOLD HAS MORE THAN ONE GROUP!!!")
-                print("============================")
-
-    # knn with scaling
-    knn_scaler = Pipeline(
-    steps=[("scaler", StandardScaler()), ("knn", neighbors.KNeighborsClassifier(n_neighbors=11))]
-    )
-    #knn without scaling
-    knn_simple = neighbors.KNeighborsClassifier(n_neighbors=11)
+                print("============================")    
+            # manual training KNN
+            for weights in ("uniform", "distance"):
+                knn_scaler.set_params(knn__weights=weights).fit(X.iloc[train_index], y.iloc[train_index])
+                knn_simple.__weights = weights
+                knn_simple.fit(X.iloc[train_index], y.iloc[train_index])
+                # evaluate
+                y_pred_simple = knn_simple.predict(X.iloc[test_index])
+                y_pred_scaler = knn_scaler.predict(X.iloc[test_index])
+                acc_simple = metrics.accuracy_score(y.iloc[test_index], y_pred_simple)   
+                acc_scaler = metrics.accuracy_score(y.iloc[test_index], y_pred_scaler)   
+                print("========SIMPLE========")
+                print(f"KNN accuracy {weights} simple: {acc_simple}")
+                print(metrics.classification_report(y.iloc[test_index], y_pred_simple, zero_division=np.nan))
+                print("========SCALER=========")
+                print(f"KNN accuracy {weights} scaler: {acc_scaler}")
+                print(metrics.classification_report(y.iloc[test_index], y_pred_scaler, zero_division=np.nan))
+                print("=======================")
 
     print("Cross val score knn_SIMPLE")
     print(model_selection.cross_val_score(knn_simple, X, y, cv=group_kfold, groups=groups, verbose=1))
