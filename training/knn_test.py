@@ -16,6 +16,7 @@ if __name__ == '__main__':
     # config flags
     use_file_TE: bool = True
     separate_groups: bool = False
+    print_folds: bool = False
     # bining vars
     bins = [-0.1, 0.3, 0.7, 1]
     labels = [0, 1, 2]
@@ -23,10 +24,16 @@ if __name__ == '__main__':
     # dataframes
     df_X: pd.DataFrame = pd.DataFrame()
     df_y: pd.DataFrame = pd.DataFrame()
+    X: pd.DataFrame = pd.DataFrame()
+    y: pd.DataFrame = pd.DataFrame()
     X_train: pd.DataFrame = pd.DataFrame()
     y_train: pd.DataFrame = pd.DataFrame()
     X_test: pd.DataFrame = pd.DataFrame()
     y_test: pd.DataFrame = pd.DataFrame()
+    # k fold vars
+    group_names: list[str] = []
+    groups: pd.Series = pd.Series()
+    group_kfold: model_selection.GroupKFold = model_selection.GroupKFold()
     # paths
     working_dir = os.getcwd()
     data_folder = 'Recordings/SavedData/v2_no_low_sampled'
@@ -82,12 +89,39 @@ if __name__ == '__main__':
         y_train = df_train.loc[:, 'TE']
         X_test = df_test.drop(columns=['seconds_interaction_window','group_type','group_formation','group_name' ,'TE'])
         y_test = df_test.loc[:, 'TE']
+        
+        # Now trying to use GroupkFold to do the split to see if it works with our dataset (this is independent from the prior code, I am testing things out)        
+        X = df_data.drop(columns=['seconds_interaction_window','group_type','group_formation','group_name' ,'TE'])
+        y = df_data.loc[:, 'TE']
+        groups = df_data['group_name']
+        group_kfold = model_selection.GroupKFold(n_splits=len(group_names))
+        n_splits = group_kfold.get_n_splits(X, y, groups)
+        if print_folds:
+            print(f"Num folds: {n_splits}")
+            print(group_kfold)
+        # loop through each fold
+        for i, (train_index, test_index) in enumerate(group_kfold.split(X, y, groups)):            
+            # debug info
+            if print_folds:
+                print(f"Fold {i}:")            
+                print(f"  TRAIN: groups={groups[train_index].unique()}, count={len(groups[test_index].unique())}")
+                print("")
+                print(f"  TEST: groups={groups[test_index].unique()}, count={len(groups[test_index].unique())}")
+                if len(groups[test_index].unique()) > 1:
+                    print("THIS FOLD HAS MORE THAN ONE GROUP!!!")
+                print("============================")
+
     # knn with scaling
     knn_scaler = Pipeline(
     steps=[("scaler", StandardScaler()), ("knn", neighbors.KNeighborsClassifier(n_neighbors=11))]
     )
     #knn without scaling
     knn_simple = neighbors.KNeighborsClassifier(n_neighbors=11)
+
+    print("Cross val score knn_SIMPLE")
+    print(model_selection.cross_val_score(knn_simple, X, y, cv=group_kfold, groups=groups, verbose=1))
+    print("Cross val score knn_SCALER")
+    print(model_selection.cross_val_score(knn_scaler, X, y, cv=group_kfold, groups=groups, verbose=1))
     
     for weights in ("uniform", "distance"):
         knn_scaler.set_params(knn__weights=weights).fit(X_train, y_train)
