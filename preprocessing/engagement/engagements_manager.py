@@ -5,6 +5,7 @@ else:
 import os
 import pandas as pd
 import numpy as np
+import pingouin as pg
 
 class EngagementsManager:
 
@@ -27,6 +28,7 @@ class EngagementsManager:
     df_avg_eng_dyads_interaction: pd.DataFrame
     df_avg_eng_triads_interaction: pd.DataFrame
     df_percent_TE_discrete: pd.DataFrame
+    df_interrater_agreement: pd.DataFrame
 
 
     def __init__(self, save_to_disk: bool, load_from_disk:bool, floor_level: bool, discretised_data = False) -> None:
@@ -129,6 +131,53 @@ class EngagementsManager:
             df_interaction_data.to_csv("../../data/annotations/TE_discrete_percentages_.25.5_forAnno2.csv")
         return df_interaction_data
 
+    def calculate_interrater_reliability(self, save_to_disk=False):
+        df_interrater_reliability_data = pd.DataFrame(index=['continuous','discrete'])#, 'recording_continuous'])
+        #go over all the groups and calculate the interrater reliability (like in nova):
+        for engagement_group_data in self.engagements_list:
+            if engagement_group_data.group_name in self.groups_floorlevel:
+                print (engagement_group_data.group_name)
+                current_df_discrete = pd.DataFrame({'anno1':engagement_group_data.df_eng_discretised_anno1_interaction.task_eng,
+                                           'anno2':engagement_group_data.df_eng_discretised_anno2_interaction.task_eng})
+                current_df_cont = pd.DataFrame(
+                    {'anno1': engagement_group_data.df_eng_1_interaction.task_eng,
+                     'anno2': engagement_group_data.df_eng_2_interaction.task_eng})
+                # current_df_recording_cont = pd.DataFrame(
+                #     {'anno1': engagement_group_data.df_eng_1.task_eng,
+                #      'anno2': engagement_group_data.df_eng_2.task_eng})
+
+                # current_df_discrete.replace([np.inf, -np.inf], np.nan).dropna(axis=0, inplace=True)
+                # current_df_cont.replace([np.inf, -np.inf], np.nan).dropna(axis=0, inplace=True)
+                # current_df_discrete.dropna(axis=0, how='any', inplace=True)
+                current_df_cont = current_df_cont[pd.to_numeric(current_df_cont['anno2'], errors='coerce').notnull()]
+                current_df_cont = current_df_cont[pd.to_numeric(current_df_cont['anno1'], errors='coerce').notnull()]
+                current_df_cont.dropna(axis=0, how='any', inplace=True)
+
+                current_df_discrete.replace({'low': 1, 'mid': 2, 'high': 3}, inplace=True)
+                # current_df_cont.replace({'low': 1, 'mid': 2, 'high': 3}, inplace=True)
+
+                #make all vals numeric
+                current_df_discrete['anno2'] = pd.to_numeric(current_df_discrete['anno2'])
+                current_df_discrete['anno1'] = pd.to_numeric(current_df_discrete['anno1'])
+                current_df_cont['anno2'] = pd.to_numeric(current_df_cont['anno2'])
+                current_df_cont['anno1'] = pd.to_numeric(current_df_cont['anno1'])
+                # current_df_recording_cont['anno2'] = pd.to_numeric(current_df_recording_cont['anno2'])
+                # current_df_recording_cont['anno1'] = pd.to_numeric(current_df_recording_cont['anno1'])
+
+                #get the interrater reliability for the discrete values
+                interrater_discrete = pg.cronbach_alpha(data=current_df_discrete)[0]
+                interrater_cont = pg.cronbach_alpha(data=current_df_cont)[0]
+                # interrater_recording_cont = pg.cronbach_alpha(data=current_df_recording_cont)[0]
+
+                df_interrater_reliability_data [engagement_group_data.group_name+'_interrater_relia'] = \
+                    [interrater_cont, interrater_discrete]
+
+        self.df_interrater_reliability = df_interrater_reliability_data
+        if save_to_disk:
+            # df_interaction_data.to_csv("../../data/annotations/TE_discrete_percentages.csv")
+            df_interrater_reliability_data.to_csv("../../data/annotations/TE_interrater_reliability.csv")
+        return df_interrater_reliability_data
+
     def __get_groups_floorlevel(self):
         df_details_floorlevel = pd.read_csv('..\..\data\group_names_with_time_floorlevel.csv', sep=';')
         groups_floorlevel = df_details_floorlevel['Group_Name'].to_list()
@@ -151,4 +200,5 @@ class EngagementsManager:
 if __name__ == "__main__":    
     mngr_aux: EngagementsManager = EngagementsManager(save_to_disk=False, load_from_disk=False, floor_level=True, discretised_data = True)
     mngr_aux.calculate_discrete_TE_stats(save_to_disk=True)
+    mngr_aux.calculate_interrater_reliability(save_to_disk=True)
     print("done")

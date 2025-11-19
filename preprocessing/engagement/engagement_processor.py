@@ -25,6 +25,8 @@ class EngagementProcessor:
     save_df: bool = False
     df_eng_1: pd.DataFrame 
     df_eng_2: pd.DataFrame
+    df_eng_1_interaction: pd.DataFrame
+    df_eng_2_interaction: pd.DataFrame
     df_eng_discretised_anno1: pd.DataFrame = pd.DataFrame()
     df_eng_discretised_anno2: pd.DataFrame = pd.DataFrame()
     df_eng_discretised_anno1_interaction: pd.DataFrame = pd.DataFrame()
@@ -63,6 +65,7 @@ class EngagementProcessor:
 
         self.df_eng_1: pd.DataFrame = pd.read_csv(self.path_file_1, sep=";", names=self.col_names)
         self.df_eng_2 : pd.DataFrame = pd.read_csv(self.path_file_2, sep=";", names=self.col_names)
+        self.__populate_individual_engagement_df_with_interaction_time()
     
     def __avg_eng_files_TS_secs(self, df_1: pd.DataFrame, df_2: pd.DataFrame) -> tuple[pd.DataFrame, bool]:
         print(f"{self.group_name}: File 1 has {len(df_1)} lines and File 2 has {len(df_2)} lines")
@@ -145,6 +148,14 @@ class EngagementProcessor:
         df_result = pd.DataFrame({'task_eng': interpolated_eng , 'std' : interpolated_std, 'seconds': new_seconds})
         return df_result
 
+    def __populate_individual_engagement_df_with_interaction_time(self):
+        interaction_start, interaction_end = self.__get_start_end_interaction(self.df_groups_info,
+                                                                              group_name=self.group_name)
+        self.df_eng_1['seconds'] = [x * (1 / self.freq) for x in range(len(self.df_eng_1))]
+        self.df_eng_2['seconds'] = [x * (1 / self.freq) for x in range(len(self.df_eng_2))]
+        self.df_eng_1_interaction = pd.DataFrame(self.__slice_interaction_time(self.df_eng_1, interaction_start, interaction_end))
+        self.df_eng_2_interaction = pd.DataFrame(self.__slice_interaction_time(self.df_eng_2, interaction_start, interaction_end))
+
     def process_task_engagement(self, save_to_disk:bool) -> tuple[pd.DataFrame, pd.DataFrame]:
         if self.freq < 90:
             if not self.is_file_1_90Hz:
@@ -174,6 +185,7 @@ class EngagementProcessor:
         bins_list_10 = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1] #10 windows of equal sizes, from 0 to 1 to check the data distribution
 
         bins_list_ann_2 = [0, .25, .5, 1] #3 windows for Laura's annotations as she didn't use too much the vals from .7 onwards
+        # bins_list_ann_2 = [0, .2, .45, 1] #3 windows for Laura's annotations as she didn't use too much the vals from .7 onwards
 
         labels = ['low', 'mid', 'high']
         labels_10 = ['0-.1', '.1-.2', '.2-.3', '.3-.4', '.4-.5', '.5-.6',
@@ -183,15 +195,13 @@ class EngagementProcessor:
 
         if process_individual_TE:
 
-            df_eng_1 = self.__replace_TE_strings_with_nan(self.df_eng_1)
-            df_eng_2 = self.__replace_TE_strings_with_nan(self.df_eng_2)
+            df_eng_1 = pd.DataFrame(self.__replace_TE_strings_with_nan(self.df_eng_1))
+            df_eng_2 = pd.DataFrame(self.__replace_TE_strings_with_nan(self.df_eng_2))
 
             interaction_start, interaction_end = self.__get_start_end_interaction(self.df_groups_info,
                                                                                   group_name=self.group_name)
             df_eng_1['seconds']= [x * (1 / self.freq) for x in range(len(df_eng_1))]
             df_eng_2['seconds']= [x * (1 / self.freq) for x in range(len(df_eng_2))]
-
-
 
             if testing_10_bins:
                 df_eng_1['task_eng'] = pd.cut(df_eng_1['task_eng'], bins=bins_list_10, labels=labels_10, include_lowest=True)
