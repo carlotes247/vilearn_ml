@@ -19,6 +19,7 @@ class EngagementsManager:
     filename_triads_interaction_time: str ="triads_interaction_task_eng90Hz.csv"
     loaded_from_disk: bool
     folders: list[str]
+    groups_floorlevel: list[str] = []
     df_avg_eng_all: pd.DataFrame
     df_avg_eng_dyads: pd.DataFrame
     df_avg_eng_triads: pd.DataFrame
@@ -27,10 +28,12 @@ class EngagementsManager:
     df_avg_eng_triads_interaction: pd.DataFrame
     df_percent_TE_discrete: pd.DataFrame
 
+
     def __init__(self, save_to_disk: bool, load_from_disk:bool, floor_level: bool, discretised_data = False) -> None:
         self.load_engagements(save_to_disk=save_to_disk, load_from_disk=load_from_disk, discretised_data = discretised_data)
         self.avg_engagements(save_to_disk=save_to_disk)
         # drop columns that are not in floor level if true
+        self.__get_groups_floorlevel()
         if floor_level:
             self.__drop_floorlevel()
             
@@ -54,7 +57,7 @@ class EngagementsManager:
                 eng_processor = EngagementProcessor(path_groups_info=self.path_groups_info, path_folder=folder_path, group_name=folder.replace("recording_", ""))
                 eng_processor.process_task_engagement(save_to_disk=save_to_disk)
                 if discretised_data:
-                    eng_processor.process_discretise_task_engagement(testing_10_bins=True)
+                    eng_processor.process_discretise_task_engagement(two_bins_for_two_anno=True)
                 self.engagements_list.append(eng_processor)       
 
     def __slice_process_avg_df(self, df_combined: pd.DataFrame, keyword_cols: str):
@@ -114,26 +117,31 @@ class EngagementsManager:
     def calculate_discrete_TE_stats(self, save_to_disk=False):
         df_interaction_data = pd.DataFrame()
         for engagement_group_data in self.engagements_list:
-            percent_TE_anno1 = engagement_group_data.df_eng_discretised_anno1_interaction.task_eng.value_counts()/len(engagement_group_data.df_eng_discretised_anno1_interaction)
-            percent_TE_anno2 = engagement_group_data.df_eng_discretised_anno2_interaction.task_eng.value_counts()/len(engagement_group_data.df_eng_discretised_anno2_interaction)
-            df_interaction_data[engagement_group_data.group_name+'_anno01'] = percent_TE_anno1
-            df_interaction_data[engagement_group_data.group_name+'_anno02'] = percent_TE_anno2
+            if engagement_group_data.group_name in self.groups_floorlevel:
+                percent_TE_anno1 = engagement_group_data.df_eng_discretised_anno1_interaction.task_eng.value_counts()/len(engagement_group_data.df_eng_discretised_anno1_interaction)
+                percent_TE_anno2 = engagement_group_data.df_eng_discretised_anno2_interaction.task_eng.value_counts()/len(engagement_group_data.df_eng_discretised_anno2_interaction)
+                df_interaction_data[engagement_group_data.group_name+'_anno01'] = percent_TE_anno1
+                df_interaction_data[engagement_group_data.group_name+'_anno02'] = percent_TE_anno2
 
         self.df_percent_TE_discrete = df_interaction_data
         if save_to_disk:
-            df_interaction_data.to_csv("../../data/annotations/TE_discrete_percentages.csv")
+            # df_interaction_data.to_csv("../../data/annotations/TE_discrete_percentages.csv")
+            df_interaction_data.to_csv("../../data/annotations/TE_discrete_percentages_.25.5_forAnno2.csv")
         return df_interaction_data
+
+    def __get_groups_floorlevel(self):
+        df_details_floorlevel = pd.read_csv('..\..\data\group_names_with_time_floorlevel.csv', sep=';')
+        groups_floorlevel = df_details_floorlevel['Group_Name'].to_list()
+        self.groups_floorlevel = groups_floorlevel
 
     def __drop_floorlevel(self):
         # df_details_floorlevel = pd.read_csv(os.path.join(os.getcwd(), 'data', 'group_names_with_time_floorlevel.csv'), sep=';')
-        df_details_floorlevel = pd.read_csv('..\..\data\group_names_with_time_floorlevel.csv', sep=';')
-        groups_floorlevel = df_details_floorlevel['Group_Name'].to_list()
-        self.df_avg_eng_all = self.__drop_cols_not_in(self.df_avg_eng_all, groups_floorlevel)
-        self.df_avg_eng_dyads = self.__drop_cols_not_in(self.df_avg_eng_dyads, groups_floorlevel)
-        self.df_avg_eng_triads = self.__drop_cols_not_in(self.df_avg_eng_triads, groups_floorlevel)
-        self.df_avg_eng_all_interaction = self.__drop_cols_not_in(self.df_avg_eng_all_interaction, groups_floorlevel)
-        self.df_avg_eng_dyads_interaction = self.__drop_cols_not_in(self.df_avg_eng_dyads_interaction, groups_floorlevel)
-        self.df_avg_eng_triads_interaction = self.__drop_cols_not_in(self.df_avg_eng_triads_interaction, groups_floorlevel)
+        self.df_avg_eng_all = self.__drop_cols_not_in(self.df_avg_eng_all, self.groups_floorlevel)
+        self.df_avg_eng_dyads = self.__drop_cols_not_in(self.df_avg_eng_dyads, self.groups_floorlevel)
+        self.df_avg_eng_triads = self.__drop_cols_not_in(self.df_avg_eng_triads, self.groups_floorlevel)
+        self.df_avg_eng_all_interaction = self.__drop_cols_not_in(self.df_avg_eng_all_interaction, self.groups_floorlevel)
+        self.df_avg_eng_dyads_interaction = self.__drop_cols_not_in(self.df_avg_eng_dyads_interaction, self.groups_floorlevel)
+        self.df_avg_eng_triads_interaction = self.__drop_cols_not_in(self.df_avg_eng_triads_interaction, self.groups_floorlevel)
     
     def __drop_cols_not_in(self, df: pd.DataFrame, cols: list[str]) -> pd.DataFrame:
         cols.append(df.columns[df.columns.str.contains('seconds')][0])

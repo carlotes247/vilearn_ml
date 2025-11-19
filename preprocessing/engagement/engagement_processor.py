@@ -168,14 +168,18 @@ class EngagementProcessor:
         return df_avg, df_interaction
 
     def process_discretise_task_engagement(self, process_individual_TE: bool = True, save_to_disk: bool = False,
-                                           testing_10_bins = False):
+                                           testing_10_bins = False, two_bins_for_two_anno = False):
         # discretise first(Helen) and second(Laura) files
         bins_list = [0, .33, .66, 1] #3 windows of equal sizes, from 0 to 1
         bins_list_10 = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1] #10 windows of equal sizes, from 0 to 1 to check the data distribution
 
+        bins_list_ann_2 = [0, .25, .5, 1] #3 windows for Laura's annotations as she didn't use too much the vals from .7 onwards
+
         labels = ['low', 'mid', 'high']
         labels_10 = ['0-.1', '.1-.2', '.2-.3', '.3-.4', '.4-.5', '.5-.6',
                      '.6-.7', '.7-.8', '.8-.9', '.9-1']
+
+        # labels_ann_2 = ['low_.25', 'mid_.5', 'high_1']
 
         if process_individual_TE:
 
@@ -192,6 +196,11 @@ class EngagementProcessor:
             if testing_10_bins:
                 df_eng_1['task_eng'] = pd.cut(df_eng_1['task_eng'], bins=bins_list_10, labels=labels_10, include_lowest=True)
                 df_eng_2['task_eng'] = pd.cut(df_eng_2['task_eng'], bins=bins_list_10, labels=labels_10, include_lowest=True)
+            elif two_bins_for_two_anno:
+                df_eng_1['task_eng'] = pd.cut(df_eng_1['task_eng'], bins=bins_list, labels=labels,
+                                              include_lowest=True)
+                df_eng_2['task_eng'] = pd.cut(df_eng_2['task_eng'], bins=bins_list_ann_2, labels=labels,
+                                              include_lowest=True)
             else:
                 df_eng_1['task_eng'] = pd.cut(df_eng_1['task_eng'], bins=bins_list, labels=labels, include_lowest=True)
                 df_eng_2['task_eng'] = pd.cut(df_eng_2['task_eng'], bins=bins_list, labels=labels, include_lowest=True)
