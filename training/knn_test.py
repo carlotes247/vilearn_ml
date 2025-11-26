@@ -45,7 +45,6 @@ if __name__ == '__main__':
     # Defining knn models
     # knn with scaling
     knn_scaler = Pipeline(
-    steps=[("scaler", StandardScaler()), ("knn", neighbors.KNeighborsClassifier(n_neighbors=11))]
     )
     #knn without scaling
     knn_simple = neighbors.KNeighborsClassifier(n_neighbors=11)
