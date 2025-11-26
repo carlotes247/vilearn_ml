@@ -194,13 +194,10 @@ if __name__ == '__main__':
     print("Best CV KNN_SCALER score:", knn_cv_scaler.best_score_)
 
 
-    # 8. Evaluate on training set (just for demo)
-    # TODO: fix the evaluation to make sure I get the same results as the grid search cv
-    y_pred = knn_cv_simple.predict(X)
-    print(f"Training accuracy KNN_SIMPLE: {knn_cv_simple.score(X, y)}, or {metrics.accuracy_score(y,y_pred)}")
-    y_pred = knn_cv_scaler.predict(X)
-    print(f"Training accuracy KNN_SCALER: {knn_cv_scaler.score(X, y)}, or {metrics.accuracy_score(y,y_pred)}")
-
+    # 8. Repeat evaluation
+    # override models with best ones found
+    knn_simple = knn_cv_simple.best_estimator_
+    knn_scaler = knn_cv_scaler.best_estimator_
 
     # print(f"Best KNN_SCALER neighbor paramenter found: {knn_cv_scaler.best_params_}")
     # Setting best parameter found
@@ -209,13 +206,14 @@ if __name__ == '__main__':
 
     print("Cross val score knn_SIMPLE")
     accuracies = model_selection.cross_val_score(knn_simple, X, y, cv=group_kfold, groups=groups, verbose=1)
-    print(accuracies)
+    #print(accuracies)
     print(f"Avg acc: {np.average(accuracies)}")
     print("Cross val score knn_SCALER")
     accuracies = model_selection.cross_val_score(knn_scaler, X, y, cv=group_kfold, groups=groups, verbose=1)
-    print(accuracies)
+    #print(accuracies)
     print(f"Avg acc: {np.average(accuracies)}")
-    
+    print("done")
+
     # for weights in ("uniform", "distance"):
     #     knn_scaler.set_params(knn__weights=weights).fit(X_train, y_train)
     #     knn_simple.__weights = weights
