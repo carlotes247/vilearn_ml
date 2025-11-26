@@ -17,6 +17,7 @@ if __name__ == '__main__':
     use_file_TE: bool = True
     separate_groups: bool = False
     print_folds: bool = False
+    debug_all_folds: bool = False
     # bining vars
     bins = [-0.1, 0.3, 0.7, 1]
     labels = [0, 1, 2]
@@ -25,13 +26,13 @@ if __name__ == '__main__':
     df_X: pd.DataFrame = pd.DataFrame()
     df_y: pd.DataFrame = pd.DataFrame()
     X: pd.DataFrame = pd.DataFrame()
-    y: pd.DataFrame = pd.DataFrame()
+    y: pd.Series = pd.Series()
     X_train: pd.DataFrame = pd.DataFrame()
-    y_train: pd.DataFrame = pd.DataFrame()
+    y_train: pd.Series = pd.Series()
     X_test: pd.DataFrame = pd.DataFrame()
-    y_test: pd.DataFrame = pd.DataFrame()
+    y_test: pd.Series = pd.Series()
     # k fold vars
-    group_names: list[str] = []
+    group_names: np.ndarray
     groups: pd.Series = pd.Series()
     group_kfold: model_selection.GroupKFold = model_selection.GroupKFold()
     # paths
@@ -45,9 +46,10 @@ if __name__ == '__main__':
     # Defining knn models
     # knn with scaling
     knn_scaler = Pipeline(
+    steps=[("scaler", StandardScaler()), ("knn", neighbors.KNeighborsClassifier())]
     )
     #knn without scaling
-    knn_simple = neighbors.KNeighborsClassifier(n_neighbors=11)
+    knn_simple = neighbors.KNeighborsClassifier()
     
     # load vilearn windowed data
     if use_file_TE:
@@ -88,7 +90,6 @@ if __name__ == '__main__':
     else:
         # since we want whole groups and not individual windows, we use a proxy var to calculate the split
         group_names = df_X['group_name'].unique()
-        # TODO: crossvalidation loop where we leave one group out and train on the others
         # TODO: probably suffle groups eaech iteration?
         X_train_names, X_test_names = model_selection.train_test_split(group_names)
         df_train = df_data.loc[df_data['group_name'].isin(X_train_names)]
@@ -104,53 +105,107 @@ if __name__ == '__main__':
         groups = df_data['group_name']
         group_kfold = model_selection.GroupKFold(n_splits=len(group_names))
         n_splits = group_kfold.get_n_splits(X, y, groups)
-        acc_list_simple_uniform = []
-        acc_list_scaler_uniform = []
-        acc_list_simple_distance = []
-        acc_list_scaler_distance = []
         if print_folds:
-            print(f"Num folds: {n_splits}")
-            print(group_kfold)
-        # loop through each fold
-        for i, (train_index, test_index) in enumerate(group_kfold.split(X, y, groups)):                                    
-            # debug info
-            if print_folds:
-                print(f"Fold {i}:")            
-                print(f"  TRAIN: groups={groups[train_index].unique()}, count={len(groups[test_index].unique())}")
-                print("")
-                print(f"  TEST: groups={groups[test_index].unique()}, count={len(groups[test_index].unique())}")
-                if len(groups[test_index].unique()) > 1:
-                    print("THIS FOLD HAS MORE THAN ONE GROUP!!!")
-                print("============================")    
-            # manual training KNN
-            for weights in ("uniform", "distance"):
-                knn_scaler.set_params(knn__weights=weights).fit(X.iloc[train_index], y.iloc[train_index])
-                knn_simple.__weights = weights
-                knn_simple.fit(X.iloc[train_index], y.iloc[train_index])
-                # evaluate
-                y_pred_simple = knn_simple.predict(X.iloc[test_index])
-                y_pred_scaler = knn_scaler.predict(X.iloc[test_index])
-                acc_simple = metrics.accuracy_score(y.iloc[test_index], y_pred_simple)   
-                acc_scaler = metrics.accuracy_score(y.iloc[test_index], y_pred_scaler)
-                if weights == "uniform":
-                    acc_list_simple_uniform.append(acc_simple)
-                    acc_list_scaler_uniform.append(acc_scaler) 
-                else:
-                    acc_list_simple_distance.append(acc_simple)
-                    acc_list_scaler_distance.append(acc_scaler) 
-                print("========SIMPLE========")
-                print(f"KNN accuracy {weights} simple: {acc_simple}")
-                print(metrics.classification_report(y.iloc[test_index], y_pred_simple, zero_division=np.nan))
-                print("========SCALER=========")
-                print(f"KNN accuracy {weights} scaler: {acc_scaler}")
-                print(metrics.classification_report(y.iloc[test_index], y_pred_scaler, zero_division=np.nan))
-                print("=======================")
+                print(f"Num folds: {n_splits}")
+                print(group_kfold)
+        # debug code to understand if all folds are formed correctly
+        if debug_all_folds:
+            acc_list_simple_uniform = []
+            acc_list_scaler_uniform = []
+            acc_list_simple_distance = []
+            acc_list_scaler_distance = []
+            # loop through each fold
+            for i, (train_index, test_index) in enumerate(group_kfold.split(X, y, groups)):                                    
+                # debug info
+                if print_folds:
+                    print(f"Fold {i}:")            
+                    print(f"  TRAIN: groups={groups[train_index].unique()}, count={len(groups[test_index].unique())}")
+                    print("")
+                    print(f"  TEST: groups={groups[test_index].unique()}, count={len(groups[test_index].unique())}")
+                    if len(groups[test_index].unique()) > 1:
+                        print("THIS FOLD HAS MORE THAN ONE GROUP!!!")
+                    print("============================")    
+                # manual training KNN
+                for weights in ("uniform", "distance"):
+                    knn_scaler.set_params(knn__weights=weights).fit(X.iloc[train_index], y.iloc[train_index])
+                    knn_simple.__weights = weights
+                    knn_simple.fit(X.iloc[train_index], y.iloc[train_index])
+                    # evaluate
+                    y_pred_simple = knn_simple.predict(X.iloc[test_index])
+                    y_pred_scaler = knn_scaler.predict(X.iloc[test_index])
+                    acc_simple = metrics.accuracy_score(y.iloc[test_index], y_pred_simple)   
+                    acc_scaler = metrics.accuracy_score(y.iloc[test_index], y_pred_scaler)
+                    if weights == "uniform":
+                        acc_list_simple_uniform.append(acc_simple)
+                        acc_list_scaler_uniform.append(acc_scaler) 
+                    else:
+                        acc_list_simple_distance.append(acc_simple)
+                        acc_list_scaler_distance.append(acc_scaler) 
+                    print("========SIMPLE========")
+                    print(f"KNN accuracy {weights} simple: {acc_simple}")
+                    print(metrics.classification_report(y.iloc[test_index], y_pred_simple, zero_division=0))
+                    print("========SCALER=========")
+                    print(f"KNN accuracy {weights} scaler: {acc_scaler}")
+                    print(metrics.classification_report(y.iloc[test_index], y_pred_scaler, zero_division=0))
+                    print("=======================")
 
-            # calculate avg accuracies over all folds
-            print(f"Avg accuracy KNN simple uniform: {np.average(acc_list_simple_uniform)}")
-            print(f"Avg accuracy KNN scaler uniform: {np.average(acc_list_scaler_uniform)}")
-            print(f"Avg accuracy KNN simple distance: {np.average(acc_list_simple_distance)}")
-            print(f"Avg accuracy KNN scaler distance: {np.average(acc_list_scaler_distance)}")
+                # calculate avg accuracies over all folds
+                print(f"Avg accuracy KNN simple uniform: {np.average(acc_list_simple_uniform)}")
+                print(f"Avg accuracy KNN scaler uniform: {np.average(acc_list_scaler_uniform)}")
+                print(f"Avg accuracy KNN simple distance: {np.average(acc_list_simple_distance)}")
+                print(f"Avg accuracy KNN scaler distance: {np.average(acc_list_scaler_distance)}")
+
+
+    # Hyper parameter tuning
+    # kf=model_selection.KFold(n_splits=5,shuffle=True,random_state=42)
+    neighbours_candidates= np.arange(2, 100, 1)
+    # Define parameter grid
+    param_grid = {
+        'n_neighbors': neighbours_candidates,
+        'weights': ['uniform', 'distance']
+    }
+
+    param_grid_scaler = {
+        'knn__n_neighbors': neighbours_candidates,
+        'knn__weights': ['uniform', 'distance']
+    }
+
+
+    # Setup GridSearchCV with GroupKFold
+    knn_cv_simple = model_selection.GridSearchCV(
+        estimator=knn_simple,
+        param_grid=param_grid,
+        cv=group_kfold, 
+        verbose=1)
+    knn_cv_scaler = model_selection.GridSearchCV(
+        estimator=knn_scaler,
+        param_grid=param_grid_scaler,
+        cv=group_kfold, 
+        verbose=1
+    )
+    print("Searching best parameter for model")
+    knn_cv_simple.fit(X, y, groups=groups)
+    knn_cv_scaler.fit(X,y, groups=groups)
+    # knn_cv_scaler.fit(X, y, groups=groups)
+    # 7. Results
+    print(f"Best KNN_SIMPLE neighbor paramenter found: {knn_cv_simple.best_params_}")
+    print("Best CV KNN_SIMPLE score:", knn_cv_simple.best_score_)
+    print(f"Best KNN_SCALER neighbor paramenter found: {knn_cv_scaler.best_params_}")
+    print("Best CV KNN_SCALER score:", knn_cv_scaler.best_score_)
+
+
+    # 8. Evaluate on training set (just for demo)
+    # TODO: fix the evaluation to make sure I get the same results as the grid search cv
+    y_pred = knn_cv_simple.predict(X)
+    print(f"Training accuracy KNN_SIMPLE: {knn_cv_simple.score(X, y)}, or {metrics.accuracy_score(y,y_pred)}")
+    y_pred = knn_cv_scaler.predict(X)
+    print(f"Training accuracy KNN_SCALER: {knn_cv_scaler.score(X, y)}, or {metrics.accuracy_score(y,y_pred)}")
+
+
+    # print(f"Best KNN_SCALER neighbor paramenter found: {knn_cv_scaler.best_params_}")
+    # Setting best parameter found
+    # knn_simple.set_params(n_neighbors=knn_cv_simple.best_params_)
+    # knn_scaler.set_params(n_neighbors=knn_cv_scaler.best_params_)
 
     print("Cross val score knn_SIMPLE")
     accuracies = model_selection.cross_val_score(knn_simple, X, y, cv=group_kfold, groups=groups, verbose=1)
@@ -161,21 +216,21 @@ if __name__ == '__main__':
     print(accuracies)
     print(f"Avg acc: {np.average(accuracies)}")
     
-    for weights in ("uniform", "distance"):
-        knn_scaler.set_params(knn__weights=weights).fit(X_train, y_train)
-        knn_simple.__weights = weights
-        knn_simple.fit(X_train,y_train)
-        # evaluate
-        y_pred_simple = knn_simple.predict(X_test)
-        y_pred_scaler = knn_scaler.predict(X_test)
-        acc_simple = metrics.accuracy_score(y_test, y_pred_simple)   
-        acc_scaler = metrics.accuracy_score(y_test, y_pred_scaler)   
-        print("========SIMPLE========")
-        print(f"KNN accuracy {weights} simple: {acc_simple}")
-        print(metrics.classification_report(y_test, y_pred_simple, zero_division=np.nan))
-        print("========SCALER=========")
-        print(f"KNN accuracy {weights} scaler: {acc_scaler}")
-        print(metrics.classification_report(y_test, y_pred_scaler, zero_division=np.nan))
-        print("=======================")
+    # for weights in ("uniform", "distance"):
+    #     knn_scaler.set_params(knn__weights=weights).fit(X_train, y_train)
+    #     knn_simple.__weights = weights
+    #     knn_simple.fit(X_train,y_train)
+    #     # evaluate
+    #     y_pred_simple = knn_simple.predict(X_test)
+    #     y_pred_scaler = knn_scaler.predict(X_test)
+    #     acc_simple = metrics.accuracy_score(y_test, y_pred_simple)   
+    #     acc_scaler = metrics.accuracy_score(y_test, y_pred_scaler)   
+    #     print("========SIMPLE========")
+    #     print(f"KNN accuracy {weights} simple: {acc_simple}")
+    #     print(metrics.classification_report(y_test, y_pred_simple, zero_division=0))
+    #     print("========SCALER=========")
+    #     print(f"KNN accuracy {weights} scaler: {acc_scaler}")
+    #     print(metrics.classification_report(y_test, y_pred_scaler, zero_division=0))
+    #     print("=======================")
 
 
