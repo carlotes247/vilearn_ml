@@ -19,9 +19,14 @@ if __name__ == '__main__':
     print_folds: bool = False
     debug_all_folds: bool = False
     # bining vars
-    bins = [-0.1, 0.3, 0.7, 1]
-    labels = [0, 1, 2]
-    labels_text = ['low', 'middle', 'high']
+    # three classes
+    # bins = [-0.1, 0.3, 0.7, 1]
+    # labels = [0, 1, 2]
+    # labels_text = ['low', 'middle', 'high']
+    # two classes
+    bins = [-0.1, 0.5, 1]
+    labels = [0, 1]
+    labels_text = ['low', 'high']
     # dataframes
     df_X: pd.DataFrame = pd.DataFrame()
     df_y: pd.DataFrame = pd.DataFrame()
