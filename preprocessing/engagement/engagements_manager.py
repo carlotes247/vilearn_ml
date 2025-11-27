@@ -128,7 +128,7 @@ class EngagementsManager:
         self.df_percent_TE_discrete = df_interaction_data
         if save_to_disk:
             # df_interaction_data.to_csv("../../data/annotations/TE_discrete_percentages.csv")
-            df_interaction_data.to_csv("../../data/annotations/TE_discrete_percentages_.25.5_forAnno2.csv")
+            df_interaction_data.to_csv("../../data/annotations/TE_discrete_percentages_.2.4_forAnno2.csv")
         return df_interaction_data
 
     def calculate_interrater_reliability(self, save_to_disk=False):
@@ -206,5 +206,5 @@ class EngagementsManager:
 if __name__ == "__main__":    
     mngr_aux: EngagementsManager = EngagementsManager(save_to_disk=False, load_from_disk=False, floor_level=True, discretised_data = True)
     mngr_aux.calculate_discrete_TE_stats(save_to_disk=True)
-    mngr_aux.calculate_interrater_reliability(save_to_disk=True)
+    mngr_aux.calculate_interrater_reliability(save_to_disk=False)
     print("done")
