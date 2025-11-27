@@ -185,8 +185,9 @@ class EngagementProcessor:
         bins_list = [0, .33, .66, 1] #3 windows of equal sizes, from 0 to 1
         bins_list_10 = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1] #10 windows of equal sizes, from 0 to 1 to check the data distribution
 
-        bins_list_ann_2 = [0, .25, .5, 1] #3 windows for Laura's annotations as she didn't use too much the vals from .7 onwards
-        # bins_list_ann_2 = [0, .2, .45, 1] #3 windows for Laura's annotations as she didn't use too much the vals from .7 onwards
+        # by using the 10 windows for Laura's annotation, we can see that there aren't a lot of values higher than .7-.8 for some group. so here we try with different top values and then split the window in 3 equal sizes.
+        bins_list_ann_2 = [0, .25, .5, 1] #[using .75 as top val] 3 windows for Laura's annotations as she didn't use too much the vals from .7 onwards
+        #bins_list_ann_2 = [0, .2, .4, 1] #[using .7 as top val] 3 windows for Laura's annotations as she didn't use too much the vals from .7 onwards
 
         labels = ['low', 'mid', 'high']
         labels_10 = ['0-.1', '.1-.2', '.2-.3', '.3-.4', '.4-.5', '.5-.6',

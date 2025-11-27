@@ -156,8 +156,7 @@ class EngagementsManager:
 
                 current_df_cont['anno2'] = pd.to_numeric(current_df_cont['anno2'])
                 current_df_cont['anno1'] = pd.to_numeric(current_df_cont['anno1'])
-                current_df_cont['anno1'] = current_df_cont['anno1'].clip(lower=0)
-                current_df_cont['anno2'] = current_df_cont['anno2'].clip(lower=0)
+                current_df_cont.drop(current_df_cont[(current_df_cont.anno1<0) | (current_df_cont.anno2<0)].index, inplace=True)
 
                 current_df_discrete.dropna(axis=0, how='any', inplace=True)
                 current_df_discrete.replace({'low': 1, 'mid': 2, 'high': 3}, inplace=True)
