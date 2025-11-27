@@ -65,7 +65,7 @@ class EngagementProcessor:
 
         self.df_eng_1: pd.DataFrame = pd.read_csv(self.path_file_1, sep=";", names=self.col_names)
         self.df_eng_2 : pd.DataFrame = pd.read_csv(self.path_file_2, sep=";", names=self.col_names)
-        self.__populate_individual_engagement_df_with_interaction_time()
+
     
     def __avg_eng_files_TS_secs(self, df_1: pd.DataFrame, df_2: pd.DataFrame) -> tuple[pd.DataFrame, bool]:
         print(f"{self.group_name}: File 1 has {len(df_1)} lines and File 2 has {len(df_2)} lines")
@@ -175,6 +175,7 @@ class EngagementProcessor:
             df_interaction.to_csv(f"data/annotations/recording_{self.group_name}/task_engagement{self.freq}Hz_avg_interaction.csv")
         self.df_avg_all = df_avg
         self.df_avg_interaction = df_interaction
+        self.__populate_individual_engagement_df_with_interaction_time()
         self.finished_processing = True
         return df_avg, df_interaction
 

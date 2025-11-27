@@ -151,16 +151,23 @@ class EngagementsManager:
                 # current_df_discrete.dropna(axis=0, how='any', inplace=True)
                 current_df_cont = current_df_cont[pd.to_numeric(current_df_cont['anno2'], errors='coerce').notnull()]
                 current_df_cont = current_df_cont[pd.to_numeric(current_df_cont['anno1'], errors='coerce').notnull()]
+
                 current_df_cont.dropna(axis=0, how='any', inplace=True)
 
+                current_df_cont['anno2'] = pd.to_numeric(current_df_cont['anno2'])
+                current_df_cont['anno1'] = pd.to_numeric(current_df_cont['anno1'])
+                current_df_cont['anno1'] = current_df_cont['anno1'].clip(lower=0)
+                current_df_cont['anno2'] = current_df_cont['anno2'].clip(lower=0)
+
+                current_df_discrete.dropna(axis=0, how='any', inplace=True)
                 current_df_discrete.replace({'low': 1, 'mid': 2, 'high': 3}, inplace=True)
                 # current_df_cont.replace({'low': 1, 'mid': 2, 'high': 3}, inplace=True)
-
                 #make all vals numeric
                 current_df_discrete['anno2'] = pd.to_numeric(current_df_discrete['anno2'])
                 current_df_discrete['anno1'] = pd.to_numeric(current_df_discrete['anno1'])
-                current_df_cont['anno2'] = pd.to_numeric(current_df_cont['anno2'])
-                current_df_cont['anno1'] = pd.to_numeric(current_df_cont['anno1'])
+                # current_df_cont['anno2'] = pd.to_numeric(current_df_cont['anno2'])
+                # current_df_cont['anno1'] = pd.to_numeric(current_df_cont['anno1'])
+
                 # current_df_recording_cont['anno2'] = pd.to_numeric(current_df_recording_cont['anno2'])
                 # current_df_recording_cont['anno1'] = pd.to_numeric(current_df_recording_cont['anno1'])
 
