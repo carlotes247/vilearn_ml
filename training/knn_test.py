@@ -20,13 +20,13 @@ if __name__ == '__main__':
     debug_all_folds: bool = False
     # bining vars
     # three classes
-    # bins = [-0.1, 0.3, 0.7, 1]
-    # labels = [0, 1, 2]
-    # labels_text = ['low', 'middle', 'high']
+    bins = [-0.1, 0.3, 0.7, 1]
+    labels = [0, 1, 2]
+    labels_text = ['low', 'middle', 'high']
     # two classes
-    bins = [-0.1, 0.5, 1]
-    labels = [0, 1]
-    labels_text = ['low', 'high']
+    # bins = [-0.1, 0.5, 1]
+    # labels = [0, 1]
+    # labels_text = ['low', 'high']
     # dataframes
     df_X: pd.DataFrame = pd.DataFrame()
     df_y: pd.DataFrame = pd.DataFrame()
@@ -163,7 +163,7 @@ if __name__ == '__main__':
 
     # Hyper parameter tuning
     # kf=model_selection.KFold(n_splits=5,shuffle=True,random_state=42)
-    neighbours_candidates= np.arange(2, 100, 1)
+    neighbours_candidates= np.arange(2, 60, 1)
     # Define parameter grid
     param_grid = {
         'n_neighbors': neighbours_candidates,
@@ -210,13 +210,53 @@ if __name__ == '__main__':
     # knn_scaler.set_params(n_neighbors=knn_cv_scaler.best_params_)
 
     print("Cross val score knn_SIMPLE")
-    accuracies = model_selection.cross_val_score(knn_simple, X, y, cv=group_kfold, groups=groups, verbose=1)
+    accuracies_knn_simple = model_selection.cross_val_score(knn_simple, X, y, cv=group_kfold, groups=groups, verbose=1)
+    avg_acc_knn_simple = np.average(accuracies_knn_simple)
     #print(accuracies)
-    print(f"Avg acc: {np.average(accuracies)}")
+    print(f"Avg acc: {avg_acc_knn_simple}")
     print("Cross val score knn_SCALER")
-    accuracies = model_selection.cross_val_score(knn_scaler, X, y, cv=group_kfold, groups=groups, verbose=1)
+    accuracies_knn_scaler = model_selection.cross_val_score(knn_scaler, X, y, cv=group_kfold, groups=groups, verbose=1)
+    avg_acc_knn_scaler =np.average(accuracies_knn_scaler)
     #print(accuracies)
-    print(f"Avg acc: {np.average(accuracies)}")
+    print(f"Avg acc: {avg_acc_knn_scaler}")
+
+    # Pick best model
+    best_knn = None
+    best_knn_name = ""
+    best_knn_score = 0
+    if avg_acc_knn_simple > avg_acc_knn_scaler:
+        best_knn = knn_cv_simple.best_estimator_
+        best_knn_name = "KNN_SIMPLE"
+        best_knn_score = avg_acc_knn_simple
+    else:
+        best_knn = knn_cv_scaler.best_estimator_
+        best_knn_name = "KNN_SCALER"
+        best_knn_score = avg_acc_knn_scaler
+
+    y_pred = model_selection.cross_val_predict(estimator=best_knn, X=X, y=y, cv=group_kfold, groups=groups)
+    conf_mat = metrics.confusion_matrix(y, y_pred)
+    conf_mat = conf_mat/len(y)*100
+
+    # Plot non-normalized confusion matrix
+    np.set_printoptions(precision=2)
+    titles_options = [
+        ("Confusion matrix, without normalization", None),
+        ("Normalized confusion matrix", "true"),
+    ]
+    for title, normalize in titles_options:
+        disp = metrics.ConfusionMatrixDisplay(
+            #best_knn,
+            #X_test,
+            #y_test,
+            confusion_matrix=conf_mat,
+            display_labels=labels_text,
+            #cmap=plt.cm.Blues,
+            #normalize=normalize,
+        )
+        #disp.ax_.set_title(title)
+        disp.plot()
+        plt.show()
+
     print("done")
 
     # for weights in ("uniform", "distance"):
