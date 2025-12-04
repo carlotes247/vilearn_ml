@@ -2,8 +2,17 @@ import matplotlib
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+# classifiers imports
 from sklearn import neighbors
+from sklearn import naive_bayes
+from sklearn import neural_network
+from sklearn import svm
+from sklearn import tree
 from sklearn import model_selection
+from sklearn import gaussian_process
+from sklearn import ensemble
+from sklearn import discriminant_analysis 
+# pipeline and scaler imports for classifiers
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.inspection import DecisionBoundaryDisplay
@@ -21,6 +30,47 @@ if __name__ == '__main__':
     # load data
     data_loader: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=False, print_folds=False, debug_all_folds=False)
     
+    # Defining all the classifiers to try
+    names = [
+        "Nearest Neighbors",
+        "Linear SVM",
+        "RBF SVM",
+        "Gaussian Process",
+        "Decision Tree",
+        "Random Forest",
+        "Neural Net",
+        "AdaBoost",
+        "Naive Bayes",
+        "QDA",
+    ]
+
+    classifiers = [
+        neighbors.KNeighborsClassifier(3),
+        svm.SVC(kernel="linear", C=0.025, random_state=42),
+        svm.SVC(gamma=2, C=1, random_state=42),
+        gaussian_process.GaussianProcessClassifier(1.0 * gaussian_process.kernels.RBF(1.0), random_state=42),
+        tree.DecisionTreeClassifier(max_depth=5, random_state=42),
+        ensemble.RandomForestClassifier(
+            max_depth=5, n_estimators=10, max_features=1, random_state=42
+        ),
+        neural_network.MLPClassifier(alpha=1, max_iter=1000, random_state=42),
+        ensemble.AdaBoostClassifier(random_state=42),
+        naive_bayes.GaussianNB(),
+        discriminant_analysis.QuadraticDiscriminantAnalysis(),
+    ]
+
+    # Cross validation for all models
+    for name, model in zip(names, classifiers):
+        print(f"Cross val score {name}")
+        accuracies = model_selection.cross_val_score(model,        
+                                               data_loader.X, data_loader.y,
+                                                             cv=data_loader.group_kfold, 
+                                                             groups=data_loader.groups, verbose=1)
+        avg_acc = np.average(accuracies)
+        print(f"Avg acc: {avg_acc}")
+        pass
+
+
     # Defining knn models
     # knn with scaling
     knn_scaler = Pipeline(
