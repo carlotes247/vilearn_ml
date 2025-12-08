@@ -116,12 +116,17 @@ class EngagementsManager:
             df_eng_dyads_interaction.to_csv("data/annotations/dyads_interaction_task_eng90Hz.csv")                    
             df_eng_triads_interaction.to_csv("data/annotations/triads_interaction_task_eng90Hz.csv")
 
-    def calculate_discrete_TE_stats(self, save_to_disk=False):
+    def calculate_discrete_TE_stats(self, save_to_disk=False, use_2pass = False):
         df_interaction_data = pd.DataFrame()
         for engagement_group_data in self.engagements_list:
             if engagement_group_data.group_name in self.groups_floorlevel:
-                percent_TE_anno1 = engagement_group_data.df_eng_discretised_anno1_interaction.task_eng.value_counts()/len(engagement_group_data.df_eng_discretised_anno1_interaction)
+                if use_2pass and engagement_group_data.TE_2pass_exists:
+                    percent_TE_anno1 = engagement_group_data.df_eng_discretised_anno1_2pass_interaction.task_eng.value_counts() / len(
+                        engagement_group_data.df_eng_discretised_anno1_2pass_interaction)
+                else:
+                    percent_TE_anno1 = engagement_group_data.df_eng_discretised_anno1_interaction.task_eng.value_counts()/len(engagement_group_data.df_eng_discretised_anno1_interaction)
                 percent_TE_anno2 = engagement_group_data.df_eng_discretised_anno2_interaction.task_eng.value_counts()/len(engagement_group_data.df_eng_discretised_anno2_interaction)
+
                 df_interaction_data[engagement_group_data.group_name+'_anno01'] = percent_TE_anno1
                 df_interaction_data[engagement_group_data.group_name+'_anno02'] = percent_TE_anno2
 
@@ -131,17 +136,26 @@ class EngagementsManager:
             df_interaction_data.to_csv("../../data/annotations/TE_discrete_percentages_.2.4_forAnno2.csv")
         return df_interaction_data
 
-    def calculate_interrater_reliability(self, save_to_disk=False):
+    def calculate_interrater_reliability(self, save_to_disk=False, use_2pass = False):
         df_interrater_reliability_data = pd.DataFrame(index=['continuous','discrete'])#, 'recording_continuous'])
         #go over all the groups and calculate the interrater reliability (like in nova):
         for engagement_group_data in self.engagements_list:
             if engagement_group_data.group_name in self.groups_floorlevel:
                 print (engagement_group_data.group_name)
-                current_df_discrete = pd.DataFrame({'anno1':engagement_group_data.df_eng_discretised_anno1_interaction.task_eng,
-                                           'anno2':engagement_group_data.df_eng_discretised_anno2_interaction.task_eng})
-                current_df_cont = pd.DataFrame(
-                    {'anno1': engagement_group_data.df_eng_1_interaction.task_eng,
-                     'anno2': engagement_group_data.df_eng_2_interaction.task_eng})
+                if use_2pass and engagement_group_data.TE_2pass_exists:
+                    current_df_discrete = pd.DataFrame(
+                        {'anno1': engagement_group_data.df_eng_discretised_anno1_2pass_interaction.task_eng,
+                         'anno2': engagement_group_data.df_eng_discretised_anno2_interaction.task_eng})
+                    current_df_cont = pd.DataFrame(
+                        {'anno1': engagement_group_data.df_eng_1_2pass_interaction.task_eng,
+                         'anno2': engagement_group_data.df_eng_2_interaction.task_eng})
+                else:
+                    current_df_discrete = pd.DataFrame(
+                        {'anno1':engagement_group_data.df_eng_discretised_anno1_interaction.task_eng,
+                         'anno2':engagement_group_data.df_eng_discretised_anno2_interaction.task_eng})
+                    current_df_cont = pd.DataFrame(
+                        {'anno1': engagement_group_data.df_eng_1_interaction.task_eng,
+                        'anno2': engagement_group_data.df_eng_2_interaction.task_eng})
                 # current_df_recording_cont = pd.DataFrame(
                 #     {'anno1': engagement_group_data.df_eng_1.task_eng,
                 #      'anno2': engagement_group_data.df_eng_2.task_eng})
@@ -205,6 +219,6 @@ class EngagementsManager:
         
 if __name__ == "__main__":    
     mngr_aux: EngagementsManager = EngagementsManager(save_to_disk=False, load_from_disk=False, floor_level=True, discretised_data = True)
-    mngr_aux.calculate_discrete_TE_stats(save_to_disk=True)
-    mngr_aux.calculate_interrater_reliability(save_to_disk=False)
+    mngr_aux.calculate_discrete_TE_stats(save_to_disk=True, use_2pass=True)
+    mngr_aux.calculate_interrater_reliability(save_to_disk=True, use_2pass=True)
     print("done")
