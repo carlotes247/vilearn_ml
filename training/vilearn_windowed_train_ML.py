@@ -13,7 +13,7 @@ from sklearn import gaussian_process
 from sklearn import ensemble
 from sklearn import discriminant_analysis 
 # pipeline and scaler imports for classifiers
-from sklearn.pipeline import Pipeline
+from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn import metrics
@@ -44,6 +44,28 @@ if __name__ == '__main__':
         "QDA",
     ]
 
+    param_grids_models = [
+        "Nearest Neighbors": {
+            'n_neighbors': neighbours_candidates,
+            'weights': ['uniform', 'distance']
+        },
+        "Linear SVM": {
+
+        },
+        "RBF SVM": {
+
+        },
+        "Gaussian Process": {
+            
+        },
+        "Decision Tree",
+        "Random Forest",
+        "Neural Net",
+        "AdaBoost",
+        "Naive Bayes",
+        "QDA",
+    ]
+
     classifiers = [
         neighbors.KNeighborsClassifier(3),
         svm.SVC(kernel="linear", C=0.025, random_state=42),
@@ -62,6 +84,24 @@ if __name__ == '__main__':
     # Cross validation for all models
     for name, model in zip(names, classifiers):
         print(f"Cross val score {name}")
+        # create alternative model with scaler to see what scores better
+        # the scaler can be useful to standardize features. It depends on how the features approximate the std normal distribution of the data (e.g. Gaussian with 0 mean and unit variance).
+        # more info on scalers: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
+        model_scaler = Pipeline(
+            steps=[("scaler", StandardScaler()), ("clf", model)]
+        )
+        # We ensure to do a nested CV
+        grid_search_cv_simple = model_selection.GridSearchCV(
+            estimator=model,
+            param_grid=param_grid,
+            cv=data_loader.group_kfold, 
+            verbose=1)
+        grid_search_cv_scaler = model_selection.GridSearchCV(
+            estimator=model_scaler,
+            param_grid=param_grid,
+            cv=data_loader.group_kfold, 
+            verbose=1)
+        # we
         accuracies = model_selection.cross_val_score(model,        
                                                data_loader.X, data_loader.y,
                                                              cv=data_loader.group_kfold, 
