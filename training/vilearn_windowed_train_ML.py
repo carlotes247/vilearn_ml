@@ -18,6 +18,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn import metrics
 import os
+import copy
 # Added this try catch because on some machines it cannot find folders from working directory 
 try:
     from data_reading.vilearn_windowed_data_loader_ML import VilearnWindowedDataLoaderML
@@ -60,7 +61,7 @@ if __name__ == '__main__':
             }
         },
         "Linear SVM": {
-            'estimator': svm.LinearSVC(),
+            'estimator': svm.LinearSVC(dual=False),
             'params': {
                 'penalty': ['l1', 'l2'],
                 'loss': ['hinge', 'squared_hinge'],
@@ -141,40 +142,46 @@ if __name__ == '__main__':
     ]
 
     # Cross validation for all models
-    for model_name, model_dict in param_grids_models.items():
-        print(f"Cross val score {model_name}")
+    for model_name, model_dict in param_grids_models.items():        
         model = model_dict['estimator']
-        params = model_dict['params']
-        print(f"Estimator: {model}")
-        print(f"Params: {params}")
-
-    for model_name, model in zip(names, classifiers):
+        param_grid = model_dict['params']
         print(f"Cross val score {model_name}")
+        # print(f"Estimator: {model}")
+        # print(f"Params: {param_grid}")
+
         # create alternative model with scaler to see what scores better
         # the scaler can be useful to standardize features. It depends on how the features approximate the std normal distribution of the data (e.g. Gaussian with 0 mean and unit variance).
         # more info on scalers: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
         model_scaler = Pipeline(
             steps=[("scaler", StandardScaler()), ("clf", model)]
         )
+
         # We ensure to do a nested CV
+        # inner cv, outer cv NEEDED for nested CV
+        inner_cv_simple = copy.deepcopy(data_loader.group_kfold)
+        outer_cv_simple = copy.deepcopy(data_loader.group_kfold)
+        inner_cv_scaler = copy.deepcopy(data_loader.group_kfold)
+        outer_cv_scaler = copy.deepcopy(data_loader.group_kfold)
         grid_search_cv_simple = model_selection.GridSearchCV(
             estimator=model,
             param_grid=param_grid,
-            cv=data_loader.group_kfold, 
+            cv=inner_cv_simple, 
             verbose=1)
-        grid_search_cv_scaler = model_selection.GridSearchCV(
-            estimator=model_scaler,
-            param_grid=param_grid,
-            cv=data_loader.group_kfold, 
-            verbose=1)
-        # we
-        accuracies = model_selection.cross_val_score(model,        
-                                               data_loader.X, data_loader.y,
-                                                             cv=data_loader.group_kfold, 
-                                                             groups=data_loader.groups, verbose=1)
-        avg_acc = np.average(accuracies)
-        print(f"Avg acc: {avg_acc}")
-        pass
+        # grid_search_cv_scaler = model_selection.GridSearchCV(
+        #     estimator=model_scaler,
+        #     param_grid=param_grid,
+        #     cv=inner_cv_scaler, 
+        #     verbose=1)
+        nested_score_simple = model_selection.cross_val_score(estimator=model,        
+                                                X=data_loader.X, y=data_loader.y,
+                                                cv=outer_cv_simple, 
+                                                groups=data_loader.groups, verbose=1)
+        # nested_score_scaler = model_selection.cross_val_score(estimator=model_scaler,        
+        #                                         X=data_loader.X, y=data_loader.y,
+        #                                         cv=outer_cv_scaler, 
+        #                                         groups=data_loader.groups, verbose=1)
+        print(f"Avg acc SIMPLE: {nested_score_simple.mean()}")
+        # print(f"Avg acc SCALER: {nested_score_scaler.mean()}")
 
 
     # Defining knn models
