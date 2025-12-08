@@ -35,36 +35,95 @@ if __name__ == '__main__':
         "Nearest Neighbors",
         "Linear SVM",
         "RBF SVM",
-        "Gaussian Process",
         "Decision Tree",
         "Random Forest",
         "Neural Net",
         "AdaBoost",
         "Naive Bayes",
-        "QDA",
+        "QDA"
     ]
 
-    param_grids_models = [
+    # TODO: Explore other models that I don't understand:
+    # Gaussian Process
+    # TODO: Improve the parameter tuning of:
+    # Decision Tree, Random Forest Tree, Adaboost (seems more or less ok?)
+    # TODO: Explore other parameter search options:
+    # Random search, bayesion optimization, Neural Net (Hidden Layer Sizes)
+    # See: https://www.geeksforgeeks.org/machine-learning/how-to-tune-a-decision-tree-in-hyperparameter-tuning/
+    # See: https://www.geeksforgeeks.org/machine-learning/random-forest-hyperparameter-tuning-in-python/
+    param_grids_models = {
         "Nearest Neighbors": {
-            'n_neighbors': neighbours_candidates,
-            'weights': ['uniform', 'distance']
+            'estimator': neighbors.KNeighborsClassifier(),
+            'params': {
+                'n_neighbors': np.arange(2, 60, 1),
+                'weights': ['uniform', 'distance']
+            }
         },
         "Linear SVM": {
-
+            'estimator': svm.LinearSVC(),
+            'params': {
+                'penalty': ['l1', 'l2'],
+                'loss': ['hinge', 'squared_hinge'],
+                'C': [0.1, 1, 5, 10, 100]
+            }
         },
-        "RBF SVM": {
-
+        "SVM": {
+            'estimator': svm.SVC(),
+            'params': {
+                'kernel': ['linear', 'rbf', 'poly'],
+                'C': [0.1, 1, 5, 10, 100],
+                'gamma': [0.1,0.01,0.001,1,10],
+                'degree':[0,1,2,3,4,5,6]
+            }
         },
-        "Gaussian Process": {
-            
+        "Decision Tree": {
+            'estimator': tree.DecisionTreeClassifier(),
+            'params': {
+                'max_depth': [10, 20, 30, None],
+                'min_samples_split': [2, 5, 10],
+                'min_samples_leaf': [1, 2, 4]
+            }
         },
-        "Decision Tree",
-        "Random Forest",
-        "Neural Net",
-        "AdaBoost",
-        "Naive Bayes",
-        "QDA",
-    ]
+        "Random Forest": {
+            'estimator': ensemble.RandomForestClassifier(),
+            'params': {
+                'n_estimators': [100, 200],
+                'max_depth': [None, 10, 20],
+                'min_samples_split': [2, 5],
+                'min_samples_leaf': [1, 2],
+                'bootstrap': [True, False]
+            }
+        },
+        "Neural Net": {
+            'estimator': neural_network.MLPClassifier(max_iter=1000),
+            'params': {
+                'hidden_layer_sizes': [(10,30,10),(20,)],
+                'activation': ['tanh', 'relu'],
+                'solver': ['sgd', 'adam'],
+                'alpha': [0.0001, 0.05, 1],
+                'learning_rate': ['constant','adaptive'], 
+            }
+        },
+        "AdaBoost": {
+            'estimator': ensemble.AdaBoostClassifier(),
+            'params': {
+                'n_estimators': [10, 50, 100, 500],
+                'learning_rate': [0.0001, 0.001, 0.01, 0.1, 1.0, 10]
+            }
+        },
+        "Naive Bayes": {
+            'estimator': naive_bayes.GaussianNB(),
+            'params': {
+                'var_smoothing': np.logspace(0,-9, num=100)
+            }
+        },
+        "QDA": {
+            'estimator': discriminant_analysis.QuadraticDiscriminantAnalysis(),
+            'params': {
+                'reg_param': [0.1, 0.2, 0.3, 0.4, 0.5]
+            }
+        }
+    }
 
     classifiers = [
         neighbors.KNeighborsClassifier(3),
@@ -75,15 +134,22 @@ if __name__ == '__main__':
         ensemble.RandomForestClassifier(
             max_depth=5, n_estimators=10, max_features=1, random_state=42
         ),
-        neural_network.MLPClassifier(alpha=1, max_iter=1000, random_state=42),
+        neural_network.MLPClassifier(max_iter=1000),
         ensemble.AdaBoostClassifier(random_state=42),
         naive_bayes.GaussianNB(),
         discriminant_analysis.QuadraticDiscriminantAnalysis(),
     ]
 
     # Cross validation for all models
-    for name, model in zip(names, classifiers):
-        print(f"Cross val score {name}")
+    for model_name, model_dict in param_grids_models.items():
+        print(f"Cross val score {model_name}")
+        model = model_dict['estimator']
+        params = model_dict['params']
+        print(f"Estimator: {model}")
+        print(f"Params: {params}")
+
+    for model_name, model in zip(names, classifiers):
+        print(f"Cross val score {model_name}")
         # create alternative model with scaler to see what scores better
         # the scaler can be useful to standardize features. It depends on how the features approximate the std normal distribution of the data (e.g. Gaussian with 0 mean and unit variance).
         # more info on scalers: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
