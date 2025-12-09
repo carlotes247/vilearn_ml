@@ -26,24 +26,24 @@ except ImportError:
     import sys
     sys.path.append(os.getcwd())
     from data_reading.vilearn_windowed_data_loader_ML import VilearnWindowedDataLoaderML
+# for plotting tables
+import matplotlib.pyplot as plt
+import pandas as pd
 
 if __name__ == '__main__':
-    # load data
-    data_loader: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=False, print_folds=False, debug_all_folds=False)
-    
-    # Defining all the classifiers to try
-    names = [
-        "Nearest Neighbors",
-        "Linear SVM",
-        "RBF SVM",
-        "Decision Tree",
-        "Random Forest",
-        "Neural Net",
-        "AdaBoost",
-        "Naive Bayes",
-        "QDA"
-    ]
+    # config flags
+    nested_cv: bool = True
+    nested_cv_manual: bool = True
+    binary_clf: bool = False
+    # df to plot results
+    results_df: pd.DataFrame = pd.DataFrame()
+    results_list: list[dict] = []
 
+    # load data
+    data_loader: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, print_folds=False, debug_all_folds=False)
+    
+
+    # Defining all the classifiers to try
     # TODO: Explore other models that I don't understand:
     # Gaussian Process
     # TODO: Improve the parameter tuning of:
@@ -56,12 +56,12 @@ if __name__ == '__main__':
         "Nearest Neighbors": {
             'estimator': neighbors.KNeighborsClassifier(),
             'params': {
-                'n_neighbors': np.arange(2, 60, 1),
+                'n_neighbors': np.arange(2, 100, 1),
                 'weights': ['uniform', 'distance']
             }
         },
         "Linear SVM": {
-            'estimator': svm.LinearSVC(dual=False),
+            'estimator': svm.LinearSVC(dual=binary_clf),
             'params': {
                 'penalty': ['l1', 'l2'],
                 'loss': ['hinge', 'squared_hinge'],
@@ -126,21 +126,6 @@ if __name__ == '__main__':
         }
     }
 
-    classifiers = [
-        neighbors.KNeighborsClassifier(3),
-        svm.SVC(kernel="linear", C=0.025, random_state=42),
-        svm.SVC(gamma=2, C=1, random_state=42),
-        gaussian_process.GaussianProcessClassifier(1.0 * gaussian_process.kernels.RBF(1.0), random_state=42),
-        tree.DecisionTreeClassifier(max_depth=5, random_state=42),
-        ensemble.RandomForestClassifier(
-            max_depth=5, n_estimators=10, max_features=1, random_state=42
-        ),
-        neural_network.MLPClassifier(max_iter=1000),
-        ensemble.AdaBoostClassifier(random_state=42),
-        naive_bayes.GaussianNB(),
-        discriminant_analysis.QuadraticDiscriminantAnalysis(),
-    ]
-
     # Cross validation for all models
     for model_name, model_dict in param_grids_models.items():        
         model = model_dict['estimator']
@@ -155,34 +140,172 @@ if __name__ == '__main__':
         model_scaler = Pipeline(
             steps=[("scaler", StandardScaler()), ("clf", model)]
         )
+        param_grid_scaler = {f'clf__{k}': v for k, v in param_grid.items()}
+
 
         # We ensure to do a nested CV
         # inner cv, outer cv NEEDED for nested CV
-        inner_cv_simple = copy.deepcopy(data_loader.group_kfold)
+        inner_cv_simple: model_selection.GroupKFold = copy.deepcopy(data_loader.group_kfold)
+        inner_cv_simple.n_splits = inner_cv_simple.get_n_splits() - 1
         outer_cv_simple = copy.deepcopy(data_loader.group_kfold)
-        inner_cv_scaler = copy.deepcopy(data_loader.group_kfold)
-        outer_cv_scaler = copy.deepcopy(data_loader.group_kfold)
-        grid_search_cv_simple = model_selection.GridSearchCV(
-            estimator=model,
-            param_grid=param_grid,
-            cv=inner_cv_simple, 
-            verbose=1)
-        # grid_search_cv_scaler = model_selection.GridSearchCV(
-        #     estimator=model_scaler,
-        #     param_grid=param_grid,
-        #     cv=inner_cv_scaler, 
-        #     verbose=1)
-        nested_score_simple = model_selection.cross_val_score(estimator=model,        
-                                                X=data_loader.X, y=data_loader.y,
-                                                cv=outer_cv_simple, 
-                                                groups=data_loader.groups, verbose=1)
-        # nested_score_scaler = model_selection.cross_val_score(estimator=model_scaler,        
-        #                                         X=data_loader.X, y=data_loader.y,
-        #                                         cv=outer_cv_scaler, 
-        #                                         groups=data_loader.groups, verbose=1)
-        print(f"Avg acc SIMPLE: {nested_score_simple.mean()}")
-        # print(f"Avg acc SCALER: {nested_score_scaler.mean()}")
+        # this grid search is declared here for the 'automatic' nested cv
+        grid_search_cv_simple = model_selection.GridSearchCV(estimator=model,
+                                                                            param_grid=param_grid,
+                                                                            cv=inner_cv_simple, 
+                                                                            verbose=1)    
+        if nested_cv:
+            # Nested CV Manual
+            if nested_cv_manual:
+                y_true_all = []
+                y_pred_all = []
+                outer_scores = []
+                i = 1
+                # Outer CV loop
+                for train_idx, test_idx in outer_cv_simple.split(data_loader.X, data_loader.y, groups=data_loader.groups):
+                    X_train, X_test = data_loader.X.loc[train_idx], data_loader.X.loc[test_idx]
+                    y_train, y_test = data_loader.y.loc[train_idx], data_loader.y.loc[test_idx]
+                    group_out_name: str = data_loader.df_data.loc[test_idx]['group_name'].iloc[0]
+                    print(f"Outer Simple CV Fold {i}. Leave out fold is: {group_out_name}")                    
+                    # Inner CV grid search
+                    grid_search_cv_inner = model_selection.GridSearchCV(estimator=model,
+                                                                    param_grid=param_grid,
+                                                                    cv=inner_cv_simple, 
+                                                                    verbose=1)
+                    # Given the n-1 training data, run cv search function on that and not whole data (as one would usually do in a regular cv search. but this is nested)
+                    grid_search_cv_inner.fit(X_train, y_train, groups=data_loader.groups[train_idx])
+                    # Select best model and evaluate on unseen data, our testing fold not included in the CV search
+                    best_model = grid_search_cv_inner.best_estimator_
+                    y_pred = best_model.predict(X_test)
+                    # Collect predictions for confusion matrix
+                    y_true_all.extend(y_test)
+                    y_pred_all.extend(y_pred)
+                    # Collect score for this outer fold
+                    fold_acc = metrics.accuracy_score(y_test, y_pred)
+                    outer_scores.append(fold_acc)
+                print("Outer Simple CV finished!")
+                # Nested CV score (mean of outer fold scores)
+                nested_cv_score = np.mean(outer_scores)
+                print(f"Manual Nested CV Accuracy Simple: {nested_cv_score:.4f}")
+                # Print confusion matrix and score once all loops are done                
+                conf_matrix = metrics.confusion_matrix(y_true_all, y_pred_all)
+                results_list.append({'Model': model_name, 
+                                                'Score':nested_cv_score, 
+                                                'CV': 'Nested', 
+                                                'Version': 'Simple_Manual',
+                                                'Conf_Matrix': conf_matrix})                
+                # print("Confusion Matrix:\n", conf_matrix)
+            # Nested CV Automatic
+            else:                
+                nested_score_simple = model_selection.cross_val_score(estimator=model,        
+                                                        X=data_loader.X, y=data_loader.y,
+                                                        cv=outer_cv_simple, 
+                                                        groups=data_loader.groups, verbose=1)
+                print(f"Avg nested acc SIMPLE: {nested_score_simple.mean()}")
+                results_list.append({'Model': model_name, 
+                                                'Score':nested_score_simple.mean(), 
+                                                'CV': 'Nested', 
+                                                'Version': 'Simple'})                    
+        else:
+            # DEBUGGING NON_NESTED PARAMETER SEARCH AND SCORING (THIS IS NOT WHAT WE SHOULD DO ACCORDING TO CRISTINA CONATI)
+            fit_worked: bool = False
+            try:
+                grid_search_cv_simple.fit(X=data_loader.X, y=data_loader.y, groups=data_loader.groups)
+                fit_worked = True
+            except Exception as err:
+                print(f"Unexpected {err=}, {type(err)=}")
+            if fit_worked:
+                print(f"Avg non_nested acc SIMPLE: {grid_search_cv_simple.best_score_}")
+                results_list.append({'Model': model_name, 
+                                               'Score':grid_search_cv_simple.best_score_, 
+                                               'CV': 'Non_Nested', 
+                                               'Version': 'Simple'})
 
+            y_pred = model_selection.cross_val_predict(estimator=best_knn, 
+                                               X=data_loader.X, y=data_loader.y, 
+                                               cv=data_loader.group_kfold, 
+                                               groups=data_loader.groups)                        
+
+        # SCALER version
+        inner_cv_scaler: model_selection.GroupKFold = copy.deepcopy(data_loader.group_kfold)
+        inner_cv_scaler.n_splits = inner_cv_scaler.get_n_splits() - 1
+        outer_cv_scaler: model_selection.GroupKFold = copy.deepcopy(data_loader.group_kfold)
+        # this grid search is declared here for the 'automatic' nested cv
+        grid_search_cv_scaler = model_selection.GridSearchCV(
+            estimator=model_scaler,
+            param_grid=param_grid_scaler,
+            cv=inner_cv_scaler, 
+            verbose=1)
+        if nested_cv:
+            # Nested CV Manual SCALER
+            if nested_cv_manual:
+                y_true_all = []
+                y_pred_all = []
+                outer_scores = []
+                i = 1
+                # Outer CV loop
+                for train_idx, test_idx in outer_cv_scaler.split(data_loader.X, data_loader.y, groups=data_loader.groups):
+                    X_train, X_test = data_loader.X.loc[train_idx], data_loader.X.loc[test_idx]
+                    y_train, y_test = data_loader.y.loc[train_idx], data_loader.y.loc[test_idx]                    
+                    group_out_name: str = data_loader.df_data.loc[test_idx]['group_name'].iloc[0]
+                    print(f"Outer Scaler CV Fold {i}. Leave out fold is: {group_out_name}")                    
+                    # Inner CV grid search
+                    grid_search_cv_inner = model_selection.GridSearchCV(estimator=model,
+                                                                    param_grid=param_grid,
+                                                                    cv=inner_cv_scaler, 
+                                                                    verbose=1)
+                    grid_search_cv_inner.fit(X_train, y_train, groups=data_loader.groups[train_idx])
+                    best_model = grid_search_cv_inner.best_estimator_
+                    y_pred = best_model.predict(X_test)
+                    # Collect predictions for confusion matrix
+                    y_true_all.extend(y_test)
+                    y_pred_all.extend(y_pred)
+                    # Collect score for this outer fold
+                    fold_acc = metrics.accuracy_score(y_test, y_pred)
+                    outer_scores.append(fold_acc)
+                print("Outer Simple CV finished!")
+                # Nested CV score (mean of outer fold scores)
+                nested_cv_score = np.mean(outer_scores)
+                print(f"Manual Nested CV Accuracy Scaler: {nested_cv_score:.4f}")
+                conf_matrix = metrics.confusion_matrix(y_true_all, y_pred_all)
+                results_list.append({'Model': model_name, 
+                                                'Score':nested_cv_score, 
+                                                'CV': 'Nested', 
+                                                'Version': 'Scaler_Manual',
+                                                'Conf_Matrix': conf_matrix})
+                # Print confusion matrix and score once all loops are done                                
+                # print("Confusion Matrix:\n", conf_matrix)
+            # Nested CV Automatic
+            else:
+                nested_score_scaler = model_selection.cross_val_score(estimator=model_scaler,        
+                                                        X=data_loader.X, y=data_loader.y,
+                                                        cv=outer_cv_scaler, 
+                                                        groups=data_loader.groups, verbose=1)
+                print(f"Avg nested acc SCALER: {nested_score_scaler.mean()}")
+                results_list.append({'Model': model_name, 
+                                                'Score':nested_score_scaler.mean(), 
+                                                'CV': 'Nested', 
+                                                'Version': 'Scaler'})
+
+        else:
+            # DEBUGGING NON_NESTED PARAMETER SEARCH AND SCORING (THIS IS NOT WHAT WE SHOULD DO ACCORDING TO CRISTINA CONATI)
+            fit_worked: bool = False
+            try:
+                grid_search_cv_scaler.fit(X=data_loader.X, y=data_loader.y, groups=data_loader.groups)
+                fit_worked = True
+            except Exception as err:
+                print(f"Unexpected {err=}, {type(err)=}")
+            if fit_worked:
+                print(f"Avg non_nested acc SCALER: {grid_search_cv_scaler.best_score_}")
+                results_list.append({'Model': model_name, 
+                                               'Score':grid_search_cv_scaler.best_score_, 
+                                               'CV': 'Non_Nested', 
+                                               'Version': 'Scaler'})
+    
+    # output results as html
+    results_df = pd.DataFrame(results_list)
+    print(results_df.to_string())
+    results_df.to_html('results_ML_train_manual_temp.html')
+    results_df.to_csv('results_ML_train_manual.csv')
 
     # Defining knn models
     # knn with scaling
