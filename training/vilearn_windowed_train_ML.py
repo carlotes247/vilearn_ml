@@ -56,14 +56,21 @@ if __name__ == '__main__':
         "Nearest Neighbors": {
             'estimator': neighbors.KNeighborsClassifier(),
             'params': {
-                'n_neighbors': np.arange(2, 100, 1),
+                'n_neighbors': np.arange(2, 70, 1),
                 'weights': ['uniform', 'distance']
             }
         },
-        "Linear SVM": {
-            'estimator': svm.LinearSVC(dual=binary_clf),
+        "Linear SVM No Hinge": {
+            'estimator': svm.LinearSVC(dual=False),
             'params': {
                 'penalty': ['l1', 'l2'],
+                'loss': ['squared_hinge'],
+                'C': [0.1, 1, 5, 10, 100]
+            }
+        },
+        "Linear SVM Hinge Only": {
+            'estimator': svm.LinearSVC(dual=False),
+            'params': {
                 'loss': ['hinge', 'squared_hinge'],
                 'C': [0.1, 1, 5, 10, 100]
             }
@@ -72,9 +79,9 @@ if __name__ == '__main__':
             'estimator': svm.SVC(),
             'params': {
                 'kernel': ['linear', 'rbf', 'poly'],
-                'C': [0.1, 1, 5, 10, 100],
-                'gamma': [0.1,0.01,0.001,1,10],
-                'degree':[0,1,2,3,4,5,6]
+                'C': [0.1, 1],
+                'gamma': [0.1,0.01,0.001],
+                'degree':[0,1,2,4]
             }
         },
         "Decision Tree": {
