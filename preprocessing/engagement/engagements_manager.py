@@ -59,8 +59,9 @@ class EngagementsManager:
                 eng_processor = EngagementProcessor(path_groups_info=self.path_groups_info, path_folder=folder_path, group_name=folder.replace("recording_", ""))
                 eng_processor.process_task_engagement(save_to_disk=save_to_disk)
                 if discretised_data:
-                    eng_processor.process_discretise_task_engagement(two_bins_for_two_anno=True)
-                self.engagements_list.append(eng_processor)       
+                    # eng_processor.process_discretise_task_engagement(two_bins_for_two_anno=True)
+                    eng_processor.process_discretise_task_engagement(two_bins_for_two_anno=False)
+                self.engagements_list.append(eng_processor)
 
     def __slice_process_avg_df(self, df_combined: pd.DataFrame, keyword_cols: str):
         cols = df_combined.columns[df_combined.columns.str.contains(keyword_cols)]
@@ -73,6 +74,35 @@ class EngagementsManager:
         df_eng['std_avg_task_eng'] = std_eng
         df_eng['seconds'] = df_combined['seconds']     
         return df_eng
+
+    def concordance_correlation_coefficient(self, anno1, anno2):
+        """Concordance correlation coefficient."""
+        # Raw data
+        dct = {
+            'y_true': anno1,
+            'y_pred': anno2
+        }
+        df = pd.DataFrame(dct)
+        # Remove NaNs
+        df = df.dropna()
+        # Pearson product-moment correlation coefficients
+        anno1 = df['y_true']
+        anno2 = df['y_pred']
+        cor = np.corrcoef(anno1, anno2)[0][1]
+        # Means
+        mean_anno1 = np.mean(anno1)
+        mean_anno2 = np.mean(anno2)
+        # Population variances
+        var_anno1 = np.var(anno1)
+        var_anno2 = np.var(anno2)
+        # Population standard deviations
+        sd_anno1 = np.std(anno1)
+        sd_anno2 = np.std(anno2)
+        # Calculate CCC
+        numerator = 2 * cor * sd_anno1 * sd_anno2
+        denominator = var_anno1 + var_anno2 + (mean_anno1 - mean_anno2) ** 2
+
+        return numerator / denominator
 
     def avg_engagements(self, save_to_disk: bool):
         if len(self.engagements_list) == 0 or self.loaded_from_disk:
@@ -136,29 +166,44 @@ class EngagementsManager:
             df_interaction_data.to_csv("../../data/annotations/TE_discrete_percentages_.2.4_forAnno2.csv")
         return df_interaction_data
 
-    def calculate_interrater_reliability(self, save_to_disk=False, use_2pass = False):
+    def calculate_interrater_reliability(self, save_to_disk=False, use_2pass = False, use_interaction_time=True):
         df_interrater_reliability_data = pd.DataFrame(index=['continuous','discrete'])#, 'recording_continuous'])
         #go over all the groups and calculate the interrater reliability (like in nova):
         for engagement_group_data in self.engagements_list:
             if engagement_group_data.group_name in self.groups_floorlevel:
                 print (engagement_group_data.group_name)
-                if use_2pass and engagement_group_data.TE_2pass_exists:
-                    current_df_discrete = pd.DataFrame(
-                        {'anno1': engagement_group_data.df_eng_discretised_anno1_2pass_interaction.task_eng,
-                         'anno2': engagement_group_data.df_eng_discretised_anno2_interaction.task_eng})
-                    current_df_cont = pd.DataFrame(
-                        {'anno1': engagement_group_data.df_eng_1_2pass_interaction.task_eng,
-                         'anno2': engagement_group_data.df_eng_2_interaction.task_eng})
+                if use_interaction_time:
+                    anno1_discrete = engagement_group_data.df_eng_discretised_anno1_interaction.task_eng
+                    anno1_continuous = engagement_group_data.df_eng_1_interaction.task_eng
+                    anno2_discrete = engagement_group_data.df_eng_discretised_anno2_interaction.task_eng
+                    anno2_continuous = engagement_group_data.df_eng_2_interaction.task_eng
+
+                    if use_2pass and engagement_group_data.TE_2pass_exists:
+                        anno1_discrete = engagement_group_data.df_eng_discretised_anno1_2pass_interaction.task_eng
+                        anno1_continuous = engagement_group_data.df_eng_1_2pass_interaction.task_eng
                 else:
-                    current_df_discrete = pd.DataFrame(
-                        {'anno1':engagement_group_data.df_eng_discretised_anno1_interaction.task_eng,
-                         'anno2':engagement_group_data.df_eng_discretised_anno2_interaction.task_eng})
-                    current_df_cont = pd.DataFrame(
-                        {'anno1': engagement_group_data.df_eng_1_interaction.task_eng,
-                        'anno2': engagement_group_data.df_eng_2_interaction.task_eng})
-                # current_df_recording_cont = pd.DataFrame(
-                #     {'anno1': engagement_group_data.df_eng_1.task_eng,
-                #      'anno2': engagement_group_data.df_eng_2.task_eng})
+                    anno1_discrete = engagement_group_data.df_eng_discretised_anno1.task_eng
+                    anno1_continuous = engagement_group_data.df_eng_1.task_eng
+                    anno2_discrete = engagement_group_data.df_eng_discretised_anno2.task_eng
+                    anno2_continuous = engagement_group_data.df_eng_2.task_eng
+                    if use_2pass and engagement_group_data.TE_2pass_exists:
+                        anno1_discrete = engagement_group_data.df_eng_discretised_anno1_2pass.task_eng
+                        anno1_continuous = engagement_group_data.df_eng_1_2pass.task_eng
+
+                current_df_discrete = pd.DataFrame(
+                    {'anno1': anno1_discrete, 'anno2':anno2_discrete})
+                current_df_cont = pd.DataFrame(
+                    {'anno1': anno1_continuous, 'anno2': anno2_continuous})
+                # else:
+                #     current_df_discrete = pd.DataFrame(
+                #         {'anno1':engagement_group_data.df_eng_discretised_anno1_interaction.task_eng,
+                #          'anno2':engagement_group_data.df_eng_discretised_anno2_interaction.task_eng})
+                #     current_df_cont = pd.DataFrame(
+                #         {'anno1': engagement_group_data.df_eng_1_interaction.task_eng,
+                #         'anno2': engagement_group_data.df_eng_2_interaction.task_eng})
+                # # current_df_recording_cont = pd.DataFrame(
+                # #     {'anno1': engagement_group_data.df_eng_1.task_eng,
+                # #      'anno2': engagement_group_data.df_eng_2.task_eng})
 
                 # current_df_discrete.replace([np.inf, -np.inf], np.nan).dropna(axis=0, inplace=True)
                 # current_df_cont.replace([np.inf, -np.inf], np.nan).dropna(axis=0, inplace=True)
@@ -185,17 +230,24 @@ class EngagementsManager:
                 # current_df_recording_cont['anno1'] = pd.to_numeric(current_df_recording_cont['anno1'])
 
                 #get the interrater reliability for the discrete values
-                interrater_discrete = pg.cronbach_alpha(data=current_df_discrete)[0]
-                interrater_cont = pg.cronbach_alpha(data=current_df_cont)[0]
+                # commented out for now as it might not be the best measure
+                # interrater_discrete = pg.cronbach_alpha(data=current_df_discrete)[0]
+                # interrater_cont = pg.cronbach_alpha(data=current_df_cont)[0]
                 # interrater_recording_cont = pg.cronbach_alpha(data=current_df_recording_cont)[0]
 
-                df_interrater_reliability_data [engagement_group_data.group_name+'_interrater_relia'] = \
+                interrater_discrete = self.concordance_correlation_coefficient(current_df_discrete.anno1,
+                                                                               current_df_discrete.anno2)
+                interrater_cont = self.concordance_correlation_coefficient(current_df_cont.anno1,
+                                                                               current_df_cont.anno2)
+
+                df_interrater_reliability_data [engagement_group_data.group_name+'_interrater_LinsCCC'] = \
                     [interrater_cont, interrater_discrete]
 
         self.df_interrater_reliability = df_interrater_reliability_data
         if save_to_disk:
             # df_interaction_data.to_csv("../../data/annotations/TE_discrete_percentages.csv")
-            df_interrater_reliability_data.to_csv("../../data/annotations/TE_interrater_reliability.csv")
+            # df_interrater_reliability_data.to_csv("../../data/annotations/TE_recordingtime_1stpass_interrater_LinsCCC.csv")
+            df_interrater_reliability_data.to_csv("../../data/annotations/TE_interactiontime_1stpass_interrater_LinsCCC.csv")
         return df_interrater_reliability_data
 
     def __get_groups_floorlevel(self):
@@ -219,6 +271,6 @@ class EngagementsManager:
         
 if __name__ == "__main__":    
     mngr_aux: EngagementsManager = EngagementsManager(save_to_disk=False, load_from_disk=False, floor_level=True, discretised_data = True)
-    mngr_aux.calculate_discrete_TE_stats(save_to_disk=True, use_2pass=True)
-    mngr_aux.calculate_interrater_reliability(save_to_disk=True, use_2pass=True)
+    mngr_aux.calculate_discrete_TE_stats(save_to_disk=False, use_2pass=True)
+    mngr_aux.calculate_interrater_reliability(save_to_disk=True, use_2pass=False, use_interaction_time=True)
     print("done")
