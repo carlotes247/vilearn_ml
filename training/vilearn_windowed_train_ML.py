@@ -29,6 +29,8 @@ except ImportError:
 # for plotting tables
 import matplotlib.pyplot as plt
 import pandas as pd
+# for calculating how long it takes per fold
+import time
 
 if __name__ == '__main__':
     # config flags
@@ -159,7 +161,7 @@ if __name__ == '__main__':
         grid_search_cv_simple = model_selection.GridSearchCV(estimator=model,
                                                                             param_grid=param_grid,
                                                                             cv=inner_cv_simple, 
-                                                                            verbose=1)    
+                                                                            verbose=1)            
         if nested_cv:
             # Nested CV Manual
             if nested_cv_manual:
@@ -167,12 +169,14 @@ if __name__ == '__main__':
                 y_pred_all = []
                 outer_scores = []
                 i = 1
+                start_outer_cv = time.process_time()
                 # Outer CV loop
                 for train_idx, test_idx in outer_cv_simple.split(data_loader.X, data_loader.y, groups=data_loader.groups):
                     X_train, X_test = data_loader.X.loc[train_idx], data_loader.X.loc[test_idx]
                     y_train, y_test = data_loader.y.loc[train_idx], data_loader.y.loc[test_idx]
                     group_out_name: str = data_loader.df_data.loc[test_idx]['group_name'].iloc[0]
-                    print(f"Outer Simple CV Fold {i}. Leave out fold is: {group_out_name}")                    
+                    print(f"Outer Simple CV Fold {i}. Leave out fold is: {group_out_name}") 
+                    start_inner_cv = time.process_time()                   
                     # Inner CV grid search
                     grid_search_cv_inner = model_selection.GridSearchCV(estimator=model,
                                                                     param_grid=param_grid,
@@ -189,7 +193,11 @@ if __name__ == '__main__':
                     # Collect score for this outer fold
                     fold_acc = metrics.accuracy_score(y_test, y_pred)
                     outer_scores.append(fold_acc)
-                print("Outer Simple CV finished!")
+                    i = i+1
+                    end_inner_cv = time.process_time()
+                    print(f"Outer Simple CV Fold {i} took {start_inner_cv-end_inner_cv} secs.")
+                end_outer_cv = time.process_time()
+                print(f"Outer Simple CV completed! Took {start_outer_cv-end_outer_cv} seconds")
                 # Nested CV score (mean of outer fold scores)
                 nested_cv_score = np.mean(outer_scores)
                 print(f"Manual Nested CV Accuracy Simple: {nested_cv_score:.4f}")
@@ -199,7 +207,8 @@ if __name__ == '__main__':
                                                 'Score':nested_cv_score, 
                                                 'CV': 'Nested', 
                                                 'Version': 'Simple_Manual',
-                                                'Conf_Matrix': conf_matrix})                
+                                                'Conf_Matrix': conf_matrix,
+                                                'Time': start_outer_cv-end_outer_cv})                
                 # print("Confusion Matrix:\n", conf_matrix)
             # Nested CV Automatic
             else:                
@@ -249,12 +258,14 @@ if __name__ == '__main__':
                 y_pred_all = []
                 outer_scores = []
                 i = 1
+                start_outer_cv = time.process_time()
                 # Outer CV loop
                 for train_idx, test_idx in outer_cv_scaler.split(data_loader.X, data_loader.y, groups=data_loader.groups):
                     X_train, X_test = data_loader.X.loc[train_idx], data_loader.X.loc[test_idx]
                     y_train, y_test = data_loader.y.loc[train_idx], data_loader.y.loc[test_idx]                    
                     group_out_name: str = data_loader.df_data.loc[test_idx]['group_name'].iloc[0]
                     print(f"Outer Scaler CV Fold {i}. Leave out fold is: {group_out_name}")                    
+                    start_inner_cv = time.process_time()                   
                     # Inner CV grid search
                     grid_search_cv_inner = model_selection.GridSearchCV(estimator=model,
                                                                     param_grid=param_grid,
@@ -269,7 +280,11 @@ if __name__ == '__main__':
                     # Collect score for this outer fold
                     fold_acc = metrics.accuracy_score(y_test, y_pred)
                     outer_scores.append(fold_acc)
-                print("Outer Simple CV finished!")
+                    i = i+1
+                    end_inner_cv = time.process_time()
+                    print(f"Outer Scaler CV Fold {i} took {start_inner_cv-end_inner_cv} secs.")
+                end_outer_cv = time.process_time()
+                print(f"Outer Scaler CV completed! Took {start_outer_cv-end_outer_cv} seconds")
                 # Nested CV score (mean of outer fold scores)
                 nested_cv_score = np.mean(outer_scores)
                 print(f"Manual Nested CV Accuracy Scaler: {nested_cv_score:.4f}")
@@ -278,7 +293,8 @@ if __name__ == '__main__':
                                                 'Score':nested_cv_score, 
                                                 'CV': 'Nested', 
                                                 'Version': 'Scaler_Manual',
-                                                'Conf_Matrix': conf_matrix})
+                                                'Conf_Matrix': conf_matrix,
+                                                'Time': start_outer_cv-end_outer_cv})
                 # Print confusion matrix and score once all loops are done                                
                 # print("Confusion Matrix:\n", conf_matrix)
             # Nested CV Automatic
@@ -292,7 +308,6 @@ if __name__ == '__main__':
                                                 'Score':nested_score_scaler.mean(), 
                                                 'CV': 'Nested', 
                                                 'Version': 'Scaler'})
-
         else:
             # DEBUGGING NON_NESTED PARAMETER SEARCH AND SCORING (THIS IS NOT WHAT WE SHOULD DO ACCORDING TO CRISTINA CONATI)
             fit_worked: bool = False
