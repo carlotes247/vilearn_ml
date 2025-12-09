@@ -67,6 +67,7 @@ class VilearnWindowedDataLoaderML:
             df_floorlevel_info = pd.read_csv(self.floor_level_groups_info_filepath, sep=";")
             groups_floorlevel = df_floorlevel_info['Group_Name']
             self.df_data = self.df_data[self.df_data['group_name'].isin(groups_floorlevel)]
+            self.df_data.reset_index(drop=True, inplace=True)
         # logic for TE file used for R correlation analysis (long dataframe)
         if self.use_file_TE:
             # binning TE
