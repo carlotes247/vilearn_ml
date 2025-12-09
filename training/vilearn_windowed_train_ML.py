@@ -192,12 +192,12 @@ if __name__ == '__main__':
                     y_pred_all.extend(y_pred)
                     # Collect score for this outer fold
                     fold_acc = metrics.accuracy_score(y_test, y_pred)
-                    outer_scores.append(fold_acc)
-                    i = i+1
+                    outer_scores.append(fold_acc)                    
                     end_inner_cv = time.process_time()
-                    print(f"Outer Simple CV Fold {i} took {start_inner_cv-end_inner_cv} secs.")
+                    print(f"Outer Simple CV Fold {i} took {end_inner_cv-start_inner_cv} secs.")
+                    i = i+1
                 end_outer_cv = time.process_time()
-                print(f"Outer Simple CV completed! Took {start_outer_cv-end_outer_cv} seconds")
+                print(f"Outer Simple CV completed! Took {end_outer_cv-start_outer_cv} seconds")
                 # Nested CV score (mean of outer fold scores)
                 nested_cv_score = np.mean(outer_scores)
                 print(f"Manual Nested CV Accuracy Simple: {nested_cv_score:.4f}")
@@ -208,7 +208,7 @@ if __name__ == '__main__':
                                                 'CV': 'Nested', 
                                                 'Version': 'Simple_Manual',
                                                 'Conf_Matrix': conf_matrix,
-                                                'Time': start_outer_cv-end_outer_cv})                
+                                                'Time': end_outer_cv-start_outer_cv})                
                 # print("Confusion Matrix:\n", conf_matrix)
             # Nested CV Automatic
             else:                
@@ -279,12 +279,12 @@ if __name__ == '__main__':
                     y_pred_all.extend(y_pred)
                     # Collect score for this outer fold
                     fold_acc = metrics.accuracy_score(y_test, y_pred)
-                    outer_scores.append(fold_acc)
-                    i = i+1
+                    outer_scores.append(fold_acc)                    
                     end_inner_cv = time.process_time()
-                    print(f"Outer Scaler CV Fold {i} took {start_inner_cv-end_inner_cv} secs.")
+                    print(f"Outer Scaler CV Fold {i} took {end_inner_cv-start_inner_cv} secs.")
+                    i = i+1
                 end_outer_cv = time.process_time()
-                print(f"Outer Scaler CV completed! Took {start_outer_cv-end_outer_cv} seconds")
+                print(f"Outer Scaler CV completed! Took {end_outer_cv-start_outer_cv} seconds")
                 # Nested CV score (mean of outer fold scores)
                 nested_cv_score = np.mean(outer_scores)
                 print(f"Manual Nested CV Accuracy Scaler: {nested_cv_score:.4f}")
@@ -294,7 +294,7 @@ if __name__ == '__main__':
                                                 'CV': 'Nested', 
                                                 'Version': 'Scaler_Manual',
                                                 'Conf_Matrix': conf_matrix,
-                                                'Time': start_outer_cv-end_outer_cv})
+                                                'Time': end_outer_cv-start_outer_cv})
                 # Print confusion matrix and score once all loops are done                                
                 # print("Confusion Matrix:\n", conf_matrix)
             # Nested CV Automatic
