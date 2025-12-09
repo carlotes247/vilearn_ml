@@ -11,6 +11,7 @@ class VilearnWindowedDataLoaderML:
     #region VARS
     # config flags
     use_file_TE: bool = True
+    floorlevel_groups: bool = True
     print_folds: bool = False
     debug_all_folds: bool = False
     bins_binary: bool = False
@@ -43,13 +44,15 @@ class VilearnWindowedDataLoaderML:
     data_folder = 'Recordings/SavedData/v2_no_low_sampled'
     data_file = 'all_features_60s_resampled.csv'
     data_file_with_TE = '60s_TE_correlation.csv'
+    floor_level_groups_info_filepath = 'data/group_names_with_time_floorlevel.csv'
     sep = ";" if use_file_TE else ","
     full_data_path = ""
     #endregion
 
     #region CONSTRUCTOR
-    def __init__(self, bins_binary:bool, print_folds: bool, debug_all_folds: bool) -> None:
+    def __init__(self, bins_binary:bool, print_folds: bool, debug_all_folds: bool, floorlevel: bool = True) -> None:
         self.use_file_TE = True
+        self.floorlevel_groups = floorlevel
         self.print_folds = print_folds
         self.debug_all_folds = debug_all_folds
         self.bins_binary = bins_binary
@@ -59,6 +62,11 @@ class VilearnWindowedDataLoaderML:
         else:
             full_data_path = os.path.join(self.working_dir, self.data_folder, self.data_file)
         self.df_data = pd.read_csv(full_data_path, sep=";")
+        # drop groups that are not floorlevel
+        if self.floor_level_groups_info_filepath:
+            df_floorlevel_info = pd.read_csv(self.floor_level_groups_info_filepath, sep=";")
+            groups_floorlevel = df_floorlevel_info['Group_Name']
+            self.df_data = self.df_data[self.df_data['group_name'].isin(groups_floorlevel)]
         # logic for TE file used for R correlation analysis (long dataframe)
         if self.use_file_TE:
             # binning TE
@@ -72,7 +80,7 @@ class VilearnWindowedDataLoaderML:
                 bins = self.bins_three
                 labels_text = self.labels_text_three
                 pass
-            self.labels_text = labels_text # assign so the selected labels are accessible from outside the class
+            self.labels_text = labels_text # assign so the selected labels are accessible from outside the class            
             self.df_y = self.df_data.loc[:, ['TE']].apply(pd.cut, bins=bins, labels=labels_text)
             self.df_data['TE'] = self.df_y
             self.df_X = self.df_data.loc[:, self.df_data.columns != 'TE']
@@ -111,4 +119,6 @@ class VilearnWindowedDataLoaderML:
                         print("THIS FOLD HAS MORE THAN ONE GROUP!!!")
                     print("============================")    
         
+if __name__ == "__main__":
+    test = VilearnWindowedDataLoaderML(bins_binary=False, print_folds=False, debug_all_folds=False)
     
