@@ -330,10 +330,11 @@ if __name__ == '__main__':
     results_df = pd.DataFrame(results_list)
     print(results_df.to_string())
     models_used = [model_name for model_name in results_df['Model']]
+    models_used = set(models_used)
     models_suffix = ""
     for model_name in models_used:
-        models_suffix = f"_{model_name}"
-    results_df.to_html(f'results_ML_train_manual{models_suffix}.html')
+        models_suffix = f"{models_suffix}_{model_name}"
+    #results_df.to_html(f'results_ML_train_manual{models_suffix}.html')
     results_df.to_csv(f'results_ML_train_manual{models_suffix}.csv')
 
     print("done")
