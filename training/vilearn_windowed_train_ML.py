@@ -62,19 +62,22 @@ if __name__ == '__main__':
                 'weights': ['uniform', 'distance']
             }
         },
-        "Linear SVM No Hinge": {
-            'estimator': svm.LinearSVC(dual=False),
+        "Linear SVM l1": {
+            'estimator': svm.LinearSVC(dual="auto"),
             'params': {
-                'penalty': ['l1', 'l2'],
+                'penalty': ['l1'],
                 'loss': ['squared_hinge'],
-                'C': [0.1, 1, 5, 10, 100]
+                'C': [0.01, 0.1, 1, 5, 10, 100],
+                'max_iter': [5000, 10000, 50000]
             }
         },
-        "Linear SVM Hinge Only": {
-            'estimator': svm.LinearSVC(dual=False),
+        "Linear SVM l2": {
+            'estimator': svm.LinearSVC(dual="auto"),
             'params': {
+                'penalty': ['l2'],
                 'loss': ['hinge', 'squared_hinge'],
-                'C': [0.1, 1, 5, 10, 100]
+                'C': [0.01, 0.1, 1, 5, 10, 100],
+                'max_iter': [5000, 10000, 50000]
             }
         },
         "SVM": {
@@ -208,7 +211,7 @@ if __name__ == '__main__':
                                                 'CV': 'Nested', 
                                                 'Version': 'Simple_Manual',
                                                 'Conf_Matrix': conf_matrix,
-                                                'Time': end_outer_cv-start_outer_cv})                
+                                                'Time': end_outer_cv-start_outer_cv})
                 # print("Confusion Matrix:\n", conf_matrix)
             # Nested CV Automatic
             else:                
@@ -326,7 +329,11 @@ if __name__ == '__main__':
     # output results as html
     results_df = pd.DataFrame(results_list)
     print(results_df.to_string())
-    results_df.to_html('results_ML_train_manual_temp.html')
-    results_df.to_csv('results_ML_train_manual.csv')
+    models_used = [model_name for model_name in results_df['Model']]
+    models_suffix = ""
+    for model_name in models_used:
+        models_suffix = f"_{model_name}"
+    results_df.to_html(f'results_ML_train_manual{models_suffix}.html')
+    results_df.to_csv(f'results_ML_train_manual{models_suffix}.csv')
 
     print("done")
