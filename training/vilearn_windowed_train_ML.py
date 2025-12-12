@@ -49,7 +49,7 @@ class VilearnMLTrain:
     # models
     ml_models: VilearnMLModels 
 
-    def __init__(self, nested_cv:bool, auto_cv:bool, binary_clf:bool, data_loader: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(False, False, False), ml_models: VilearnMLModels = VilearnMLModels()) -> None:
+    def __init__(self, nested_cv:bool, auto_cv:bool, binary_clf:bool, data_loader: VilearnWindowedDataLoaderML, ml_models: VilearnMLModels) -> None:
         self.nested_cv = nested_cv
         self.nested_cv_manual = not auto_cv
         self.binary_clf = binary_clf
@@ -58,7 +58,7 @@ class VilearnMLTrain:
         self.results_df = pd.DataFrame()
         self.results_list = []
 
-    def run_nested_cv(self, models: VilearnMLModels, data_loader: VilearnWindowedDataLoaderML, nested_cv_manual: bool, non_nested_comparison: bool = False, debug: bool = False) -> list[dict]:
+    def run_nested_cv(self, models: VilearnMLModels, data_loader: VilearnWindowedDataLoaderML, nested_cv_manual: bool, eval_label: str = "", non_nested_comparison: bool = False, debug: bool = False) -> list[dict]:
         # Cross validation for all models
         results_to_return: list[dict] = []
         for model_name, model_dict in models.param_grids_models.items():        
@@ -80,21 +80,21 @@ class VilearnMLTrain:
                 results =  self.__run_nested_cv_manual(model=model, model_name=model_name,
                                                         data_loader=data_loader, param_grid=param_grid, 
                                                         inner_cv=inner_cv, outer_cv=outer_cv, 
-                                                        model_version_label="SIMPLE")
+                                                        model_version_label=eval_label)
                 results_to_return.append(results[0])
             # Nested CV Automatic
             else:                
                 results = self.__run_nested_cv_automatic(model=model, model_name=model_name,
                                                             data_loader=data_loader, param_grid=param_grid,
                                                             inner_cv=inner_cv, outer_cv=outer_cv, 
-                                                            model_version_label="SIMPLE")
+                                                            model_version_label=eval_label)
                 results_to_return.append(results[0])
             # Non_nested CV for comparison
             if non_nested_comparison:
                 results = self.__run_non_nested_cv(model=model, model_name=model_name,
                                                             data_loader=data_loader, param_grid=param_grid,
                                                             inner_cv=inner_cv,  
-                                                            model_version_label="SIMPLE")
+                                                            model_version_label=eval_label)
                 results_to_return.append(results[0])
         return results_to_return
                              
@@ -192,7 +192,7 @@ class VilearnMLTrain:
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")
         if fit_worked:
-            print(f"Avg non_nested acc SIMPLE: {grid_search_cv.best_score_}")
+            print(f"Avg non_nested acc {model_version_label}: {grid_search_cv.best_score_}")
             results_to_return.append({'Model': model_name, 
                                         'Score':grid_search_cv.best_score_, 
                                         'CV': 'Non_Nested', 
@@ -212,13 +212,13 @@ class VilearnMLTrain:
         results_df.to_csv(f'results_ML_train_{model_version_label}_{models_suffix}.csv')
         return results_df 
 
-    def train_and_evaluate(self, debug=False) -> None:
+    def train_and_evaluate(self, eval_label: str = "", debug=False) -> None:
         results = []
         if self.nested_cv:
             results = self.run_nested_cv(models=self.ml_models, data_loader=self.data_loader, 
                                         nested_cv_manual=True, debug=debug)
             self.results_list = [result for result in results]
-        self.results_df = self.save_results(self.results_list, model_version_label="")
+        self.results_df = self.save_results(self.results_list, model_version_label=eval_label)
 
 
 
@@ -231,14 +231,22 @@ if __name__ == '__main__':
     data_loader: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, print_folds=False, debug_all_folds=False)
     # load models
     models: VilearnMLModels = VilearnMLModels()
+    models_scaler: VilearnMLModels = VilearnMLModels(scaler=True)
 
     # all logic encapsulated in class
-    vilearn_train: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+    # Simple models
+    vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
                                                    auto_cv=(not nested_cv_manual),
                                                     binary_clf=binary_clf,
                                                     data_loader=data_loader, ml_models=models)
-    vilearn_train.train_and_evaluate()
-    
+    vilearn_train_simple.train_and_evaluate(eval_label="SIMPLE")
+    # Scaler models
+    vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                   auto_cv=(not nested_cv_manual),
+                                                    binary_clf=binary_clf,
+                                                    data_loader=data_loader, ml_models=models_scaler)
+    vilearn_train_scaler.train_and_evaluate(eval_label="SCALER")
+
 
     # df to plot results
     results_df: pd.DataFrame = pd.DataFrame()

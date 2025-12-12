@@ -18,7 +18,7 @@ import numpy as np
 class VilearnMLModels:
     # class vars
     param_grid = None
-    def __init__(self) -> None:
+    def __init__(self, scaler: bool = False) -> None:
         # Defining all the classifiers to try
         # TODO: Explore other models that I don't understand:
         # Gaussian Process
@@ -111,5 +111,25 @@ class VilearnMLModels:
                 }
             }
         }
+
+        # Adding pipeline elements if requested
+        if (scaler):
+            self.param_grids_models = self.__add_scalers(self.param_grids_models)
+        
+
+    def __add_scalers(self, param_grid_models) -> list[dict]:
+        # create alternative model with scaler to see what scores better
+        # the scaler can be useful to standardize features. It depends on how the features approximate the std normal distribution of the data (e.g. Gaussian with 0 mean and unit variance).
+        # more info on scalers: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
+        for model_name, model_dict in param_grid_models.items(): 
+            model = model_dict['estimator']
+            param_grid = model_dict['params']
+            model_scaler = Pipeline(
+                steps=[("scaler", StandardScaler()), ("clf", model)]
+            )
+            param_grid_scaler = {f'clf__{k}': v for k, v in param_grid.items()}
+            param_grid_models[model_name]['estimator'] = model_scaler
+            param_grid_models[model_name]['params'] = param_grid_scaler
+        return param_grid_models
 
         
