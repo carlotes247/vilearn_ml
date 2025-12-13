@@ -15,6 +15,8 @@ class VilearnWindowedDataLoaderML:
     print_folds: bool = False
     debug_all_folds: bool = False
     bins_binary: bool = False
+    dyads_only: bool = False
+    triads_only: bool = False
     # bining vars
     labels_text = []
     # three classes
@@ -50,12 +52,14 @@ class VilearnWindowedDataLoaderML:
     #endregion
 
     #region CONSTRUCTOR
-    def __init__(self, bins_binary:bool, print_folds: bool, debug_all_folds: bool, floorlevel: bool = True) -> None:
+    def __init__(self, bins_binary:bool, print_folds: bool, debug_all_folds: bool, floorlevel: bool = True, dyads_only: bool = False, triads_only:bool = False) -> None:
         self.use_file_TE = True
         self.floorlevel_groups = floorlevel
         self.print_folds = print_folds
         self.debug_all_folds = debug_all_folds
         self.bins_binary = bins_binary
+        self.dyads_only = dyads_only
+        self.triads_only = triads_only
         # load vilearn windowed data
         if self.use_file_TE:
             full_data_path = os.path.join(self.working_dir, self.data_folder, self.data_file_with_TE)
@@ -82,13 +86,18 @@ class VilearnWindowedDataLoaderML:
                 labels_text = self.labels_text_three
                 pass
             self.labels_text = labels_text # assign so the selected labels are accessible from outside the class            
+            # separate per group if requested
+            if self.dyads_only:
+                dyad_rows = self.df_data['group_type'] == 'dyad'
+                self.df_data = self.df_data[dyad_rows].reset_index()
+            elif self.triads_only:
+                triad_rows = self.df_data['group_type'] == 'triad'
+                self.df_data = self.df_data[triad_rows].reset_index()
+            # separate into features (X) and labels (y)
             self.df_y = self.df_data.loc[:, ['TE']].apply(pd.cut, bins=bins, labels=labels_text)
             self.df_data['TE'] = self.df_y
             self.df_X = self.df_data.loc[:, self.df_data.columns != 'TE']
-            # separating into dyads and triads
-            # TODO: do separation in triads and dyads properly
-            # dyads_df = df_data.loc[df_data['group_name'].str.contains("dyad")]
-            # triads_df = df_data.loc[df_data['group_name'].str.contains("triad")]
+            # TODO: select features if requested
         # logic for wide dataframe with all gaze configurations (missing TE and blink metrics)
         else:
             # TODO: not implemented, check knn_test.py for some starting logic (unfinished there)
@@ -121,5 +130,5 @@ class VilearnWindowedDataLoaderML:
                     print("============================")    
         
 if __name__ == "__main__":
-    test = VilearnWindowedDataLoaderML(bins_binary=False, print_folds=False, debug_all_folds=False)
+    test = VilearnWindowedDataLoaderML(bins_binary=False, print_folds=False, debug_all_folds=False, triads_only=True)
     
