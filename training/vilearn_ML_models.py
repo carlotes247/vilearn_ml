@@ -1,4 +1,5 @@
 # classifiers imports
+from sklearn import dummy
 from sklearn import neighbors
 from sklearn import naive_bayes
 from sklearn import neural_network
@@ -29,6 +30,29 @@ class VilearnMLModels:
         # See: https://www.geeksforgeeks.org/machine-learning/how-to-tune-a-decision-tree-in-hyperparameter-tuning/
         # See: https://www.geeksforgeeks.org/machine-learning/random-forest-hyperparameter-tuning-in-python/
         self.param_grids_models = {
+            "Baseline Most Frequent Strategy": {
+                'estimator': dummy.DummyClassifier(strategy='most_frequent'),
+                'params': {}
+            },
+            "Baseline Prior Strategy": {
+                'estimator': dummy.DummyClassifier(strategy='prior'),
+                'params': {}
+            },
+            "Baseline Stratified Strategy": {
+                'estimator': dummy.DummyClassifier(strategy='stratified'),
+                'params': {}
+            },
+            "Baseline Uniform Strategy": {
+                'estimator': dummy.DummyClassifier(strategy='uniform'),
+                'params': {}
+            },
+            "Nearest Neighbors Test": {
+                'estimator': neighbors.KNeighborsClassifier(),
+                'params': {
+                    'n_neighbors': np.arange(1, 3, 1),
+                    'weights': ['uniform', 'distance']
+                }
+            },
             "Nearest Neighbors": {
                 'estimator': neighbors.KNeighborsClassifier(),
                 'params': {
