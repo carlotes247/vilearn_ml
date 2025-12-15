@@ -277,5 +277,11 @@ if __name__ == '__main__':
     vilearn_train_scaler_triads_all_features.train_and_evaluate(eval_label="SCALER_triads_all_features", debug=True)
     
     # TODO: select features for dyads and triads according to AIxVR paper for both simple and scaler models
+    # Simple models, all groups, AIxVR paper features (blink rate, MG)
+    # simple model dyads, features (1DG, MG)
+    # simple model triads, features (BPM)
+    # Scaler models, all groups AIxVR paper features (blink rate, MG)
+    # Scaler models, dyads features (1DG, MG)
+    # Scaler models, triads features (BPM)
 
     print("done")
