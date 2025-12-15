@@ -64,7 +64,7 @@ class VilearnWindowedDataLoaderML:
         self.triads_only = triads_only
         # configure features that will be selected
         if len(features_to_select) < 1:
-            self.features_selected = self.get_original_features_list
+            self.features_selected = self.get_original_features_list()
         else:
             self.features_selected = features_to_select
         # load vilearn windowed data
