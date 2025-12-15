@@ -228,23 +228,54 @@ if __name__ == '__main__':
     nested_cv_manual: bool = True
     binary_clf: bool = False
     # load data
+    # all groups, all features
     data_loader: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, print_folds=False, debug_all_folds=False)
+    # dyads, all features
+    data_loader_dyads: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, dyads_only=True, print_folds=False, debug_all_folds=False)
+    # triads, all features
+    data_loader_triads: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, triads_only=True, print_folds=False, debug_all_folds=False)
     # load models
     models: VilearnMLModels = VilearnMLModels()
     models_scaler: VilearnMLModels = VilearnMLModels(scaler=True)
 
     # all logic encapsulated in class
-    # Simple models
+    # Simple models, all groups
     vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
                                                    auto_cv=(not nested_cv_manual),
                                                     binary_clf=binary_clf,
                                                     data_loader=data_loader, ml_models=models)
     vilearn_train_simple.train_and_evaluate(eval_label="SIMPLE", debug=True)
-    # Scaler models
+    # simple model dyads, all features
+    vilearn_train_simple_dyads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                                auto_cv=(not nested_cv_manual),
+                                                                    binary_clf=binary_clf,
+                                                                    data_loader=data_loader_dyads, ml_models=models)
+    vilearn_train_simple_dyads_all_features.train_and_evaluate(eval_label="SIMPLE_dyads_all_features", debug=True)
+    # simple model triads, all features
+    vilearn_train_simple_triads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                                auto_cv=(not nested_cv_manual),
+                                                                    binary_clf=binary_clf,
+                                                                    data_loader=data_loader_triads, ml_models=models)
+    vilearn_train_simple_triads_all_features.train_and_evaluate(eval_label="SIMPLE_triads_all_features", debug=True)
+    # Scaler models, all groups
     vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
                                                    auto_cv=(not nested_cv_manual),
                                                     binary_clf=binary_clf,
                                                     data_loader=data_loader, ml_models=models_scaler)
     vilearn_train_scaler.train_and_evaluate(eval_label="SCALER", debug=True)
+    # Scaler models, dyads all features    
+    vilearn_train_scaler_dyads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                   auto_cv=(not nested_cv_manual),
+                                                    binary_clf=binary_clf,
+                                                    data_loader=data_loader_triads, ml_models=models_scaler)
+    vilearn_train_scaler_dyads_all_features.train_and_evaluate(eval_label="SCALER_dyads_all_features", debug=True)
+    # Scaler models, triads all features
+    vilearn_train_scaler_triads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                   auto_cv=(not nested_cv_manual),
+                                                    binary_clf=binary_clf,
+                                                    data_loader=data_loader_triads, ml_models=models_scaler)
+    vilearn_train_scaler_triads_all_features.train_and_evaluate(eval_label="SCALER_triads_all_features", debug=True)
+    
+    # TODO: select features for dyads and triads according to AIxVR paper for both simple and scaler models
 
     print("done")
