@@ -17,6 +17,8 @@ class VilearnWindowedDataLoaderML:
     bins_binary: bool = False
     dyads_only: bool = False
     triads_only: bool = False
+    # feature selection vars
+    features_selected = []
     # bining vars
     labels_text = []
     # three classes
@@ -52,7 +54,7 @@ class VilearnWindowedDataLoaderML:
     #endregion
 
     #region CONSTRUCTOR
-    def __init__(self, bins_binary:bool, print_folds: bool, debug_all_folds: bool, floorlevel: bool = True, dyads_only: bool = False, triads_only:bool = False) -> None:
+    def __init__(self, bins_binary:bool, print_folds: bool, debug_all_folds: bool, floorlevel: bool = True, dyads_only: bool = False, triads_only: bool = False, features_to_select: list[str] = []) -> None:
         self.use_file_TE = True
         self.floorlevel_groups = floorlevel
         self.print_folds = print_folds
@@ -60,6 +62,11 @@ class VilearnWindowedDataLoaderML:
         self.bins_binary = bins_binary
         self.dyads_only = dyads_only
         self.triads_only = triads_only
+        # configure features that will be selected
+        if len(features_to_select) < 1:
+            self.features_selected = self.get_original_features_list
+        else:
+            self.features_selected = features_to_select
         # load vilearn windowed data
         if self.use_file_TE:
             full_data_path = os.path.join(self.working_dir, self.data_folder, self.data_file_with_TE)
@@ -89,15 +96,14 @@ class VilearnWindowedDataLoaderML:
             # separate per group if requested
             if self.dyads_only:
                 dyad_rows = self.df_data['group_type'] == 'dyad'
-                self.df_data = self.df_data[dyad_rows].reset_index()
+                self.df_data = self.df_data[dyad_rows].reset_index(drop=True)
             elif self.triads_only:
                 triad_rows = self.df_data['group_type'] == 'triad'
-                self.df_data = self.df_data[triad_rows].reset_index()
+                self.df_data = self.df_data[triad_rows].reset_index(drop=True)
             # separate into features (X) and labels (y)
             self.df_y = self.df_data.loc[:, ['TE']].apply(pd.cut, bins=bins, labels=labels_text)
             self.df_data['TE'] = self.df_y
             self.df_X = self.df_data.loc[:, self.df_data.columns != 'TE']
-            # TODO: select features if requested
         # logic for wide dataframe with all gaze configurations (missing TE and blink metrics)
         else:
             # TODO: not implemented, check knn_test.py for some starting logic (unfinished there)
@@ -110,6 +116,11 @@ class VilearnWindowedDataLoaderML:
         self.X = self.df_data.drop(columns=['seconds_interaction_window','group_type','group_formation','group_name' ,'TE'])
         self.y = self.df_data.loc[:, 'TE']
         self.groups = self.df_data['group_name']
+        # Select features if requested
+        self.select_features(self.features_selected)
+
+        print("todo")
+
         self.group_kfold = model_selection.GroupKFold(n_splits=len(self.group_names))
         n_splits = self.group_kfold.get_n_splits(self.X, self.y, self.groups)
         if self.print_folds:
@@ -129,6 +140,19 @@ class VilearnWindowedDataLoaderML:
                         print("THIS FOLD HAS MORE THAN ONE GROUP!!!")
                     print("============================")    
         
-if __name__ == "__main__":
-    test = VilearnWindowedDataLoaderML(bins_binary=False, print_folds=False, debug_all_folds=False, triads_only=True)
+    def select_features(self, features: list[str]) -> None:
+        if (features != None or (len(features) > 0) and len(features) <= len(self.features_selected)):
+            self.features_selected = features
+        if (self.X.columns.to_list() != self.features_selected):
+            self.X = self.X[self.features_selected]
+
+    def get_features_selected(self) -> list[str]:
+        return self.features_selected
     
+    def get_original_features_list(self) -> list[str]:
+        return ['MG','1d_DG','BPM','blink_durations']
+
+if __name__ == "__main__":
+    test = VilearnWindowedDataLoaderML(bins_binary=False, print_folds=False, 
+                                       debug_all_folds=False, triads_only=True,
+                                       features_to_select=['1d_DG','BPM','blink_durations'])    
