@@ -278,10 +278,47 @@ if __name__ == '__main__':
     
     # TODO: select features for dyads and triads according to AIxVR paper for both simple and scaler models
     # Simple models, all groups, AIxVR paper features (blink rate, MG)
+    data_loader.select_features(['MG','BPM'])
+    vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                   auto_cv=(not nested_cv_manual),
+                                                    binary_clf=binary_clf,
+                                                    data_loader=data_loader, ml_models=models)
+    vilearn_train_simple.train_and_evaluate(eval_label="SIMPLE_all_groups_f_MG_BPM", debug=True)
+
     # simple model dyads, features (1DG, MG)
+    data_loader_dyads.select_features(['MG','1d_DG'])
+    vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                   auto_cv=(not nested_cv_manual),
+                                                    binary_clf=binary_clf,
+                                                    data_loader=data_loader_dyads, ml_models=models)
+    vilearn_train_simple.train_and_evaluate(eval_label="SIMPLE_dyads_f_MG_1DG", debug=True)
     # simple model triads, features (BPM)
+    data_loader_triads.select_features(['BPM'])
+    vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                   auto_cv=(not nested_cv_manual),
+                                                    binary_clf=binary_clf,
+                                                    data_loader=data_loader_triads, ml_models=models)
+    vilearn_train_simple.train_and_evaluate(eval_label="SIMPLE_triads_f_BPM", debug=True)
     # Scaler models, all groups AIxVR paper features (blink rate, MG)
+    data_loader.select_features(['MG','BPM'])
+    vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                   auto_cv=(not nested_cv_manual),
+                                                    binary_clf=binary_clf,
+                                                    data_loader=data_loader, ml_models=models_scaler)
+    vilearn_train_scaler.train_and_evaluate(eval_label="SCALER_all_groups_f_MG_BPM", debug=True)
     # Scaler models, dyads features (1DG, MG)
+    data_loader_dyads.select_features(['MG','1d_DG'])
+    vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                   auto_cv=(not nested_cv_manual),
+                                                    binary_clf=binary_clf,
+                                                    data_loader=data_loader_dyads, ml_models=models_scaler)
+    vilearn_train_scaler.train_and_evaluate(eval_label="SCALER_dyads_f_MG_1DG", debug=True)
     # Scaler models, triads features (BPM)
+    data_loader_triads.select_features(['BPM'])
+    vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                   auto_cv=(not nested_cv_manual),
+                                                    binary_clf=binary_clf,
+                                                    data_loader=data_loader_triads, ml_models=models_scaler)
+    vilearn_train_scaler.train_and_evaluate(eval_label="SCALER_triads_f_BPM", debug=True)
 
     print("done")
