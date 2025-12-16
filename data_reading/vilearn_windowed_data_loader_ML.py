@@ -118,9 +118,6 @@ class VilearnWindowedDataLoaderML:
         self.groups = self.df_data['group_name']
         # Select features if requested
         self.select_features(self.features_selected)
-
-        print("todo")
-
         self.group_kfold = model_selection.GroupKFold(n_splits=len(self.group_names))
         n_splits = self.group_kfold.get_n_splits(self.X, self.y, self.groups)
         if self.print_folds:
@@ -143,6 +140,7 @@ class VilearnWindowedDataLoaderML:
     def select_features(self, features: list[str]) -> None:
         if (features != None or (len(features) > 0) and len(features) <= len(self.features_selected)):
             self.features_selected = features
+            self.__restore_original_features()
         if (self.X.columns.to_list() != self.features_selected):
             self.X = self.X[self.features_selected]
 
@@ -151,8 +149,17 @@ class VilearnWindowedDataLoaderML:
     
     def get_original_features_list(self) -> list[str]:
         return ['MG','1d_DG','BPM','blink_durations']
+    
+    def __restore_original_features(self) -> None:
+        # select original feature set from df
+        self.df_X = self.df_data.loc[:, self.df_data.columns != 'TE']
+        self.X = self.df_data.drop(columns=['seconds_interaction_window','group_type','group_formation','group_name' ,'TE'])
+            
 
 if __name__ == "__main__":
     test = VilearnWindowedDataLoaderML(bins_binary=False, print_folds=False, 
                                        debug_all_folds=False, triads_only=True,
                                        features_to_select=['1d_DG','BPM','blink_durations'])    
+    test.select_features(['MG'])
+    test.select_features(['BPM','blink_durations'])
+    print("test")
