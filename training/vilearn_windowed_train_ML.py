@@ -206,8 +206,9 @@ class VilearnMLTrain:
         models_used = [model_name for model_name in results_df['Model']]
         models_used = set(models_used)
         models_suffix = ""
-        for model_name in models_used:
-            models_suffix = f"{models_suffix}_{model_name}"
+        # for the moment model suffix is empty because it makes the string too long and an error is raised
+        # for model_name in models_used: 
+        #     models_suffix = f"{models_suffix}_{model_name}"
         #results_df.to_html(f'results_ML_train_manual{models_suffix}.html')
         results_df.to_csv(f'results_ML_train_{model_version_label}_{models_suffix}.csv')
         return results_df 
