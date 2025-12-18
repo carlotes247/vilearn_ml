@@ -120,7 +120,7 @@ class VilearnMLTrain:
             grid_search_cv_inner = model_selection.GridSearchCV(estimator=model,
                                                             param_grid=param_grid,
                                                             cv=inner_cv, 
-                                                            verbose=verbose)
+                                                            verbose=verbose, n_jobs=-1)
             # Given the n-1 training data, run cv search function on that and not whole data (as one would usually do in a regular cv search. but this is nested)
             grid_search_cv_inner.fit(X_train, y_train, groups=data_loader.groups[train_idx])
             # Select best model and evaluate on unseen data, our testing fold not included in the CV search
@@ -162,7 +162,7 @@ class VilearnMLTrain:
         grid_search_cv = model_selection.GridSearchCV(estimator=model,
                                                             param_grid=param_grid,
                                                             cv=inner_cv, 
-                                                            verbose=verbose)   
+                                                            verbose=verbose, n_jobs=-1)   
 
         nested_score_simple = model_selection.cross_val_score(estimator=model,        
                                                         X=data_loader.X, y=data_loader.y,
@@ -185,7 +185,7 @@ class VilearnMLTrain:
         grid_search_cv = model_selection.GridSearchCV(estimator=model,
                                                                 param_grid=param_grid,
                                                                 cv=inner_cv, 
-                                                                verbose=verbose)   
+                                                                verbose=verbose, n_jobs=-1)   
 
         try:
             grid_search_cv.fit(X=data_loader.X, y=data_loader.y, groups=data_loader.groups)
