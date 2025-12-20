@@ -463,9 +463,10 @@ class PlottingEyeData:
 if __name__ == "__main__":
     save_plot = False 
     gaze_configs_counts_stats = False
-    floorlevel = True
+    floorlevel = False
     save_gaze_counts = False
     save_resampled_file = True
+    resampling_time_window: int = 30
     # Task Engagement
     load_TE: bool = True
     # which features to plot (nothing to do with gaze counts)
@@ -501,7 +502,7 @@ if __name__ == "__main__":
 
     # All Features plotting
     if all_features_plotting:
-        eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_all_features_df_path, timewindow=60, separate_by_group_formation=False,
+        eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_all_features_df_path, timewindow=resampling_time_window, separate_by_group_formation=False,
                      sum_triads_for_mutual_gaze=True, dyads=True, triads=True, one_directioned_direct_gaze=False, all_features=True,
                      y_axis_text="All Eye Gaze Features %",  figure_title="All Eye Gaze Features", 
                      load_task_engagement=load_TE,
