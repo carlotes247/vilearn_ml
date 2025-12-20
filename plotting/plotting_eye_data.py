@@ -3,7 +3,7 @@
 # create the plot
 # show and save the plot
 import re
-
+import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
@@ -358,7 +358,7 @@ class PlottingEyeData:
             else:
                 extra_filename += "MG_"
             filepath_path = os.path.join(filepath_path, extra_filename)
-            filepath_path = filepath_path + str(timewindow) + "s_" + "resampled.csv"
+            filepath_path = filepath_path + str(timewindow) + "s_" + "resampled" + f"{datetime.datetime.today().date()}" + ".csv"
             df_resampled.to_csv(filepath_path)
 
         if plt_show:
@@ -465,7 +465,7 @@ if __name__ == "__main__":
     gaze_configs_counts_stats = False
     floorlevel = True
     save_gaze_counts = False
-    save_resampled_file = False
+    save_resampled_file = True
     # Task Engagement
     load_TE: bool = True
     # which features to plot (nothing to do with gaze counts)

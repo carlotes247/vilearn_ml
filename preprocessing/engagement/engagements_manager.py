@@ -5,7 +5,7 @@ else:
 import os
 import pandas as pd
 import numpy as np
-import pingouin as pg
+# import pingouin as pg
 
 class EngagementsManager:
 
