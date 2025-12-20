@@ -358,7 +358,7 @@ class PlottingEyeData:
             else:
                 extra_filename += "MG_"
             filepath_path = os.path.join(filepath_path, extra_filename)
-            filepath_path = filepath_path + str(timewindow) + "s_" + "resampled" + f"{datetime.datetime.today().date()}" + ".csv"
+            filepath_path = filepath_path + str(timewindow) + "s_" + "resampled" + f"_{datetime.datetime.today().date()}" + ".csv"
             df_resampled.to_csv(filepath_path)
 
         if plt_show:
@@ -491,12 +491,12 @@ if __name__ == "__main__":
         eye_plotter.calculate_triads_gaze_count_stats(eye_plotter.triads_gaze_counts_df, data_folder, floor_level=floorlevel, save=save_gaze_counts)
 
     # Mutual Gaze Plotting
-    # eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_MG_df_path, timewindow=5, separate_by_group_formation=False,
+    # eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_MG_df_path, timewindow=resampling_time_window, separate_by_group_formation=False,
     #                 sum_triads_for_mutual_gaze=False, dyads=True, triads=True, one_directioned_direct_gaze=False,
     #                 y_axis_text="Mutual Gaze %",  figure_title="Mutual Gaze")
 
     # Direct Gaze plotting
-    # eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_DG_df_path, timewindow=10, separate_by_group_formation=False,
+    # eye_plotter.create_line_plot(fig=fig, ax=ax, file_path=all_groups_DG_df_path, timewindow=resampling_time_window, separate_by_group_formation=False,
     #                  sum_triads_for_mutual_gaze=True, dyads=True, triads=True, one_directioned_direct_gaze=False,
     #                  y_axis_text="One Direction Direct Gaze %",  figure_title="One Direction Direct Gaze")
 
