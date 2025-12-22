@@ -8,6 +8,7 @@ import os
 # 4: task engagement (TE) file from engagement_manager, but we can use the 90Hz file in data/annotations. It is not resampled to a particular sample rate, this is done in this processor class
 class MergedDatasetProcessor():
     df_wide_gaze: pd.DataFrame
+    df_long_gaze: pd.DataFrame
     working_dir: str
     data_folder_gaze: str 
     data_folder_blinks: str
@@ -18,6 +19,7 @@ class MergedDatasetProcessor():
     file_path_blink_rate:str
     file_path_TE:str
     group_names_file:str 
+
     def __init__(self, sampling:int, filename_gaze:str, filename_blink_duration_dyads:str, filename_blink_duration_triads:str, filename_blink_rate:str, filename_TE:str, data_folder_gaze:str = "", data_folder_blinks:str = "", data_folder_TE:str = "") -> None:
         # load dataframes
         self.working_dir = os.getcwd()
@@ -46,16 +48,36 @@ class MergedDatasetProcessor():
         group_names_df = pd.read_csv(os.path.join(self.working_dir, 'data', 'group_names_with_time_subsetsFullVERSION.csv'), sep=';')
         group_names = group_names_df['Group_Name'].to_list()
 
-        # modify gaze from wide to long
+        # modify gaze df from wide to long
+        self.df_long_gaze = self.gaze_df_wide_to_long(self.df_wide_gaze, group_names)
+
+        print("work on blinks")
+        self.df_blink_rates["TSGroupNTP"] = pd.to_datetime(self.df_blink_rates["TSGroupNTP"])
+        df_long_blinks:pd.DataFrame = pd.DataFrame()
+        # iterate all groups in blink_rate df
+        for group_name in group_names:
+            df_group = self.df_blink_rates.loc[self.df_blink_rates['group_name']==group_name]
+            start_TS = df_group.iloc[0]['TSGroupNTP']
+            df_group = df_group.copy() # to avoid adding a column on a df slice throwing a warning
+            df_group['seconds'] = (df_group['TSGroupNTP'] - start_TS).dt.total_seconds()
+            # merge gaze and blink rate per group
+            df_group_gaze = self.df_long_gaze[self.df_long_gaze['group_name'] == group_name]
+            df_group_merged = pd.merge(left=df_group, right=df_group_gaze, on='seconds')
+            df_long_blinks = pd.concat([df_long_blinks, df_group_merged])
+            print("pio")        
+        # return dataset
+        print("done")
+
+    def gaze_df_wide_to_long(self, df_wide_gaze, group_names) -> pd.DataFrame:
         dyad_features_names = ["MG_P1P2","1d_DG_P1","1d_DG_P2","0_D1"]
         triad_features_names= ["", ""]
         df_long: pd.DataFrame = pd.DataFrame()
         for group_name in group_names:            
-            group_cols = self.df_wide_gaze.columns.str.contains(group_name)
-            df_group = self.df_wide_gaze[self.df_wide_gaze.columns[group_cols]]
+            group_cols = df_wide_gaze.columns.str.contains(group_name)
+            df_group = df_wide_gaze[df_wide_gaze.columns[group_cols]]
             feature_names = dyad_features_names if "dyad" in group_name else triad_features_names
             feature_cols = [col for col in df_group.columns if any(term in col for term in feature_names)]
-            cols = self.df_wide_gaze.columns[group_cols]
+            cols = df_wide_gaze.columns[group_cols]
             df_group = df_group[feature_cols]
             df_group.dropna(inplace=True)
             if "dyad" in group_name:
@@ -67,15 +89,11 @@ class MergedDatasetProcessor():
                 df_group['0_D1'] = df_group[f"{group_name}_0_D1"]
                 df_group['1d_DG'] = df_group[f"{group_name}_3_D1"] + df_group[f"{group_name}_2_D1_different"] + df_group[f"{group_name}_2_D1_same"] + df_group[f"{group_name}_1_D1"]
                 df_group.drop(cols, axis=1, inplace=True)
-            df_group.insert(0, 'seconds_interaction_window', self.df_wide_gaze.iloc[df_group.index]['seconds_interaction_window'])
+            df_group.insert(0, 'seconds_interaction_window', df_wide_gaze.iloc[df_group.index]['seconds_interaction_window'])
             df_group['group_name'] = group_name
             df_long = pd.concat([df_long, df_group])
-            print("pio")
-        # for dyads
-        # dyad_01_MG_P1P2,dyad_01_1d_DG_P1,dyad_01_1d_DG_P2,dyad_01_0_D1
-
-        # return dataset
-        print("done")
+        df_long = df_long.rename(columns={"seconds_interaction_window":"seconds"})
+        return df_long
 
 
 if __name__ == "__main__":
