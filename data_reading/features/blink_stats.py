@@ -4,7 +4,14 @@ import statistics
 import pandas as pd
 from scipy import stats
 
-from data_reading.groups_manager import GroupsManager
+import os
+try:
+    from data_reading.groups_manager import GroupsManager
+except ImportError:
+    import sys
+    sys.path.append(os.getcwd())
+    from data_reading.groups_manager import GroupsManager
+
 import matplotlib.pyplot as plt
 import json
 
@@ -55,7 +62,10 @@ class BlinkStats:
     path_going_up_two_folders = "../../"
     path_prefix_file = path_going_up_two_folders + "data/_path_prefix.txt"
     data_folder_path = path_going_up_two_folders + "data/"
-
+    if not os.path.exists(path_prefix_file):
+        path_prefix_file = os.path.join(os.getcwd(), "data/_path_prefix.txt")
+    if not os.path.exists(data_folder_path):
+        data_folder_path = os.path.join(os.getcwd(), "data/")
 
     # def __init__(self, groups_blinks_with_timestamps: pd.DataFrame):
     def __init__(self, group_names: list[str] = [], group_names_filename: str = ""):
@@ -75,7 +85,7 @@ class BlinkStats:
 
 
     def populate_groups_blinks_dataset_with_a_subset_timeline(self, group_names_filename:str):
-        fullpath = self.data_folder_path + group_names_filename
+        fullpath = os.path.join(self.data_folder_path, group_names_filename)
         data_for_calculating_subsets = pd.read_csv(fullpath, sep=';')
 
         for index, row in data_for_calculating_subsets.iterrows():
@@ -471,7 +481,7 @@ class BlinkStats:
                     [self.group_synced_blinks_percent, synced_blinks_group_info], ignore_index=True)
 
 
-    def calculate_blink_rate(self, save_blinks_per_minute=False):
+    def calculate_blink_rate(self, sampling: int = 60, save_blinks_per_minute=False):
         if save_blinks_per_minute:
             all_blinks_per_minute_df = pd.DataFrame()
         for group in self.groups_blinks_with_timestamps:
@@ -479,7 +489,7 @@ class BlinkStats:
             blinks_df = group['blinks_dataframe']
             timestamps = blinks_df.index.tolist()
 
-            total_minutes_within_the_timespan = (timestamps[-1] - timestamps[0]).total_seconds()/60
+            total_minutes_within_the_timespan = (timestamps[-1] - timestamps[0]).total_seconds()/sampling
 
             blink_rates = []
 
@@ -498,7 +508,7 @@ class BlinkStats:
                                         'P3_blink_rate': blink_rates[2]}, index=[0])
 
             if save_blinks_per_minute:
-                df_resampled = blinks_df.resample('60s').sum()
+                df_resampled = blinks_df.resample(f'{sampling}s').sum()
                 df_resampled.drop(['P1_valid_blinks', 'P2_valid_blinks'], axis=1, inplace=True)
                 df_resampled['group_name']=group['group_name_short']
                 all_blinks_per_minute_df = pd.concat([all_blinks_per_minute_df, df_resampled])
@@ -650,12 +660,12 @@ if __name__ == "__main__":
     blink_stats_subsets = BlinkStats(group_names_filename=group_data_time_subset_filename)
 
     # get blinks rate
-    # blink_rates_df = blink_stats_subsets.get_groups_blink_rate()
+    blink_rates_df = blink_stats_subsets.get_groups_blink_rate()
     # # add blink RATES data to file
-    # blink_rates_file_path = blink_stats_subsets.data_folder_path + 'blink_rates_all_groups.csv'
-    # blink_rates_file = open(blink_rates_file_path, 'a')
-    #  blink_rates_file.write(blink_rates_df.to_string())
-    # blink_rates_file.close()
+    blink_rates_file_path = blink_stats_subsets.data_folder_path + 'blink_rates_all_groups.csv'
+    blink_rates_file = open(blink_rates_file_path, 'a')
+    blink_rates_file.write(blink_rates_df.to_string())
+    blink_rates_file.close()
 
 
     # # get blinks duration
