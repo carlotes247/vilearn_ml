@@ -664,14 +664,14 @@ if __name__ == "__main__":
     # Vars
     sampling_rate: int = 30 
     save_bpm_file: bool = True
-    label_bpm_file: str = f"30s_{datetime.datetime.today().date()}" 
+    label_bpm_file: str = f"{sampling_rate}s_{datetime.datetime.today().date()}" 
 
     # group_data_time_subset_filename = 'group_names_with_time_subsets.csv'
     group_data_time_subset_filename = 'group_names_with_time_subsetsFullVERSION.csv'
     blink_stats_subsets = BlinkStats(group_names_filename=group_data_time_subset_filename)
 
     # # get blinks rate
-    # blink_rates_df = blink_stats_subsets.get_groups_blink_rate(sampling=sampling_rate, save_bpm_file=save_bpm_file, label_bpm_file=label_bpm_file)
+    blink_rates_df = blink_stats_subsets.get_groups_blink_rate(sampling=sampling_rate, save_bpm_file=save_bpm_file, label_bpm_file=label_bpm_file)
     # # add blink RATES data to file
     # blink_rates_file_path = blink_stats_subsets.data_folder_path + 'blink_rates_all_groups.csv'
     # blink_rates_file = open(blink_rates_file_path, 'a')
