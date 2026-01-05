@@ -229,15 +229,22 @@ if __name__ == '__main__':
     nested_cv: bool = True
     nested_cv_manual: bool = True
     binary_clf: bool = True
+    data_file: str = "30s_TE_correlation_2025-12-27.csv" if binary_clf else ""
     # suffix run
-    suffix_run: str = "binary"
+    suffix_run: str = "30s_three_way"
     # load data
     # all groups, all features
-    data_loader: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, print_folds=False, debug_all_folds=False)
+    data_loader: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, 
+                                                                           print_folds=False, debug_all_folds=False, 
+                                                                           file_with_TE=data_file, sep=",")
     # dyads, all features
-    data_loader_dyads: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, dyads_only=True, print_folds=False, debug_all_folds=False)
+    data_loader_dyads: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, dyads_only=True, 
+                                                                                 print_folds=False, debug_all_folds=False, 
+                                                                                 file_with_TE=data_file, sep=",")
     # triads, all features
-    data_loader_triads: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, triads_only=True, print_folds=False, debug_all_folds=False)
+    data_loader_triads: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, triads_only=True, 
+                                                                                  print_folds=False, debug_all_folds=False, 
+                                                                                  file_with_TE=data_file, sep=",")
     # load models
     models: VilearnMLModels = VilearnMLModels()
     models_scaler: VilearnMLModels = VilearnMLModels(scaler=True)

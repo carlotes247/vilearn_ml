@@ -87,15 +87,15 @@ class VilearnMLModels:
                     'degree':[0,1,2,4]
                 }
             },
-            "SVM poly": {
-                'estimator': svm.SVC(),
-                'params': {
-                    'kernel': ['poly'],
-                    'C': [0.1, 1],
-                    'gamma': [0.1,0.01],
-                    'degree':[1,3]
-                }
-            },
+            # "SVM poly": {
+            #     'estimator': svm.SVC(),
+            #     'params': {
+            #         'kernel': ['poly'],
+            #         'C': [0.1, 1],
+            #         'gamma': [0.1,0.01],
+            #         'degree':[1,3]
+            #     }
+            # },
             "Decision Tree": {
                 'estimator': tree.DecisionTreeClassifier(),
                 'params': {
