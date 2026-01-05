@@ -1,0 +1,7 @@
+group_name, window_with_NaN, floorlevel, solution
+dyad_04, window 0/22 (0.0), floorlevel, added a 0 value because there is no BPM
+dyad_06, window 0/17 (0.0), floorlevel, added avg of all the other values because there is no BPM with similar value to pull duration from
+dyad_11, window 0/17 (0.0), floorlevel, added avg of all the other values because there is no BPM with similar value to pull duration from
+triad_06, window 20/20 (600), floorlevel, added avg (183) because it is similar to another of the BPM entries but there is another BPM entry with a lower value (160) so im not sure if this is sound
+triad_07, window 11/14 (330), floorlevel, added the avg between the closest two other BPM blink duration values (178.435)
+triad_02, window 6/15 (450), NOT floorlevel, added the avg between the closest two other BPM blink duration values (181.42)
