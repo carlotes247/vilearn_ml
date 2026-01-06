@@ -56,7 +56,7 @@ class VilearnMLModels:
             "Nearest Neighbors": {
                 'estimator': neighbors.KNeighborsClassifier(),
                 'params': {
-                    'n_neighbors': np.arange(2, 70, 1),
+                    'n_neighbors': np.arange(2, 100, 1),
                     'weights': ['uniform', 'distance']
                 }
             },
