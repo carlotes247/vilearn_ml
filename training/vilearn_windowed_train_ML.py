@@ -59,7 +59,7 @@ class VilearnMLTrain:
         self.results_df = pd.DataFrame()
         self.results_list = []
 
-    def run_nested_cv(self, models: VilearnMLModels, data_loader: VilearnWindowedDataLoaderML, nested_cv_manual: bool, eval_label: str = "", non_nested_comparison: bool = False, debug: bool = False) -> list[dict]:
+    def run_nested_cv(self, models: VilearnMLModels, data_loader: VilearnWindowedDataLoaderML, nested_cv_manual: bool, eval_label: str = "", group_label:str = "", features_label:str = "", sampling_label:str = "", non_nested_comparison: bool = False, debug: bool = False) -> list[dict]:
         # Cross validation for all models
         results_to_return: list[dict] = []
         for model_name, model_dict in models.param_grids_models.items():        
@@ -81,26 +81,28 @@ class VilearnMLTrain:
                 results =  self.__run_nested_cv_manual(model=model, model_name=model_name,
                                                         data_loader=data_loader, param_grid=param_grid, 
                                                         inner_cv=inner_cv, outer_cv=outer_cv, 
-                                                        model_version_label=eval_label)
-                results_to_return.append(results[0])
+                                                        model_version_label=eval_label, 
+                                                        group_label=group_label, features_label=features_label, 
+                                                        sampling_label=sampling_label, debug=debug)
+                results_to_return.extend(results)
             # Nested CV Automatic
             else:                
                 results = self.__run_nested_cv_automatic(model=model, model_name=model_name,
                                                             data_loader=data_loader, param_grid=param_grid,
                                                             inner_cv=inner_cv, outer_cv=outer_cv, 
                                                             model_version_label=eval_label)
-                results_to_return.append(results[0])
+                results_to_return.extend(results)
             # Non_nested CV for comparison
             if non_nested_comparison:
                 results = self.__run_non_nested_cv(model=model, model_name=model_name,
                                                             data_loader=data_loader, param_grid=param_grid,
                                                             inner_cv=inner_cv,  
                                                             model_version_label=eval_label)
-                results_to_return.append(results[0])
+                results_to_return.extend(results)
         return results_to_return
                              
                                  
-    def __run_nested_cv_manual(self, model, model_name:str, data_loader:VilearnWindowedDataLoaderML, param_grid, inner_cv, outer_cv, model_version_label: str, debug: bool = False) -> list[dict]:        
+    def __run_nested_cv_manual(self, model, model_name:str, data_loader:VilearnWindowedDataLoaderML, param_grid, inner_cv, outer_cv, model_version_label: str, group_label:str, features_label:str, sampling_label:str, debug: bool = False) -> list[dict]:        
         results_to_return: list[dict] = [] 
         y_true_all = []
         y_pred_all = []
@@ -133,6 +135,19 @@ class VilearnMLTrain:
             fold_acc = metrics.accuracy_score(y_test, y_pred)
             outer_scores.append(fold_acc)                    
             end_inner_cv = time.process_time()
+            # conf matrix outer fold
+            conf_matrix = metrics.confusion_matrix(y_test, y_pred)
+            # save all the information of each outer fold model
+            results_to_return.append({'Model': model_name,
+                                        'Fold': f"{i}", 
+                                        'Score':fold_acc, 
+                                        'CV': 'Nested', 
+                                        'Version': f'{model_version_label}_Manual',
+                                        'Group': group_label,
+                                        'Features': features_label,
+                                        'Sampling': sampling_label,
+                                        'Conf_Matrix': conf_matrix,
+                                        'Time': end_inner_cv-start_inner_cv})
             if (debug):
                 print(f"Outer {model_version_label} CV Fold {i} took {end_inner_cv-start_inner_cv} secs.")
             i = i+1
@@ -140,17 +155,34 @@ class VilearnMLTrain:
         if (debug):
             print(f"Outer {model_version_label} CV completed! Took {end_outer_cv-start_outer_cv} seconds")
         # Nested CV score (mean of outer fold scores)
-        nested_cv_score = np.mean(outer_scores)
+        nested_cv_score = np.mean(outer_scores) 
+        nested_cv_std= np.std(outer_scores)
         if (debug):
             print(f"Manual Nested CV Accuracy {model_version_label}: {nested_cv_score:.4f}")
         # Print confusion matrix and score once all loops are done                
         conf_matrix = metrics.confusion_matrix(y_true_all, y_pred_all)
+        # Average all outer folds
         results_to_return.append({'Model': model_name, 
-                                        'Score':nested_cv_score, 
-                                        'CV': 'Nested', 
-                                        'Version': f'{model_version_label}_Manual',
-                                        'Conf_Matrix': conf_matrix,
-                                        'Time': end_outer_cv-start_outer_cv})
+                                    'Fold': 'avg',
+                                    'Score':nested_cv_score, 
+                                    'CV': 'Nested', 
+                                    'Version': f'{model_version_label}_Manual',
+                                    'Group': group_label,
+                                    'Features': features_label,
+                                    'Sampling': sampling_label,
+                                    'Conf_Matrix': conf_matrix,
+                                    'Time': end_outer_cv-start_outer_cv})
+        # Std all outer folds
+        results_to_return.append({'Model': model_name, 
+                                    'Fold': 'std',
+                                    'Score': nested_cv_std, 
+                                    'CV': 'Nested', 
+                                    'Version': f'{model_version_label}_Manual',
+                                    'Group': group_label,
+                                    'Features': features_label,
+                                    'Sampling': sampling_label,
+                                    'Conf_Matrix': conf_matrix,
+                                    'Time': end_outer_cv-start_outer_cv})
         # print("Confusion Matrix:\n", conf_matrix)
         return results_to_return
 
@@ -214,24 +246,37 @@ class VilearnMLTrain:
         results_df.to_csv(f'results_ML_train_{model_version_label}_{models_suffix}_{datetime.now().date()}.csv')
         return results_df 
 
-    def train_and_evaluate(self, eval_label: str = "", debug=False) -> None:
+    def train_and_evaluate(self, eval_label: str = "", group_label:str = "", features_label:str = "", sampling_label:str = "", debug=False) -> None:
         results = []
         if self.nested_cv:
             results = self.run_nested_cv(models=self.ml_models, data_loader=self.data_loader, 
-                                        nested_cv_manual=True, eval_label=eval_label, debug=debug)
-            self.results_list = [result for result in results]
+                                        nested_cv_manual=True, eval_label=eval_label,
+                                        group_label=group_label, features_label=features_label,
+                                        sampling_label=sampling_label, debug=debug)
+            self.results_list.extend(results)
         self.results_df = self.save_results(self.results_list, model_version_label=eval_label)
 
 
 
 if __name__ == '__main__':
     # config flags
+    debug: bool = False
     nested_cv: bool = True
     nested_cv_manual: bool = True
     binary_clf: bool = True
-    data_file: str = "30s_TE_correlation_2025-12-27.csv" if binary_clf else ""
+    all_groups: bool = True
+    dyads: bool = True
+    triads: bool = True
+    simple: bool = False
+    scaler: bool = True
+    all_features : bool = True
+    aixvr_features: bool = True
+    data_file: str = "" # leave empty for the original 60s file from the AixVR paper
+    sampling: int = 60
+    if sampling == 30:
+        data_file = "30s_TE_correlation_2025-12-27_edited.csv"
     # suffix run
-    suffix_run: str = "30s_three_way"
+    suffix_run: str = f"{sampling}s_binary" if binary_clf else f"{sampling}s_three_way"
     # load data
     # all groups, all features
     data_loader: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, 
@@ -251,86 +296,110 @@ if __name__ == '__main__':
 
     # all logic encapsulated in class
     # Simple models, all groups
-    vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
-                                                   auto_cv=(not nested_cv_manual),
-                                                    binary_clf=binary_clf,
-                                                    data_loader=data_loader, ml_models=models)
-    vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_all_groups_all_features_{suffix_run}", debug=True)
+    if all_groups and simple and all_features:
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_all_groups_all_features_{suffix_run}",
+                                                group_label="All", features_label="All", sampling_label=f"{sampling}", debug=debug)
     # simple model dyads, all features
-    vilearn_train_simple_dyads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
-                                                                auto_cv=(not nested_cv_manual),
-                                                                    binary_clf=binary_clf,
-                                                                    data_loader=data_loader_dyads, ml_models=models)
-    vilearn_train_simple_dyads_all_features.train_and_evaluate(eval_label=f"SIMPLE_dyads_all_features_{suffix_run}", debug=True)
+    if dyads and simple and all_features:
+        vilearn_train_simple_dyads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                                    auto_cv=(not nested_cv_manual),
+                                                                        binary_clf=binary_clf,
+                                                                        data_loader=data_loader_dyads, ml_models=models)
+        vilearn_train_simple_dyads_all_features.train_and_evaluate(eval_label=f"SIMPLE_dyads_all_features_{suffix_run}",
+                                                group_label="Dyads", features_label="All", sampling_label=f"{sampling}", debug=debug)
     # simple model triads, all features
-    vilearn_train_simple_triads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
-                                                                auto_cv=(not nested_cv_manual),
-                                                                    binary_clf=binary_clf,
-                                                                    data_loader=data_loader_triads, ml_models=models)
-    vilearn_train_simple_triads_all_features.train_and_evaluate(eval_label=f"SIMPLE_triads_all_features_{suffix_run}", debug=True)
+    if triads and simple and all_features:
+        vilearn_train_simple_triads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                                    auto_cv=(not nested_cv_manual),
+                                                                        binary_clf=binary_clf,
+                                                                        data_loader=data_loader_triads, ml_models=models)
+        vilearn_train_simple_triads_all_features.train_and_evaluate(eval_label=f"SIMPLE_triads_all_features_{suffix_run}",
+                                                group_label="Triads", features_label="All", sampling_label=f"{sampling}", debug=debug)
     # Scaler models, all groups
-    vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
-                                                   auto_cv=(not nested_cv_manual),
-                                                    binary_clf=binary_clf,
-                                                    data_loader=data_loader, ml_models=models_scaler)
-    vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_all_groups_all_features_{suffix_run}", debug=True)
-    # Scaler models, dyads all features    
-    vilearn_train_scaler_dyads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
-                                                   auto_cv=(not nested_cv_manual),
-                                                    binary_clf=binary_clf,
-                                                    data_loader=data_loader_triads, ml_models=models_scaler)
-    vilearn_train_scaler_dyads_all_features.train_and_evaluate(eval_label=f"SCALER_dyads_all_features_{suffix_run}", debug=True)
+    if all_groups and scaler and all_features:
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_all_groups_all_features_{suffix_run}",
+                                                group_label="All", features_label="All", sampling_label=f"{sampling}", debug=debug)
+    # Scaler models, dyads all features  
+    if dyads and scaler and all_features:  
+        vilearn_train_scaler_dyads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_triads, ml_models=models_scaler)
+        vilearn_train_scaler_dyads_all_features.train_and_evaluate(eval_label=f"SCALER_dyads_all_features_{suffix_run}",
+                                                group_label="Dyads", features_label="All", sampling_label=f"{sampling}", debug=debug)
     # Scaler models, triads all features
-    vilearn_train_scaler_triads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
-                                                   auto_cv=(not nested_cv_manual),
-                                                    binary_clf=binary_clf,
-                                                    data_loader=data_loader_triads, ml_models=models_scaler)
-    vilearn_train_scaler_triads_all_features.train_and_evaluate(eval_label=f"SCALER_triads_all_features_{suffix_run}", debug=True)
+    if triads and scaler and all_features:
+        vilearn_train_scaler_triads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_triads, ml_models=models_scaler)
+        vilearn_train_scaler_triads_all_features.train_and_evaluate(eval_label=f"SCALER_triads_all_features_{suffix_run}",
+                                                group_label="Triads", features_label="All", sampling_label=f"{sampling}", debug=debug)
     
     # Select features for dyads and triads according to AIxVR paper for both simple and scaler models
     # Simple models, all groups, AIxVR paper features (blink rate, MG)
-    data_loader.select_features(['MG','BPM'])
-    vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
-                                                   auto_cv=(not nested_cv_manual),
-                                                    binary_clf=binary_clf,
-                                                    data_loader=data_loader, ml_models=models)
-    vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_all_groups_f_MG_BPM_{suffix_run}", debug=True)
+    if all_groups and simple and aixvr_features:
+        data_loader.select_features(['MG','BPM'])
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_all_groups_f_MG_BPM_{suffix_run}",
+                                                group_label="All", features_label="AIxVR", sampling_label=f"{sampling}", debug=debug)
 
     # simple model dyads, features (1DG, MG)
-    data_loader_dyads.select_features(['MG','1d_DG'])
-    vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
-                                                   auto_cv=(not nested_cv_manual),
-                                                    binary_clf=binary_clf,
-                                                    data_loader=data_loader_dyads, ml_models=models)
-    vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_dyads_f_MG_1DG_{suffix_run}", debug=True)
+    if dyads and simple and aixvr_features:
+        data_loader_dyads.select_features(['MG','1d_DG'])
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_dyads, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_dyads_f_MG_1DG_{suffix_run}",
+                                                group_label="Dyads", features_label="AIxVR", sampling_label=f"{sampling}", debug=debug)
     # simple model triads, features (BPM)
-    data_loader_triads.select_features(['BPM'])
-    vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
-                                                   auto_cv=(not nested_cv_manual),
-                                                    binary_clf=binary_clf,
-                                                    data_loader=data_loader_triads, ml_models=models)
-    vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_triads_f_BPM_{suffix_run}", debug=True)
+    if triads and simple and aixvr_features:
+        data_loader_triads.select_features(['BPM'])
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_triads, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_triads_f_BPM_{suffix_run}",
+                                                group_label="Triads", features_label="AIxVR", sampling_label=f"{sampling}", debug=debug)
     # Scaler models, all groups AIxVR paper features (blink rate, MG)
-    data_loader.select_features(['MG','BPM'])
-    vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
-                                                   auto_cv=(not nested_cv_manual),
-                                                    binary_clf=binary_clf,
-                                                    data_loader=data_loader, ml_models=models_scaler)
-    vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_all_groups_f_MG_BPM_{suffix_run}", debug=True)
+    if all_groups and scaler and aixvr_features:
+        data_loader.select_features(['MG','BPM'])
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_all_groups_f_MG_BPM_{suffix_run}",
+                                                group_label="All", features_label="AIxVR", sampling_label=f"{sampling}", debug=debug)
     # Scaler models, dyads features (1DG, MG)
-    data_loader_dyads.select_features(['MG','1d_DG'])
-    vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
-                                                   auto_cv=(not nested_cv_manual),
-                                                    binary_clf=binary_clf,
-                                                    data_loader=data_loader_dyads, ml_models=models_scaler)
-    vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_dyads_f_MG_1DG_{suffix_run}", debug=True)
+    if dyads and scaler and aixvr_features:
+        data_loader_dyads.select_features(['MG','1d_DG'])
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_dyads, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_dyads_f_MG_1DG_{suffix_run}",
+                                                group_label="Dyads", features_label="AIxVR", sampling_label=f"{sampling}", debug=debug)
     # Scaler models, triads features (BPM)
-    data_loader_triads.select_features(['BPM'])
-    vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
-                                                   auto_cv=(not nested_cv_manual),
-                                                    binary_clf=binary_clf,
-                                                    data_loader=data_loader_triads, ml_models=models_scaler)
-    vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_triads_f_BPM_{suffix_run}", debug=True)
+    if triads and scaler and aixvr_features:
+        data_loader_triads.select_features(['BPM'])
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_triads, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_triads_f_BPM_{suffix_run}",
+                                                group_label="Triads", features_label="AIxVR", sampling_label=f"{sampling}", debug=debug)
 
     # TODO: run svm poly separately because it takes too long
 
