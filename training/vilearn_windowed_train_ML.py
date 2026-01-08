@@ -300,6 +300,8 @@ if __name__ == '__main__':
         data_file = "30s_TE_correlation_2025-12-27_edited.csv"
     # suffix run
     suffix_run: str = f"{sampling}s_binary" if binary_clf else f"{sampling}s_three_way"
+    # extra suffix opportunity
+    suffix_run = f"{suffix_run}_all_groups_avg_separated"
     # load data
     # all groups, all features
     data_loader: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, 
