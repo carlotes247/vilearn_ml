@@ -267,12 +267,12 @@ if __name__ == '__main__':
     all_groups: bool = True
     dyads: bool = True
     triads: bool = True
-    simple: bool = True
-    scaler: bool = False
+    simple: bool = False
+    scaler: bool = True
     all_features : bool = True
     aixvr_features: bool = True
     data_file: str = "" # leave empty for the original 60s file from the AixVR paper
-    sampling: int = 30
+    sampling: int = 60
     if sampling == 30:
         data_file = "30s_TE_correlation_2025-12-27_edited.csv"
     # suffix run
