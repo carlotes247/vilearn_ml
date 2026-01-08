@@ -59,7 +59,7 @@ class VilearnMLTrain:
         self.results_df = pd.DataFrame()
         self.results_list = []
 
-    def run_nested_cv(self, models: VilearnMLModels, data_loader: VilearnWindowedDataLoaderML, nested_cv_manual: bool, eval_label: str = "", group_label:str = "", features_label:str = "", sampling_label:str = "", non_nested_comparison: bool = False, debug: bool = False) -> list[dict]:
+    def run_nested_cv(self, models: VilearnMLModels, data_loader: VilearnWindowedDataLoaderML, nested_cv_manual: bool, eval_label: str = "", group_label:str = "", features_label:str = "", sampling_label:str = "", non_nested_comparison: bool = False, separate_avg_groups:bool = False, debug: bool = False) -> list[dict]:
         # Cross validation for all models
         results_to_return: list[dict] = []
         for model_name, model_dict in models.param_grids_models.items():        
@@ -83,7 +83,8 @@ class VilearnMLTrain:
                                                         inner_cv=inner_cv, outer_cv=outer_cv, 
                                                         model_version_label=eval_label, 
                                                         group_label=group_label, features_label=features_label, 
-                                                        sampling_label=sampling_label, debug=debug)
+                                                        sampling_label=sampling_label, 
+                                                        separate_avg_groups=separate_avg_groups, debug=debug)
                 results_to_return.extend(results)
             # Nested CV Automatic
             else:                
@@ -102,11 +103,13 @@ class VilearnMLTrain:
         return results_to_return
                              
                                  
-    def __run_nested_cv_manual(self, model, model_name:str, data_loader:VilearnWindowedDataLoaderML, param_grid, inner_cv, outer_cv, model_version_label: str, group_label:str, features_label:str, sampling_label:str, debug: bool = False) -> list[dict]:        
+    def __run_nested_cv_manual(self, model, model_name:str, data_loader:VilearnWindowedDataLoaderML, param_grid, inner_cv, outer_cv, model_version_label: str, group_label:str, features_label:str, sampling_label:str, separate_avg_groups:bool = False, debug: bool = False) -> list[dict]:        
         results_to_return: list[dict] = [] 
         y_true_all = []
         y_pred_all = []
         outer_scores = []
+        outer_scores_dyads = []
+        outer_scores_triads = []
         i = 1
         start_outer_cv = time.process_time()
         verbose = 1 if debug else 0
@@ -133,7 +136,7 @@ class VilearnMLTrain:
             y_pred_all.extend(y_pred)
             # Collect score for this outer fold
             fold_acc = metrics.accuracy_score(y_test, y_pred)
-            outer_scores.append(fold_acc)                    
+            outer_scores.append(fold_acc)
             end_inner_cv = time.process_time()
             # conf matrix outer fold
             conf_matrix = metrics.confusion_matrix(y_test, y_pred)
@@ -148,6 +151,16 @@ class VilearnMLTrain:
                                         'Sampling': sampling_label,
                                         'Conf_Matrix': conf_matrix,
                                         'Time': end_inner_cv-start_inner_cv})
+            # only if we want a difference between test score on dyad or triad test set
+            if separate_avg_groups:
+                if 'dyad' in group_out_name:
+                    outer_scores_dyads.append(fold_acc)
+                    results_to_return[-1]['Score_on_dyads'] = outer_scores_dyads[-1]
+                    results_to_return[-1]['Score_on_triads'] = 0     
+                elif 'triad' in group_out_name:
+                    outer_scores_triads.append(fold_acc)  
+                    results_to_return[-1]['Score_on_dyads'] = 0
+                    results_to_return[-1]['Score_on_triads'] = outer_scores_triads[-1]                                         
             if (debug):
                 print(f"Outer {model_version_label} CV Fold {i} took {end_inner_cv-start_inner_cv} secs.")
             i = i+1
@@ -172,6 +185,10 @@ class VilearnMLTrain:
                                     'Sampling': sampling_label,
                                     'Conf_Matrix': conf_matrix,
                                     'Time': end_outer_cv-start_outer_cv})
+        # only if we want a difference between test score on dyad or triad test set
+        if separate_avg_groups:
+            results_to_return[-1]['Score_on_dyads'] = np.mean(outer_scores_dyads)
+            results_to_return[-1]['Score_on_triads'] = np.mean(outer_scores_triads)     
         # Std all outer folds
         results_to_return.append({'Model': model_name, 
                                     'Fold': 'std',
@@ -183,6 +200,10 @@ class VilearnMLTrain:
                                     'Sampling': sampling_label,
                                     'Conf_Matrix': conf_matrix,
                                     'Time': end_outer_cv-start_outer_cv})
+        # only if we want a difference between test score on dyad or triad test set
+        if separate_avg_groups:
+            results_to_return[-1]['Score_on_dyads'] = np.std(outer_scores_dyads)
+            results_to_return[-1]['Score_on_triads'] = np.std(outer_scores_triads)     
         # print("Confusion Matrix:\n", conf_matrix)
         return results_to_return
 
@@ -246,13 +267,14 @@ class VilearnMLTrain:
         results_df.to_csv(f'results_ML_train_{model_version_label}_{models_suffix}_{datetime.now().date()}.csv')
         return results_df 
 
-    def train_and_evaluate(self, eval_label: str = "", group_label:str = "", features_label:str = "", sampling_label:str = "", debug=False) -> None:
+    def train_and_evaluate(self, eval_label: str = "", group_label:str = "", features_label:str = "", sampling_label:str = "", separate_avg_groups:bool = False, debug=False) -> None:
         results = []
         if self.nested_cv:
             results = self.run_nested_cv(models=self.ml_models, data_loader=self.data_loader, 
                                         nested_cv_manual=True, eval_label=eval_label,
                                         group_label=group_label, features_label=features_label,
-                                        sampling_label=sampling_label, debug=debug)
+                                        sampling_label=sampling_label, 
+                                        separate_avg_groups=separate_avg_groups, debug=debug)
             self.results_list.extend(results)
         self.results_df = self.save_results(self.results_list, model_version_label=eval_label)
 
@@ -265,12 +287,13 @@ if __name__ == '__main__':
     nested_cv_manual: bool = True
     binary_clf: bool = True
     all_groups: bool = True
-    dyads: bool = True
-    triads: bool = True
-    simple: bool = False
+    dyads: bool = False
+    triads: bool = False
+    simple: bool = True
     scaler: bool = True
     all_features : bool = True
     aixvr_features: bool = True
+    separate_avg_groups: bool = True
     data_file: str = "" # leave empty for the original 60s file from the AixVR paper
     sampling: int = 60
     if sampling == 30:
@@ -302,7 +325,8 @@ if __name__ == '__main__':
                                                         binary_clf=binary_clf,
                                                         data_loader=data_loader, ml_models=models)
         vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_all_groups_all_features_{suffix_run}",
-                                                group_label="All", features_label="All", sampling_label=f"{sampling}", debug=debug)
+                                                group_label="All", features_label="All", sampling_label=f"{sampling}", 
+                                                separate_avg_groups=separate_avg_groups, debug=debug)
     # simple model dyads, all features
     if dyads and simple and all_features:
         vilearn_train_simple_dyads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
@@ -326,7 +350,8 @@ if __name__ == '__main__':
                                                         binary_clf=binary_clf,
                                                         data_loader=data_loader, ml_models=models_scaler)
         vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_all_groups_all_features_{suffix_run}",
-                                                group_label="All", features_label="All", sampling_label=f"{sampling}", debug=debug)
+                                                group_label="All", features_label="All", sampling_label=f"{sampling}", 
+                                                separate_avg_groups=separate_avg_groups, debug=debug)
     # Scaler models, dyads all features  
     if dyads and scaler and all_features:  
         vilearn_train_scaler_dyads_all_features: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
@@ -353,7 +378,8 @@ if __name__ == '__main__':
                                                         binary_clf=binary_clf,
                                                         data_loader=data_loader, ml_models=models)
         vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_all_groups_f_MG_BPM_{suffix_run}",
-                                                group_label="All", features_label="AIxVR", sampling_label=f"{sampling}", debug=debug)
+                                                group_label="All", features_label="AIxVR", sampling_label=f"{sampling}", 
+                                                separate_avg_groups=separate_avg_groups, debug=debug)
 
     # simple model dyads, features (1DG, MG)
     if dyads and simple and aixvr_features:
@@ -381,7 +407,8 @@ if __name__ == '__main__':
                                                         binary_clf=binary_clf,
                                                         data_loader=data_loader, ml_models=models_scaler)
         vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_all_groups_f_MG_BPM_{suffix_run}",
-                                                group_label="All", features_label="AIxVR", sampling_label=f"{sampling}", debug=debug)
+                                                group_label="All", features_label="AIxVR", sampling_label=f"{sampling}", 
+                                                separate_avg_groups=separate_avg_groups, debug=debug)
     # Scaler models, dyads features (1DG, MG)
     if dyads and scaler and aixvr_features:
         data_loader_dyads.select_features(['MG','1d_DG'])
