@@ -148,6 +148,7 @@ class VilearnMLTrain:
                                         'Version': f'{model_version_label}_Manual',
                                         'Group': group_label,
                                         'Features': features_label,
+                                        'Group_Name': group_out_name,
                                         'Sampling': sampling_label,
                                         'Conf_Matrix': conf_matrix,
                                         'Time': end_inner_cv-start_inner_cv})
@@ -182,6 +183,7 @@ class VilearnMLTrain:
                                     'Version': f'{model_version_label}_Manual',
                                     'Group': group_label,
                                     'Features': features_label,
+                                    'Group_Name': 'avg',
                                     'Sampling': sampling_label,
                                     'Conf_Matrix': conf_matrix,
                                     'Time': end_outer_cv-start_outer_cv})
@@ -197,6 +199,7 @@ class VilearnMLTrain:
                                     'Version': f'{model_version_label}_Manual',
                                     'Group': group_label,
                                     'Features': features_label,
+                                    'Group_Name': 'std',
                                     'Sampling': sampling_label,
                                     'Conf_Matrix': conf_matrix,
                                     'Time': end_outer_cv-start_outer_cv})
@@ -290,7 +293,7 @@ if __name__ == '__main__':
     dyads: bool = False
     triads: bool = False
     simple: bool = True
-    scaler: bool = True
+    scaler: bool = False
     all_features : bool = True
     aixvr_features: bool = True
     separate_avg_groups: bool = True
