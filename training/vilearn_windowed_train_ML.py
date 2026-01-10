@@ -293,18 +293,18 @@ if __name__ == '__main__':
     dyads: bool = False
     triads: bool = False
     simple: bool = True
-    scaler: bool = False
+    scaler: bool = True
     all_features : bool = True
     aixvr_features: bool = True
     separate_avg_groups: bool = True
     data_file: str = "" # leave empty for the original 60s file from the AixVR paper
-    sampling: int = 60
+    sampling: int = 30
     if sampling == 30:
         data_file = "30s_TE_correlation_2025-12-27_edited.csv"
     # suffix run
     suffix_run: str = f"{sampling}s_binary" if binary_clf else f"{sampling}s_three_way"
     # extra suffix opportunity
-    suffix_run = f"{suffix_run}_all_groups_avg_separated"
+    suffix_run = f"{suffix_run}_all_groups_avg_separated_with_group_name"
     # load data
     # all groups, all features
     data_loader: VilearnWindowedDataLoaderML = VilearnWindowedDataLoaderML(bins_binary=binary_clf, 
