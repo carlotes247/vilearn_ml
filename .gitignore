@@ -170,3 +170,4 @@ testing/audio_vilearnchannel1gated2.wav
 # file with data paths
 data_paths.txt
 data/_path_prefix.txt
+data/discover/merged/*.parquet

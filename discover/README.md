@@ -5,6 +5,9 @@ This folder contains the batch submission script and supporting files for runnin
 ## Files
 
 - `batch_submit_jobs.py` — submits extraction jobs to DISCOVER/NOVA.
+- `export_vilearn_annotations.py` — exports annotations from NOVA into `data/discover/<session>/`.
+- `merge_vilearn_features.py` — merges annotations into one CSV per session in `data/discover/merged/`.
+- `opensmile_egemapsv02_functionals_dims.txt` — openSMILE eGeMAPSv02 functional dimension names (88 dims).
 - `vilearn_more.set` — list of session names (one per line). Source of truth for what gets processed.
 - `.env.example` — template for DB connection credentials.
 - `.env` — your local credentials (not committed).
@@ -69,6 +72,30 @@ Job IDs are generated as:
 
 - `vl_{trainer}_{role}` for non‑chunked jobs
 - `vl_{trainer}_{role}_{k:02}` for chunked jobs
+
+## Export + Merge
+
+1. Export annotations from NOVA:
+
+```bash
+python discover/export_vilearn_annotations.py
+```
+
+2. Merge into one CSV per session:
+
+```bash
+python discover/merge_vilearn_features.py
+```
+
+`merge_vilearn_features.py` also supports optional Parquet generation:
+
+- `GENERATE_PARQUET = False` (default): only CSV is written
+- `GENERATE_PARQUET = True`: Parquet includes stream features
+  - labeled openSMILE columns (`opensmile_<feature_name>`)
+  - synthetic emow2v columns (`emow2v_0000...`)
+  - synthetic sentiment embedding columns (`sentiment_emb_<role>_0000...`)
+
+For quick tests, `TEST_SESSIONS` can be set to a small subset. Set `TEST_SESSIONS = []` for full runs.
 
 ## Notes
 

@@ -1,2 +1,6 @@
+hcai-discover-utils
 requests
 python-dotenv
+pandas
+numpy
+pyarrow
