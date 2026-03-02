@@ -1,0 +1,54 @@
+{
+  "individual_engagement": {
+    "target": "engagement_target",
+    "status": "ok",
+    "rows": 4058,
+    "linear": {
+      "r2": 0.09663416984829121,
+      "mae": 0.15706520550427489,
+      "corr_pred_true_pearson": 0.32224637937885825,
+      "corr_pred_true_pearson_p": 4.471882635196168e-21,
+      "corr_pred_true_spearman": 0.3430878475622606,
+      "corr_pred_true_spearman_p": 7.602954655519668e-24,
+      "f_pvalue": 6.150584185070376e-97,
+      "adj_r2": 0.11163834953226814
+    },
+    "logistic": {
+      "threshold_median": 0.511956,
+      "accuracy": 0.6527093596059114,
+      "roc_auc": 0.7048176964149505,
+      "corr_pred_true_pearson": 0.3556605918817476,
+      "corr_pred_true_pearson_p": 1.2749821352109027e-25,
+      "corr_pred_true_spearman": 0.35371929666256097,
+      "corr_pred_true_spearman_p": 2.4261318704578764e-25,
+      "llr_pvalue": 4.3736400434228355e-108,
+      "pseudo_r2": 0.09753416039502905
+    }
+  },
+  "group_task_engagement": {
+    "target": "task_engagement_mean",
+    "status": "ok",
+    "rows": 4175,
+    "linear": {
+      "r2": 0.0995367887998847,
+      "mae": 0.2930389195273787,
+      "corr_pred_true_pearson": 0.31756906119062445,
+      "corr_pred_true_pearson_p": 5.083903686635174e-21,
+      "corr_pred_true_spearman": 0.2928704612433934,
+      "corr_pred_true_spearman_p": 5.603017892218937e-18,
+      "f_pvalue": 8.435958325451911e-80,
+      "adj_r2": 0.09120747414970987
+    },
+    "logistic": {
+      "threshold_median": 0.702783930782313,
+      "accuracy": 0.6215568862275449,
+      "roc_auc": 0.6779171461449943,
+      "corr_pred_true_pearson": 0.3043714264246919,
+      "corr_pred_true_pearson_p": 2.333212796000782e-19,
+      "corr_pred_true_spearman": 0.3077139242269003,
+      "corr_pred_true_spearman_p": 9.015967478482841e-20,
+      "llr_pvalue": 7.714470029932026e-55,
+      "pseudo_r2": 0.051158158453229685
+    }
+  }
+}

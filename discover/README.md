@@ -7,6 +7,7 @@ This folder contains the batch submission script and supporting files for runnin
 - `batch_submit_jobs.py` — submits extraction jobs to DISCOVER/NOVA.
 - `export_vilearn_annotations.py` — exports annotations from NOVA into `data/discover/<session>/`.
 - `merge_vilearn_features.py` — merges annotations into one CSV per session in `data/discover/merged/`.
+- `derive_vilearn_stats.py` — derives segment/session-role statistics and fits linear/logistic models for engagement targets.
 - `opensmile_egemapsv02_functionals_dims.txt` — openSMILE eGeMAPSv02 functional dimension names (88 dims).
 - `vilearn_more.set` — list of session names (one per line). Source of truth for what gets processed.
 - `.env.example` — template for DB connection credentials.
@@ -96,6 +97,24 @@ python discover/merge_vilearn_features.py
   - synthetic sentiment embedding columns (`sentiment_emb_<role>_0000...`)
 
 For quick tests, `TEST_SESSIONS` can be set to a small subset. Set `TEST_SESSIONS = []` for full runs.
+
+3. Derive higher-level stats and run baseline explanatory models:
+
+```bash
+python discover/derive_vilearn_stats.py
+```
+
+Outputs in `data/discover/derived/`:
+
+- `segments.csv` (and optional `segments.parquet` when enabled in script):
+  - one row per transcript segment (`from,to` right-open interval)
+  - text metrics: `word_count`, `avg_word_length`, `words_per_second`, `question`, `statement`
+  - feature window stats per segment: mean + std for sentiment/engagement/task_engagement/arousal/dominance/valence
+- `session_role_stats.csv` (and optional `session_role_stats.parquet` when enabled in script): aggregated per `(session, role)`
+- `model_metrics.json`: metrics for
+  - linear regression and logistic regression on individual engagement
+  - linear regression and logistic regression on group task engagement
+- `model_coefficients.csv`: feature coefficients for all fitted models
 
 ## Notes
 

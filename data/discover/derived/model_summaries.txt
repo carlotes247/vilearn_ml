@@ -1,0 +1,150 @@
+=== individual_engagement ===
+Linear pred-vs-true corr: pearson=0.3222 (p=4.47e-21), spearman=0.3431 (p=7.6e-24)
+Linear (statsmodels)
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:      engagement_target   R-squared:                       0.114
+Model:                            OLS   Adj. R-squared:                  0.112
+Method:                 Least Squares   F-statistic:                     40.22
+Date:                Mon, 02 Mar 2026   Prob (F-statistic):           6.15e-97
+Time:                        15:28:48   Log-Likelihood:                 928.79
+No. Observations:                4058   AIC:                            -1830.
+Df Residuals:                    4044   BIC:                            -1741.
+Df Model:                          13                                         
+Covariance Type:            nonrobust                                         
+==========================================================================================
+                             coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------------------
+const                      0.1978      0.017     11.906      0.000       0.165       0.230
+segment_duration_s        -0.0160      0.003     -5.089      0.000      -0.022      -0.010
+word_count                 0.0096      0.001      9.611      0.000       0.008       0.012
+avg_word_length            0.0141      0.002      6.450      0.000       0.010       0.018
+words_per_second          -0.0012      0.001     -1.864      0.062      -0.002    6.23e-05
+question                   0.0647      0.011      5.995      0.000       0.044       0.086
+statement                  0.1331      0.009     14.936      0.000       0.116       0.151
+sentiment_p_blue_mean     -0.0019      0.013     -0.148      0.882      -0.028       0.024
+sentiment_p_green_mean     0.0147      0.013      1.173      0.241      -0.010       0.039
+sentiment_p_red_mean       0.0333      0.019      1.767      0.077      -0.004       0.070
+arousal_mean               1.5805      0.239      6.602      0.000       1.111       2.050
+dominance_mean            -1.7276      0.294     -5.874      0.000      -2.304      -1.151
+valence_mean               0.2049      0.139      1.474      0.141      -0.068       0.477
+role_p_green               0.0685      0.007      9.586      0.000       0.054       0.083
+role_p_red                 0.0721      0.009      7.715      0.000       0.054       0.090
+==============================================================================
+Omnibus:                       19.934   Durbin-Watson:                   0.418
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               20.179
+Skew:                          -0.170   Prob(JB):                     4.15e-05
+Kurtosis:                       2.934   Cond. No.                     4.45e+15
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The smallest eigenvalue is 3.92e-26. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+Logistic pred-vs-true corr: pearson=0.3557 (p=1.27e-25), spearman=0.3537 (p=2.43e-25)
+Logistic (statsmodels)
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:      engagement_target   No. Observations:                 4058
+Model:                          Logit   Df Residuals:                     4043
+Method:                           MLE   Df Model:                           14
+Date:                Mon, 02 Mar 2026   Pseudo R-squ.:                 0.09753
+Time:                        15:28:48   Log-Likelihood:                -2538.3
+converged:                       True   LL-Null:                       -2812.7
+Covariance Type:            nonrobust   LLR p-value:                4.374e-108
+==========================================================================================
+                             coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------------------
+const                     -1.5884   2.98e+06  -5.33e-07      1.000   -5.84e+06    5.84e+06
+segment_duration_s        -0.1367      0.037     -3.667      0.000      -0.210      -0.064
+word_count                 0.1075      0.012      8.731      0.000       0.083       0.132
+avg_word_length            0.1768      0.025      7.019      0.000       0.127       0.226
+words_per_second          -0.0176      0.010     -1.817      0.069      -0.037       0.001
+question                  -1.0221   2.98e+06  -3.43e-07      1.000   -5.84e+06    5.84e+06
+statement                 -0.5663   2.98e+06   -1.9e-07      1.000   -5.84e+06    5.84e+06
+sentiment_p_blue_mean      0.0043      0.143      0.030      0.976      -0.276       0.284
+sentiment_p_green_mean     0.2787      0.140      1.990      0.047       0.004       0.553
+sentiment_p_red_mean       0.4553      0.217      2.095      0.036       0.029       0.881
+arousal_mean               8.6745      2.702      3.211      0.001       3.380      13.969
+dominance_mean            -5.2997      3.286     -1.613      0.107     -11.741       1.141
+valence_mean              -2.5719      1.543     -1.667      0.095      -5.595       0.451
+role_p_green               0.7228      0.080      9.057      0.000       0.566       0.879
+role_p_red                 1.0373      0.105      9.840      0.000       0.831       1.244
+==========================================================================================
+
+=== group_task_engagement ===
+Linear pred-vs-true corr: pearson=0.3176 (p=5.08e-21), spearman=0.2929 (p=5.6e-18)
+Linear (statsmodels)
+                             OLS Regression Results                             
+================================================================================
+Dep. Variable:     task_engagement_mean   R-squared:                       0.094
+Model:                              OLS   Adj. R-squared:                  0.091
+Method:                   Least Squares   F-statistic:                     33.22
+Date:                  Mon, 02 Mar 2026   Prob (F-statistic):           8.44e-80
+Time:                          15:28:48   Log-Likelihood:                -1351.1
+No. Observations:                  4175   AIC:                             2730.
+Df Residuals:                      4161   BIC:                             2819.
+Df Model:                            13                                         
+Covariance Type:              nonrobust                                         
+==========================================================================================
+                             coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------------------
+const                   1.733e+11   2.04e+11      0.849      0.396   -2.27e+11    5.74e+11
+segment_duration_s         0.0185      0.005      3.434      0.001       0.008       0.029
+word_count                 0.0030      0.002      1.754      0.080      -0.000       0.006
+avg_word_length           -0.0163      0.004     -4.373      0.000      -0.024      -0.009
+words_per_second           0.0017      0.001      1.525      0.127      -0.000       0.004
+question               -1.733e+11   2.04e+11     -0.849      0.396   -5.74e+11    2.27e+11
+statement              -1.733e+11   2.04e+11     -0.849      0.396   -5.74e+11    2.27e+11
+sentiment_p_blue_mean      0.0450      0.023      1.985      0.047       0.001       0.089
+sentiment_p_green_mean    -0.0147      0.021     -0.697      0.486      -0.056       0.027
+sentiment_p_red_mean      -0.0262      0.033     -0.803      0.422      -0.090       0.038
+arousal_mean              -0.7704      0.411     -1.875      0.061      -1.576       0.035
+dominance_mean             0.5692      0.502      1.135      0.257      -0.414       1.553
+valence_mean               0.4022      0.237      1.700      0.089      -0.062       0.866
+role_p_green              -0.0351      0.012     -2.874      0.004      -0.059      -0.011
+role_p_red                -0.0970      0.016     -5.987      0.000      -0.129      -0.065
+==============================================================================
+Omnibus:                     1815.821   Durbin-Watson:                   0.577
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              356.754
+Skew:                          -0.458   Prob(JB):                     3.40e-78
+Kurtosis:                       1.900   Cond. No.                     9.42e+14
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The smallest eigenvalue is 8.97e-25. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+Logistic pred-vs-true corr: pearson=0.3044 (p=2.33e-19), spearman=0.3077 (p=9.02e-20)
+Logistic (statsmodels)
+                            Logit Regression Results                            
+================================================================================
+Dep. Variable:     task_engagement_mean   No. Observations:                 4175
+Model:                            Logit   Df Residuals:                     4160
+Method:                             MLE   Df Model:                           14
+Date:                  Mon, 02 Mar 2026   Pseudo R-squ.:                 0.05116
+Time:                          15:28:49   Log-Likelihood:                -2745.8
+converged:                         True   LL-Null:                       -2893.9
+Covariance Type:              nonrobust   LLR p-value:                 7.714e-55
+==========================================================================================
+                             coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------------------
+const                     -0.3907   2.94e+06  -1.33e-07      1.000   -5.76e+06    5.76e+06
+segment_duration_s         0.0676      0.040      1.689      0.091      -0.011       0.146
+word_count                 0.0292      0.013      2.323      0.020       0.005       0.054
+avg_word_length           -0.1090      0.024     -4.460      0.000      -0.157      -0.061
+words_per_second           0.0378      0.021      1.783      0.075      -0.004       0.079
+question                  -0.7933   2.94e+06   -2.7e-07      1.000   -5.76e+06    5.76e+06
+statement                  0.4025   2.94e+06   1.37e-07      1.000   -5.76e+06    5.76e+06
+sentiment_p_blue_mean      0.3135      0.141      2.225      0.026       0.037       0.590
+sentiment_p_green_mean    -0.0420      0.130     -0.323      0.747      -0.297       0.213
+sentiment_p_red_mean      -0.0724      0.200     -0.362      0.717      -0.464       0.320
+arousal_mean               3.4239      2.522      1.358      0.175      -1.519       8.367
+dominance_mean            -4.3835      3.078     -1.424      0.154     -10.417       1.650
+valence_mean               1.1107      1.455      0.763      0.445      -1.741       3.962
+role_p_green              -0.1000      0.075     -1.333      0.183      -0.247       0.047
+role_p_red                -0.3092      0.100     -3.081      0.002      -0.506      -0.113
+==========================================================================================
+
