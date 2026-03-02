@@ -1,0 +1,110 @@
+from,to,name,conf
+36520,37880,Wie hast du denn deinen Namen geändert?,0.22308116
+42040,43200,Wie ging das nochmal?,0.5680672
+46520,48760,"Ich habe vergessen, wie man das Tablet aufmacht.",0.6291971
+50560,51040,Achso.,0.649
+56520,59000,"War da irgendwas, dass ich dabei was klicken muss?",0.515813
+68800,69560,Nee.,0.615
+76880,77760,"Nee, irgendwie... ",0.52574134
+79760,80800,Also ich sehe auch nichts.,0.7297596
+83040,84240,mhhh,1.0
+86040,87640,"Okay, dann machen wir es ohne Menü.",0.45073625
+87680,88600,hahah,1.0
+90640,91160, Ähm,1.0
+91400,93840, genau. Du machst doch auch Gymnasiallehramt?,1.0
+94240,95600,Du hattest doch Mathe und Informatik oder so.,0.38416296
+96840,97480,"Okay, gut",0.7470542
+98440,99080,jaa,0.7470542
+99320,101040,"Ah, okay, warte mal. Jetzt kommt hier diese.",0.44832194
+102480,104640,"Ja, ich habe hier auch gerade irgendeinen Fehler.",0.6165885
+105400,106760,"Ah, jetzt bin ich wieder da. Moment.",0.8028066
+107200,108040, Ahhh,1.0
+108360,111320,okay gerade eben habe ich auch fast dieses tablet gesehen.,0.7310896
+112440,113280,"Ja, okay.",1.0
+114040,115160, Jetzt ist es wieder weg.,0.7321202
+116560,117120,Okay.,0.371
+120040,123040,"Ich mache Englisch, Geschichte und Informatik.",0.65333
+124520,125560,Genau.,0.965
+126560,127200,Okay.,0.762
+129560,131800,Wir können ja mal mit Informatik anfangen.,0.65587515
+142880,143160,Ja,0.8200409
+143600,144280,finde ich auch.,1.0
+147640,148440, Auf jeden Fall.,0.8036314
+148680,154560,"Man kann sich halt gut austauschen, auch halt mit diesen Leinwänden, wenn man die dann wirklich anfängt zu benutzen und so.",0.799906
+156040,156920,Ist eigentlich nicht schlecht.,0.6144458
+159640,163080,"Ja, für Informatiker hat man es ja das letzte Mal schon drüber.",0.49634153
+163240,167360,"Also es ist halt bei vielen Aspekten ja trotzdem schwierig, das anzuwenden.",0.6832483
+168080,170320,"Vor allen Dingen jetzt bei Programmen oder so,",0.6721854
+172240,178040," Ja, also man kann es halt visualisieren, was man programmiert hat und dann sieht man es nochmal vor den Augen.",0.62223333
+178640,179280,Aber,0.6771495
+180000,184480," ja, es muss halt irgendwelche Voraussetzungen geben, dass man es halt benutzen kann.",1.0
+184520,187520,Also es muss eigentlich Programme zum Lernen wieder geben.,0.73066264
+192720,193000,genau,1.0
+198200,198480,mhhm,1.0
+211240,211840,ja das stimmt.,1.0
+215400,220560," Ja, was ich auch schon mal gesehen habe, war, dass es so Bausteine gibt von einem fertigen Programm.",0.68462837
+221080,226400,Und man musste dann halt dieses Programm erst selber richtig aneinanderreihen.,0.7567014
+226520,231440,"Aber da kommt es halt auch wieder darauf an, wie einfach das ist, in welchen..",0.6141886
+231520,240280,"Also jetzt zum Beispiel für Anfänger in Informatik stelle ich es mir ganz gut vor, weil dafür bekommt man dann mal so ein Gefühl, wie ist so ein Programm aufgebaut, wie fängt es immer an.",0.44392785
+240360,248960," Aber dann später ist es wahrscheinlich schon wieder langweilig, beziehungsweise man kann es ja gar nicht bei so vielen, also bei so einem krass komplizierten Programm kann man das, glaube ich, auch gar nicht verwirklichen.",0.44827062
+252400,254760,Ja.Verliert man den Überblick.,0.550757
+267880,268240, Genau.,0.831
+268880,273160,"Also ich denke jetzt, ich weiß jetzt nicht, wie sinnvoll das halt bei Informatik ist.",0.66161215
+273240,275880,"Außer das halt mit der Besprechung, das finde ich eigentlich ganz cool.",0.7723791
+276840,279200,"Aber den Rest, man kann es halt anders verwirklichen.",0.5859655
+279280,287840,"Man muss natürlich auch immer überlegen, es ist ein gewisser Aufwand, so VR-Brillen, die musst du erst hinlegen, es muss alles funktionieren, alle müssen drin sein.",0.7648831
+288640,291720,"Da ist natürlich auch immer die Frage, ob sich der Aufwand dann auch lohnt.",0.7060246
+301440,301880,Ja.,0.796
+317600,320400," Ja, nee, also Mathe kann ich mir wirklich auch gut vorstellen.",0.66731334
+320480,339680,"Also wie du gerade schon meinst, so im Geometrieunterricht hätte ich viele Sachen gerne irgendwie besser visualisiert gehabt oder auch, keine Ahnung, Sinus, Kosinus darstellen und dann aber auch vielleicht darauf eingehen, wie dann der Flächeninhalt von einem Kreis berechnet wird oder so.",0.76162785
+358800,359760,"Ah doch, jetzt ist es da, cool.",0.42971948
+366960,369880,"Ja, ja voll gut, weil vorhin war nämlich gar nichts da. Okay.",0.5369653
+372160,372360,gut,1.0
+372880,374920," Ja genau, also sag mal Informatik ",0.6344282
+375720,377280," kommt drauf an, ",1.0
+378040,381640," Mathe schon sinnvoll, vor allem bei Geometrie.",1.0
+403920,404280,Ja.,0.786
+488680,488920,ne,1.0
+571480,571880,joa,1.0
+572240,572560,ne,1.0
+585160,588480," Genau, und Geschichte kann ich mir auch gut vorstellen, tatsächlich.",0.67236984
+598400,599520,"Es ermöglicht halt einfach,",0.8237621
+600280,607120," die theoretischen Dinge sich besser vorzustellen, besser zu, sich zu merken, es interessanter zu machen.",1.0
+607280,610280,"Oder wie du auch meintest, mit diesem Motivationshintergrund auch.",0.71198374
+625640,626000,ja,1.0
+636760,637480, hahah,1.0
+674920,675040,"Also wie du gerade schon meinst, so im Geometrieunterricht hätte ich viele Sachen gerne irgendwie besser visualisiert gehabt oder auch, keine Ahnung, Sinus, Kosinus darstellen und dann aber auch vielleicht darauf eingehen, wie dann der Flächeninhalt von einem Kreis berechnet wird oder so.",0.76162785
+340640,344520, Dass man das alles ein bisschen visualisiert und nicht nur immer theoretisch dargestellt hat.,0.7071097
+345920,348280,"Sag mal, die Hand, siehst du die auch?",0.5951478
+350800,351280,"Ah, okay.",0.66249526
+353160,355840,"Okay, ja, weil bei mir, ich sehe immer noch dieses Tablet nicht.",0.72320706
+361280,362960,Aber auch nur auf einer Hand.,0.8111914
+383800,396520,"Oder auch vielleicht bei Anwendungsbeispielen kann ich es mir auch gut vorstellen tatsächlich, wenn man eine Matheaufgabe hat mit einem Beispiel und das muss man dann berechnen und das irgendwie nochmal richtig visualisiert bekommt, stelle ich mir das schon cool vor.",0.72413933
+410880,415960," Genau, weil ich sehe es immer voll oft, dass immer gefragt wurde, wofür machen wir das eigentlich?",0.7634135
+416960,422640,"Vorallem Mathe, weil ja trotzdem oft irgendwie die Zeit knapp ist und man halt versucht, irgendwie Übungen zu machen.",0.71765405
+423160,428200,"Aber wenn man das dann irgendwie visualisiert, dann sehen ja die Schüler auch, ah, okay, das macht auch Sinn, was man hier macht.",0.62746876
+429800,430160,ja,1.0
+439360,440240,"Oh ja, definitiv.",0.53756803
+472240,473880," Ja, definitiv. Das ist wirklich ein guter Punkt.",0.6122957
+473920,480880,"Und vor allen Dingen, ich denke mir auch, wenn man dann zum Beispiel in der Klausur sitzt oder Schulaufgabe oder was auch immer und dann nicht mehr genau weiß, was war da dran.",0.5864099
+481000,483840,"Und dann ist man so, ah, Moment, das war ja das mit den VR-Brillen.",0.57947916
+484600,487360,Das ist dann halt auch gut so als Erinnerung wieder.,0.6496229
+516720,524039,"Ja auf jeden Fall. Ich sehe da auch sehr viel Potenzial, weil ich kenne es immer noch so aus dem Sprachunterricht, dass es so ein bisschen am Sprechen scheitert.",0.6732979
+525000,531320,"Dass viele Schüler, also die Schüler, die halt sehr extrovertiert sind, die sprechen meistens auch besser, als die, die introvertiert sind.",0.7745862
+532080,540840," Und dass es da dann halt so ein bisschen die Möglichkeit für die Schüler gibt zu sprechen oder wie du halt auch gerade meintest, wäre ja super, wenn dann gleich auch noch angezeigt wird, wenn man irgendeinen Fehler macht oder so.",0.68653214
+541440,552040,"Und das ist dann halt auch sehr individualisiert, wozu ja eigentlich die Lehrkraft gar nicht so viel Zeit hat, jeden Schüler immer anzuhören und zu sehen, wo kann man vielleicht noch dran arbeiten, was passt schon.",0.84111786
+553000,553680,Genau.,0.803
+554080,556720," Ich glaube, Sprachen ist wirklich eine coole Idee.",0.5372086
+556800,562320,"Also zum Beispiel bei Grammatik oder so, da habe ich schon viele coole Computerprogramme gesehen.",0.7426762
+562880,569560,"Aber wenn man sich natürlich in der Situation befindet, wenn die irgendwie in 3D halt dann dargestellt wird, ist natürlich dann sehr cool.",0.8103533
+573120,577800,Also bei Sprachen sehe ich auch ein sehr... Also ich sehe bei Sprachen aber fast so ein großes Potenzial wie bei Mathe.,0.6503804
+577920,581400,Also bei Mathe kann ich es mir halt auch wirklich in vielen Dingen sehr gut vorstellen.,0.40664184
+589720,598360,"Also es macht es halt einfach interessanter, als wenn man die ganze Zeit nur über irgendwas spricht, was man sich aber nicht so, ist wieder mit diesem Vorstellen.",0.6767175
+635600,636720," Nee, tatsächlich nicht.",0.3806103
+644240,645040,"Ja, ja.",0.57924086
+649160,650080,"Ja, auf jeden Fall.",0.6812077
+650160,652480,Man muss halt voll gut aufklären darüber.,0.6486295
+662520,662840,Ja.,0.78
+665640,666400, Ich glaube auch.,0.80504394
+666440,667480,"Ja, auf jeden Fall.",0.67759615
+668720,668920,Gut.,0.627

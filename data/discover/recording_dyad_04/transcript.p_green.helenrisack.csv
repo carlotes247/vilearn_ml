@@ -1,0 +1,133 @@
+from,to,name,conf
+20280,21040,Ja.,0.752
+36360,37800,Verstehe dich richtig schlecht.,0.54951334
+41520,42080,ähm,1.0
+42280,43880,Vielleicht kannst du ein bisschen lauter reden.,0.47333533
+46360,46600,Ja,0.41801435
+47200,47440,Ja,0.41801435
+55240,56000,mhhmm,1.0
+57360,57920, Ja.,0.18
+59080,59760,Dankeschön.,0.599
+61800,65480,"Ja, also quasi an so einem Whiteboard würdest du es dann abbilden ",0.6401147
+66360,67120,oder so?,1.0
+68600,69160, Ja.,0.18
+70080,70640, Ja.,0.18
+75320,76000," Ja, stimmt",0.18
+77560,80720,Dass man so wie Kärtchen hat oder das auch so zuordnen kann.,0.7911492
+81800,83480,"Ja, ich dachte mir auch, also theoretisch",0.713096
+85080,86560," Ich weiß ja nicht, ob man die ",0.75145304
+87200,91320,"Umgebungen ändern könnte, aber auch so ein Markt oder so wäre ganz cool.",1.0
+92440,98800,Wo man dann so durchgehen kann und vielleicht auch die Dinge anklickt und dann steht da Apple oder was weiß ich was.,0.6471984
+99720,101320,Das wäre auch ganz cool.,0.49982604
+104880,105000,ja voll,1.0
+109320,111320,"Ja, oder Pilze und sonst was.",0.7323436
+112080,113440,"Ich weiß nicht, warst du das letzte Mal da?",0.4695426
+114720,117400,"Da war doch auch bei diesem Google, ",0.7780414
+117720,118280,mhh,0.943
+118560,125000,"bei dieser Google-Brille oder so, da war auch irgendwo was mit Wald und einmal war so eine Bienen-App, glaube ich.",1.0
+125120,126600,Das war auch ganz cool.,0.7426774
+128880,130240,Das ist echt gut.,0.70867485
+130400,131640,"Aber für Deutsch musst du bestimmt auch, ",0.59730303
+132800,134160,kann er für Deutsch machen.,1.0
+142000,143920,"Naja, ich denke so Sachen wie",0.7735422
+144800,148520, irgendwas ordnen oder so kann man natürlich bestimmt immer.,1.0
+152160,152920,"Ja, das ist halt... ",1.0
+153920,154320,ja,1.0
+159880,160000,ja voll,1.0
+164240,164880,was,1.0
+165520,167960," Mathe weiß ich auch nicht, ob es so schlau ist.",0.80190945
+168880,171160,"Wäre dann vielleicht für Körper oder so, ",0.73966765
+171640,173200,so Geometrie-mäßig?,1.0
+186080,186360,Ja.,0.442
+190560,191760,Gibt es noch für Fächer?,0.4169471
+194280,197760,"Ja gut, Kunst ist wahrscheinlich schwierig, außer man hat irgendwas geschichtliches.",0.56071746
+202560,203880,Musik.,0.655
+203920,204640,"Ja, gut.",0.8192143
+207560,208000,"Vielleicht,",0.6007529
+208680,209320, ja.,1.0
+210360,213280,Vielleicht gibt es irgendwas zu Komponisten oder so.,0.78920656
+228680,229400,"Ja, das wäre cool.",0.35754594
+231560,233480,"Ja, Konzerte, Opern, was weiß ich.",0.6175572
+234760,236200,Das wäre ganz cool.,0.51685566
+236200,236520,ja,1.0
+238040,241120,"Deutsch, Mathe, HSU, Sport, ja.",0.7932976
+244320,244960,mhh,0.843
+245240,247440,Was gibt es noch für Deutsch?,0.6165902
+251160,251800,Echt schwierig.,0.6561585
+256160,257360," Wenn dann vielleicht, ",0.82418156
+257959,260200,"aber ich weiß nicht, ob das auch so sinnvoll ist, ",1.0
+260720,268320,wenn man quasi wie so einen Film ablaufen hat und dann danach eine Erlebniserzählung schreiben muss oder sowas.,1.0
+268840,270640,Oder das dann so weitererzählen muss.,0.7752676
+272000,274760,"Aber ob das so schlau ist, weiß ich jetzt auch nicht.",0.80070406
+285960,286080,ja,1.0
+291960,293160,"Ja, stimmt, ist auch cool",0.49456647
+297920,298320,Ja.,0.808
+298920,308840,"Oder dass dann vielleicht so was kommt wie ja, um die nächste Aufgabe zu lösen, dann gehe da und da hin oder klicke auf das und dann kommt da die nächste Frage und dann musst du drüber nachdenken.",0.7217324
+323760,324440,??,1.0
+327280,327840, Was ,1.0
+328720,329640,würdest du,1.0
+330760,332160, für Zielgruppen sagen?,1.0
+334400,338080,"Also ich glaube schon mal 1, 2 schwierig, oder?",0.7012897
+339920,346720,"Außer vielleicht so diese Google-Brillen sind dann ein bisschen, ja natürlich primitiver.",0.64939356
+347920,350640, Aber es ging ja eigentlich um das jetzt so ähnlich.,0.437253
+350720,353760,Also ich glaube höchstens drei oder einfach nur vier.,0.3613865
+363360,363920,Ja.,0.811
+367880,368440,Ja.,0.811
+371800,374400,"Ich glaube, die Kinder brauchen auch erstmal so ein bisschen mehr",0.637188
+375440,377400, irgendwie so die Feinmotorik.,1.0
+377680,384040,"Und ich glaube, in der ersten, zweiten Klasse verstehen die das vielleicht auch noch gar nicht so wirklich, was dann da überhaupt abgeht.",0.6852743
+385200,391560,"Also ich glaube, das kann man besser so in der dritten oder dann vielleicht erst der vierten erklären, was das überhaupt ist.",0.8130916
+393600,395160," Ich glaube, ich hätte das als Kind auch",0.66909957
+395800,396280,"  alles gut, kein Ding.",1.0
+396840,398600,"Auch sehr verwirrt, irgendwie ",0.7998544
+399640,402360,dieses Ding aufzuhaben und woanders zu sein.,1.0
+413600,414120,ja,1.0
+422200,422720,ja,1.0
+428160,428680,ja,1.0
+430000,431760," Ja, man weiß auch nie, wie viel,",0.0
+432200,434720,  oder was haben die zu Hause schon mal ausprobiert?,1.0
+435280,439120,Hatten die überhaupt schon mal sowas wie ein iPad in der Hand und dann die in so eine Brille noch aufzusetzen?,0.651058
+441000,443320,Das kennen ja wahrscheinlich die wenigsten.,0.65853286
+448000,450400,Also eher vier oder vielleicht noch drei.,0.8249411
+458640,458920,Ja.,0.294
+461640,464400,"Ja, ich glaube, für HSU gibt es da eh richtig viel,",0.66860837
+465040,466400, was man anwenden kann.,1.0
+474080,475120,Im fünften.,0.90124357
+475200,476440,Und du?,0.8140786
+479080,479600,okay,1.0
+480400,482440,"Ja, ich bin schon ein bisschen weiter.",0.3931842
+487720,489480, Und weil du Deutsch ,0.43436554
+490520,493200,"als Hauptfach hast, hast du das Didaktikfach noch Englisch mit.",1.0
+496440,496960,mhh,1.0
+499280,499800,ahh,1.0
+501920,502440,mhh,1.0
+509440,509960,mhh,1.0
+518400,518919,ja,1.0
+519640,520159,ja,1.0
+522039,525040,"Ja, Grammar ist eigentlich nur eine Wiederholung, zumindest Grammar 1.",0.6980542
+525120,527640,"Eigentlich Grammar 2 auch, oder dass es ein bisschen schwieriger ist.",0.2413639
+529320,529840,ja voll,1.0
+532440,533040,ja auf jeden fall,1.0
+541640,542360,Auf alle Fälle.,0.43649608
+551560,552680,"Ja, eigentlich schon.",0.52579784
+560120,566640,"Ich glaube, im Gymnasium gibt es eh, es ist viel leichter als in der Grundschule oder so, oder in den weiterführenden Schulen,",0.6919085
+567600,569200, wenn man ja auch ältere Kinder hat.,1.0
+572840,573320,Ja,0.49323928
+573560,574160,Oder halt auch ,0.829596
+574880,578120,besser darauf hoffentlich aufpassen als ,1.0
+578680,581080,"so 8, 9, 10-Jährige.",1.0
+583440,587320,"Gerade jetzt in der Oberstufe oder so, ich glaube, das hat schon auch einen Mehrwert, weil es ja auch",0.53710276
+588440,590120,"gut, es ist ja immer motivierend, aber...",1.0
+593920,596160," Ich glaube, die können halt dann auch richtig damit arbeiten.",0.6023969
+596280,597960,"Also Grundschulkinder, denen kannst du es halt ",0.5962274
+598680,605320,"wahrscheinlich hauptsächlich viel zeigen, aber bis du denen erstmal erklärst, wie das funktioniert, dauert es wahrscheinlich auch lang.",1.0
+609520,610640, Ich finde es irgendwie schwierig.,0.3688774
+610840,614920,"also Ich sitze ja selber voll oft da und weiß dann nicht, wo ich jetzt drücken muss und was.",0.68880934
+615080,617920,"Und man sieht ja von außen nicht, was der andere sieht.",0.55001444
+623200,624640,"Nee, überhaupt nicht.",0.718865
+624680,629280,Man könnte sicher so einen Medientag oder wenn man so Kleingruppen mal hat oder was weiß ich.,0.58936965
+633240,633720,Ja,0.49323928
+649200,652120,"Ja, und so Intensivierungsstunden oder so vielleicht auch, wo man eh ",0.7275217
+653240,658920," eine Lehrtkraft hat, die sich mehr auf einzelne Kinder oder ein einzelnes Kind fokussiert.",1.0
+706600,708360," so lustig, wenn man rumguckt.",0.522542
+711360,714520,Ganz viele Leute sind mit den Händen oder so.,0.73374623

@@ -75,3 +75,4 @@ Job IDs are generated as:
 - The `.set` file is authoritative; folder discovery is disabled.
 - Update annotator names via `CG` and `HR` at the top of the script.
 - openSMILE may emit `Segment too short, filling with NaN` warnings (make window bigger which includes possible tradeoffs). This can introduce NaNs in the output stream. Downstream processing should account for missing values (e.g., imputation or filtering).
+- `recording_dyad_02` has a corrupt `group.audio.wav` (malformed WAV `fmt` chunk). Expect missing arousal/dominance/valence annotations for that session until the audio is re-exported or fixed.

@@ -1,0 +1,81 @@
+from,to,name,conf
+6000,7520, Ich bin aber irgendwie fliegig.,0.7256529
+9080,11320,"Ja, ich weiß.",0.6379965
+12240,14920,Ist ja mehr als lustig.,0.5552166
+16840,18040,Ich sehe alle von oben.,0.8469518
+18960,21480,"Ich sehe, dass Therese nach oben schaut.",0.64880306
+21480,22480,Jetzt nicht mehr.,0.5184036
+22520,22840,Hallo.,0.567
+27480,28560,"Ja, ich weiß.",0.40803716
+28640,31120,Ich kann nach unten schauen.,0.37526676
+31160,32960,"Ja, ich glaube, ich lasse es einfach so.",0.6518225
+34440,34840,Ja.,0.375
+37720,38920,Also hätte jemand eine Idee?,0.43877697
+66520,72120,"Ja und ich finde, das lenkt eher ab, als du so ein normales Gespräch führen kannst.",0.5210286
+104480,106560,"Ja, das war interessant, ja.",0.43618447
+111400,115520,"Und wenn auch, bin ich nur irgendwie so in Englisch oder also in Sprachen.",1.0
+116360,120280,Weil so in der mathematischen Biologie kannst du hiermit nichts anfangen.,0.7435491
+121800,126000," Also vielleicht in Deutsch, Englisch, könntest du aber auch nur in höheren Klassen.",0.7662139
+126040,130440,"Also ich denke mal so neunte, zehnte, achte, neunte, zehnte Klasse.",0.7720144
+130920,133600,"Früher brauchst du gar nicht damit anfangen, ehrlich zu sein.",0.6517535
+139720,139880, Ja.,0.43
+140960,141960,"Das war richtig cool, ja.",0.35766876
+149000,149400,Ja.,0.691
+157320,162640,"Weil ich finde immer noch, dass ich, wenn ich jetzt die Brille lange aufhabe, mir wird irgendwie so Kopfschmerzen oder",0.74145955
+163480,164080, so zu drückend.,1.0
+169440,171960," Hallo?Ähm... Ja, meine Hände sehe ich irgendwie vor mir.",0.31806287
+177560,180560,Also ich kann jetzt eigentlich auf alle raufgucken.,0.7129308
+183240,184440,"Naja, ist irgendwie komisch.",0.38206312
+193400,196440, Ich hätte aber auch irgendwann mal eine Person einfach vor mir.,0.74222475
+196440,198280,"Und ich finde, das lenkt halt alles ab.",0.83304363
+198440,204720,"Und darauf können sich dann Schüler im jüngeren Alter einfach, glaube ich, 0,0% konzentrieren auf die Aufgabe selbst.",0.7982068
+207520,212040," Und deswegen finde ich das schwierig zu sagen, wo man das einsetzen kann.",0.82103294
+219640,222520," Ja, dann ist es ja nicht mehr, so gesagt, die Aufgabe hier in diesem Gruppenraum.",1.0
+222640,223400,Aber das fand ich auch gut.,0.77047354
+226360,232240," Ich war auch in der L-Schule, habe ein Praktikum gemacht, da hatten die auch alle die ganzen Tablets und da so Übungen.",0.57071346
+232280,234120,Das finde ich auch halt alles viel sinnvoller.,0.6706253
+235920,238680,"Ja, das verstehen die auch und das können die gut anwenden.",0.76660484
+238680,239640,"Aber hier,",0.86866486
+240560,243040," dadurch, dass sie halt nichts schreiben können oder ",1.0
+244200,252160," nichts richtig so was vor der Nase haben, weil die Aufgabe zu merken,wenn dann schon alles neu ist...",1.0
+253120,254960, Zerfällt dann auch wahrscheinlich wieder in den Köpfen.,0.44240817
+260079,260720,Ja.,0.788
+283480,285360,Und du hast die gleiche Farbe an wie ich.,0.4398777
+294040,294840,Echt jetzt?,0.5338483
+305120,305880,Wie machst du das alles?,0.59560955
+318760,319840,Und wenn wir fertig sind?,1.0
+324240,325120,haben wir,1.0
+369120,369280,ja,1.0
+374200,376240,"Ich glaube, du kannst es auch nicht komplett einführen.",0.7173284
+376280,377840,Das wird nicht funktionieren.,0.695616
+377880,381160,"Es gibt so Kinder, die einfach nur launisch sind.",0.8419493
+382320,385000, Und jedes Mal anders da reagieren.,0.8024128
+385040,389480,Und deswegen kannst du das halt schlecht in der Sonderschule verwenden.,0.7600231
+436680,448960,"Ich finde auch dazu, dass wenn du es bei jüngeren Kindern anwendest und jetzt zum Beispiel bei mir Theresa ein Junge ist, das werden die dann auch alles wieder sehr schlecht sehen, diskriminierend sehen und alles.",0.7702463
+449000,453120,Weil die sehen die Kleinigkeit noch so richtig als was Großes.,0.86641705
+454760,456200,"Ja, du bist bei mir ein Junge.",0.35295445
+460080,462880,"Also du siehst sehr männlich aus, sagen wir so.",0.6489339
+465760,467480,"Ja, du bist ein Junge, aber er heißt Teresa.",0.5377241
+472360,474080,Ich fliege überhaupt.,0.513803
+486800,487880,Seht ihr eigentlich auch meinen Schatten?,0.6689838
+491880,493280,"Ich weiß nicht, was sie bei mir gemacht hat.",0.37211192
+529480,532760,"Ich finde es auch sehr, es fühlt sich so komisch an.",0.7964915
+533040,535040,"Du kannst, du machst, hä?",0.6909319
+536920,538120,Wo ist meine zweite Hand?,0.5888428
+538200,539640,"Ah, die ist da, hä?",0.6456892
+543040,544600,"Ja, meine war auch irgendwie da drüben.",0.5738382
+546160,547240, Die wollte zu der anderen Gruppe.,0.8233548
+548680,557960,"Und das mein ich so alles, weil das ist halt alles, du musst erst, wir kommen manchmal nicht damit klar, wie sollen dann Schüler damit klarkommen, die noch viel jünger sind.",0.69983435
+561680,562520,ohja,1.0
+567480,567600,ja,1.0
+603560,611120,"Aber ich finde auch als Lehrer, es ist da schwer einen Überblick zu finden, wenn du da alleine drin bist und jeder so gesagt an ihrem eigenen Laptop sitzt.",0.76004654
+634520,636440,Aber sonst fällt mir jetzt eigentlich nichts mehr ein.,0.56983167
+640520,641000,Hä?,0.48
+649000,650520,Ich schau die ganze Zeit von oben runter.,0.49615163
+652880,654760,"Ich bin cooler als du, ja.",0.7731407
+657160,659360,"Ich hab ein höheres Niveau als du, weil ich oben bin.",0.47801363
+662120,663840,"Ey, wo ist eigentlich schon wieder meine andere Hand?",0.50261366
+664640,666080,"Ich schätze, da bist du runter.",0.38117492
+666720,668080,"Ah, jetzt sind wieder beide da.",0.46041214
+670760,672640," Oh Gott, es ist langsam echt anstrengend.",0.61097085
+682600,684080,"Okay, wir haben eigentlich alles beredet.",0.54619753
