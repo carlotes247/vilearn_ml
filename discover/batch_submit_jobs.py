@@ -69,18 +69,18 @@ JOBS: list[dict] = []
 # opensmile (group audio)
 JOBS.append({
     "roles": ["group"],
-    "trainerFilePath": "opensmile\\opensmile.trainer",
-    "leftContext": "200",
-    "rightContext": "0",
+    "trainerFilePath": "opensmile/opensmile.trainer",
+    "leftContext": "120",
+    "rightContext": "120",
     "frameSize": "40",
     "data": (
         '[{"id":"input_audio","type":"input","src":"db:stream:Audio","name":"audio","role":"{role}","active":true},'
         '{"id":"output_stream","type":"output","kind":"SSIStream:feature","src":"db:stream:SSIStream:feature","name":"opensmile","role":"{role}","active":true}]'
     ),
-    "options": '{"feature_set":"eGeMAPSv02","feature_lvl":"Functionals"}',
+    "options": '{"feature_set":"eGeMAPSv02","feature_lvl":"Functionals","file_num_workers":0}',
     "force": "False",
 })
-
+'''
 # sentiment (participant transcripts)
 JOBS.append({
     "roles": ["participant"],
@@ -114,7 +114,7 @@ JOBS.append({
     "options": '{"batch_size":250}',
     "force": "False",
 })
-
+'''
 # ------------------------
 # SUBMIT
 # ------------------------
