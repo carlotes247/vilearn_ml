@@ -1,15 +1,24 @@
 import pandas as pd
+import numpy as np
 
 if __name__ == "__main__": 
     # vars
     upsample: bool = True
+    resample: bool = True
+    resample_window_size: int = 30
+    save_resampled:bool = True
     save_upsampled:bool = True
     save_all_groups_df:bool = True
+    floorlevel_only:bool = False
     floorlevel_info_df = pd.read_csv("data/group_names_with_time_floorlevel.csv", sep=";")
     times_info_df = pd.read_csv("data/group_durations_all_commas.csv", sep=",")
-    group_names = floorlevel_info_df["Group_Name"].to_list()
+    if floorlevel_only:
+        group_names = floorlevel_info_df["Group_Name"].to_list()
+    else:
+        group_names = times_info_df["name"].to_list()
     speaking_configs_list = []
     speaking_all_groups_df_list = []
+    speaking_all_groups_df_resampled_list = []
     for group_name in group_names:
         group_dis_df = pd.read_csv(f"data/discover/merged/recording_{group_name}.csv")
         print(group_name)
@@ -51,7 +60,11 @@ if __name__ == "__main__":
         inter_end_ms = inter_start_ms+inter_length_ms
         first_inter_frame = (group_dis_df['time_ms']-inter_start_ms).abs().argsort()[:1].iloc[0]
         last_inter_frame = (group_dis_df['time_ms']-inter_end_ms).abs().argsort()[:1].iloc[0]
-        group_dis_df = pd.DataFrame(group_dis_df[first_inter_frame:last_inter_frame])              
+        group_dis_df = pd.DataFrame(group_dis_df[first_inter_frame:last_inter_frame])
+
+        # create seconds column to match other modalities dfs
+        group_dis_df["time_ms"] = group_dis_df["time_ms"] - group_dis_df["time_ms"].iloc[0]                  
+        group_dis_df.set_index("timestamp", inplace=True)
 
         # Speaking configs
         length_df = len(group_dis_df.index)
@@ -88,6 +101,20 @@ if __name__ == "__main__":
                 OV_two_speak_count = OV_two_speak_mask.value_counts()[True]
                 OV_two_speak_amount = OV_two_speak_count /length_df
 
+        # TODO: calculate features that cross with gaze
+
+        # resample down in windows (specified by window_size)
+        if resample:
+            # Find all columns that match the pattern or are the name 'session'
+            cols_to_drop = group_dis_df.columns[group_dis_df.columns.str.contains('text_p', case=False)]  # all text_p
+            cols_to_drop = cols_to_drop.tolist() + ['session']                      # add session
+
+            resampled_df = group_dis_df.drop(columns=cols_to_drop).resample(f'{resample_window_size}s').mean()
+            resampled_df['time_ms'] = 60*np.arange(len(resampled_df))
+            resampled_df.rename(columns={"time_ms": "seconds"}, inplace=True)
+            resampled_df['session'] = group_name
+            speaking_all_groups_df_resampled_list.append(resampled_df)            
+
         group_speaking_config_dict = {
             "name":group_name,
             "type": "triad" if triad else "dyad",
@@ -99,11 +126,18 @@ if __name__ == "__main__":
         speaking_configs_list.append(group_speaking_config_dict)
         speaking_all_groups_df_list.append(group_dis_df)
 
-        print(group_dis_df.size)
     speaking_confis_pd = pd.DataFrame(speaking_configs_list)
     speaking_all_groups_df = pd.concat(speaking_all_groups_df_list, ignore_index=True)
+    speaking_all_groups_df['session'] = speaking_all_groups_df['session'].str.replace(r'^recording_', '', regex=True)
+    # save file with all frames
     if save_all_groups_df:
         speaking_all_groups_df.to_csv("data/discover/merged/all_groups_interaction_speaking_90Hz.csv")
+    if save_resampled:
+        speaking_all_groups_df_resampled = pd.concat(speaking_all_groups_df_resampled_list, ignore_index=True)
+        speaking_all_groups_df_resampled.to_csv(f'data/discover/merged/all_groups_interaction_speaking_per_{resample_window_size}s.csv')
+
+    # resample file to 60s
+
     # all_groups_interaction_task_eng90Hz
 
     print("hola")
