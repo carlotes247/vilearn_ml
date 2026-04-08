@@ -9,9 +9,11 @@ if __name__ == "__main__":
     save_resampled:bool = True
     save_upsampled:bool = True
     save_all_groups_df:bool = True
+    save_group_configs_info_df:bool = True
     floorlevel_only:bool = False
     floorlevel_info_df = pd.read_csv("data/group_names_with_time_floorlevel.csv", sep=";")
     times_info_df = pd.read_csv("data/group_durations_all_commas.csv", sep=",")
+    df_gaze_features = pd.read_csv("data/gaze_features_all_groups_interaction_90Hz_2026-04-01.csv")
     if floorlevel_only:
         group_names = floorlevel_info_df["Group_Name"].to_list()
     else:
@@ -101,7 +103,51 @@ if __name__ == "__main__":
                 OV_two_speak_count = OV_two_speak_mask.value_counts()[True]
                 OV_two_speak_amount = OV_two_speak_count /length_df
 
-        # TODO: calculate features that cross with gaze
+        # Calculate features that cross with gaze
+        df_gaze_group = df_gaze_features[df_gaze_features['group_name'] == group_name]
+        # Create a timestamp index column for merge
+        df_gaze_group['timestamp'] = pd.to_datetime(df_gaze_group['seconds'], unit='s')
+        df_gaze_group = df_gaze_group.set_index('timestamp')
+        df_gaze_group = df_gaze_group.sort_values('timestamp')
+        group_dis_df.index.name = ' PEPE'
+        group_dis_df['timestamp'] = pd.to_datetime(group_dis_df["time_ms"], unit='ms')
+        group_dis_df = group_dis_df.set_index('timestamp')
+        group_dis_df = group_dis_df.sort_values('timestamp')
+        df_gaze_speaking = pd.merge_asof(group_dis_df, df_gaze_group, on='timestamp', direction='nearest')
+        df_gaze_speaking.rename(columns={'1d_DG':'DG'}, inplace=True)
+        # df_gaze_speaking_B = pd.merge_asof(df_gaze_group, group_dis_df, on='timestamp', direction='nearest')
+        # Transform all gaze features to bool before we can do boolean comparisons
+        cols = ['MG', 'DG', '0_D1']
+        df_gaze_speaking[cols] = df_gaze_speaking[cols].astype(bool)  
+        # G_OnSpeaker_SP TODO: not properly calculated!
+        df_gaze_speaking['G_OnSpeaker_SP'] = ((df_gaze_speaking['MG'] | df_gaze_speaking['DG']) & df_gaze_speaking['SP'])
+        G_OnSpeaker_SP_count = 0
+        G_OnSpeaker_SP_amount = 0
+        if True in df_gaze_speaking['G_OnSpeaker_SP'].value_counts():
+            G_OnSpeaker_SP_count = df_gaze_speaking['G_OnSpeaker_SP'].value_counts()[True]
+            G_OnSpeaker_SP_amount = G_OnSpeaker_SP_count/len(df_gaze_speaking)
+        # No_G_OnSpeaker_SP TODO: not properly calculated!
+        df_gaze_speaking['No_G_SP'] = ((df_gaze_speaking['0_D1']) & df_gaze_speaking['SP'])
+        No_G_SP_count = 0
+        No_G_SP_amount = 0
+        if True in df_gaze_speaking['No_G_SP'].value_counts():
+            No_G_SP_count = df_gaze_speaking['No_G_SP'].value_counts()[True]
+            No_G_SP_amount = No_G_SP_count/len(df_gaze_speaking)
+        # G_SI (G means either MG or DG)
+        df_gaze_speaking['G_SI'] = ((df_gaze_speaking['MG'] | df_gaze_speaking['DG']) & df_gaze_speaking['SI'])
+        G_SI_count = 0
+        G_SI_amount = 0
+        if True in df_gaze_speaking['G_SI'].value_counts():
+            G_SI_count = df_gaze_speaking['G_SI'].value_counts()[True]
+            G_SI_amount = G_SI_count/len(df_gaze_speaking)
+        # No_G_SI (no G, no talk)
+        df_gaze_speaking['No_G_SI'] = (df_gaze_speaking['0_D1'] & df_gaze_speaking['SI'])
+        No_G_SI_count = 0
+        No_G_SI_amount = 0
+        if True in df_gaze_speaking['No_G_SI'].value_counts():
+            No_G_SI_count = df_gaze_speaking['No_G_SI'].value_counts()[True]
+            No_G_SI_amount = No_G_SI_count/len(df_gaze_speaking)
+        
 
         # resample down in windows (specified by window_size)
         if resample:
@@ -121,12 +167,16 @@ if __name__ == "__main__":
             "SP": SP_amount*100,
             "SI": SI_amount*100,
             "OV_all_sp": OV_all_speak_amount*100,
-            "OV_two_sp": OV_two_speak_amount*100
+            "OV_two_sp": OV_two_speak_amount*100,
+            "G_OnSpeaker_SP": G_OnSpeaker_SP_amount*100,
+            "No_G_SP": No_G_SP_amount*100,
+            "G_SI": G_SI_amount*100,
+            "No_G_SI": No_G_SI_amount*100
         }
         speaking_configs_list.append(group_speaking_config_dict)
         speaking_all_groups_df_list.append(group_dis_df)
 
-    speaking_confis_pd = pd.DataFrame(speaking_configs_list)
+    speaking_configs_df = pd.DataFrame(speaking_configs_list)
     speaking_all_groups_df = pd.concat(speaking_all_groups_df_list, ignore_index=True)
     speaking_all_groups_df['session'] = speaking_all_groups_df['session'].str.replace(r'^recording_', '', regex=True)
     # save file with all frames
@@ -135,9 +185,7 @@ if __name__ == "__main__":
     if save_resampled:
         speaking_all_groups_df_resampled = pd.concat(speaking_all_groups_df_resampled_list, ignore_index=True)
         speaking_all_groups_df_resampled.to_csv(f'data/discover/merged/all_groups_interaction_speaking_per_{resample_window_size}s.csv')
-
-    # resample file to 60s
-
-    # all_groups_interaction_task_eng90Hz
+    if save_group_configs_info_df:
+        speaking_configs_df.to_csv("data/speaking_configs_info.csv")
 
     print("hola")

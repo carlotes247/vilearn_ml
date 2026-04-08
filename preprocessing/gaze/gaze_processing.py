@@ -51,4 +51,4 @@ if __name__ == "__main__":
     df_gaze_features_triads_long = gazeProcessor.gaze_df_wide_to_long(df_wide_gaze=df_gaze_features_triads_wide, group_names=group_names, dyads=False, triads=True)
     df_gaze_features_all_groups_long = pd.concat([df_gaze_features_dyads_long, df_gaze_features_triads_long])
     if save_to_file:
-         df_gaze_features_dyads_long.to_csv(f"data/gaze_features_all_groups_interaction_90Hz_{datetime.datetime.now().date()}.csv")         
+        df_gaze_features_all_groups_long.to_csv(f"data/gaze_features_all_groups_interaction_90Hz_{datetime.datetime.now().date()}.csv")         
