@@ -7,13 +7,16 @@ if __name__ == "__main__":
     resample: bool = True
     resample_window_size: int = 30
     save_resampled:bool = True
-    save_upsampled:bool = True
+    save_upsampled:bool = False
     save_all_groups_df:bool = True
     save_group_configs_info_df:bool = True
     floorlevel_only:bool = False
+    use_all_data_gaze:bool = True # If true, we use the complete dfs from gaze that includes info about who is looking to who
     floorlevel_info_df = pd.read_csv("data/group_names_with_time_floorlevel.csv", sep=";")
     times_info_df = pd.read_csv("data/group_durations_all_commas.csv", sep=",")
     df_gaze_features = pd.read_csv("data/gaze_features_all_groups_interaction_90Hz_2026-04-01.csv")
+    df_gaze_features_dyads_complete:pd.DataFrame = pd.read_csv("data/gaze_features_dyads_interaction_all_data_90Hz_2026-04-08.csv")
+    df_gaze_features_triads_complete:pd.DataFrame = pd.read_csv("data/gaze_features_triads_interaction_all_data_90Hz_2026-04-08.csv")
     if floorlevel_only:
         group_names = floorlevel_info_df["Group_Name"].to_list()
     else:
@@ -102,9 +105,14 @@ if __name__ == "__main__":
             if True in OV_two_speak_mask.value_counts():
                 OV_two_speak_count = OV_two_speak_mask.value_counts()[True]
                 OV_two_speak_amount = OV_two_speak_count /length_df
-
+        
+        # GAZE X SPEAKING FEATURES
         # Calculate features that cross with gaze
-        df_gaze_group = df_gaze_features[df_gaze_features['group_name'] == group_name]
+        if use_all_data_gaze:            
+            df_complete = df_gaze_features_dyads_complete if not triad else df_gaze_features_triads_complete
+            df_gaze_group = df_complete[df_complete['group_name'] == group_name]
+        else:
+            df_gaze_group = df_gaze_features[df_gaze_features['group_name'] == group_name]
         # Create a timestamp index column for merge
         df_gaze_group['timestamp'] = pd.to_datetime(df_gaze_group['seconds'], unit='s')
         df_gaze_group = df_gaze_group.set_index('timestamp')
@@ -119,20 +127,123 @@ if __name__ == "__main__":
         # Transform all gaze features to bool before we can do boolean comparisons
         cols = ['MG', 'DG', '0_D1']
         df_gaze_speaking[cols] = df_gaze_speaking[cols].astype(bool)  
-        # G_OnSpeaker_SP TODO: not properly calculated!
-        df_gaze_speaking['G_OnSpeaker_SP'] = ((df_gaze_speaking['MG'] | df_gaze_speaking['DG']) & df_gaze_speaking['SP'])
-        G_OnSpeaker_SP_count = 0
-        G_OnSpeaker_SP_amount = 0
-        if True in df_gaze_speaking['G_OnSpeaker_SP'].value_counts():
-            G_OnSpeaker_SP_count = df_gaze_speaking['G_OnSpeaker_SP'].value_counts()[True]
-            G_OnSpeaker_SP_amount = G_OnSpeaker_SP_count/len(df_gaze_speaking)
-        # No_G_OnSpeaker_SP TODO: not properly calculated!
+        # G_OnSpeaker, OV is excluded!
+        # blue = p1, green = p2, red = p3
+        if use_all_data_gaze:
+            # dyads
+            if not triad:
+                df_gaze_speaking['G_OnSpeaker'] = (
+                    # p1 (blue) speaks, p2 looks
+                    ((df_gaze_speaking['speaking_p_blue'] & (df_gaze_speaking['DG_P2_target'] == 1))
+                    # p2 (green) speaks, p1 looks
+                    | (df_gaze_speaking['speaking_p_green'] & (df_gaze_speaking['DG_P1_target'] == 2)))
+                    # This ensures that there is only one participant talking
+                    & (df_gaze_speaking['SP']))
+                df_gaze_speaking['G_SP_OnSilent'] = (
+                    # p1 (blue) speaks, p1 looks to p2
+                    ((df_gaze_speaking['speaking_p_blue'] & (df_gaze_speaking['DG_P1_target'] == 2))
+                    # p2 (green) speaks, p2 looks to p1
+                    | (df_gaze_speaking['speaking_p_green'] & (df_gaze_speaking['DG_P2_target'] == 1)))
+                    # This ensures that there is only one participant talking
+                    & (df_gaze_speaking['SP']))
+            # triads
+            else:
+                df_gaze_speaking['G_OnSpeaker'] = (
+                    # p1 (blue) speaks, p2 or p3 look at p1
+                    ((df_gaze_speaking['speaking_p_blue'] & ((df_gaze_speaking['DG_P2_target'] == 1) | (df_gaze_speaking['DG_P3_target'] == 1)))
+                    # p2 (green) speaks, p1 or p3 look at p2
+                    | (df_gaze_speaking['speaking_p_green'] & ((df_gaze_speaking['DG_P1_target'] == 2) | (df_gaze_speaking['DG_P3_target'] == 2)))
+                    # p3 (red) speaks, p1 or p2 look at p1
+                    | (df_gaze_speaking['speaking_p_red'] & ((df_gaze_speaking['DG_P1_target'] == 3) | (df_gaze_speaking['DG_P2_target'] == 3))))
+                    # This ensures that there is only one participant talking
+                    & (df_gaze_speaking['SP']))
+                df_gaze_speaking['G_SP_OnSilent'] = (
+                    # p1 (blue) speaks, p1 looks at p2 or p3 
+                    ((df_gaze_speaking['speaking_p_blue'] & ((df_gaze_speaking['DG_P1_target'] == 2) | (df_gaze_speaking['DG_P1_target'] == 3)))
+                    # p2 (green) speaks, p2 looks at p1 or p3
+                    | (df_gaze_speaking['speaking_p_green'] & ((df_gaze_speaking['DG_P2_target'] == 1) | (df_gaze_speaking['DG_P2_target'] == 3)))
+                    # p3 (red) speaks, p3 looks at p1 or p2 
+                    | (df_gaze_speaking['speaking_p_red'] & ((df_gaze_speaking['DG_P3_target'] == 1) | (df_gaze_speaking['DG_P3_target'] == 2))))
+                    # This ensures that there is only one participant talking
+                    & (df_gaze_speaking['SP']))
+        df_gaze_speaking['G_SP'] = ((df_gaze_speaking['MG'] | df_gaze_speaking['DG']) & df_gaze_speaking['SP'])
+        G_SP_count = 0
+        G_SP_amount = 0
+        G_OnSpeaker_count = 0
+        G_OnSpeaker_amount = 0
+        G_SP_OnSilent_count = 0
+        G_SP_OnSilent_amount = 0
+        if True in df_gaze_speaking['G_SP'].value_counts():
+            G_SP_count = df_gaze_speaking['G_SP'].value_counts()[True]
+            G_SP_amount = G_SP_count/len(df_gaze_speaking)
+        if True in df_gaze_speaking['G_OnSpeaker'].value_counts():
+            G_OnSpeaker_count = df_gaze_speaking['G_OnSpeaker'].value_counts()[True]
+            G_OnSpeaker_amount = G_OnSpeaker_count/len(df_gaze_speaking)
+        if True in df_gaze_speaking['G_SP_OnSilent'].value_counts():
+            G_SP_OnSilent_count = df_gaze_speaking['G_SP_OnSilent'].value_counts()[True]
+            G_SP_OnSilent_amount = G_SP_OnSilent_count/len(df_gaze_speaking)
+        # G_OnSpeaker_OV, OV is included exclusively
+        # blue = p1, green = p2, red = p3
+        if use_all_data_gaze:
+            # dyads
+            if not triad:
+                df_gaze_speaking['G_OnSpeaker_OV'] = (
+                    # p1 (blue) speaks, p2 looks
+                    ((df_gaze_speaking['speaking_p_blue'] & (df_gaze_speaking['DG_P2_target'] == 1))
+                    # p2 (green) speaks, p1 looks
+                    | (df_gaze_speaking['speaking_p_green'] & (df_gaze_speaking['DG_P1_target'] == 2)))
+                    # This ensures that only overlap frames are included
+                    & ((df_gaze_speaking['OV_all_SP']) | (df_gaze_speaking['OV_two_SP'])))
+            # triads
+            else:
+                df_gaze_speaking['G_OnSpeaker_OV'] = (
+                    # p1 (blue) speaks, p2 or p3 look at p1
+                    ((df_gaze_speaking['speaking_p_blue'] & ((df_gaze_speaking['DG_P2_target'] == 1) | (df_gaze_speaking['DG_P3_target'] == 1)))
+                    # p2 (green) speaks, p1 or p3 look at p2
+                    | (df_gaze_speaking['speaking_p_green'] & ((df_gaze_speaking['DG_P1_target'] == 2) | (df_gaze_speaking['DG_P3_target'] == 2)))
+                    # p3 (red) speaks, p1 or p2 look at p1
+                    | (df_gaze_speaking['speaking_p_red'] & ((df_gaze_speaking['DG_P1_target'] == 3) | (df_gaze_speaking['DG_P2_target'] == 3))))
+                    # This ensures that only overlap frames are included
+                    & ((df_gaze_speaking['OV_all_SP']) | (df_gaze_speaking['OV_two_SP'])))                
+        G_OnSpeaker_OV_count = 0
+        G_OnSpeaker_OV_amount = 0
+        if True in df_gaze_speaking['G_OnSpeaker_OV'].value_counts():
+            G_OnSpeaker_OV_count = df_gaze_speaking['G_OnSpeaker_OV'].value_counts()[True]
+            G_OnSpeaker_OV_amount = G_OnSpeaker_OV_count/len(df_gaze_speaking)
+        # No_G_OnSpeaker, OV is excluded
+        # blue = p1, green = p2, red = p3
+        if use_all_data_gaze:
+            # dyads
+            if not triad:
+                df_gaze_speaking['No_G_OnSpeaker'] = (
+                    # p1 (blue) speaks, p2 looks
+                    ((df_gaze_speaking['speaking_p_blue'] & (df_gaze_speaking['DG_P2_target'] == 0))
+                    # p2 (green) speaks, p1 looks
+                    | (df_gaze_speaking['speaking_p_green'] & (df_gaze_speaking['DG_P1_target'] == 0)))
+                    # This ensures that there is only one participant talking
+                    & (df_gaze_speaking['SP']))
+            # triads
+            else:
+                df_gaze_speaking['No_G_OnSpeaker'] = (
+                    # p1 (blue) speaks, p2 and p3 DON'T look at p1
+                    ((df_gaze_speaking['speaking_p_blue'] & ((df_gaze_speaking['DG_P2_target'] != 1) & (df_gaze_speaking['DG_P3_target'] != 1)))
+                    # p2 (green) speaks, p1 and p3 DON'T look at p2
+                    | (df_gaze_speaking['speaking_p_green'] & ((df_gaze_speaking['DG_P1_target'] != 2) & (df_gaze_speaking['DG_P3_target'] != 2)))
+                    # p3 (red) speaks, p1 and p2 DON'T look at p1
+                    | (df_gaze_speaking['speaking_p_red'] & ((df_gaze_speaking['DG_P1_target'] != 3) & (df_gaze_speaking['DG_P2_target'] != 3))))
+                    # This ensures that there is only one participant talking
+                    & (df_gaze_speaking['SP']))
         df_gaze_speaking['No_G_SP'] = ((df_gaze_speaking['0_D1']) & df_gaze_speaking['SP'])
         No_G_SP_count = 0
         No_G_SP_amount = 0
+        No_G_OnSpeaker_count = 0
+        No_G_OnSpeaker_amount = 0
         if True in df_gaze_speaking['No_G_SP'].value_counts():
             No_G_SP_count = df_gaze_speaking['No_G_SP'].value_counts()[True]
             No_G_SP_amount = No_G_SP_count/len(df_gaze_speaking)
+        if True in df_gaze_speaking['No_G_OnSpeaker'].value_counts():
+            No_G_OnSpeaker_count = df_gaze_speaking['No_G_OnSpeaker'].value_counts()[True]
+            No_G_OnSpeaker_amount = No_G_OnSpeaker_count/len(df_gaze_speaking)
         # G_SI (G means either MG or DG)
         df_gaze_speaking['G_SI'] = ((df_gaze_speaking['MG'] | df_gaze_speaking['DG']) & df_gaze_speaking['SI'])
         G_SI_count = 0
@@ -168,7 +279,11 @@ if __name__ == "__main__":
             "SI": SI_amount*100,
             "OV_all_sp": OV_all_speak_amount*100,
             "OV_two_sp": OV_two_speak_amount*100,
-            "G_OnSpeaker_SP": G_OnSpeaker_SP_amount*100,
+            "G_OnSpeaker": G_OnSpeaker_amount*100,
+            "G_OnSpeaker_OV": G_OnSpeaker_OV_amount*100,
+            "G_SP_OnSilent": G_SP_OnSilent_amount*100,
+            "No_G_OnSpeaker": No_G_OnSpeaker_amount*100,
+            "G_SP": G_SP_amount*100,
             "No_G_SP": No_G_SP_amount*100,
             "G_SI": G_SI_amount*100,
             "No_G_SI": No_G_SI_amount*100
