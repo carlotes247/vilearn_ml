@@ -1,11 +1,13 @@
 import pandas as pd
 import numpy as np
+import datetime
 
+# THIS FILE ACTUALLY PROCESSES AND MERGED SPEAKING-SILENCE AND GAZE DATA!!!!
 if __name__ == "__main__": 
     # vars
     upsample: bool = True
     resample: bool = True
-    resample_window_size: int = 30
+    resample_window_size: int = 60
     save_resampled:bool = True
     save_upsampled:bool = False
     save_all_groups_df:bool = True
@@ -263,11 +265,16 @@ if __name__ == "__main__":
         # resample down in windows (specified by window_size)
         if resample:
             # Find all columns that match the pattern or are the name 'session'
-            cols_to_drop = group_dis_df.columns[group_dis_df.columns.str.contains('text_p', case=False)]  # all text_p
-            cols_to_drop = cols_to_drop.tolist() + ['session']                      # add session
+            df = df_gaze_speaking        
+            df.set_index('timestamp', inplace=True)
+            cols_to_drop = df.columns[df.columns.str.contains('text_p', case=False)]  # all text_p
+            cols_to_drop = cols_to_drop.tolist() + ['session', 'group_name', 'group_type']                      # add session
 
-            resampled_df = group_dis_df.drop(columns=cols_to_drop).resample(f'{resample_window_size}s').mean()
-            resampled_df['time_ms'] = 60*np.arange(len(resampled_df))
+            resampled_df = df.drop(columns=cols_to_drop).resample(f'{resample_window_size}s').mean()
+            resampled_df['time_ms'] = resample_window_size*np.arange(len(resampled_df))
+            # if we already have a column named seconds, drop it
+            if "seconds" in resampled_df.columns:
+                resampled_df.drop(columns=["seconds"], inplace=True)
             resampled_df.rename(columns={"time_ms": "seconds"}, inplace=True)
             resampled_df['session'] = group_name
             speaking_all_groups_df_resampled_list.append(resampled_df)            
@@ -296,11 +303,11 @@ if __name__ == "__main__":
     speaking_all_groups_df['session'] = speaking_all_groups_df['session'].str.replace(r'^recording_', '', regex=True)
     # save file with all frames
     if save_all_groups_df:
-        speaking_all_groups_df.to_csv("data/discover/merged/all_groups_interaction_speaking_90Hz.csv")
+        speaking_all_groups_df.to_csv(f"data/discover/merged/all_groups_interaction_speaking_90Hz_{datetime.datetime.now().date()}.csv")
     if save_resampled:
         speaking_all_groups_df_resampled = pd.concat(speaking_all_groups_df_resampled_list, ignore_index=True)
-        speaking_all_groups_df_resampled.to_csv(f'data/discover/merged/all_groups_interaction_speaking_per_{resample_window_size}s.csv')
+        speaking_all_groups_df_resampled.to_csv(f'data/discover/merged/all_groups_interaction_speaking_x_gaze_per_{resample_window_size}s_{datetime.datetime.now().date()}.csv')
     if save_group_configs_info_df:
-        speaking_configs_df.to_csv("data/speaking_configs_info.csv")
+        speaking_configs_df.to_csv(f"data/speaking_x_gaze_configs_info_{datetime.datetime.now().date()}.csv")
 
     print("hola")
