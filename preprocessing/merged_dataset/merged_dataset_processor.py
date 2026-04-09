@@ -27,7 +27,7 @@ class MergedDatasetProcessor():
     file_path_speaking: str
     group_names_file:str 
 
-    def __init__(self, sampling:int, filename_gaze:str, filename_blink_duration_dyads:str, filename_blink_duration_triads:str, filename_blink_rate:str, filename_speaking:str, filename_TE:str, data_folder_gaze:str = "", data_folder_blinks:str = "", data_folder_TE:str = ""):
+    def __init__(self, sampling:int, filename_gaze:str, filename_blink_duration_dyads:str, filename_blink_duration_triads:str, filename_blink_rate:str, filename_speaking_gaze:str, filename_TE:str, data_folder_gaze:str = "", data_folder_blinks:str = "", data_folder_TE:str = ""):
         # load dataframes
         self.working_dir = os.getcwd()
         # gaze (wide df)
@@ -48,7 +48,7 @@ class MergedDatasetProcessor():
         self.df_blink_rates = pd.read_csv(full_path_blink_rates)    
         # Speaking
         self.data_folder_speaking = 'data/discover/merged'
-        self.file_path_speaking = filename_speaking
+        self.file_path_speaking = filename_speaking_gaze
         full_path_speaking = os.path.join(self.working_dir, self.data_folder_speaking, self.file_path_speaking)  
         self.df_speaking = pd.read_csv(full_path_speaking)     
         # TE (not sampled)
@@ -67,13 +67,13 @@ class MergedDatasetProcessor():
         # merge blink durations into dataset
         df_merged = self.__merge_df_blink_durations_into_df_long_gaze(self.df_blink_duration_dyads, self.df_blink_duration_triads,
                                                                     df_merged, group_names)
-        # merge speaking into dataset
-        self.__merge_df_speaking_into_df_long_gaze(self.df_speaking, df_merged, group_names)
+        # merge speaking x gaze into dataset
+        df_merged = self.__merge_df_speaking_gaze_into_df_long_gaze(self.df_speaking, df_merged, group_names)
         # add TE column
         df_merged = self.__merge_resample_df_TE_into_df_long_gaze(sampling, self.df_TE, df_merged, group_names)
         # reorder columns to match the original 60s file that Cristina made by hand
         df_merged = df_merged.rename(columns={'seconds':'seconds_interaction_window'})
-        df_merged = df_merged[["seconds_interaction_window","group_type","group_name","TE","MG","1d_DG","BPM","blink_durations"]]
+        df_merged = df_merged[["seconds_interaction_window","group_type","group_name","TE","MG","1d_DG","BPM","blink_durations", "G_OnSpeaker", "No_G_OnSpeaker", "G_SI", "No_G_SI"]]
         self.df_processed = df_merged
 
     def __gaze_df_wide_to_long(self, df_wide_gaze, group_names) -> pd.DataFrame:
@@ -143,15 +143,18 @@ class MergedDatasetProcessor():
                     
         return df_merged_all.drop(columns=['group_name_y', 'TSGroupNTP', 'P1_durations', 'P2_durations', 'P3_durations']).rename(columns={'group_name_x':'group_name', 'group_avg_blink_duration':'blink_durations'})
 
-    def __merge_df_speaking_into_df_long_gaze(self, df_speaking: pd.DataFrame, df_long_gaze: pd.DataFrame, group_names: list[str]) -> pd.DataFrame:
+    def __merge_df_speaking_gaze_into_df_long_gaze(self, df_speaking: pd.DataFrame, df_long_gaze: pd.DataFrame, group_names: list[str]) -> pd.DataFrame:
+        df_merged_all:pd.DataFrame = pd.DataFrame()
         # merge gaze and speaking per group
         for group_name in group_names:
-            df_group_speaking = df_speaking[df_speaking["session"] == group_name]
+            df_group_speaking_gaze = df_speaking[df_speaking["session"] == group_name]
             df_group_gaze = df_long_gaze[df_long_gaze['group_name'] == group_name]
             # merge gaze and speaking per group
-            
-            print("hola")
-        pass
+            cols_speaking_gaze = ["seconds","G_OnSpeaker", "No_G_OnSpeaker", "G_SI", "No_G_SI"]
+            df_group_speaking_gaze_sub = df_group_speaking_gaze[cols_speaking_gaze]
+            df_group_merged = pd.merge(left=df_group_speaking_gaze_sub, right=df_group_gaze, on='seconds')
+            df_merged_all = pd.concat([df_merged_all, df_group_merged])
+        return df_merged_all
 
     def __merge_resample_df_TE_into_df_long_gaze(self, sampling:int, df_TE:pd.DataFrame, df_long_gaze:pd.DataFrame, group_names:list[str]) -> pd.DataFrame:
         df_TE['TS_ms'] = pd.to_timedelta(df_TE['seconds'], unit='s')
@@ -184,7 +187,7 @@ if __name__ == "__main__":
     file_name_blink_duration_dyads:str = ""
     file_name_blink_duration_triads:str = ""
     file_name_blink_rate:str =""
-    file_name_speaking:str = ""
+    file_name_speaking_gaze:str = ""
     file_name_TE:str = ""
     # 30s
     if process_30s and sampling == 30:
@@ -192,7 +195,7 @@ if __name__ == "__main__":
         file_name_blink_duration_dyads = f"blink_duration_per_minute_dyads_{sampling}s_2025-12-22.csv"
         file_name_blink_duration_triads = f"blink_duration_per_minute_triads_{sampling}s_2025-12-22.csv"
         file_name_blink_rate = f"blink_per_minute_all_groups_{sampling}s_2025-12-22.csv"
-        file_name_speaking = f"all_groups_interaction_speaking_per_{sampling}s.csv"
+        file_name_speaking_gaze = f"all_groups_interaction_speaking_per_{sampling}s.csv"
         file_name_TE = "all_groups_interaction_task_eng90Hz.csv"
     # 60s
     else:
@@ -200,14 +203,14 @@ if __name__ == "__main__":
         file_name_blink_duration_dyads = f"blink_duration_per_minute_dyads_{sampling}s.csv"
         file_name_blink_duration_triads = f"blink_duration_per_minute_triads_{sampling}s.csv"
         file_name_blink_rate = f"blink_per_minute_all_groups.csv"
-        file_name_speaking = f"all_groups_interaction_speaking_per_{sampling}s.csv"
+        file_name_speaking_gaze = f"all_groups_interaction_speaking_x_gaze_per_{sampling}s_2026-04-09.csv"
         # data_file_with_TE = '60s_TE_correlation.csv'
 
     datasetCtrl: MergedDatasetProcessor = MergedDatasetProcessor(sampling=sampling, filename_gaze=file_name_gaze,
                                                                  filename_blink_duration_dyads=file_name_blink_duration_dyads, 
                                                                  filename_blink_duration_triads=file_name_blink_duration_triads,
                                                                  filename_blink_rate=file_name_blink_rate,
-                                                                 filename_speaking=file_name_speaking,
+                                                                 filename_speaking_gaze=file_name_speaking_gaze,
                                                                  filename_TE=file_name_TE)
 
     datasetCtrl.to_csv(f"{sampling}s_TE_correlation_{datetime.datetime.now().date()}.csv")
