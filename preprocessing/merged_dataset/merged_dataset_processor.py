@@ -138,7 +138,11 @@ class MergedDatasetProcessor():
             df_group['seconds'] = (df_group['TSGroupNTP'] - start_TS).dt.total_seconds()
             # merge gaze and blink rate per group
             df_group_gaze = df_long_gaze[df_long_gaze['group_name'] == group_name]
-            df_group_merged = pd.merge(left=df_group, right=df_group_gaze, on='seconds')
+            df_group_merged = pd.merge(left=df_group, right=df_group_gaze, on='seconds')                        
+            # Check if there are Nans, and if so, fill with average of column
+            if df_group_merged.isna().values.any():
+                col_means = df_group_merged.drop(columns=["group_name_x","group_name_y","group_type"]).mean()
+                df_group_merged.fillna(col_means, inplace=True)
             df_merged_all = pd.concat([df_merged_all, df_group_merged])
                     
         return df_merged_all.drop(columns=['group_name_y', 'TSGroupNTP', 'P1_durations', 'P2_durations', 'P3_durations']).rename(columns={'group_name_x':'group_name', 'group_avg_blink_duration':'blink_durations'})

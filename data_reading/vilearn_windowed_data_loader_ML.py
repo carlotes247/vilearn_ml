@@ -83,6 +83,9 @@ class VilearnWindowedDataLoaderML:
             groups_floorlevel = df_floorlevel_info['Group_Name']
             self.df_data = self.df_data[self.df_data['group_name'].isin(groups_floorlevel)]
             self.df_data.reset_index(drop=True, inplace=True)
+        # drop any NaN rows
+        if self.df_data.isna().values.any():
+            print("there are nan values in this dataset!")
         # logic for TE file used for R correlation analysis (long dataframe)
         if self.use_file_TE:
             # binning TE
@@ -153,7 +156,8 @@ class VilearnWindowedDataLoaderML:
         return self.features_selected
     
     def get_original_features_list(self) -> list[str]:
-        return ['MG','1d_DG','BPM','blink_durations']
+        # return ['MG','1d_DG','BPM','blink_durations']
+        return ['MG','1d_DG','BPM','blink_durations',"G_OnSpeaker", "No_G_OnSpeaker", "G_SI", "No_G_SI"]
     
     def __restore_original_features(self) -> None:
         # select original feature set from df
