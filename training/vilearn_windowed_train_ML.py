@@ -290,17 +290,20 @@ if __name__ == '__main__':
     nested_cv_manual: bool = True
     binary_clf: bool = True
     all_groups: bool = True
-    dyads: bool = False
-    triads: bool = False
+    dyads: bool = True
+    triads: bool = True
     simple: bool = True
-    scaler: bool = True
-    all_features : bool = True
-    aixvr_features: bool = True
+    scaler: bool = True    
+    all_features : bool = True # to train models with all features
+    aixvr_features: bool = False # to train models with aixvr features
+    blink_speaking_x_gaze_features: bool = True # to train models with blinks and gaze x speaking features
     separate_avg_groups: bool = True
     data_file: str = "" # leave empty for the original 60s file from the AixVR paper
-    sampling: int = 30
+    sampling: int = 60
     if sampling == 30:
         data_file = "30s_TE_correlation_2025-12-27_edited.csv"
+    elif sampling == 60:
+        data_file = "60s_TE_correlation_2026-04-09.csv"
     # suffix run
     suffix_run: str = f"{sampling}s_binary" if binary_clf else f"{sampling}s_three_way"
     # extra suffix opportunity
@@ -432,6 +435,66 @@ if __name__ == '__main__':
                                                         data_loader=data_loader_triads, ml_models=models_scaler)
         vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_triads_f_BPM_{suffix_run}",
                                                 group_label="Triads", features_label="AIxVR", sampling_label=f"{sampling}", debug=debug)
+
+    # Select features for gaze x speaking ICMI iteration (substitute gaze only features with GazexSpeaking)
+    # Simple models, all groups, Blinks features + GazexSpeaking Features
+    if all_groups and simple and blink_speaking_x_gaze_features:
+        data_loader.select_features(['BPM','blink_durations',"G_OnSpeaker", "No_G_OnSpeaker", "G_SI", "No_G_SI"])
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_all_groups_f_Blinks_GazexSpeaking_{suffix_run}",
+                                                group_label="All", features_label="Blinks_GazexSpeaking", sampling_label=f"{sampling}", 
+                                                separate_avg_groups=separate_avg_groups, debug=debug)
+
+    # simple model dyads, Blinks features + GazexSpeaking Features
+    if dyads and simple and blink_speaking_x_gaze_features:
+        data_loader_dyads.select_features(['BPM','blink_durations',"G_OnSpeaker", "No_G_OnSpeaker", "G_SI", "No_G_SI"])
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_dyads, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_dyads_f_Blinks_GazexSpeaking_{suffix_run}",
+                                                group_label="Dyads", features_label="Blinks_GazexSpeaking", sampling_label=f"{sampling}", debug=debug)
+    # simple model triads, Blinks features + GazexSpeaking Features
+    if triads and simple and blink_speaking_x_gaze_features:
+        data_loader_triads.select_features(['BPM','blink_durations',"G_OnSpeaker", "No_G_OnSpeaker", "G_SI", "No_G_SI"])
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_triads, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_triads_f_Blinks_GazexSpeaking_{suffix_run}",
+                                                group_label="Triads", features_label="Blinks_GazexSpeaking", sampling_label=f"{sampling}", debug=debug)
+    # Scaler models, all groups, Blinks features + GazexSpeaking Features
+    if all_groups and scaler and blink_speaking_x_gaze_features:
+        data_loader.select_features(['BPM','blink_durations',"G_OnSpeaker", "No_G_OnSpeaker", "G_SI", "No_G_SI"])
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_all_groups_f_Blinks_GazexSpeaking_{suffix_run}",
+                                                group_label="All", features_label="Blinks_GazexSpeaking", sampling_label=f"{sampling}", 
+                                                separate_avg_groups=separate_avg_groups, debug=debug)
+    # Scaler models, dyads, Blinks features + GazexSpeaking Features
+    if dyads and scaler and blink_speaking_x_gaze_features:
+        data_loader_dyads.select_features(['BPM','blink_durations',"G_OnSpeaker", "No_G_OnSpeaker", "G_SI", "No_G_SI"])
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_dyads, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_dyads_f_Blinks_GazexSpeaking_{suffix_run}",
+                                                group_label="Dyads", features_label="Blinks_GazexSpeaking", sampling_label=f"{sampling}", debug=debug)
+    # Scaler models, triads, Blinks features + GazexSpeaking Features
+    if triads and scaler and blink_speaking_x_gaze_features:
+        data_loader_triads.select_features(['BPM','blink_durations',"G_OnSpeaker", "No_G_OnSpeaker", "G_SI", "No_G_SI"])
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_triads, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_triads_f_Blinks_GazexSpeaking_{suffix_run}",
+                                                group_label="Triads", features_label="Blinks_GazexSpeaking", sampling_label=f"{sampling}", debug=debug)
+
 
     # TODO: run svm poly separately because it takes too long
 
