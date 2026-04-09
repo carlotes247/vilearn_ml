@@ -1,6 +1,7 @@
 # classifiers imports
 from sklearn import dummy
 from sklearn import neighbors
+from sklearn.linear_model import LogisticRegression
 from sklearn import naive_bayes
 from sklearn import neural_network
 from sklearn import svm
@@ -59,6 +60,16 @@ class VilearnMLModels:
                     'n_neighbors': np.arange(1, 100, 1),
                     'weights': ['uniform', 'distance']
                 }
+            },
+            "Logistic Regression": {
+                'estimator': LogisticRegression(solver='liblinear'),
+                'params': {
+                    'C': [0.01, 0.1, 1, 10],
+                    'penalty': ['l1', 'l2'],
+                    'solver': ['liblinear'],      # liblinear supports l1 / l2
+                    'max_iter': [100, 200],
+                    'tol': [1e-4, 1e-3]
+                },            
             },
             "Linear SVM l1": {
                 'estimator': svm.LinearSVC(dual="auto"),
