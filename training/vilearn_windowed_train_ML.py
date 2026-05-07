@@ -294,9 +294,11 @@ if __name__ == '__main__':
     triads: bool = True
     simple: bool = True
     scaler: bool = True    
-    all_features : bool = True # to train models with all features
-    aixvr_features: bool = False # to train models with aixvr features
-    blink_speaking_x_gaze_features: bool = True # to train models with blinks and gaze x speaking features
+    all_features : bool = False # to train models with all features
+    aied_feautures:bool = True # to train models with aied features (blinks + gaze)
+    aixvr_features: bool = True # to train models with aixvr features (gaze for dyads, blinks for triads)
+    blink_speaking_x_gaze_features: bool = False # to train models with blinks and gaze x speaking features
+    blinks_only: bool = False # to train models with blinks only
     separate_avg_groups: bool = True
     data_file: str = "" # leave empty for the original 60s file from the AixVR paper
     sampling: int = 60
@@ -326,6 +328,7 @@ if __name__ == '__main__':
     models_scaler: VilearnMLModels = VilearnMLModels(scaler=True)
 
     # all logic encapsulated in class
+    ### ALL FEATURES ####
     # Simple models, all groups
     if all_groups and simple and all_features:
         vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
@@ -377,6 +380,65 @@ if __name__ == '__main__':
         vilearn_train_scaler_triads_all_features.train_and_evaluate(eval_label=f"SCALER_triads_all_features_{suffix_run}",
                                                 group_label="Triads", features_label="All", sampling_label=f"{sampling}", debug=debug)
     
+    ### AIED FEATURES (BLINKS + GAZE) ###
+    # Simple models, all groups, 
+    if all_groups and simple and aied_feautures:
+        data_loader.select_features(['MG','1d_DG','BPM','blink_durations'])
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_all_groups_f_MG_1DG_BPM_BDM_{suffix_run}",
+                                                group_label="All", features_label="AIED", sampling_label=f"{sampling}", 
+                                                separate_avg_groups=separate_avg_groups, debug=debug)
+    # simple model dyads, 
+    if dyads and simple and aied_feautures:
+        data_loader_dyads.select_features(['MG','1d_DG','BPM','blink_durations'])
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_dyads, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_dyads_f_MG_1DG_BPM_BDM_{suffix_run}",
+                                                group_label="Dyads", features_label="AIED", sampling_label=f"{sampling}", debug=debug)
+    # simple model triads, 
+    if triads and simple and aied_feautures:
+        data_loader_triads.select_features(['MG','1d_DG','BPM','blink_durations'])
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_triads, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_triads_f_MG_1DG_BPM_BDM_{suffix_run}",
+                                                group_label="Triads", features_label="AIED", sampling_label=f"{sampling}", debug=debug)
+    # Scaler models, all groups 
+    if all_groups and scaler and aied_feautures:
+        data_loader.select_features(['MG','1d_DG','BPM','blink_durations'])
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_all_groups_f_MG_1DG_BPM_BDM_{suffix_run}",
+                                                group_label="All", features_label="AIED", sampling_label=f"{sampling}", 
+                                                separate_avg_groups=separate_avg_groups, debug=debug)
+    # Scaler models, dyads  
+    if dyads and scaler and aied_feautures:
+        data_loader_dyads.select_features(['MG','1d_DG','BPM','blink_durations'])
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_dyads, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_dyads_f_MG_1DG_BPM_BDM_{suffix_run}",
+                                                group_label="Dyads", features_label="AIED", sampling_label=f"{sampling}", debug=debug)
+    # Scaler models, triads 
+    if triads and scaler and aied_feautures:
+        data_loader_triads.select_features(['MG','1d_DG','BPM','blink_durations'])
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_triads, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_triads_f_MG_1DG_BPM_BDM_{suffix_run}",
+                                                group_label="Triads", features_label="AIED", sampling_label=f"{sampling}", debug=debug)
+
+    ### AIxVR FEATURES ###
     # Select features for dyads and triads according to AIxVR paper for both simple and scaler models
     # Simple models, all groups, AIxVR paper features (blink rate, MG)
     if all_groups and simple and aixvr_features:
@@ -388,7 +450,6 @@ if __name__ == '__main__':
         vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_all_groups_f_MG_BPM_{suffix_run}",
                                                 group_label="All", features_label="AIxVR", sampling_label=f"{sampling}", 
                                                 separate_avg_groups=separate_avg_groups, debug=debug)
-
     # simple model dyads, features (1DG, MG)
     if dyads and simple and aixvr_features:
         data_loader_dyads.select_features(['MG','1d_DG'])
@@ -436,6 +497,7 @@ if __name__ == '__main__':
         vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_triads_f_BPM_{suffix_run}",
                                                 group_label="Triads", features_label="AIxVR", sampling_label=f"{sampling}", debug=debug)
 
+    ### BLINKS + SPEAKINGxGAZE ICMI FEATURES ###
     # Select features for gaze x speaking ICMI iteration (substitute gaze only features with GazexSpeaking)
     # Simple models, all groups, Blinks features + GazexSpeaking Features
     if all_groups and simple and blink_speaking_x_gaze_features:
@@ -447,7 +509,6 @@ if __name__ == '__main__':
         vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_all_groups_f_Blinks_GazexSpeaking_{suffix_run}",
                                                 group_label="All", features_label="Blinks_GazexSpeaking", sampling_label=f"{sampling}", 
                                                 separate_avg_groups=separate_avg_groups, debug=debug)
-
     # simple model dyads, Blinks features + GazexSpeaking Features
     if dyads and simple and blink_speaking_x_gaze_features:
         data_loader_dyads.select_features(['BPM','blink_durations',"G_OnSpeaker", "No_G_OnSpeaker", "G_SI", "No_G_SI"])
@@ -494,6 +555,65 @@ if __name__ == '__main__':
                                                         data_loader=data_loader_triads, ml_models=models_scaler)
         vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_triads_f_Blinks_GazexSpeaking_{suffix_run}",
                                                 group_label="Triads", features_label="Blinks_GazexSpeaking", sampling_label=f"{sampling}", debug=debug)
+
+    ### BLINKS ONLY FEATURES ###
+    # Select features for blinks only ICMI iteration
+    # Simple models, all groups, Blinks features + GazexSpeaking Features
+    if all_groups and simple and blinks_only:
+        data_loader.select_features(['BPM','blink_durations'])
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_all_groups_f_Blinks_{suffix_run}",
+                                                group_label="All", features_label="Blinks", sampling_label=f"{sampling}", 
+                                                separate_avg_groups=separate_avg_groups, debug=debug)
+    # simple model dyads, Blinks features + GazexSpeaking Features
+    if dyads and simple and blinks_only:
+        data_loader_dyads.select_features(['BPM','blink_durations'])
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_dyads, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_dyads_f_Blinks_{suffix_run}",
+                                                group_label="Dyads", features_label="Blinks", sampling_label=f"{sampling}", debug=debug)
+    # simple model triads, Blinks features + GazexSpeaking Features
+    if triads and simple and blinks_only:
+        data_loader_triads.select_features(['BPM','blink_durations'])
+        vilearn_train_simple: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_triads, ml_models=models)
+        vilearn_train_simple.train_and_evaluate(eval_label=f"SIMPLE_triads_f_Blinks_{suffix_run}",
+                                                group_label="Triads", features_label="Blinks", sampling_label=f"{sampling}", debug=debug)
+    # Scaler models, all groups, Blinks features + GazexSpeaking Features
+    if all_groups and scaler and blinks_only:
+        data_loader.select_features(['BPM','blink_durations'])
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_all_groups_f_Blinks_{suffix_run}",
+                                                group_label="All", features_label="Blinks", sampling_label=f"{sampling}", 
+                                                separate_avg_groups=separate_avg_groups, debug=debug)
+    # Scaler models, dyads, Blinks features + GazexSpeaking Features
+    if dyads and scaler and blinks_only:
+        data_loader_dyads.select_features(['BPM','blink_durations'])
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_dyads, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_dyads_f_Blinks_{suffix_run}",
+                                                group_label="Dyads", features_label="Blinks", sampling_label=f"{sampling}", debug=debug)
+    # Scaler models, triads, Blinks features + GazexSpeaking Features
+    if triads and scaler and blinks_only:
+        data_loader_triads.select_features(['BPM','blink_durations'])
+        vilearn_train_scaler: VilearnMLTrain = VilearnMLTrain(nested_cv=nested_cv, 
+                                                    auto_cv=(not nested_cv_manual),
+                                                        binary_clf=binary_clf,
+                                                        data_loader=data_loader_triads, ml_models=models_scaler)
+        vilearn_train_scaler.train_and_evaluate(eval_label=f"SCALER_triads_f_Blinks_{suffix_run}",
+                                                group_label="Triads", features_label="Blinks", sampling_label=f"{sampling}", debug=debug)
 
 
     # TODO: run svm poly separately because it takes too long
