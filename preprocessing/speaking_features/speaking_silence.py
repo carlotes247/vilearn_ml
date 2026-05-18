@@ -9,7 +9,7 @@ if __name__ == "__main__":
     resample: bool = True
     resample_window_size: int = 60
     save_resampled:bool = True
-    save_upsampled:bool = False
+    save_upsampled:bool = True
     save_all_groups_df:bool = True
     save_group_configs_info_df:bool = True
     floorlevel_only:bool = False
@@ -52,9 +52,14 @@ if __name__ == "__main__":
             df_merged.drop(columns=[c for c in df_merged.columns
                        if c.endswith('_x') and c != 'time_ms_x'], inplace=True)
             # Linear interpolation (default for numeric columns)
-            df_interpolated = df_merged.interpolate(method='linear', limit_direction='forward', limit=None).ffill()
+            # Only interpolate time_ms_x not to mess any of the other columns
+            time_ms_interpolated = df_merged['time_ms_x'].interpolate(method='linear', limit_direction='forward', limit=None).ffill()
+            df_interpolated = df_merged
+            df_interpolated['time_ms_x'] = time_ms_interpolated
             df_interpolated.drop(columns=['time_ms_y'], inplace=True)
             df_interpolated.columns = df_interpolated.columns.str.replace(r'_[xy]$', '', regex=True)
+            if ((df_interpolated['speaking_p_blue'] == False) & (df_interpolated['text_p_blue'].notna())).any():
+                raise Exception("this group was wrongly interpolated!")
             # Reassign df for later processing
             group_dis_df = df_interpolated
             if save_upsampled:
@@ -215,16 +220,16 @@ if __name__ == "__main__":
         # No_G_OnSpeaker, OV is excluded
         # blue = p1, green = p2, red = p3
         if use_all_data_gaze:
-            # dyads
+            # dyads, also accounting for when a speaker looks at themselves
             if not triad:
                 df_gaze_speaking['No_G_OnSpeaker'] = (
                     # p1 (blue) speaks, p2 looks
-                    ((df_gaze_speaking['speaking_p_blue'] & (df_gaze_speaking['DG_P2_target'] == 0))
+                    ((df_gaze_speaking['speaking_p_blue'] & ((df_gaze_speaking['DG_P2_target'] == 0) | (df_gaze_speaking['DG_P2_target'] == 2)))
                     # p2 (green) speaks, p1 looks
-                    | (df_gaze_speaking['speaking_p_green'] & (df_gaze_speaking['DG_P1_target'] == 0)))
+                    | (df_gaze_speaking['speaking_p_green'] & ((df_gaze_speaking['DG_P1_target'] == 0) | (df_gaze_speaking['DG_P1_target'] == 1))))
                     # This ensures that there is only one participant talking
                     & (df_gaze_speaking['SP']))
-            # triads
+            # triads, also accounting for when a speaker looks at themselves
             else:
                 df_gaze_speaking['No_G_OnSpeaker'] = (
                     # p1 (blue) speaks, p2 and p3 DON'T look at p1
@@ -296,7 +301,7 @@ if __name__ == "__main__":
             "No_G_SI": No_G_SI_amount*100
         }
         speaking_configs_list.append(group_speaking_config_dict)
-        speaking_all_groups_df_list.append(group_dis_df)
+        speaking_all_groups_df_list.append(df_gaze_speaking)
 
     speaking_configs_df = pd.DataFrame(speaking_configs_list)
     speaking_all_groups_df = pd.concat(speaking_all_groups_df_list, ignore_index=True)
