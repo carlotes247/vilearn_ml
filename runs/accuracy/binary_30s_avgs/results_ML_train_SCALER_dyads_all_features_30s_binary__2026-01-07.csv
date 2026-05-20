@@ -1,0 +1,414 @@
+,Model,Fold,Score,CV,Version,Group,Features,Sampling,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,1,0.64,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  9]
+ [ 0 16]]",0.0
+1,Baseline Most Frequent Strategy,2,0.6363636363636364,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  8]
+ [ 0 14]]",0.015625
+2,Baseline Most Frequent Strategy,3,0.2857142857142857,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 0  6]]",0.0
+3,Baseline Most Frequent Strategy,4,0.2857142857142857,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 0  6]]",0.0
+4,Baseline Most Frequent Strategy,5,0.55,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  9]
+ [ 0 11]]",0.0
+5,Baseline Most Frequent Strategy,6,0.5,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 8]
+ [0 8]]",0.015625
+6,Baseline Most Frequent Strategy,7,0.1875,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 13]
+ [ 0  3]]",0.0
+7,Baseline Most Frequent Strategy,8,0.4,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 9]
+ [0 6]]",0.0
+8,Baseline Most Frequent Strategy,9,0.6,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 6]
+ [0 9]]",0.0
+9,Baseline Most Frequent Strategy,10,0.7142857142857143,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  4]
+ [ 0 10]]",0.0
+10,Baseline Most Frequent Strategy,11,1.0,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,[[13]],0.0
+11,Baseline Most Frequent Strategy,12,1.0,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,[[8]],0.0
+12,Baseline Most Frequent Strategy,avg,0.5666314935064934,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[  0  96]
+ [  0 110]]",0.046875
+13,Baseline Most Frequent Strategy,std,0.24880201671212723,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[  0  96]
+ [  0 110]]",0.046875
+14,Baseline Prior Strategy,1,0.64,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  9]
+ [ 0 16]]",0.015625
+15,Baseline Prior Strategy,2,0.6363636363636364,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  8]
+ [ 0 14]]",0.0
+16,Baseline Prior Strategy,3,0.2857142857142857,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 0  6]]",0.015625
+17,Baseline Prior Strategy,4,0.2857142857142857,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 0  6]]",0.0
+18,Baseline Prior Strategy,5,0.55,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  9]
+ [ 0 11]]",0.0
+19,Baseline Prior Strategy,6,0.5,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 8]
+ [0 8]]",0.0
+20,Baseline Prior Strategy,7,0.1875,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 13]
+ [ 0  3]]",0.0
+21,Baseline Prior Strategy,8,0.4,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 9]
+ [0 6]]",0.0
+22,Baseline Prior Strategy,9,0.6,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 6]
+ [0 9]]",0.015625
+23,Baseline Prior Strategy,10,0.7142857142857143,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  4]
+ [ 0 10]]",0.0
+24,Baseline Prior Strategy,11,1.0,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,[[13]],0.0
+25,Baseline Prior Strategy,12,1.0,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,[[8]],0.0
+26,Baseline Prior Strategy,avg,0.5666314935064934,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[  0  96]
+ [  0 110]]",0.046875
+27,Baseline Prior Strategy,std,0.24880201671212723,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[  0  96]
+ [  0 110]]",0.046875
+28,Baseline Stratified Strategy,1,0.44,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[2 7]
+ [7 9]]",0.0
+29,Baseline Stratified Strategy,2,0.45454545454545453,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 4]
+ [8 6]]",0.0
+30,Baseline Stratified Strategy,3,0.38095238095238093,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[6 9]
+ [4 2]]",0.0
+31,Baseline Stratified Strategy,4,0.38095238095238093,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[6 9]
+ [4 2]]",0.0
+32,Baseline Stratified Strategy,5,0.55,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[6 3]
+ [6 5]]",0.0
+33,Baseline Stratified Strategy,6,0.375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 4]
+ [6 2]]",0.0
+34,Baseline Stratified Strategy,7,0.6875,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[8 5]
+ [0 3]]",0.0
+35,Baseline Stratified Strategy,8,0.5333333333333333,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[5 4]
+ [3 3]]",0.0
+36,Baseline Stratified Strategy,9,0.4,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 2]
+ [7 2]]",0.0
+37,Baseline Stratified Strategy,10,0.42857142857142855,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[3 1]
+ [7 3]]",0.015625
+38,Baseline Stratified Strategy,11,0.5384615384615384,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [6 7]]",0.0
+39,Baseline Stratified Strategy,12,0.375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [5 3]]",0.0
+40,Baseline Stratified Strategy,avg,0.4620263764013764,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[48 48]
+ [63 47]]",0.015625
+41,Baseline Stratified Strategy,std,0.0927835858786636,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[48 48]
+ [63 47]]",0.015625
+42,Baseline Uniform Strategy,1,0.48,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[3 6]
+ [7 9]]",0.0
+43,Baseline Uniform Strategy,2,0.45454545454545453,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[5 3]
+ [9 5]]",0.015625
+44,Baseline Uniform Strategy,3,0.5714285714285714,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[9 6]
+ [3 3]]",0.0
+45,Baseline Uniform Strategy,4,0.47619047619047616,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[7 8]
+ [3 3]]",0.015625
+46,Baseline Uniform Strategy,5,0.55,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[3 6]
+ [3 8]]",0.0
+47,Baseline Uniform Strategy,6,0.5,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 4]
+ [4 4]]",0.0
+48,Baseline Uniform Strategy,7,0.625,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[8 5]
+ [1 2]]",0.0
+49,Baseline Uniform Strategy,8,0.6,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 5]
+ [1 5]]",0.0
+50,Baseline Uniform Strategy,9,0.6,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[3 3]
+ [3 6]]",0.015625
+51,Baseline Uniform Strategy,10,0.35714285714285715,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[1 3]
+ [6 4]]",0.015625
+52,Baseline Uniform Strategy,11,0.5384615384615384,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [6 7]]",0.015625
+53,Baseline Uniform Strategy,12,0.75,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [2 6]]",0.0
+54,Baseline Uniform Strategy,avg,0.541897408147408,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[47 49]
+ [48 62]]",0.078125
+55,Baseline Uniform Strategy,std,0.09556097069207119,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[47 49]
+ [48 62]]",0.078125
+56,Nearest Neighbors Test,1,0.52,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[6 3]
+ [9 7]]",0.015625
+57,Nearest Neighbors Test,2,0.5909090909090909,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 4]
+ [5 9]]",0.015625
+58,Nearest Neighbors Test,3,0.5714285714285714,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[6 9]
+ [0 6]]",0.03125
+59,Nearest Neighbors Test,4,0.2857142857142857,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 5 10]
+ [ 5  1]]",0.03125
+60,Nearest Neighbors Test,5,0.5,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 5]
+ [5 6]]",0.015625
+61,Nearest Neighbors Test,6,0.5,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[3 5]
+ [3 5]]",0.015625
+62,Nearest Neighbors Test,7,0.625,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[10  3]
+ [ 3  0]]",0.015625
+63,Nearest Neighbors Test,8,0.5333333333333333,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[3 6]
+ [1 5]]",0.046875
+64,Nearest Neighbors Test,9,0.6666666666666666,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[1 5]
+ [0 9]]",0.046875
+65,Nearest Neighbors Test,10,0.5,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[1 3]
+ [4 6]]",0.0
+66,Nearest Neighbors Test,11,0.6923076923076923,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [4 9]]",0.0
+67,Nearest Neighbors Test,12,0.375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [5 3]]",0.015625
+68,Nearest Neighbors Test,avg,0.5300299700299701,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[43 53]
+ [44 66]]",0.25
+69,Nearest Neighbors Test,std,0.1102967282616801,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[43 53]
+ [44 66]]",0.25
+70,Nearest Neighbors,1,0.68,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[8 1]
+ [7 9]]",0.796875
+71,Nearest Neighbors,2,0.6363636363636364,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 4  4]
+ [ 4 10]]",0.734375
+72,Nearest Neighbors,3,0.42857142857142855,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 3 12]
+ [ 0  6]]",0.71875
+73,Nearest Neighbors,4,0.23809523809523808,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 1  5]]",1.078125
+74,Nearest Neighbors,5,0.65,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[5 4]
+ [3 8]]",0.625
+75,Nearest Neighbors,6,0.4375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[5 3]
+ [6 2]]",0.828125
+76,Nearest Neighbors,7,0.1875,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 13]
+ [ 0  3]]",0.953125
+77,Nearest Neighbors,8,0.3333333333333333,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[3 6]
+ [4 2]]",1.078125
+78,Nearest Neighbors,9,0.4666666666666667,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 6]
+ [2 7]]",1.203125
+79,Nearest Neighbors,10,0.42857142857142855,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[2 2]
+ [6 4]]",0.625
+80,Nearest Neighbors,11,0.6153846153846154,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [5 8]]",0.890625
+81,Nearest Neighbors,12,0.375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [5 3]]",0.953125
+82,Nearest Neighbors,avg,0.45641552891552895,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[30 66]
+ [43 67]]",10.484375
+83,Nearest Neighbors,std,0.15515797116249633,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[30 66]
+ [43 67]]",10.484375
+84,Linear SVM l1,1,0.84,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 9  0]
+ [ 4 12]]",0.0
+85,Linear SVM l1,2,0.5,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[6 2]
+ [9 5]]",0.015625
+86,Linear SVM l1,3,0.38095238095238093,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 2 13]
+ [ 0  6]]",0.0
+87,Linear SVM l1,4,0.23809523809523808,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 1  5]]",0.046875
+88,Linear SVM l1,5,0.55,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[9 0]
+ [9 2]]",0.015625
+89,Linear SVM l1,6,0.75,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[6 2]
+ [2 6]]",0.0625
+90,Linear SVM l1,7,0.375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 3 10]
+ [ 0  3]]",0.046875
+91,Linear SVM l1,8,0.4666666666666667,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[7 2]
+ [6 0]]",0.0
+92,Linear SVM l1,9,0.7333333333333333,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[2 4]
+ [0 9]]",0.03125
+93,Linear SVM l1,10,0.6428571428571429,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 4]
+ [1 9]]",0.015625
+94,Linear SVM l1,11,0.6153846153846154,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [5 8]]",0.046875
+95,Linear SVM l1,12,0.875,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [1 7]]",0.015625
+96,Linear SVM l1,avg,0.5806074481074481,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[44 52]
+ [38 72]]",0.296875
+97,Linear SVM l1,std,0.1895000087759178,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[44 52]
+ [38 72]]",0.296875
+98,Linear SVM l2,1,0.84,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 9  0]
+ [ 4 12]]",0.015625
+99,Linear SVM l2,2,0.5,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[6 2]
+ [9 5]]",0.0625
+100,Linear SVM l2,3,0.38095238095238093,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 2 13]
+ [ 0  6]]",0.0625
+101,Linear SVM l2,4,0.23809523809523808,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 1  5]]",0.078125
+102,Linear SVM l2,5,0.6,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[6 3]
+ [5 6]]",0.109375
+103,Linear SVM l2,6,0.625,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[2 6]
+ [0 8]]",0.078125
+104,Linear SVM l2,7,0.375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 3 10]
+ [ 0  3]]",0.140625
+105,Linear SVM l2,8,0.4666666666666667,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[7 2]
+ [6 0]]",0.109375
+106,Linear SVM l2,9,0.7333333333333333,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[2 4]
+ [0 9]]",0.125
+107,Linear SVM l2,10,0.6428571428571429,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 4]
+ [1 9]]",0.078125
+108,Linear SVM l2,11,0.6923076923076923,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [4 9]]",0.140625
+109,Linear SVM l2,12,1.0,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,[[8]],0.140625
+110,Linear SVM l2,avg,0.5911843711843713,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[37 59]
+ [30 80]]",1.15625
+111,Linear SVM l2,std,0.2046923163904381,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[37 59]
+ [30 80]]",1.15625
+112,SVM linear or rbf,1,0.8,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 8  1]
+ [ 4 12]]",0.21875
+113,SVM linear or rbf,2,0.5,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[6 2]
+ [9 5]]",0.265625
+114,SVM linear or rbf,3,0.2857142857142857,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 0  6]]",0.125
+115,SVM linear or rbf,4,0.23809523809523808,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 1  5]]",0.109375
+116,SVM linear or rbf,5,0.65,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[9 0]
+ [7 4]]",0.09375
+117,SVM linear or rbf,6,0.5,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 8]
+ [0 8]]",0.203125
+118,SVM linear or rbf,7,0.1875,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 13]
+ [ 0  3]]",0.125
+119,SVM linear or rbf,8,0.4,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 9]
+ [0 6]]",0.171875
+120,SVM linear or rbf,9,0.7333333333333333,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[2 4]
+ [0 9]]",0.171875
+121,SVM linear or rbf,10,0.6428571428571429,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 4]
+ [1 9]]",0.046875
+122,SVM linear or rbf,11,0.5384615384615384,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [6 7]]",0.140625
+123,SVM linear or rbf,12,1.0,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,[[8]],0.109375
+124,SVM linear or rbf,avg,0.5396634615384616,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[25 71]
+ [28 82]]",1.78125
+125,SVM linear or rbf,std,0.23132270697219925,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[25 71]
+ [28 82]]",1.78125
+126,Decision Tree,1,0.36,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 5  4]
+ [12  4]]",0.015625
+127,Decision Tree,2,0.5454545454545454,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 2  6]
+ [ 4 10]]",0.015625
+128,Decision Tree,3,0.5238095238095238,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 5 10]
+ [ 0  6]]",0.046875
+129,Decision Tree,4,0.42857142857142855,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 5 10]
+ [ 2  4]]",0.109375
+130,Decision Tree,5,0.6,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 5]
+ [3 8]]",0.0625
+131,Decision Tree,6,0.8125,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[7 1]
+ [2 6]]",0.125
+132,Decision Tree,7,0.375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 9]
+ [1 2]]",0.0625
+133,Decision Tree,8,0.4,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[2 7]
+ [2 4]]",0.09375
+134,Decision Tree,9,0.5333333333333333,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 6]
+ [1 8]]",0.0625
+135,Decision Tree,10,0.6428571428571429,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[2 2]
+ [3 7]]",0.046875
+136,Decision Tree,11,0.6923076923076923,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [4 9]]",0.109375
+137,Decision Tree,12,0.875,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [1 7]]",0.125
+138,Decision Tree,avg,0.5657361388611389,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[36 60]
+ [35 75]]",0.875
+139,Decision Tree,std,0.16017905174406086,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[36 60]
+ [35 75]]",0.875
+140,Random Forest,1,0.56,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[6 3]
+ [8 8]]",1.703125
+141,Random Forest,2,0.5454545454545454,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 2  6]
+ [ 4 10]]",1.546875
+142,Random Forest,3,0.47619047619047616,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 5 10]
+ [ 1  5]]",1.703125
+143,Random Forest,4,0.19047619047619047,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 2  4]]",1.5
+144,Random Forest,5,0.45,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 5]
+ [6 5]]",1.640625
+145,Random Forest,6,0.4375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 4]
+ [5 3]]",1.390625
+146,Random Forest,7,0.375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[5 8]
+ [2 1]]",1.703125
+147,Random Forest,8,0.4666666666666667,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 5]
+ [3 3]]",1.8125
+148,Random Forest,9,0.5333333333333333,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 6]
+ [1 8]]",1.875
+149,Random Forest,10,0.6428571428571429,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[3 1]
+ [4 6]]",1.859375
+150,Random Forest,11,0.5384615384615384,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [6 7]]",1.71875
+151,Random Forest,12,0.75,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [2 6]]",1.765625
+152,Random Forest,avg,0.4971616577866578,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[33 63]
+ [44 66]]",20.21875
+153,Random Forest,std,0.1324708298012445,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[33 63]
+ [44 66]]",20.21875
+154,Neural Net,1,0.28,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 6  3]
+ [15  1]]",1.65625
+155,Neural Net,2,0.4090909090909091,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 6  2]
+ [11  3]]",1.6875
+156,Neural Net,3,0.47619047619047616,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 4 11]
+ [ 0  6]]",1.625
+157,Neural Net,4,0.6190476190476191,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[7 8]
+ [0 6]]",1.453125
+158,Neural Net,5,0.55,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 5]
+ [4 7]]",1.234375
+159,Neural Net,6,0.375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 4]
+ [6 2]]",1.703125
+160,Neural Net,7,0.4375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 9]
+ [0 3]]",1.625
+161,Neural Net,8,0.5333333333333333,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[4 5]
+ [2 4]]",1.59375
+162,Neural Net,9,0.5333333333333333,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[1 5]
+ [2 7]]",1.84375
+163,Neural Net,10,0.2857142857142857,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[1 3]
+ [7 3]]",1.5
+164,Neural Net,11,0.3076923076923077,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [9 4]]",1.453125
+165,Neural Net,12,1.0,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,[[8]],1.453125
+166,Neural Net,avg,0.483908522033522,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[41 55]
+ [56 54]]",18.828125
+167,Neural Net,std,0.1882928906356141,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[41 55]
+ [56 54]]",18.828125
+168,AdaBoost,1,0.36,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 3  6]
+ [10  6]]",0.59375
+169,AdaBoost,2,0.5454545454545454,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[3 5]
+ [5 9]]",0.5625
+170,AdaBoost,3,0.2857142857142857,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 0  6]]",0.8125
+171,AdaBoost,4,0.3333333333333333,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 2 13]
+ [ 1  5]]",0.5
+172,AdaBoost,5,0.3,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[2 7]
+ [7 4]]",0.71875
+173,AdaBoost,6,0.4375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 8]
+ [1 7]]",0.4375
+174,AdaBoost,7,0.1875,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 13]
+ [ 0  3]]",1.0
+175,AdaBoost,8,0.5333333333333333,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[7 2]
+ [5 1]]",0.5625
+176,AdaBoost,9,0.6666666666666666,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[1 5]
+ [0 9]]",0.515625
+177,AdaBoost,10,0.5714285714285714,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[2 2]
+ [4 6]]",0.796875
+178,AdaBoost,11,0.9230769230769231,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  0]
+ [ 1 12]]",0.375
+179,AdaBoost,12,0.0,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [8 0]]",0.71875
+180,AdaBoost,avg,0.4286673049173049,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[20 76]
+ [42 68]]",7.59375
+181,AdaBoost,std,0.23073244474923746,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[20 76]
+ [42 68]]",7.59375
+182,Naive Bayes,1,0.4,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[1 8]
+ [7 9]]",0.296875
+183,Naive Bayes,2,0.5,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[5 3]
+ [8 6]]",0.25
+184,Naive Bayes,3,0.2857142857142857,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 0  6]]",0.21875
+185,Naive Bayes,4,0.2857142857142857,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 0  6]]",0.234375
+186,Naive Bayes,5,0.55,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  9]
+ [ 0 11]]",0.3125
+187,Naive Bayes,6,0.4375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[1 7]
+ [2 6]]",0.34375
+188,Naive Bayes,7,0.1875,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 13]
+ [ 0  3]]",0.390625
+189,Naive Bayes,8,0.4,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[5 4]
+ [5 1]]",0.359375
+190,Naive Bayes,9,0.6,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 6]
+ [0 9]]",0.296875
+191,Naive Bayes,10,0.7142857142857143,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  4]
+ [ 0 10]]",0.25
+192,Naive Bayes,11,0.8461538461538461,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  0]
+ [ 2 11]]",0.359375
+193,Naive Bayes,12,0.375,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [5 3]]",0.28125
+194,Naive Bayes,avg,0.4651556776556776,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[12 84]
+ [29 81]]",3.609375
+195,Naive Bayes,std,0.18089950378877412,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[12 84]
+ [29 81]]",3.609375
+196,QDA,1,0.48,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 2  7]
+ [ 6 10]]",0.015625
+197,QDA,2,0.6363636363636364,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 4  4]
+ [ 4 10]]",0.0
+198,QDA,3,0.42857142857142855,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 3 12]
+ [ 0  6]]",0.015625
+199,QDA,4,0.2857142857142857,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 15]
+ [ 0  6]]",0.0
+200,QDA,5,0.6,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[5 4]
+ [4 7]]",0.015625
+201,QDA,6,0.625,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[5 3]
+ [3 5]]",0.015625
+202,QDA,7,0.1875,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0 13]
+ [ 0  3]]",0.015625
+203,QDA,8,0.4,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[5 4]
+ [5 1]]",0.0
+204,QDA,9,0.6,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 6]
+ [0 9]]",0.0
+205,QDA,10,0.7142857142857143,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  4]
+ [ 0 10]]",0.0
+206,QDA,11,0.8461538461538461,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[ 0  0]
+ [ 2 11]]",0.015625
+207,QDA,12,0.75,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[0 0]
+ [2 6]]",0.015625
+208,QDA,avg,0.5461324092574092,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[24 72]
+ [26 84]]",0.109375
+209,QDA,std,0.18618967968018113,Nested,SCALER_dyads_all_features_30s_binary_Manual,Dyads,All,30,"[[24 72]
+ [26 84]]",0.109375

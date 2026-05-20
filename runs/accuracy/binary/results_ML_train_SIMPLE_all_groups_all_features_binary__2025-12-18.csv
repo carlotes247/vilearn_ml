@@ -1,0 +1,31 @@
+,Model,Score,CV,Version,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,0.4793534243534244,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[97  0]
+ [89  0]]",0.046875
+1,Baseline Prior Strategy,0.4793534243534244,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[97  0]
+ [89  0]]",0.015625
+2,Baseline Stratified Strategy,0.4343739593739594,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[47 50]
+ [55 34]]",0.046875
+3,Baseline Uniform Strategy,0.44249014874014875,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[43 54]
+ [50 39]]",0.03125
+4,Nearest Neighbors Test,0.5507668720168721,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[67 30]
+ [51 38]]",0.109375
+5,Nearest Neighbors,0.5775953213453214,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[56 41]
+ [35 54]]",13.296875
+6,Linear SVM l1,0.5599725274725275,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[56 41]
+ [37 52]]",1.046875
+7,Linear SVM l2,0.5187130924630925,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[54 43]
+ [41 48]]",6.40625
+8,SVM linear or rbf,0.5842396492396491,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[66 31]
+ [43 46]]",3.484375
+9,Decision Tree,0.5242365967365967,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[49 48]
+ [39 50]]",1.703125
+10,Random Forest,0.5216164391164392,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[59 38]
+ [48 41]]",55.875
+11,Neural Net,0.5382914307914308,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[59 38]
+ [43 46]]",25.6875
+12,AdaBoost,0.5583359695859696,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[49 48]
+ [32 57]]",19.921875
+13,Naive Bayes,0.6303574203574204,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[65 32]
+ [34 55]]",4.421875
+14,QDA,0.6291218503718503,Nested,SIMPLE_all_groups_all_features_binary_Manual,"[[53 44]
+ [24 65]]",0.296875

@@ -1,0 +1,31 @@
+,Model,Score,CV,Version,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,0.581198759147928,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[96  0]
+ [62  0]]",0.0
+1,Baseline Prior Strategy,0.581198759147928,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[96  0]
+ [62  0]]",0.0
+2,Baseline Stratified Strategy,0.545154631351882,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[59 37]
+ [34 28]]",0.0
+3,Baseline Uniform Strategy,0.45837260299376664,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[41 55]
+ [29 33]]",0.0
+4,Nearest Neighbors Test,0.7138139593782178,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[80 16]
+ [31 31]]",0.0625
+5,Nearest Neighbors,0.6744451156615479,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[76 20]
+ [33 29]]",4.0625
+6,Linear SVM l1,0.5781794354764304,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[86 10]
+ [52 10]]",0.109375
+7,Linear SVM l2,0.6653643094260102,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[82 14]
+ [37 25]]",0.515625
+8,SVM linear or rbf,0.567309870259039,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[84 12]
+ [52 10]]",0.53125
+9,Decision Tree,0.5585021063761473,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[51 45]
+ [26 36]]",0.421875
+10,Random Forest,0.6121208776659544,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[59 37]
+ [26 36]]",8.140625
+11,Neural Net,0.6028129301786591,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[78 18]
+ [42 20]]",7.078125
+12,AdaBoost,0.6954183435561313,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[70 26]
+ [23 39]]",3.859375
+13,Naive Bayes,0.6420723839601716,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[81 15]
+ [39 23]]",1.328125
+14,QDA,0.6510009553887431,Nested,SCALER_dyads_f_MG_1DG_30s_binary_Manual,"[[81 15]
+ [38 24]]",0.09375

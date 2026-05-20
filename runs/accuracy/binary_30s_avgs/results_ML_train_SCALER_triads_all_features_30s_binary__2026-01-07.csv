@@ -1,0 +1,415 @@
+,Model,Fold,Score,CV,Version,Group,Features,Sampling,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,1,0.64,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  9]
+ [ 0 16]]",0.0
+1,Baseline Most Frequent Strategy,2,0.6363636363636364,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  8]
+ [ 0 14]]",0.0
+2,Baseline Most Frequent Strategy,3,0.2857142857142857,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 0  6]]",0.0
+3,Baseline Most Frequent Strategy,4,0.2857142857142857,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 0  6]]",0.0
+4,Baseline Most Frequent Strategy,5,0.55,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  9]
+ [ 0 11]]",0.0
+5,Baseline Most Frequent Strategy,6,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 8]
+ [0 8]]",0.0
+6,Baseline Most Frequent Strategy,7,0.1875,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 13]
+ [ 0  3]]",0.0
+7,Baseline Most Frequent Strategy,8,0.4,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 9]
+ [0 6]]",0.0
+8,Baseline Most Frequent Strategy,9,0.6,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 6]
+ [0 9]]",0.0
+9,Baseline Most Frequent Strategy,10,0.7142857142857143,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  4]
+ [ 0 10]]",0.0
+10,Baseline Most Frequent Strategy,11,1.0,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,[[13]],0.0
+11,Baseline Most Frequent Strategy,12,1.0,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,[[8]],0.0
+12,Baseline Most Frequent Strategy,avg,0.5666314935064934,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[  0  96]
+ [  0 110]]",0.0
+13,Baseline Most Frequent Strategy,std,0.24880201671212723,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[  0  96]
+ [  0 110]]",0.0
+14,Baseline Prior Strategy,1,0.64,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  9]
+ [ 0 16]]",0.0
+15,Baseline Prior Strategy,2,0.6363636363636364,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  8]
+ [ 0 14]]",0.0
+16,Baseline Prior Strategy,3,0.2857142857142857,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 0  6]]",0.0
+17,Baseline Prior Strategy,4,0.2857142857142857,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 0  6]]",0.0
+18,Baseline Prior Strategy,5,0.55,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  9]
+ [ 0 11]]",0.0
+19,Baseline Prior Strategy,6,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 8]
+ [0 8]]",0.0
+20,Baseline Prior Strategy,7,0.1875,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 13]
+ [ 0  3]]",0.0
+21,Baseline Prior Strategy,8,0.4,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 9]
+ [0 6]]",0.0
+22,Baseline Prior Strategy,9,0.6,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 6]
+ [0 9]]",0.0
+23,Baseline Prior Strategy,10,0.7142857142857143,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  4]
+ [ 0 10]]",0.0
+24,Baseline Prior Strategy,11,1.0,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,[[13]],0.015625
+25,Baseline Prior Strategy,12,1.0,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,[[8]],0.015625
+26,Baseline Prior Strategy,avg,0.5666314935064934,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[  0  96]
+ [  0 110]]",0.03125
+27,Baseline Prior Strategy,std,0.24880201671212723,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[  0  96]
+ [  0 110]]",0.03125
+28,Baseline Stratified Strategy,1,0.64,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[7 2]
+ [7 9]]",0.015625
+29,Baseline Stratified Strategy,2,0.5909090909090909,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 3]
+ [6 8]]",0.0
+30,Baseline Stratified Strategy,3,0.3333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 4 11]
+ [ 3  3]]",0.0
+31,Baseline Stratified Strategy,4,0.42857142857142855,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[6 9]
+ [3 3]]",0.0
+32,Baseline Stratified Strategy,5,0.65,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[6 3]
+ [4 7]]",0.0
+33,Baseline Stratified Strategy,6,0.3125,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[1 7]
+ [4 4]]",0.0
+34,Baseline Stratified Strategy,7,0.375,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 8]
+ [2 1]]",0.015625
+35,Baseline Stratified Strategy,8,0.4666666666666667,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[3 6]
+ [2 4]]",0.0
+36,Baseline Stratified Strategy,9,0.7333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 1]
+ [3 6]]",0.0
+37,Baseline Stratified Strategy,10,0.7142857142857143,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[2 2]
+ [2 8]]",0.0
+38,Baseline Stratified Strategy,11,0.5384615384615384,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [6 7]]",0.0
+39,Baseline Stratified Strategy,12,0.75,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [2 6]]",0.0
+40,Baseline Stratified Strategy,avg,0.5444217587967588,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[44 52]
+ [44 66]]",0.03125
+41,Baseline Stratified Strategy,std,0.15160233957962066,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[44 52]
+ [44 66]]",0.03125
+42,Baseline Uniform Strategy,1,0.48,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 4]
+ [9 7]]",0.0
+43,Baseline Uniform Strategy,2,0.5454545454545454,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 3]
+ [7 7]]",0.015625
+44,Baseline Uniform Strategy,3,0.3333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 4 11]
+ [ 3  3]]",0.0
+45,Baseline Uniform Strategy,4,0.5238095238095238,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[7 8]
+ [2 4]]",0.015625
+46,Baseline Uniform Strategy,5,0.65,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[6 3]
+ [4 7]]",0.0
+47,Baseline Uniform Strategy,6,0.5625,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[2 6]
+ [1 7]]",0.0
+48,Baseline Uniform Strategy,7,0.5625,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[9 4]
+ [3 0]]",0.0
+49,Baseline Uniform Strategy,8,0.3333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 9]
+ [1 5]]",0.015625
+50,Baseline Uniform Strategy,9,0.6666666666666666,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[3 3]
+ [2 7]]",0.0
+51,Baseline Uniform Strategy,10,0.5714285714285714,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[1 3]
+ [3 7]]",0.0
+52,Baseline Uniform Strategy,11,0.6153846153846154,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [5 8]]",0.0
+53,Baseline Uniform Strategy,12,0.25,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [6 2]]",0.0
+54,Baseline Uniform Strategy,avg,0.5078675491175492,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[42 54]
+ [46 64]]",0.046875
+55,Baseline Uniform Strategy,std,0.1280793090218669,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[42 54]
+ [46 64]]",0.046875
+56,Nearest Neighbors Test,1,0.52,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[6 3]
+ [9 7]]",0.015625
+57,Nearest Neighbors Test,2,0.5909090909090909,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[4 4]
+ [5 9]]",0.03125
+58,Nearest Neighbors Test,3,0.5714285714285714,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[6 9]
+ [0 6]]",0.015625
+59,Nearest Neighbors Test,4,0.2857142857142857,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 5 10]
+ [ 5  1]]",0.015625
+60,Nearest Neighbors Test,5,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[4 5]
+ [5 6]]",0.0
+61,Nearest Neighbors Test,6,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[3 5]
+ [3 5]]",0.0
+62,Nearest Neighbors Test,7,0.625,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[10  3]
+ [ 3  0]]",0.015625
+63,Nearest Neighbors Test,8,0.5333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[3 6]
+ [1 5]]",0.015625
+64,Nearest Neighbors Test,9,0.6666666666666666,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[1 5]
+ [0 9]]",0.03125
+65,Nearest Neighbors Test,10,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[1 3]
+ [4 6]]",0.0
+66,Nearest Neighbors Test,11,0.6923076923076923,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [4 9]]",0.015625
+67,Nearest Neighbors Test,12,0.375,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [5 3]]",0.015625
+68,Nearest Neighbors Test,avg,0.5300299700299701,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[43 53]
+ [44 66]]",0.171875
+69,Nearest Neighbors Test,std,0.1102967282616801,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[43 53]
+ [44 66]]",0.171875
+70,Nearest Neighbors,1,0.68,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[8 1]
+ [7 9]]",0.75
+71,Nearest Neighbors,2,0.6363636363636364,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 4  4]
+ [ 4 10]]",0.640625
+72,Nearest Neighbors,3,0.42857142857142855,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 3 12]
+ [ 0  6]]",0.921875
+73,Nearest Neighbors,4,0.23809523809523808,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 1  5]]",0.703125
+74,Nearest Neighbors,5,0.65,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 4]
+ [3 8]]",0.765625
+75,Nearest Neighbors,6,0.4375,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 3]
+ [6 2]]",0.78125
+76,Nearest Neighbors,7,0.1875,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 13]
+ [ 0  3]]",0.6875
+77,Nearest Neighbors,8,0.3333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[3 6]
+ [4 2]]",0.796875
+78,Nearest Neighbors,9,0.4666666666666667,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 6]
+ [2 7]]",0.859375
+79,Nearest Neighbors,10,0.42857142857142855,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[2 2]
+ [6 4]]",0.65625
+80,Nearest Neighbors,11,0.6153846153846154,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [5 8]]",0.75
+81,Nearest Neighbors,12,0.375,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [5 3]]",0.96875
+82,Nearest Neighbors,avg,0.45641552891552895,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[30 66]
+ [43 67]]",9.296875
+83,Nearest Neighbors,std,0.15515797116249633,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[30 66]
+ [43 67]]",9.296875
+84,Linear SVM l1,1,0.84,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 9  0]
+ [ 4 12]]",0.015625
+85,Linear SVM l1,2,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[6 2]
+ [9 5]]",0.015625
+86,Linear SVM l1,3,0.38095238095238093,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 2 13]
+ [ 0  6]]",0.0
+87,Linear SVM l1,4,0.23809523809523808,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 1  5]]",0.046875
+88,Linear SVM l1,5,0.55,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[9 0]
+ [9 2]]",0.015625
+89,Linear SVM l1,6,0.75,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[6 2]
+ [2 6]]",0.015625
+90,Linear SVM l1,7,0.375,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 3 10]
+ [ 0  3]]",0.078125
+91,Linear SVM l1,8,0.4666666666666667,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[7 2]
+ [6 0]]",0.015625
+92,Linear SVM l1,9,0.7333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[2 4]
+ [0 9]]",0.03125
+93,Linear SVM l1,10,0.6428571428571429,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 4]
+ [1 9]]",0.046875
+94,Linear SVM l1,11,0.6153846153846154,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [5 8]]",0.046875
+95,Linear SVM l1,12,0.875,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [1 7]]",0.046875
+96,Linear SVM l1,avg,0.5806074481074481,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[44 52]
+ [38 72]]",0.390625
+97,Linear SVM l1,std,0.1895000087759178,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[44 52]
+ [38 72]]",0.390625
+98,Linear SVM l2,1,0.84,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 9  0]
+ [ 4 12]]",0.09375
+99,Linear SVM l2,2,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[6 2]
+ [9 5]]",0.0625
+100,Linear SVM l2,3,0.38095238095238093,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 2 13]
+ [ 0  6]]",0.15625
+101,Linear SVM l2,4,0.23809523809523808,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 1  5]]",0.046875
+102,Linear SVM l2,5,0.6,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[6 3]
+ [5 6]]",0.0625
+103,Linear SVM l2,6,0.5625,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[1 7]
+ [0 8]]",0.078125
+104,Linear SVM l2,7,0.375,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 3 10]
+ [ 0  3]]",0.125
+105,Linear SVM l2,8,0.4666666666666667,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[7 2]
+ [6 0]]",0.078125
+106,Linear SVM l2,9,0.7333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[2 4]
+ [0 9]]",0.125
+107,Linear SVM l2,10,0.6428571428571429,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 4]
+ [1 9]]",0.046875
+108,Linear SVM l2,11,0.6923076923076923,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [4 9]]",0.140625
+109,Linear SVM l2,12,1.0,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,[[8]],0.125
+110,Linear SVM l2,avg,0.5859760378510379,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[36 60]
+ [30 80]]",1.15625
+111,Linear SVM l2,std,0.20456073023190277,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[36 60]
+ [30 80]]",1.15625
+112,SVM linear or rbf,1,0.8,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 8  1]
+ [ 4 12]]",0.171875
+113,SVM linear or rbf,2,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[6 2]
+ [9 5]]",0.078125
+114,SVM linear or rbf,3,0.2857142857142857,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 0  6]]",0.15625
+115,SVM linear or rbf,4,0.23809523809523808,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 1  5]]",0.109375
+116,SVM linear or rbf,5,0.65,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[9 0]
+ [7 4]]",0.0625
+117,SVM linear or rbf,6,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 8]
+ [0 8]]",0.109375
+118,SVM linear or rbf,7,0.1875,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 13]
+ [ 0  3]]",0.203125
+119,SVM linear or rbf,8,0.4,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 9]
+ [0 6]]",0.15625
+120,SVM linear or rbf,9,0.7333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[2 4]
+ [0 9]]",0.09375
+121,SVM linear or rbf,10,0.6428571428571429,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 4]
+ [1 9]]",0.140625
+122,SVM linear or rbf,11,0.5384615384615384,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [6 7]]",0.15625
+123,SVM linear or rbf,12,1.0,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,[[8]],0.1875
+124,SVM linear or rbf,avg,0.5396634615384616,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[25 71]
+ [28 82]]",1.625
+125,SVM linear or rbf,std,0.23132270697219925,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[25 71]
+ [28 82]]",1.625
+126,Decision Tree,1,0.36,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 5  4]
+ [12  4]]",0.0
+127,Decision Tree,2,0.5454545454545454,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 2  6]
+ [ 4 10]]",0.078125
+128,Decision Tree,3,0.5714285714285714,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[6 9]
+ [0 6]]",0.0625
+129,Decision Tree,4,0.3333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 3 12]
+ [ 2  4]]",0.09375
+130,Decision Tree,5,0.6,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[4 5]
+ [3 8]]",0.046875
+131,Decision Tree,6,0.6875,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[7 1]
+ [4 4]]",0.078125
+132,Decision Tree,7,0.375,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[4 9]
+ [1 2]]",0.0625
+133,Decision Tree,8,0.4,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[2 7]
+ [2 4]]",0.03125
+134,Decision Tree,9,0.5333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 6]
+ [1 8]]",0.046875
+135,Decision Tree,10,0.6428571428571429,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[2 2]
+ [3 7]]",0.0625
+136,Decision Tree,11,0.6923076923076923,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [4 9]]",0.09375
+137,Decision Tree,12,0.875,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [1 7]]",0.03125
+138,Decision Tree,avg,0.5513512182262182,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[35 61]
+ [37 73]]",0.6875
+139,Decision Tree,std,0.15620775051031416,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[35 61]
+ [37 73]]",0.6875
+140,Random Forest,1,0.52,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 4]
+ [8 8]]",1.65625
+141,Random Forest,2,0.5454545454545454,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 2  6]
+ [ 4 10]]",1.953125
+142,Random Forest,3,0.42857142857142855,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 4 11]
+ [ 1  5]]",2.8125
+143,Random Forest,4,0.2857142857142857,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 1 14]
+ [ 1  5]]",1.765625
+144,Random Forest,5,0.45,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[4 5]
+ [6 5]]",2.21875
+145,Random Forest,6,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 3]
+ [5 3]]",1.875
+146,Random Forest,7,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[7 6]
+ [2 1]]",1.578125
+147,Random Forest,8,0.4666666666666667,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[3 6]
+ [2 4]]",1.5
+148,Random Forest,9,0.5333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 6]
+ [1 8]]",2.109375
+149,Random Forest,10,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[2 2]
+ [5 5]]",1.671875
+150,Random Forest,11,0.5384615384615384,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [6 7]]",1.78125
+151,Random Forest,12,0.75,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [2 6]]",2.15625
+152,Random Forest,avg,0.5015168165168165,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[33 63]
+ [43 67]]",23.09375
+153,Random Forest,std,0.10089616248097473,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[33 63]
+ [43 67]]",23.09375
+154,Neural Net,1,0.68,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[8 1]
+ [7 9]]",1.65625
+155,Neural Net,2,0.7272727272727273,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 3  5]
+ [ 1 13]]",1.84375
+156,Neural Net,3,0.38095238095238093,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 2 13]
+ [ 0  6]]",1.875
+157,Neural Net,4,0.23809523809523808,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 1  5]]",1.90625
+158,Neural Net,5,0.65,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[9 0]
+ [7 4]]",1.375
+159,Neural Net,6,0.8125,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[8 0]
+ [3 5]]",1.359375
+160,Neural Net,7,0.375,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 3 10]
+ [ 0  3]]",1.5625
+161,Neural Net,8,0.4666666666666667,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[7 2]
+ [6 0]]",1.4375
+162,Neural Net,9,0.4666666666666667,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[3 3]
+ [5 4]]",1.640625
+163,Neural Net,10,0.5714285714285714,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[1 3]
+ [3 7]]",1.390625
+164,Neural Net,11,0.8461538461538461,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  0]
+ [ 2 11]]",1.8125
+165,Neural Net,12,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [4 4]]",1.59375
+166,Neural Net,avg,0.5595613414363414,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[44 52]
+ [39 71]]",19.453125
+167,Neural Net,std,0.17962384075074142,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[44 52]
+ [39 71]]",19.453125
+168,AdaBoost,1,0.36,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 3  6]
+ [10  6]]",0.8125
+169,AdaBoost,2,0.5454545454545454,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[3 5]
+ [5 9]]",0.53125
+170,AdaBoost,3,0.2857142857142857,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 0  6]]",0.84375
+171,AdaBoost,4,0.3333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 2 13]
+ [ 1  5]]",0.671875
+172,AdaBoost,5,0.3,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[2 7]
+ [7 4]]",0.6875
+173,AdaBoost,6,0.4375,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 8]
+ [1 7]]",0.65625
+174,AdaBoost,7,0.1875,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 13]
+ [ 0  3]]",0.640625
+175,AdaBoost,8,0.5333333333333333,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[7 2]
+ [5 1]]",0.625
+176,AdaBoost,9,0.6666666666666666,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[1 5]
+ [0 9]]",0.5625
+177,AdaBoost,10,0.5714285714285714,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[2 2]
+ [4 6]]",0.921875
+178,AdaBoost,11,0.9230769230769231,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  0]
+ [ 1 12]]",0.703125
+179,AdaBoost,12,0.0,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [8 0]]",0.4375
+180,AdaBoost,avg,0.4286673049173049,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[20 76]
+ [42 68]]",8.09375
+181,AdaBoost,std,0.23073244474923746,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[20 76]
+ [42 68]]",8.09375
+182,Naive Bayes,1,0.4,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[1 8]
+ [7 9]]",0.296875
+183,Naive Bayes,2,0.5,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 3]
+ [8 6]]",0.3125
+184,Naive Bayes,3,0.2857142857142857,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 0  6]]",0.265625
+185,Naive Bayes,4,0.2857142857142857,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 0  6]]",0.3125
+186,Naive Bayes,5,0.55,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  9]
+ [ 0 11]]",0.28125
+187,Naive Bayes,6,0.4375,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[1 7]
+ [2 6]]",0.296875
+188,Naive Bayes,7,0.1875,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 13]
+ [ 0  3]]",0.3125
+189,Naive Bayes,8,0.4,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 4]
+ [5 1]]",0.21875
+190,Naive Bayes,9,0.6,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 6]
+ [0 9]]",0.265625
+191,Naive Bayes,10,0.7142857142857143,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  4]
+ [ 0 10]]",0.265625
+192,Naive Bayes,11,0.8461538461538461,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  0]
+ [ 2 11]]",0.28125
+193,Naive Bayes,12,0.375,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [5 3]]",0.25
+194,Naive Bayes,avg,0.4651556776556776,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[12 84]
+ [29 81]]",3.40625
+195,Naive Bayes,std,0.18089950378877412,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[12 84]
+ [29 81]]",3.40625
+196,QDA,1,0.48,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 2  7]
+ [ 6 10]]",0.046875
+197,QDA,2,0.6363636363636364,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 4  4]
+ [ 4 10]]",0.0
+198,QDA,3,0.42857142857142855,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 3 12]
+ [ 0  6]]",0.015625
+199,QDA,4,0.2857142857142857,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 15]
+ [ 0  6]]",0.015625
+200,QDA,5,0.6,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 4]
+ [4 7]]",0.0
+201,QDA,6,0.625,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 3]
+ [3 5]]",0.0
+202,QDA,7,0.1875,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0 13]
+ [ 0  3]]",0.0
+203,QDA,8,0.4,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[5 4]
+ [5 1]]",0.0
+204,QDA,9,0.6,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 6]
+ [0 9]]",0.0
+205,QDA,10,0.7142857142857143,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  4]
+ [ 0 10]]",0.0
+206,QDA,11,0.8461538461538461,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[ 0  0]
+ [ 2 11]]",0.0
+207,QDA,12,0.75,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[0 0]
+ [2 6]]",0.015625
+208,QDA,avg,0.5461324092574092,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[24 72]
+ [26 84]]",0.09375
+209,QDA,std,0.18618967968018113,Nested,SCALER_triads_all_features_30s_binary_Manual,Triads,All,30,"[[24 72]
+ [26 84]]",0.09375

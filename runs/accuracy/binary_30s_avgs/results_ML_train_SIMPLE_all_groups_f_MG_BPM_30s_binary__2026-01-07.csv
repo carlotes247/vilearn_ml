@@ -1,0 +1,656 @@
+,Model,Fold,Score,CV,Version,Group,Features,Sampling,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,1,0.36,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 9  0]
+ [16  0]]",0.0
+1,Baseline Most Frequent Strategy,2,0.7916666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[19  0]
+ [ 5  0]]",0.015625
+2,Baseline Most Frequent Strategy,3,0.7391304347826086,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[17  0]
+ [ 6  0]]",0.0
+3,Baseline Most Frequent Strategy,4,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[11  0]
+ [11  0]]",0.0
+4,Baseline Most Frequent Strategy,5,0.6818181818181818,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[15  0]
+ [ 7  0]]",0.0
+5,Baseline Most Frequent Strategy,6,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 8  0]
+ [14  0]]",0.0
+6,Baseline Most Frequent Strategy,7,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[15  0]
+ [ 6  0]]",0.03125
+7,Baseline Most Frequent Strategy,8,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[15  0]
+ [ 6  0]]",0.0
+8,Baseline Most Frequent Strategy,9,0.45,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 9  0]
+ [11  0]]",0.015625
+9,Baseline Most Frequent Strategy,10,0.9444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[17  0]
+ [ 1  0]]",0.0
+10,Baseline Most Frequent Strategy,11,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[10  0]
+ [ 8  0]]",0.015625
+11,Baseline Most Frequent Strategy,12,0.29411764705882354,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 5  0]
+ [12  0]]",0.0
+12,Baseline Most Frequent Strategy,13,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[8 0]
+ [8 0]]",0.0
+13,Baseline Most Frequent Strategy,14,0.8125,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[13  0]
+ [ 3  0]]",0.015625
+14,Baseline Most Frequent Strategy,15,0.4,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[6 0]
+ [9 0]]",0.0
+15,Baseline Most Frequent Strategy,16,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[9 0]
+ [6 0]]",0.0
+16,Baseline Most Frequent Strategy,17,0.14285714285714285,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 2  0]
+ [12  0]]",0.0
+17,Baseline Most Frequent Strategy,18,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 4  0]
+ [10  0]]",0.03125
+18,Baseline Most Frequent Strategy,19,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  0]
+ [13  0]]",0.0
+19,Baseline Most Frequent Strategy,20,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [8 0]]",0.015625
+20,Baseline Most Frequent Strategy,avg,0.492500607555275,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[192   0]
+ [172   0]]",0.140625
+21,Baseline Most Frequent Strategy,std,0.2589254799896236,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[192   0]
+ [172   0]]",0.140625
+22,Baseline Prior Strategy,1,0.36,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 9  0]
+ [16  0]]",0.0
+23,Baseline Prior Strategy,2,0.7916666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[19  0]
+ [ 5  0]]",0.0
+24,Baseline Prior Strategy,3,0.7391304347826086,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[17  0]
+ [ 6  0]]",0.0
+25,Baseline Prior Strategy,4,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[11  0]
+ [11  0]]",0.015625
+26,Baseline Prior Strategy,5,0.6818181818181818,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[15  0]
+ [ 7  0]]",0.015625
+27,Baseline Prior Strategy,6,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 8  0]
+ [14  0]]",0.015625
+28,Baseline Prior Strategy,7,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[15  0]
+ [ 6  0]]",0.015625
+29,Baseline Prior Strategy,8,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[15  0]
+ [ 6  0]]",0.0
+30,Baseline Prior Strategy,9,0.45,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 9  0]
+ [11  0]]",0.0
+31,Baseline Prior Strategy,10,0.9444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[17  0]
+ [ 1  0]]",0.0
+32,Baseline Prior Strategy,11,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[10  0]
+ [ 8  0]]",0.0
+33,Baseline Prior Strategy,12,0.29411764705882354,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 5  0]
+ [12  0]]",0.0
+34,Baseline Prior Strategy,13,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[8 0]
+ [8 0]]",0.03125
+35,Baseline Prior Strategy,14,0.8125,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[13  0]
+ [ 3  0]]",0.0
+36,Baseline Prior Strategy,15,0.4,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[6 0]
+ [9 0]]",0.0
+37,Baseline Prior Strategy,16,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[9 0]
+ [6 0]]",0.0
+38,Baseline Prior Strategy,17,0.14285714285714285,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 2  0]
+ [12  0]]",0.0
+39,Baseline Prior Strategy,18,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 4  0]
+ [10  0]]",0.0
+40,Baseline Prior Strategy,19,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  0]
+ [13  0]]",0.015625
+41,Baseline Prior Strategy,20,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [8 0]]",0.015625
+42,Baseline Prior Strategy,avg,0.492500607555275,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[192   0]
+ [172   0]]",0.125
+43,Baseline Prior Strategy,std,0.2589254799896236,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[192   0]
+ [172   0]]",0.125
+44,Baseline Stratified Strategy,1,0.68,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 5  4]
+ [ 4 12]]",0.0
+45,Baseline Stratified Strategy,2,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 8 11]
+ [ 4  1]]",0.015625
+46,Baseline Stratified Strategy,3,0.6521739130434783,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[13  4]
+ [ 4  2]]",0.0
+47,Baseline Stratified Strategy,4,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 7]
+ [7 4]]",0.0
+48,Baseline Stratified Strategy,5,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[8 7]
+ [3 4]]",0.0
+49,Baseline Stratified Strategy,6,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[3 5]
+ [7 7]]",0.015625
+50,Baseline Stratified Strategy,7,0.5238095238095238,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[9 6]
+ [4 2]]",0.015625
+51,Baseline Stratified Strategy,8,0.6666666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[11  4]
+ [ 3  3]]",0.0
+52,Baseline Stratified Strategy,9,0.55,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[3 6]
+ [3 8]]",0.0
+53,Baseline Stratified Strategy,10,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[8 9]
+ [1 0]]",0.0
+54,Baseline Stratified Strategy,11,0.6111111111111112,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[6 4]
+ [3 5]]",0.0
+55,Baseline Stratified Strategy,12,0.5882352941176471,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 3]
+ [4 8]]",0.0
+56,Baseline Stratified Strategy,13,0.5625,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 4]
+ [3 5]]",0.015625
+57,Baseline Stratified Strategy,14,0.5625,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[7 6]
+ [1 2]]",0.015625
+58,Baseline Stratified Strategy,15,0.2,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 4]
+ [8 1]]",0.015625
+59,Baseline Stratified Strategy,16,0.5333333333333333,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[5 4]
+ [3 3]]",0.0
+60,Baseline Stratified Strategy,17,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 0]
+ [7 5]]",0.0
+61,Baseline Stratified Strategy,18,0.14285714285714285,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 4]
+ [8 2]]",0.0
+62,Baseline Stratified Strategy,19,0.46153846153846156,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [7 6]]",0.0
+63,Baseline Stratified Strategy,20,0.875,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [1 7]]",0.0
+64,Baseline Stratified Strategy,avg,0.5146403127279087,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[100  92]
+ [ 85  87]]",0.09375
+65,Baseline Stratified Strategy,std,0.16004117532032094,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[100  92]
+ [ 85  87]]",0.09375
+66,Baseline Uniform Strategy,1,0.48,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[3 6]
+ [7 9]]",0.0
+67,Baseline Uniform Strategy,2,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 9 10]
+ [ 2  3]]",0.0
+68,Baseline Uniform Strategy,3,0.4782608695652174,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[8 9]
+ [3 3]]",0.0
+69,Baseline Uniform Strategy,4,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 7]
+ [4 7]]",0.015625
+70,Baseline Uniform Strategy,5,0.3181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 5 10]
+ [ 5  2]]",0.0
+71,Baseline Uniform Strategy,6,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[5 3]
+ [9 5]]",0.015625
+72,Baseline Uniform Strategy,7,0.38095238095238093,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 5 10]
+ [ 3  3]]",0.0
+73,Baseline Uniform Strategy,8,0.5238095238095238,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[8 7]
+ [3 3]]",0.015625
+74,Baseline Uniform Strategy,9,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 5]
+ [5 6]]",0.015625
+75,Baseline Uniform Strategy,10,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[10  7]
+ [ 1  0]]",0.0
+76,Baseline Uniform Strategy,11,0.3888888888888889,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 6]
+ [5 3]]",0.015625
+77,Baseline Uniform Strategy,12,0.6470588235294118,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 1]
+ [5 7]]",0.0
+78,Baseline Uniform Strategy,13,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 4]
+ [6 2]]",0.03125
+79,Baseline Uniform Strategy,14,0.4375,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[5 8]
+ [1 2]]",0.015625
+80,Baseline Uniform Strategy,15,0.4,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[1 5]
+ [4 5]]",0.015625
+81,Baseline Uniform Strategy,16,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[5 4]
+ [2 4]]",0.0
+82,Baseline Uniform Strategy,17,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[1 1]
+ [6 6]]",0.0
+83,Baseline Uniform Strategy,18,0.5714285714285714,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[3 1]
+ [5 5]]",0.015625
+84,Baseline Uniform Strategy,19,0.5384615384615384,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [6 7]]",0.0
+85,Baseline Uniform Strategy,20,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [4 4]]",0.015625
+86,Baseline Uniform Strategy,avg,0.4824821712459181,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 88 104]
+ [ 86  86]]",0.171875
+87,Baseline Uniform Strategy,std,0.07992786634661514,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 88 104]
+ [ 86  86]]",0.171875
+88,Nearest Neighbors Test,1,0.48,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 8  1]
+ [12  4]]",0.03125
+89,Nearest Neighbors Test,2,0.6666666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[15  4]
+ [ 4  1]]",0.046875
+90,Nearest Neighbors Test,3,0.6956521739130435,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[13  4]
+ [ 3  3]]",0.015625
+91,Nearest Neighbors Test,4,0.5909090909090909,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[9 2]
+ [7 4]]",0.0
+92,Nearest Neighbors Test,5,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[7 8]
+ [2 5]]",0.0
+93,Nearest Neighbors Test,6,0.5909090909090909,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 2  6]
+ [ 3 11]]",0.078125
+94,Nearest Neighbors Test,7,0.5714285714285714,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[7 8]
+ [1 5]]",0.015625
+95,Nearest Neighbors Test,8,0.5714285714285714,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[10  5]
+ [ 4  2]]",0.03125
+96,Nearest Neighbors Test,9,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[3 6]
+ [4 7]]",0.03125
+97,Nearest Neighbors Test,10,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[8 9]
+ [0 1]]",0.0625
+98,Nearest Neighbors Test,11,0.2777777777777778,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 8]
+ [5 3]]",0.03125
+99,Nearest Neighbors Test,12,0.4117647058823529,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 3]
+ [7 5]]",0.0
+100,Nearest Neighbors Test,13,0.25,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 4]
+ [8 0]]",0.0625
+101,Nearest Neighbors Test,14,0.25,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 9]
+ [3 0]]",0.0
+102,Nearest Neighbors Test,15,0.4666666666666667,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 6]
+ [2 7]]",0.015625
+103,Nearest Neighbors Test,16,0.5333333333333333,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[7 2]
+ [5 1]]",0.015625
+104,Nearest Neighbors Test,17,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 2]
+ [5 7]]",0.0
+105,Nearest Neighbors Test,18,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[3 1]
+ [6 4]]",0.0
+106,Nearest Neighbors Test,19,0.3076923076923077,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [9 4]]",0.015625
+107,Nearest Neighbors Test,20,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [5 3]]",0.0
+108,Nearest Neighbors Test,avg,0.47923417510310096,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[104  88]
+ [ 95  77]]",0.453125
+109,Nearest Neighbors Test,std,0.12720651283189352,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[104  88]
+ [ 95  77]]",0.453125
+110,Nearest Neighbors,1,0.52,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[5 4]
+ [8 8]]",1.25
+111,Nearest Neighbors,2,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[18  1]
+ [ 5  0]]",1.046875
+112,Nearest Neighbors,3,0.6956521739130435,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[16  1]
+ [ 6  0]]",1.046875
+113,Nearest Neighbors,4,0.5909090909090909,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[10  1]
+ [ 8  3]]",1.03125
+114,Nearest Neighbors,5,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[14  1]
+ [ 7  0]]",0.890625
+115,Nearest Neighbors,6,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 7  1]
+ [13  1]]",1.125
+116,Nearest Neighbors,7,0.3333333333333333,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 3 12]
+ [ 2  4]]",1.234375
+117,Nearest Neighbors,8,0.47619047619047616,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[9 6]
+ [5 1]]",1.171875
+118,Nearest Neighbors,9,0.3,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[3 6]
+ [8 3]]",1.125
+119,Nearest Neighbors,10,0.6111111111111112,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[10  7]
+ [ 0  1]]",1.09375
+120,Nearest Neighbors,11,0.6111111111111112,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[6 4]
+ [3 5]]",1.078125
+121,Nearest Neighbors,12,0.17647058823529413,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 2  3]
+ [11  1]]",1.015625
+122,Nearest Neighbors,13,0.1875,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[3 5]
+ [8 0]]",1.125
+123,Nearest Neighbors,14,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[7 6]
+ [0 3]]",1.03125
+124,Nearest Neighbors,15,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 6]
+ [0 9]]",0.984375
+125,Nearest Neighbors,16,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[7 2]
+ [4 2]]",1.046875
+126,Nearest Neighbors,17,0.35714285714285715,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[1 1]
+ [8 4]]",1.234375
+127,Nearest Neighbors,18,0.35714285714285715,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 4]
+ [5 5]]",1.09375
+128,Nearest Neighbors,19,0.8461538461538461,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  0]
+ [ 2 11]]",1.0625
+129,Nearest Neighbors,20,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [5 3]]",1.25
+130,Nearest Neighbors,avg,0.5006358722621511,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[121  71]
+ [108  64]]",21.9375
+131,Nearest Neighbors,std,0.18081462927288333,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[121  71]
+ [108  64]]",21.9375
+132,Linear SVM l1,1,0.76,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 9  0]
+ [ 6 10]]",0.046875
+133,Linear SVM l1,2,0.7916666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[19  0]
+ [ 5  0]]",0.046875
+134,Linear SVM l1,3,0.782608695652174,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[16  1]
+ [ 4  2]]",0.09375
+135,Linear SVM l1,4,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[11  0]
+ [11  0]]",0.046875
+136,Linear SVM l1,5,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[14  1]
+ [ 7  0]]",0.03125
+137,Linear SVM l1,6,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 5  3]
+ [11  3]]",0.046875
+138,Linear SVM l1,7,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 15]
+ [ 0  6]]",0.0
+139,Linear SVM l1,8,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 4 11]
+ [ 1  5]]",0.125
+140,Linear SVM l1,9,0.55,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  9]
+ [ 0 11]]",0.046875
+141,Linear SVM l1,10,0.9444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[16  1]
+ [ 0  1]]",0.03125
+142,Linear SVM l1,11,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 10]
+ [ 0  8]]",0.03125
+143,Linear SVM l1,12,0.35294117647058826,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 3]
+ [8 4]]",0.078125
+144,Linear SVM l1,13,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 8]
+ [0 8]]",0.078125
+145,Linear SVM l1,14,0.1875,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 13]
+ [ 0  3]]",0.109375
+146,Linear SVM l1,15,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 6]
+ [0 9]]",0.03125
+147,Linear SVM l1,16,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[7 2]
+ [4 2]]",0.09375
+148,Linear SVM l1,17,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 2  0]
+ [ 2 10]]",0.078125
+149,Linear SVM l1,18,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  4]
+ [ 0 10]]",0.046875
+150,Linear SVM l1,19,0.8461538461538461,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  0]
+ [ 2 11]]",0.03125
+151,Linear SVM l1,20,1.0,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,[[8]],0.078125
+152,Linear SVM l1,avg,0.6072736779773226,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[105  87]
+ [ 61 111]]",1.1875
+153,Linear SVM l1,std,0.22093963823469862,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[105  87]
+ [ 61 111]]",1.1875
+154,Linear SVM l2,1,0.56,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 8  1]
+ [10  6]]",0.359375
+155,Linear SVM l2,2,0.7916666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[19  0]
+ [ 5  0]]",0.296875
+156,Linear SVM l2,3,0.782608695652174,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[16  1]
+ [ 4  2]]",0.265625
+157,Linear SVM l2,4,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[11  0]
+ [11  0]]",0.359375
+158,Linear SVM l2,5,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[14  1]
+ [ 7  0]]",0.171875
+159,Linear SVM l2,6,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 5  3]
+ [11  3]]",0.34375
+160,Linear SVM l2,7,0.23809523809523808,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 1 14]
+ [ 2  4]]",0.296875
+161,Linear SVM l2,8,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 15]
+ [ 0  6]]",0.46875
+162,Linear SVM l2,9,0.55,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  9]
+ [ 0 11]]",0.28125
+163,Linear SVM l2,10,0.9444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[16  1]
+ [ 0  1]]",0.46875
+164,Linear SVM l2,11,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 10]
+ [ 0  8]]",0.234375
+165,Linear SVM l2,12,0.35294117647058826,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 3]
+ [8 4]]",0.171875
+166,Linear SVM l2,13,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 8]
+ [0 8]]",0.46875
+167,Linear SVM l2,14,0.1875,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 13]
+ [ 0  3]]",0.203125
+168,Linear SVM l2,15,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 6]
+ [0 9]]",0.375
+169,Linear SVM l2,16,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[9 0]
+ [6 0]]",0.21875
+170,Linear SVM l2,17,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  2]
+ [ 0 12]]",0.3125
+171,Linear SVM l2,18,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  4]
+ [ 0 10]]",0.25
+172,Linear SVM l2,19,0.8461538461538461,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  0]
+ [ 2 11]]",0.265625
+173,Linear SVM l2,20,1.0,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,[[8]],0.15625
+174,Linear SVM l2,avg,0.587749868453513,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[101  91]
+ [ 66 106]]",5.984375
+175,Linear SVM l2,std,0.2293393326297435,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[101  91]
+ [ 66 106]]",5.984375
+176,SVM linear or rbf,1,0.56,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 8  1]
+ [10  6]]",0.265625
+177,SVM linear or rbf,2,0.7916666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[19  0]
+ [ 5  0]]",0.109375
+178,SVM linear or rbf,3,0.6086956521739131,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[13  4]
+ [ 5  1]]",0.21875
+179,SVM linear or rbf,4,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[11  0]
+ [10  1]]",0.171875
+180,SVM linear or rbf,5,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[8 7]
+ [3 4]]",0.15625
+181,SVM linear or rbf,6,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 5  3]
+ [11  3]]",0.09375
+182,SVM linear or rbf,7,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 15]
+ [ 0  6]]",0.125
+183,SVM linear or rbf,8,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 15]
+ [ 0  6]]",0.046875
+184,SVM linear or rbf,9,0.55,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  9]
+ [ 0 11]]",0.15625
+185,SVM linear or rbf,10,0.9444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[16  1]
+ [ 0  1]]",0.25
+186,SVM linear or rbf,11,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 10]
+ [ 0  8]]",0.1875
+187,SVM linear or rbf,12,0.35294117647058826,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 3]
+ [8 4]]",0.171875
+188,SVM linear or rbf,13,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 8]
+ [0 8]]",0.171875
+189,SVM linear or rbf,14,0.1875,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 13]
+ [ 0  3]]",0.078125
+190,SVM linear or rbf,15,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 6]
+ [0 9]]",0.203125
+191,SVM linear or rbf,16,0.4,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[3 6]
+ [3 3]]",0.234375
+192,SVM linear or rbf,17,0.7857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 1  1]
+ [ 2 10]]",0.140625
+193,SVM linear or rbf,18,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  4]
+ [ 0 10]]",0.171875
+194,SVM linear or rbf,19,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  0]
+ [13  0]]",0.25
+195,SVM linear or rbf,20,1.0,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,[[8]],0.203125
+196,SVM linear or rbf,avg,0.5232833205087041,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 86 106]
+ [ 70 102]]",3.421875
+197,SVM linear or rbf,std,0.24229700661848066,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 86 106]
+ [ 70 102]]",3.421875
+198,Decision Tree,1,0.56,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 8  1]
+ [10  6]]",0.0625
+199,Decision Tree,2,0.7083333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[16  3]
+ [ 4  1]]",0.09375
+200,Decision Tree,3,0.6956521739130435,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[13  4]
+ [ 3  3]]",0.09375
+201,Decision Tree,4,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[10  1]
+ [ 7  4]]",0.046875
+202,Decision Tree,5,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 5 10]
+ [ 2  5]]",0.078125
+203,Decision Tree,6,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[5 3]
+ [5 9]]",0.109375
+204,Decision Tree,7,0.38095238095238093,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 3 12]
+ [ 1  5]]",0.09375
+205,Decision Tree,8,0.7619047619047619,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[12  3]
+ [ 2  4]]",0.078125
+206,Decision Tree,9,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 5]
+ [5 6]]",0.09375
+207,Decision Tree,10,0.3333333333333333,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 6 11]
+ [ 1  0]]",0.125
+208,Decision Tree,11,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 6]
+ [3 5]]",0.078125
+209,Decision Tree,12,0.5882352941176471,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[5 0]
+ [7 5]]",0.0625
+210,Decision Tree,13,0.1875,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 6]
+ [7 1]]",0.03125
+211,Decision Tree,14,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[5 8]
+ [2 1]]",0.046875
+212,Decision Tree,15,0.6666666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[3 3]
+ [2 7]]",0.046875
+213,Decision Tree,16,0.4666666666666667,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 5]
+ [3 3]]",0.046875
+214,Decision Tree,17,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 2]
+ [5 7]]",0.03125
+215,Decision Tree,18,0.5714285714285714,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 2]
+ [4 6]]",0.0625
+216,Decision Tree,19,0.6153846153846154,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [5 8]]",0.0
+217,Decision Tree,20,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [3 5]]",0.109375
+218,Decision Tree,avg,0.5381665262486873,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[107  85]
+ [ 81  91]]",1.390625
+219,Decision Tree,std,0.13963265176020323,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[107  85]
+ [ 81  91]]",1.390625
+220,Random Forest,1,0.56,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[6 3]
+ [8 8]]",3.203125
+221,Random Forest,2,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[14  5]
+ [ 4  1]]",3.25
+222,Random Forest,3,0.8260869565217391,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[17  0]
+ [ 4  2]]",2.765625
+223,Random Forest,4,0.5909090909090909,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[11  0]
+ [ 9  2]]",2.8125
+224,Random Forest,5,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[9 6]
+ [2 5]]",2.671875
+225,Random Forest,6,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 3  5]
+ [ 3 11]]",2.796875
+226,Random Forest,7,0.23809523809523808,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 1 14]
+ [ 2  4]]",2.609375
+227,Random Forest,8,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[7 8]
+ [4 2]]",2.546875
+228,Random Forest,9,0.45,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 5]
+ [6 5]]",2.625
+229,Random Forest,10,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 7 10]
+ [ 0  1]]",3.421875
+230,Random Forest,11,0.3888888888888889,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 8]
+ [3 5]]",2.453125
+231,Random Forest,12,0.5882352941176471,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 1]
+ [6 6]]",2.875
+232,Random Forest,13,0.25,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[1 7]
+ [5 3]]",3.0625
+233,Random Forest,14,0.1875,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 2 11]
+ [ 2  1]]",2.546875
+234,Random Forest,15,0.5333333333333333,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 6]
+ [1 8]]",2.65625
+235,Random Forest,16,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[6 3]
+ [3 3]]",3.25
+236,Random Forest,17,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[1 1]
+ [6 6]]",2.328125
+237,Random Forest,18,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 2]
+ [2 8]]",2.8125
+238,Random Forest,19,0.6923076923076923,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [4 9]]",2.859375
+239,Random Forest,20,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [5 3]]",2.671875
+240,Random Forest,avg,0.5132692677101244,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[97 95]
+ [79 93]]",56.234375
+241,Random Forest,std,0.16381353230942694,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[97 95]
+ [79 93]]",56.234375
+242,Neural Net,1,0.4,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 9  0]
+ [15  1]]",2.0
+243,Neural Net,2,0.25,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 1 18]
+ [ 0  5]]",2.046875
+244,Neural Net,3,0.6956521739130435,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[16  1]
+ [ 6  0]]",1.8125
+245,Neural Net,4,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[11  0]
+ [11  0]]",2.34375
+246,Neural Net,5,0.6818181818181818,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[15  0]
+ [ 7  0]]",2.140625
+247,Neural Net,6,0.4090909090909091,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 7  1]
+ [12  2]]",2.140625
+248,Neural Net,7,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 15]
+ [ 0  6]]",2.859375
+249,Neural Net,8,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[14  1]
+ [ 5  1]]",2.3125
+250,Neural Net,9,0.55,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  9]
+ [ 0 11]]",2.03125
+251,Neural Net,10,0.6111111111111112,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[10  7]
+ [ 0  1]]",1.890625
+252,Neural Net,11,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[1 9]
+ [1 7]]",2.3125
+253,Neural Net,12,0.35294117647058826,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 3]
+ [8 4]]",1.796875
+254,Neural Net,13,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 8]
+ [0 8]]",2.453125
+255,Neural Net,14,0.1875,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 13]
+ [ 0  3]]",2.484375
+256,Neural Net,15,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 6]
+ [0 9]]",1.90625
+257,Neural Net,16,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[7 2]
+ [4 2]]",1.9375
+258,Neural Net,17,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 0]
+ [7 5]]",2.09375
+259,Neural Net,18,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 4]
+ [4 6]]",2.015625
+260,Neural Net,19,0.8461538461538461,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  0]
+ [ 2 11]]",1.953125
+261,Neural Net,20,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [8 0]]",2.15625
+262,Neural Net,avg,0.4778641635786777,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[95 97]
+ [90 82]]",42.6875
+263,Neural Net,std,0.19573937891819918,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[95 97]
+ [90 82]]",42.6875
+264,AdaBoost,1,0.8,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 8  1]
+ [ 4 12]]",0.6875
+265,AdaBoost,2,0.7916666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[19  0]
+ [ 5  0]]",1.0
+266,AdaBoost,3,0.8260869565217391,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[17  0]
+ [ 4  2]]",0.8125
+267,AdaBoost,4,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[11  0]
+ [11  0]]",1.34375
+268,AdaBoost,5,0.5909090909090909,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[10  5]
+ [ 4  3]]",0.84375
+269,AdaBoost,6,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 1  7]
+ [ 1 13]]",0.765625
+270,AdaBoost,7,0.3333333333333333,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 1 14]
+ [ 0  6]]",1.0
+271,AdaBoost,8,0.3333333333333333,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 1 14]
+ [ 0  6]]",0.96875
+272,AdaBoost,9,0.55,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  9]
+ [ 0 11]]",0.875
+273,AdaBoost,10,1.0,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[17  0]
+ [ 0  1]]",0.8125
+274,AdaBoost,11,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 10]
+ [ 0  8]]",0.90625
+275,AdaBoost,12,0.7058823529411765,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  5]
+ [ 0 12]]",0.890625
+276,AdaBoost,13,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 8]
+ [0 8]]",1.078125
+277,AdaBoost,14,0.1875,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 13]
+ [ 0  3]]",1.046875
+278,AdaBoost,15,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 6]
+ [0 9]]",1.015625
+279,AdaBoost,16,0.4666666666666667,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[6 3]
+ [5 1]]",0.890625
+280,AdaBoost,17,0.7857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 1  1]
+ [ 2 10]]",0.96875
+281,AdaBoost,18,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  4]
+ [ 0 10]]",0.734375
+282,AdaBoost,19,0.8461538461538461,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  0]
+ [ 2 11]]",1.171875
+283,AdaBoost,20,1.0,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,[[8]],0.78125
+284,AdaBoost,avg,0.6306170163666966,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 92 100]
+ [ 38 134]]",18.609375
+285,AdaBoost,std,0.21525751296843745,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 92 100]
+ [ 38 134]]",18.609375
+286,Naive Bayes,1,0.84,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 8  1]
+ [ 3 13]]",0.140625
+287,Naive Bayes,2,0.7916666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[19  0]
+ [ 5  0]]",0.296875
+288,Naive Bayes,3,0.6086956521739131,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[10  7]
+ [ 2  4]]",0.28125
+289,Naive Bayes,4,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[11  0]
+ [10  1]]",0.1875
+290,Naive Bayes,5,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[9 6]
+ [6 1]]",0.125
+291,Naive Bayes,6,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[5 3]
+ [7 7]]",0.171875
+292,Naive Bayes,7,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 15]
+ [ 0  6]]",0.234375
+293,Naive Bayes,8,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 15]
+ [ 0  6]]",0.140625
+294,Naive Bayes,9,0.55,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  9]
+ [ 0 11]]",0.28125
+295,Naive Bayes,10,0.9444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[16  1]
+ [ 0  1]]",0.203125
+296,Naive Bayes,11,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 10]
+ [ 0  8]]",0.265625
+297,Naive Bayes,12,0.35294117647058826,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[1 4]
+ [7 5]]",0.28125
+298,Naive Bayes,13,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 8]
+ [0 8]]",0.28125
+299,Naive Bayes,14,0.1875,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 13]
+ [ 0  3]]",0.328125
+300,Naive Bayes,15,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 6]
+ [0 9]]",0.328125
+301,Naive Bayes,16,0.5333333333333333,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[5 4]
+ [3 3]]",0.34375
+302,Naive Bayes,17,0.7857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 1  1]
+ [ 2 10]]",0.234375
+303,Naive Bayes,18,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  4]
+ [ 0 10]]",0.234375
+304,Naive Bayes,19,0.9230769230769231,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  0]
+ [ 1 12]]",0.40625
+305,Naive Bayes,20,1.0,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,[[8]],0.1875
+306,Naive Bayes,avg,0.5946492878746715,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 85 107]
+ [ 46 126]]",4.953125
+307,Naive Bayes,std,0.22598734068876586,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 85 107]
+ [ 46 126]]",4.953125
+308,QDA,1,0.68,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[8 1]
+ [7 9]]",0.0
+309,QDA,2,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[18  1]
+ [ 5  0]]",0.0
+310,QDA,3,0.34782608695652173,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 7 10]
+ [ 5  1]]",0.015625
+311,QDA,4,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[9 2]
+ [6 5]]",0.015625
+312,QDA,5,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[14  1]
+ [ 7  0]]",0.0
+313,QDA,6,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 7  1]
+ [13  1]]",0.015625
+314,QDA,7,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0 15]
+ [ 0  6]]",0.0
+315,QDA,8,0.5238095238095238,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[9 6]
+ [4 2]]",0.0
+316,QDA,9,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 7]
+ [3 8]]",0.015625
+317,QDA,10,0.8333333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[14  3]
+ [ 0  1]]",0.015625
+318,QDA,11,0.6666666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[10  0]
+ [ 6  2]]",0.015625
+319,QDA,12,0.29411764705882354,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[2 3]
+ [9 3]]",0.0
+320,QDA,13,0.875,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[6 2]
+ [0 8]]",0.015625
+321,QDA,14,0.4375,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[4 9]
+ [0 3]]",0.0
+322,QDA,15,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 6]
+ [0 9]]",0.0
+323,QDA,16,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[7 2]
+ [4 2]]",0.015625
+324,QDA,17,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[1 1]
+ [7 5]]",0.015625
+325,QDA,18,0.5714285714285714,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 4]
+ [2 8]]",0.0
+326,QDA,19,0.8461538461538461,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[ 0  0]
+ [ 2 11]]",0.0
+327,QDA,20,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[0 0]
+ [5 3]]",0.015625
+328,QDA,avg,0.5625742513028319,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[118  74]
+ [ 85  87]]",0.15625
+329,QDA,std,0.17797131721262274,Nested,SIMPLE_all_groups_f_MG_BPM_30s_binary_Manual,All,AIxVR,30,"[[118  74]
+ [ 85  87]]",0.15625

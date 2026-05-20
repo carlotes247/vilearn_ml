@@ -1,0 +1,659 @@
+,Model,Fold,Score,CV,Version,Group,Features,Sampling,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,1,0.36,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 9  0]
+ [16  0]]",0.0625
+1,Baseline Most Frequent Strategy,2,0.7916666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[19  0]
+ [ 5  0]]",0.0
+2,Baseline Most Frequent Strategy,3,0.7391304347826086,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[17  0]
+ [ 6  0]]",0.015625
+3,Baseline Most Frequent Strategy,4,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  0]
+ [11  0]]",0.0
+4,Baseline Most Frequent Strategy,5,0.6818181818181818,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[15  0]
+ [ 7  0]]",0.0
+5,Baseline Most Frequent Strategy,6,0.36363636363636365,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 8  0]
+ [14  0]]",0.0
+6,Baseline Most Frequent Strategy,7,0.7142857142857143,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[15  0]
+ [ 6  0]]",0.0
+7,Baseline Most Frequent Strategy,8,0.7142857142857143,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[15  0]
+ [ 6  0]]",0.0
+8,Baseline Most Frequent Strategy,9,0.45,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 9  0]
+ [11  0]]",0.015625
+9,Baseline Most Frequent Strategy,10,0.9444444444444444,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[17  0]
+ [ 1  0]]",0.015625
+10,Baseline Most Frequent Strategy,11,0.5555555555555556,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[10  0]
+ [ 8  0]]",0.015625
+11,Baseline Most Frequent Strategy,12,0.29411764705882354,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 5  0]
+ [12  0]]",0.015625
+12,Baseline Most Frequent Strategy,13,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[8 0]
+ [8 0]]",0.03125
+13,Baseline Most Frequent Strategy,14,0.8125,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[13  0]
+ [ 3  0]]",0.0
+14,Baseline Most Frequent Strategy,15,0.4,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 0]
+ [9 0]]",0.015625
+15,Baseline Most Frequent Strategy,16,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[9 0]
+ [6 0]]",0.015625
+16,Baseline Most Frequent Strategy,17,0.14285714285714285,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 2  0]
+ [12  0]]",0.0
+17,Baseline Most Frequent Strategy,18,0.2857142857142857,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 4  0]
+ [10  0]]",0.015625
+18,Baseline Most Frequent Strategy,19,0.0,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  0]
+ [13  0]]",0.015625
+19,Baseline Most Frequent Strategy,20,0.0,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [8 0]]",0.0
+20,Baseline Most Frequent Strategy,avg,0.492500607555275,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[192   0]
+ [172   0]]",0.234375
+21,Baseline Most Frequent Strategy,std,0.2589254799896236,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[192   0]
+ [172   0]]",0.234375
+22,Baseline Prior Strategy,1,0.36,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 9  0]
+ [16  0]]",0.0
+23,Baseline Prior Strategy,2,0.7916666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[19  0]
+ [ 5  0]]",0.0
+24,Baseline Prior Strategy,3,0.7391304347826086,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[17  0]
+ [ 6  0]]",0.0
+25,Baseline Prior Strategy,4,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  0]
+ [11  0]]",0.03125
+26,Baseline Prior Strategy,5,0.6818181818181818,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[15  0]
+ [ 7  0]]",0.015625
+27,Baseline Prior Strategy,6,0.36363636363636365,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 8  0]
+ [14  0]]",0.0
+28,Baseline Prior Strategy,7,0.7142857142857143,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[15  0]
+ [ 6  0]]",0.0
+29,Baseline Prior Strategy,8,0.7142857142857143,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[15  0]
+ [ 6  0]]",0.0
+30,Baseline Prior Strategy,9,0.45,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 9  0]
+ [11  0]]",0.015625
+31,Baseline Prior Strategy,10,0.9444444444444444,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[17  0]
+ [ 1  0]]",0.03125
+32,Baseline Prior Strategy,11,0.5555555555555556,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[10  0]
+ [ 8  0]]",0.0
+33,Baseline Prior Strategy,12,0.29411764705882354,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 5  0]
+ [12  0]]",0.0
+34,Baseline Prior Strategy,13,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[8 0]
+ [8 0]]",0.0
+35,Baseline Prior Strategy,14,0.8125,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[13  0]
+ [ 3  0]]",0.046875
+36,Baseline Prior Strategy,15,0.4,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 0]
+ [9 0]]",0.0
+37,Baseline Prior Strategy,16,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[9 0]
+ [6 0]]",0.015625
+38,Baseline Prior Strategy,17,0.14285714285714285,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 2  0]
+ [12  0]]",0.0
+39,Baseline Prior Strategy,18,0.2857142857142857,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 4  0]
+ [10  0]]",0.0
+40,Baseline Prior Strategy,19,0.0,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  0]
+ [13  0]]",0.015625
+41,Baseline Prior Strategy,20,0.0,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [8 0]]",0.0
+42,Baseline Prior Strategy,avg,0.492500607555275,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[192   0]
+ [172   0]]",0.1875
+43,Baseline Prior Strategy,std,0.2589254799896236,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[192   0]
+ [172   0]]",0.1875
+44,Baseline Stratified Strategy,1,0.48,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 5]
+ [8 8]]",0.0
+45,Baseline Stratified Strategy,2,0.4166666666666667,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 7 12]
+ [ 2  3]]",0.0
+46,Baseline Stratified Strategy,3,0.5652173913043478,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[9 8]
+ [2 4]]",0.015625
+47,Baseline Stratified Strategy,4,0.45454545454545453,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 5]
+ [7 4]]",0.015625
+48,Baseline Stratified Strategy,5,0.5909090909090909,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[10  5]
+ [ 4  3]]",0.015625
+49,Baseline Stratified Strategy,6,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 2]
+ [9 5]]",0.015625
+50,Baseline Stratified Strategy,7,0.47619047619047616,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[8 7]
+ [4 2]]",0.0
+51,Baseline Stratified Strategy,8,0.47619047619047616,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 9]
+ [2 4]]",0.015625
+52,Baseline Stratified Strategy,9,0.7,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[7 2]
+ [4 7]]",0.0
+53,Baseline Stratified Strategy,10,0.3888888888888889,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 7 10]
+ [ 1  0]]",0.0
+54,Baseline Stratified Strategy,11,0.5555555555555556,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[7 3]
+ [5 3]]",0.0
+55,Baseline Stratified Strategy,12,0.5294117647058824,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 1]
+ [7 5]]",0.0
+56,Baseline Stratified Strategy,13,0.5625,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[5 3]
+ [4 4]]",0.0
+57,Baseline Stratified Strategy,14,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 7]
+ [1 2]]",0.0
+58,Baseline Stratified Strategy,15,0.5333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[3 3]
+ [4 5]]",0.015625
+59,Baseline Stratified Strategy,16,0.4666666666666667,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[5 4]
+ [4 2]]",0.0
+60,Baseline Stratified Strategy,17,0.42857142857142855,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 2]
+ [6 6]]",0.015625
+61,Baseline Stratified Strategy,18,0.2857142857142857,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[2 2]
+ [8 2]]",0.015625
+62,Baseline Stratified Strategy,19,0.5384615384615384,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [6 7]]",0.015625
+63,Baseline Stratified Strategy,20,0.625,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [3 5]]",0.015625
+64,Baseline Stratified Strategy,avg,0.5036911508852046,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[102  90]
+ [ 91  81]]",0.15625
+65,Baseline Stratified Strategy,std,0.08756139190053268,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[102  90]
+ [ 91  81]]",0.15625
+66,Baseline Uniform Strategy,1,0.56,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[7 2]
+ [9 7]]",0.0
+67,Baseline Uniform Strategy,2,0.2916666666666667,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 7 12]
+ [ 5  0]]",0.0
+68,Baseline Uniform Strategy,3,0.5217391304347826,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[9 8]
+ [3 3]]",0.015625
+69,Baseline Uniform Strategy,4,0.5909090909090909,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[7 4]
+ [5 6]]",0.015625
+70,Baseline Uniform Strategy,5,0.6818181818181818,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[9 6]
+ [1 6]]",0.0
+71,Baseline Uniform Strategy,6,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 4]
+ [7 7]]",0.03125
+72,Baseline Uniform Strategy,7,0.6190476190476191,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[8 7]
+ [1 5]]",0.015625
+73,Baseline Uniform Strategy,8,0.42857142857142855,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[7 8]
+ [4 2]]",0.015625
+74,Baseline Uniform Strategy,9,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[5 4]
+ [6 5]]",0.0
+75,Baseline Uniform Strategy,10,0.5555555555555556,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[9 8]
+ [0 1]]",0.015625
+76,Baseline Uniform Strategy,11,0.3333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[3 7]
+ [5 3]]",0.015625
+77,Baseline Uniform Strategy,12,0.7058823529411765,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 1]
+ [4 8]]",0.0
+78,Baseline Uniform Strategy,13,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 4]
+ [4 4]]",0.0
+79,Baseline Uniform Strategy,14,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[7 6]
+ [2 1]]",0.015625
+80,Baseline Uniform Strategy,15,0.5333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[3 3]
+ [4 5]]",0.015625
+81,Baseline Uniform Strategy,16,0.4,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[5 4]
+ [5 1]]",0.0
+82,Baseline Uniform Strategy,17,0.42857142857142855,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 2]
+ [6 6]]",0.015625
+83,Baseline Uniform Strategy,18,0.5714285714285714,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[1 3]
+ [3 7]]",0.0
+84,Baseline Uniform Strategy,19,0.7692307692307693,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  0]
+ [ 3 10]]",0.015625
+85,Baseline Uniform Strategy,20,0.875,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [1 7]]",0.015625
+86,Baseline Uniform Strategy,avg,0.543304373092097,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[99 93]
+ [78 94]]",0.21875
+87,Baseline Uniform Strategy,std,0.1375216026823574,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[99 93]
+ [78 94]]",0.21875
+88,Nearest Neighbors Test,1,0.48,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 9  0]
+ [13  3]]",0.03125
+89,Nearest Neighbors Test,2,0.7916666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[19  0]
+ [ 5  0]]",0.015625
+90,Nearest Neighbors Test,3,0.6956521739130435,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[16  1]
+ [ 6  0]]",0.015625
+91,Nearest Neighbors Test,4,0.5454545454545454,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  0]
+ [10  1]]",0.0
+92,Nearest Neighbors Test,5,0.6818181818181818,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  4]
+ [ 3  4]]",0.0
+93,Nearest Neighbors Test,6,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[5 3]
+ [8 6]]",0.015625
+94,Nearest Neighbors Test,7,0.14285714285714285,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 2 13]
+ [ 5  1]]",0.015625
+95,Nearest Neighbors Test,8,0.5238095238095238,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[8 7]
+ [3 3]]",0.0625
+96,Nearest Neighbors Test,9,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[2 7]
+ [3 8]]",0.03125
+97,Nearest Neighbors Test,10,0.4444444444444444,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 7 10]
+ [ 0  1]]",0.015625
+98,Nearest Neighbors Test,11,0.6666666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[9 1]
+ [5 3]]",0.0
+99,Nearest Neighbors Test,12,0.6470588235294118,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[2 3]
+ [3 9]]",0.0
+100,Nearest Neighbors Test,13,0.5625,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[7 1]
+ [6 2]]",0.03125
+101,Nearest Neighbors Test,14,0.5625,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[9 4]
+ [3 0]]",0.078125
+102,Nearest Neighbors Test,15,0.5333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[1 5]
+ [2 7]]",0.03125
+103,Nearest Neighbors Test,16,0.3333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[3 6]
+ [4 2]]",0.0
+104,Nearest Neighbors Test,17,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[1 1]
+ [6 6]]",0.046875
+105,Nearest Neighbors Test,18,0.35714285714285715,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[2 2]
+ [7 3]]",0.015625
+106,Nearest Neighbors Test,19,0.46153846153846156,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [7 6]]",0.0
+107,Nearest Neighbors Test,20,0.125,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [7 1]]",0.03125
+108,Nearest Neighbors Test,avg,0.5027388077253806,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[124  68]
+ [106  66]]",0.4375
+109,Nearest Neighbors Test,std,0.1640953098391759,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[124  68]
+ [106  66]]",0.4375
+110,Nearest Neighbors,1,0.48,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 9  0]
+ [13  3]]",1.375
+111,Nearest Neighbors,2,0.7916666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[19  0]
+ [ 5  0]]",1.859375
+112,Nearest Neighbors,3,0.6956521739130435,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[16  1]
+ [ 6  0]]",1.734375
+113,Nearest Neighbors,4,0.5454545454545454,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  0]
+ [10  1]]",1.109375
+114,Nearest Neighbors,5,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  4]
+ [ 7  0]]",1.6875
+115,Nearest Neighbors,6,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[5 3]
+ [8 6]]",1.78125
+116,Nearest Neighbors,7,0.3333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 2 13]
+ [ 1  5]]",1.859375
+117,Nearest Neighbors,8,0.3333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 2 13]
+ [ 1  5]]",1.5625
+118,Nearest Neighbors,9,0.65,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[5 4]
+ [3 8]]",1.765625
+119,Nearest Neighbors,10,0.4444444444444444,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[8 9]
+ [1 0]]",1.640625
+120,Nearest Neighbors,11,0.6111111111111112,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[10  0]
+ [ 7  1]]",1.53125
+121,Nearest Neighbors,12,0.6470588235294118,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  5]
+ [ 1 11]]",1.53125
+122,Nearest Neighbors,13,0.625,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 2]
+ [4 4]]",1.8125
+123,Nearest Neighbors,14,0.375,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 9]
+ [1 2]]",1.875
+124,Nearest Neighbors,15,0.5333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 6]
+ [1 8]]",1.5
+125,Nearest Neighbors,16,0.5333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[7 2]
+ [5 1]]",1.609375
+126,Nearest Neighbors,17,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[1 1]
+ [6 6]]",1.859375
+127,Nearest Neighbors,18,0.42857142857142855,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[1 3]
+ [5 5]]",1.3125
+128,Nearest Neighbors,19,0.5384615384615384,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [6 7]]",1.46875
+129,Nearest Neighbors,20,0.25,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [6 2]]",1.75
+130,Nearest Neighbors,avg,0.5157877032742763,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[117  75]
+ [ 97  75]]",32.640625
+131,Nearest Neighbors,std,0.13009569683285285,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[117  75]
+ [ 97  75]]",32.640625
+132,Linear SVM l1,1,0.8,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 6  3]
+ [ 2 14]]",0.125
+133,Linear SVM l1,2,0.7916666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[19  0]
+ [ 5  0]]",0.0625
+134,Linear SVM l1,3,0.782608695652174,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[15  2]
+ [ 3  3]]",0.09375
+135,Linear SVM l1,4,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  0]
+ [11  0]]",0.046875
+136,Linear SVM l1,5,0.5909090909090909,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[9 6]
+ [3 4]]",0.046875
+137,Linear SVM l1,6,0.5909090909090909,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  8]
+ [ 1 13]]",0.015625
+138,Linear SVM l1,7,0.2857142857142857,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 15]
+ [ 0  6]]",0.078125
+139,Linear SVM l1,8,0.42857142857142855,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 3 12]
+ [ 0  6]]",0.0625
+140,Linear SVM l1,9,0.55,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  9]
+ [ 0 11]]",0.078125
+141,Linear SVM l1,10,1.0,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[17  0]
+ [ 0  1]]",0.078125
+142,Linear SVM l1,11,0.4444444444444444,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 10]
+ [ 0  8]]",0.09375
+143,Linear SVM l1,12,0.5882352941176471,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  5]
+ [ 2 10]]",0.046875
+144,Linear SVM l1,13,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 8]
+ [0 8]]",0.03125
+145,Linear SVM l1,14,0.1875,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 13]
+ [ 0  3]]",0.140625
+146,Linear SVM l1,15,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 6]
+ [0 9]]",0.078125
+147,Linear SVM l1,16,0.4,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[5 4]
+ [5 1]]",0.125
+148,Linear SVM l1,17,0.9285714285714286,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 1  1]
+ [ 0 12]]",0.0625
+149,Linear SVM l1,18,0.7142857142857143,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  4]
+ [ 0 10]]",0.140625
+150,Linear SVM l1,19,0.9230769230769231,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  0]
+ [ 1 12]]",0.03125
+151,Linear SVM l1,20,1.0,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,[[8]],0.046875
+152,Linear SVM l1,avg,0.6303246531459447,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 86 106]
+ [ 33 139]]",1.5
+153,Linear SVM l1,std,0.22609845258090513,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 86 106]
+ [ 33 139]]",1.5
+154,Linear SVM l2,1,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 9  0]
+ [10  6]]",0.40625
+155,Linear SVM l2,2,0.7916666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[19  0]
+ [ 5  0]]",0.25
+156,Linear SVM l2,3,0.7391304347826086,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[17  0]
+ [ 6  0]]",0.265625
+157,Linear SVM l2,4,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  0]
+ [11  0]]",0.234375
+158,Linear SVM l2,5,0.6363636363636364,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[13  2]
+ [ 6  1]]",0.3125
+159,Linear SVM l2,6,0.45454545454545453,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 7  1]
+ [11  3]]",0.15625
+160,Linear SVM l2,7,0.2857142857142857,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 15]
+ [ 0  6]]",0.1875
+161,Linear SVM l2,8,0.38095238095238093,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 9]
+ [4 2]]",0.25
+162,Linear SVM l2,9,0.55,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  9]
+ [ 0 11]]",0.25
+163,Linear SVM l2,10,0.8888888888888888,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[15  2]
+ [ 0  1]]",0.203125
+164,Linear SVM l2,11,0.4444444444444444,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 10]
+ [ 0  8]]",0.21875
+165,Linear SVM l2,12,0.47058823529411764,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 5]
+ [4 8]]",0.203125
+166,Linear SVM l2,13,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 8]
+ [0 8]]",0.234375
+167,Linear SVM l2,14,0.1875,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 13]
+ [ 0  3]]",0.296875
+168,Linear SVM l2,15,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 6]
+ [0 9]]",0.25
+169,Linear SVM l2,16,0.4666666666666667,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 5]
+ [3 3]]",0.28125
+170,Linear SVM l2,17,0.8571428571428571,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  2]
+ [ 0 12]]",0.25
+171,Linear SVM l2,18,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 4]
+ [3 7]]",0.25
+172,Linear SVM l2,19,0.9230769230769231,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  0]
+ [ 1 12]]",0.203125
+173,Linear SVM l2,20,0.0,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [8 0]]",0.4375
+174,Linear SVM l2,avg,0.5388340437269465,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[101  91]
+ [ 72 100]]",5.140625
+175,Linear SVM l2,std,0.22647753907723625,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[101  91]
+ [ 72 100]]",5.140625
+176,SVM linear or rbf,1,0.48,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 9  0]
+ [13  3]]",0.40625
+177,SVM linear or rbf,2,0.7916666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[19  0]
+ [ 5  0]]",0.4375
+178,SVM linear or rbf,3,0.6956521739130435,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[16  1]
+ [ 6  0]]",0.1875
+179,SVM linear or rbf,4,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  0]
+ [11  0]]",0.265625
+180,SVM linear or rbf,5,0.45454545454545453,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[10  5]
+ [ 7  0]]",0.296875
+181,SVM linear or rbf,6,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 7  1]
+ [10  4]]",0.265625
+182,SVM linear or rbf,7,0.2857142857142857,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 15]
+ [ 0  6]]",0.3125
+183,SVM linear or rbf,8,0.42857142857142855,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 3 12]
+ [ 0  6]]",0.265625
+184,SVM linear or rbf,9,0.55,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 1  8]
+ [ 1 10]]",0.234375
+185,SVM linear or rbf,10,0.9444444444444444,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[16  1]
+ [ 0  1]]",0.375
+186,SVM linear or rbf,11,0.4444444444444444,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 10]
+ [ 0  8]]",0.21875
+187,SVM linear or rbf,12,0.5294117647058824,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 5]
+ [3 9]]",0.328125
+188,SVM linear or rbf,13,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 8]
+ [0 8]]",0.15625
+189,SVM linear or rbf,14,0.1875,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 13]
+ [ 0  3]]",0.421875
+190,SVM linear or rbf,15,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 6]
+ [0 9]]",0.390625
+191,SVM linear or rbf,16,0.4,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 5]
+ [4 2]]",0.203125
+192,SVM linear or rbf,17,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[1 1]
+ [6 6]]",0.25
+193,SVM linear or rbf,18,0.7142857142857143,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  4]
+ [ 0 10]]",0.296875
+194,SVM linear or rbf,19,0.0,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  0]
+ [13  0]]",0.4375
+195,SVM linear or rbf,20,0.0,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [8 0]]",0.21875
+196,SVM linear or rbf,avg,0.4753118188645682,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[97 95]
+ [87 85]]",5.984375
+197,SVM linear or rbf,std,0.22717862673590591,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[97 95]
+ [87 85]]",5.984375
+198,Decision Tree,1,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[7 2]
+ [8 8]]",0.109375
+199,Decision Tree,2,0.6666666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[15  4]
+ [ 4  1]]",0.234375
+200,Decision Tree,3,0.6086956521739131,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[13  4]
+ [ 5  1]]",0.203125
+201,Decision Tree,4,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[10  1]
+ [10  1]]",0.1875
+202,Decision Tree,5,0.6363636363636364,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  4]
+ [ 4  3]]",0.25
+203,Decision Tree,6,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[2 6]
+ [5 9]]",0.25
+204,Decision Tree,7,0.38095238095238093,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 4 11]
+ [ 2  4]]",0.1875
+205,Decision Tree,8,0.3333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 3 12]
+ [ 2  4]]",0.125
+206,Decision Tree,9,0.25,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 5  4]
+ [11  0]]",0.140625
+207,Decision Tree,10,0.16666666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 3 14]
+ [ 1  0]]",0.125
+208,Decision Tree,11,0.3888888888888889,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 6]
+ [5 3]]",0.203125
+209,Decision Tree,12,0.7058823529411765,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  5]
+ [ 0 12]]",0.203125
+210,Decision Tree,13,0.5625,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 2]
+ [5 3]]",0.15625
+211,Decision Tree,14,0.4375,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 7]
+ [2 1]]",0.15625
+212,Decision Tree,15,0.6666666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[1 5]
+ [0 9]]",0.328125
+213,Decision Tree,16,0.4666666666666667,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 3]
+ [5 1]]",0.328125
+214,Decision Tree,17,0.42857142857142855,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 2]
+ [6 6]]",0.234375
+215,Decision Tree,18,0.42857142857142855,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[2 2]
+ [6 4]]",0.21875
+216,Decision Tree,19,0.6923076923076923,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [4 9]]",0.25
+217,Decision Tree,20,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [4 4]]",0.28125
+218,Decision Tree,avg,0.4960116730385272,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[98 94]
+ [89 83]]",4.171875
+219,Decision Tree,std,0.14526726999905393,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[98 94]
+ [89 83]]",4.171875
+220,Random Forest,1,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 9  0]
+ [10  6]]",3.171875
+221,Random Forest,2,0.75,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[18  1]
+ [ 5  0]]",3.46875
+222,Random Forest,3,0.6956521739130435,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[16  1]
+ [ 6  0]]",3.46875
+223,Random Forest,4,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  0]
+ [11  0]]",3.46875
+224,Random Forest,5,0.5909090909090909,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  4]
+ [ 5  2]]",3.515625
+225,Random Forest,6,0.5454545454545454,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 1  7]
+ [ 3 11]]",3.796875
+226,Random Forest,7,0.19047619047619047,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 15]
+ [ 2  4]]",3.265625
+227,Random Forest,8,0.47619047619047616,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 9]
+ [2 4]]",3.625
+228,Random Forest,9,0.35,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[2 7]
+ [6 5]]",3.015625
+229,Random Forest,10,0.3888888888888889,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 6 11]
+ [ 0  1]]",3.125
+230,Random Forest,11,0.3888888888888889,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 6]
+ [5 3]]",3.5625
+231,Random Forest,12,0.5882352941176471,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  5]
+ [ 2 10]]",3.453125
+232,Random Forest,13,0.5625,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 4]
+ [3 5]]",3.28125
+233,Random Forest,14,0.3125,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 9]
+ [2 1]]",3.640625
+234,Random Forest,15,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 6]
+ [0 9]]",3.296875
+235,Random Forest,16,0.4666666666666667,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 3]
+ [5 1]]",3.546875
+236,Random Forest,17,0.6428571428571429,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[1 1]
+ [4 8]]",3.0
+237,Random Forest,18,0.6428571428571429,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[2 2]
+ [3 7]]",3.296875
+238,Random Forest,19,0.5384615384615384,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [6 7]]",3.5
+239,Random Forest,20,0.75,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [2 6]]",3.25
+240,Random Forest,avg,0.529026901984063,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[101  91]
+ [ 82  90]]",67.765625
+241,Random Forest,std,0.1432789352478038,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[101  91]
+ [ 82  90]]",67.765625
+242,Neural Net,1,0.64,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[9 0]
+ [9 7]]",3.640625
+243,Neural Net,2,0.7916666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[19  0]
+ [ 5  0]]",3.59375
+244,Neural Net,3,0.782608695652174,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[17  0]
+ [ 5  1]]",3.734375
+245,Neural Net,4,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  0]
+ [11  0]]",3.28125
+246,Neural Net,5,0.5909090909090909,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[13  2]
+ [ 7  0]]",3.21875
+247,Neural Net,6,0.4090909090909091,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 5  3]
+ [10  4]]",3.6875
+248,Neural Net,7,0.2857142857142857,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 15]
+ [ 0  6]]",4.03125
+249,Neural Net,8,0.47619047619047616,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[8 7]
+ [4 2]]",3.53125
+250,Neural Net,9,0.65,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 3  6]
+ [ 1 10]]",3.640625
+251,Neural Net,10,0.9444444444444444,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[16  1]
+ [ 0  1]]",3.171875
+252,Neural Net,11,0.6666666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[8 2]
+ [4 4]]",4.21875
+253,Neural Net,12,0.35294117647058826,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 5  0]
+ [11  1]]",3.484375
+254,Neural Net,13,0.6875,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[3 5]
+ [0 8]]",3.515625
+255,Neural Net,14,0.1875,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 13]
+ [ 0  3]]",3.265625
+256,Neural Net,15,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 6]
+ [0 9]]",3.9375
+257,Neural Net,16,0.4,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[5 4]
+ [5 1]]",3.421875
+258,Neural Net,17,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 2]
+ [5 7]]",3.203125
+259,Neural Net,18,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[1 3]
+ [4 6]]",3.359375
+260,Neural Net,19,0.8461538461538461,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  0]
+ [ 2 11]]",3.328125
+261,Neural Net,20,0.125,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [7 1]]",3.375
+262,Neural Net,avg,0.5468193128979575,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[123  69]
+ [ 90  82]]",70.703125
+263,Neural Net,std,0.2105237836028277,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[123  69]
+ [ 90  82]]",70.703125
+264,AdaBoost,1,0.8,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 8  1]
+ [ 4 12]]",1.25
+265,AdaBoost,2,0.7916666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[19  0]
+ [ 5  0]]",1.25
+266,AdaBoost,3,0.8260869565217391,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[17  0]
+ [ 4  2]]",1.1875
+267,AdaBoost,4,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  0]
+ [11  0]]",1.234375
+268,AdaBoost,5,0.5909090909090909,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[10  5]
+ [ 4  3]]",1.390625
+269,AdaBoost,6,0.6363636363636364,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 1  7]
+ [ 1 13]]",1.171875
+270,AdaBoost,7,0.3333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 1 14]
+ [ 0  6]]",1.03125
+271,AdaBoost,8,0.3333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 1 14]
+ [ 0  6]]",1.21875
+272,AdaBoost,9,0.55,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  9]
+ [ 0 11]]",1.015625
+273,AdaBoost,10,1.0,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[17  0]
+ [ 0  1]]",1.125
+274,AdaBoost,11,0.4444444444444444,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 10]
+ [ 0  8]]",0.96875
+275,AdaBoost,12,0.7058823529411765,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  5]
+ [ 0 12]]",1.03125
+276,AdaBoost,13,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 8]
+ [0 8]]",1.09375
+277,AdaBoost,14,0.1875,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 13]
+ [ 0  3]]",1.265625
+278,AdaBoost,15,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 6]
+ [0 9]]",0.9375
+279,AdaBoost,16,0.4666666666666667,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 3]
+ [5 1]]",1.15625
+280,AdaBoost,17,0.7857142857142857,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 1  1]
+ [ 2 10]]",1.46875
+281,AdaBoost,18,0.7142857142857143,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  4]
+ [ 0 10]]",1.265625
+282,AdaBoost,19,0.8461538461538461,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  0]
+ [ 2 11]]",1.75
+283,AdaBoost,20,1.0,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,[[8]],1.0625
+284,AdaBoost,avg,0.6306170163666966,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 92 100]
+ [ 38 134]]",23.875
+285,AdaBoost,std,0.21525751296843745,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 92 100]
+ [ 38 134]]",23.875
+286,Naive Bayes,1,0.76,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 8  1]
+ [ 5 11]]",0.59375
+287,Naive Bayes,2,0.7916666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[19  0]
+ [ 5  0]]",0.46875
+288,Naive Bayes,3,0.6956521739130435,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[13  4]
+ [ 3  3]]",0.546875
+289,Naive Bayes,4,0.5454545454545454,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  0]
+ [10  1]]",0.53125
+290,Naive Bayes,5,0.5454545454545454,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  4]
+ [ 6  1]]",0.65625
+291,Naive Bayes,6,0.5909090909090909,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 2]
+ [7 7]]",0.65625
+292,Naive Bayes,7,0.2857142857142857,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 15]
+ [ 0  6]]",0.640625
+293,Naive Bayes,8,0.38095238095238093,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 3 12]
+ [ 1  5]]",0.609375
+294,Naive Bayes,9,0.55,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  9]
+ [ 0 11]]",0.703125
+295,Naive Bayes,10,0.8888888888888888,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[15  2]
+ [ 0  1]]",0.609375
+296,Naive Bayes,11,0.4444444444444444,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 10]
+ [ 0  8]]",0.65625
+297,Naive Bayes,12,0.4117647058823529,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[1 4]
+ [6 6]]",0.515625
+298,Naive Bayes,13,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 8]
+ [0 8]]",0.6875
+299,Naive Bayes,14,0.1875,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 13]
+ [ 0  3]]",0.640625
+300,Naive Bayes,15,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 6]
+ [0 9]]",0.484375
+301,Naive Bayes,16,0.5333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 5]
+ [2 4]]",0.421875
+302,Naive Bayes,17,0.8571428571428571,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 1  1]
+ [ 1 11]]",0.546875
+303,Naive Bayes,18,0.6428571428571429,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 4]
+ [1 9]]",0.609375
+304,Naive Bayes,19,0.9230769230769231,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  0]
+ [ 1 12]]",0.6875
+305,Naive Bayes,20,0.75,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [2 6]]",0.578125
+306,Naive Bayes,avg,0.594240599234525,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 92 100]
+ [ 50 122]]",11.859375
+307,Naive Bayes,std,0.1934732392722033,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 92 100]
+ [ 50 122]]",11.859375
+308,QDA,1,0.72,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[9 0]
+ [7 9]]",0.015625
+309,QDA,2,0.7916666666666666,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[19  0]
+ [ 5  0]]",0.03125
+310,QDA,3,0.6956521739130435,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[16  1]
+ [ 6  0]]",0.015625
+311,QDA,4,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  0]
+ [11  0]]",0.0625
+312,QDA,5,0.5454545454545454,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[11  4]
+ [ 6  1]]",0.015625
+313,QDA,6,0.5454545454545454,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[6 2]
+ [8 6]]",0.0625
+314,QDA,7,0.2857142857142857,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 15]
+ [ 0  6]]",0.046875
+315,QDA,8,0.38095238095238093,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 3 12]
+ [ 1  5]]",0.0
+316,QDA,9,0.55,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  9]
+ [ 0 11]]",0.046875
+317,QDA,10,0.8888888888888888,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[15  2]
+ [ 0  1]]",0.03125
+318,QDA,11,0.4444444444444444,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 10]
+ [ 0  8]]",0.03125
+319,QDA,12,0.35294117647058826,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[1 4]
+ [7 5]]",0.015625
+320,QDA,13,0.5,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 8]
+ [0 8]]",0.0
+321,QDA,14,0.1875,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0 13]
+ [ 0  3]]",0.015625
+322,QDA,15,0.6,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 6]
+ [0 9]]",0.0
+323,QDA,16,0.5333333333333333,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[4 5]
+ [2 4]]",0.0
+324,QDA,17,0.8571428571428571,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  2]
+ [ 0 12]]",0.03125
+325,QDA,18,0.6428571428571429,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 4]
+ [1 9]]",0.015625
+326,QDA,19,0.9230769230769231,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 0  0]
+ [ 1 12]]",0.015625
+327,QDA,20,0.625,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[0 0]
+ [3 5]]",0.0
+328,QDA,avg,0.5785039682184823,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 95  97]
+ [ 58 114]]",0.484375
+329,QDA,std,0.19267947533276242,Nested,SCALER_all_groups_all_features_30s_binary_Manual,All,All,30,"[[ 95  97]
+ [ 58 114]]",0.484375
