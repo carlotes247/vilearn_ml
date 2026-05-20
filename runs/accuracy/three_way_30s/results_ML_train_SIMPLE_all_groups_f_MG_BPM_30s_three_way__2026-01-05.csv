@@ -1,0 +1,46 @@
+,Model,Score,CV,Version,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,0.5856935956910381,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[  0   0  63]
+ [  0   0  85]
+ [  0   0 216]]",0.09375
+1,Baseline Prior Strategy,0.5856935956910381,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[  0   0  63]
+ [  0   0  85]
+ [  0   0 216]]",0.0625
+2,Baseline Stratified Strategy,0.4009057368107879,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[  7  17  39]
+ [  6  18  61]
+ [ 33  61 122]]",0.109375
+3,Baseline Uniform Strategy,0.33376795735523357,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[22 20 21]
+ [34 28 23]
+ [69 74 73]]",0.171875
+4,Nearest Neighbors Test,0.46022359801324,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[ 13  11  39]
+ [ 10  25  50]
+ [ 37  48 131]]",0.140625
+5,Nearest Neighbors,0.5957634111412884,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[  0   2  61]
+ [  1  17  67]
+ [  1  14 201]]",14.34375
+6,Linear SVM l1,0.5835196826475599,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[  0   0  63]
+ [  0   0  85]
+ [  0   1 215]]",0.765625
+7,Linear SVM l2,0.5835196826475599,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[  0   0  63]
+ [  0   0  85]
+ [  0   1 215]]",6.578125
+8,SVM linear or rbf,0.6026681730460502,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[  0   1  62]
+ [  0  17  68]
+ [  0  13 203]]",3.71875
+9,Decision Tree,0.46648381584315085,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[ 13  12  38]
+ [  7  32  46]
+ [ 36  57 123]]",1.4375
+10,Random Forest,0.5131981292010065,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[  8   6  49]
+ [ 10  19  56]
+ [ 23  33 160]]",56.5625
+11,Neural Net,0.610193064820942,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[  0   1  62]
+ [  0  17  68]
+ [  0  10 206]]",59.0625
+12,AdaBoost,0.5823602623577048,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[  0   0  63]
+ [  0   3  82]
+ [  0   4 212]]",24.390625
+13,Naive Bayes,0.5907974604253377,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[  0   1  62]
+ [  0   8  77]
+ [  0   6 210]]",4.890625
+14,QDA,0.5945729349508121,Nested,SIMPLE_all_groups_f_MG_BPM_30s_three_way_Manual,"[[  0   2  61]
+ [  0  19  66]
+ [  0  18 198]]",0.140625

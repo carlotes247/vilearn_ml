@@ -1,0 +1,19 @@
+,Model,Score,CV,Version
+0,Nearest Neighbors,0.5803542522292522,Nested,Simple
+1,Nearest Neighbors,0.5498592842342842,Nested,Scaler
+2,Linear SVM,0.6334318459318459,Nested,Simple
+3,Linear SVM,0.6334318459318459,Nested,Scaler
+4,SVM,0.655843462093462,Nested,Simple
+5,SVM,0.6378510378510378,Nested,Scaler
+6,Decision Tree,0.4952282671032671,Nested,Simple
+7,Decision Tree,0.49640220890220893,Nested,Scaler
+8,Random Forest,0.5436459373959374,Nested,Simple
+9,Random Forest,0.5269762644762644,Nested,Scaler
+10,Neural Net,0.6297532328782328,Nested,Simple
+11,Neural Net,0.5893775206275206,Nested,Scaler
+12,AdaBoost,0.5677753959003958,Nested,Simple
+13,AdaBoost,0.5677753959003958,Nested,Scaler
+14,Naive Bayes,0.5871478058978059,Nested,Simple
+15,Naive Bayes,0.5871478058978059,Nested,Scaler
+16,QDA,0.5549258611758612,Nested,Simple
+17,QDA,0.5549258611758612,Nested,Scaler

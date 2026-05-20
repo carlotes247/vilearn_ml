@@ -1,0 +1,46 @@
+,Model,Score,CV,Version,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,0.608495670995671,Nested,_Manual,"[[ 0  0 17]
+ [ 0  0 13]
+ [ 0  0 50]]",0.328125
+1,Baseline Prior Strategy,0.608495670995671,Nested,_Manual,"[[ 0  0 17]
+ [ 0  0 13]
+ [ 0  0 50]]",0.234375
+2,Baseline Stratified Strategy,0.3850108225108225,Nested,_Manual,"[[ 1  3 13]
+ [ 2  2  9]
+ [12 10 28]]",0.234375
+3,Baseline Uniform Strategy,0.3469516594516594,Nested,_Manual,"[[ 7  8  2]
+ [ 7  3  3]
+ [10 22 18]]",0.265625
+4,Nearest Neighbors Test,0.33292748917748916,Nested,_Manual,"[[ 5  1 11]
+ [ 3  2  8]
+ [14 16 20]]",1.390625
+5,Nearest Neighbors,0.483495670995671,Nested,_Manual,"[[ 0  0 17]
+ [ 0  0 13]
+ [ 0  9 41]]",60.375
+6,Linear SVM l1,0.4503517316017316,Nested,_Manual,"[[ 0  0 17]
+ [ 1  0 12]
+ [ 3  9 38]]",4.21875
+7,Linear SVM l2,0.46076839826839827,Nested,_Manual,"[[ 0  0 17]
+ [ 1  0 12]
+ [ 2  9 39]]",8.625
+8,SVM linear or rbf,0.483495670995671,Nested,_Manual,"[[ 0  0 17]
+ [ 0  0 13]
+ [ 0  9 41]]",12.84375
+9,Decision Tree,0.3918199855699856,Nested,_Manual,"[[ 1  1 15]
+ [ 2  1 10]
+ [ 8 12 30]]",9.640625
+10,Random Forest,0.3843795093795094,Nested,_Manual,"[[ 0  1 16]
+ [ 2  0 11]
+ [ 5 13 32]]",358.40625
+11,Neural Net,0.4503517316017316,Nested,_Manual,"[[ 1  0 16]
+ [ 1  0 12]
+ [ 4  9 37]]",479.078125
+12,AdaBoost,0.6362734487734487,Nested,_Manual,"[[ 3  0 14]
+ [ 0  0 13]
+ [ 1  0 49]]",295.0
+13,Naive Bayes,0.4721320346320346,Nested,_Manual,"[[ 0  0 17]
+ [ 0  0 13]
+ [ 1  9 40]]",21.5625
+14,QDA,0.4048971861471861,Nested,_Manual,"[[ 1  0 16]
+ [ 2  0 11]
+ [ 8  9 33]]",1.578125

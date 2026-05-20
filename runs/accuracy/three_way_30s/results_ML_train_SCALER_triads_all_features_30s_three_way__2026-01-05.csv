@@ -1,0 +1,46 @@
+,Model,Score,CV,Version,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,0.6099958374958375,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[  0   0  23]
+ [  0   0  56]
+ [  0   0 127]]",0.046875
+1,Baseline Prior Strategy,0.6099958374958375,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[  0   0  23]
+ [  0   0  56]
+ [  0   0 127]]",0.0
+2,Baseline Stratified Strategy,0.447345917970918,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[ 4  4 15]
+ [ 5 10 41]
+ [11 37 79]]",0.03125
+3,Baseline Uniform Strategy,0.28999979187479186,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[ 5  8 10]
+ [26 16 14]
+ [45 40 42]]",0.015625
+4,Nearest Neighbors Test,0.594187271062271,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[ 8  5 10]
+ [ 5 28 23]
+ [12 31 84]]",0.140625
+5,Nearest Neighbors,0.6133291708291708,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[  0   0  23]
+ [  0   1  55]
+ [  0   0 127]]",6.21875
+6,Linear SVM l1,0.6066625041625041,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[  0   0  23]
+ [  0   0  56]
+ [  0   1 126]]",0.359375
+7,Linear SVM l2,0.6099958374958375,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[  0   0  23]
+ [  0   0  56]
+ [  0   0 127]]",1.015625
+8,SVM linear or rbf,0.6099958374958375,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[  0   0  23]
+ [  0   0  56]
+ [  0   0 127]]",1.578125
+9,Decision Tree,0.42931082806082804,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[ 2 12  9]
+ [ 7 26 23]
+ [15 55 57]]",0.96875
+10,Random Forest,0.5845570401820401,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[ 1  3 19]
+ [ 1 24 31]
+ [ 4 29 94]]",20.765625
+11,Neural Net,0.6066625041625041,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[  0   1  22]
+ [  0   3  53]
+ [  0   4 123]]",23.890625
+12,AdaBoost,0.592565281940282,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[  1   1  21]
+ [  0   6  50]
+ [  0  11 116]]",7.234375
+13,Naive Bayes,0.5974660755910756,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[  0   2  21]
+ [  0   4  52]
+ [  0   8 119]]",3.34375
+14,QDA,0.5457976051726052,Nested,SCALER_triads_all_features_30s_three_way_Manual,"[[  0   5  18]
+ [  2   6  48]
+ [  1  20 106]]",0.078125

@@ -1,0 +1,19 @@
+,Model,Score,CV,Version,Conf_Matrix,Time
+0,Nearest Neighbors,0.6196671384171384,Nested,Simple_Manual,"[[  0   0  24]
+ [  0   3  39]
+ [  1   5 114]]",76.40625
+1,Nearest Neighbors,0.6196671384171384,Nested,Scaler_Manual,"[[  0   0  24]
+ [  0   3  39]
+ [  1   5 114]]",80.90625
+2,Linear SVM l1,0.635563603063603,Nested,Simple_Manual,"[[  0   1  23]
+ [  0   0  42]
+ [  0   0 120]]",10.859375
+3,Linear SVM l1,0.635563603063603,Nested,Scaler_Manual,"[[  0   1  23]
+ [  0   0  42]
+ [  0   0 120]]",12.859375
+4,Linear SVM l2,0.6310181485181485,Nested,Simple_Manual,"[[  0   0  24]
+ [  0   0  42]
+ [  0   1 119]]",273.84375
+5,Linear SVM l2,0.5810181485181485,Nested,Scaler_Manual,"[[  1   0  23]
+ [  6   0  36]
+ [  9   1 110]]",280.671875

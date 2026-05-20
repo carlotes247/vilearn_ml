@@ -1,0 +1,46 @@
+,Model,Score,CV,Version,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,0.6099958374958375,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[  0   0  23]
+ [  0   0  56]
+ [  0   0 127]]",0.015625
+1,Baseline Prior Strategy,0.6099958374958375,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[  0   0  23]
+ [  0   0  56]
+ [  0   0 127]]",0.0
+2,Baseline Stratified Strategy,0.4372598928848928,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[ 2  9 12]
+ [10 11 35]
+ [16 35 76]]",0.0
+3,Baseline Uniform Strategy,0.388208041958042,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[10  6  7]
+ [27 19 10]
+ [39 37 51]]",0.03125
+4,Nearest Neighbors Test,0.44048590298590296,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[ 3  5 15]
+ [ 7 21 28]
+ [11 50 66]]",0.0625
+5,Nearest Neighbors,0.6101942501942502,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[  0   0  23]
+ [  0  10  46]
+ [  0  10 117]]",5.703125
+6,Linear SVM l1,0.6145593295593296,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[  0   0  23]
+ [  0   5  51]
+ [  0   4 123]]",0.28125
+7,Linear SVM l2,0.6099958374958375,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[  0   0  23]
+ [  0   2  54]
+ [  0   2 125]]",1.03125
+8,SVM linear or rbf,0.6099958374958375,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[  0   0  23]
+ [  0   0  56]
+ [  0   0 127]]",1.640625
+9,Decision Tree,0.47492257742257743,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[ 0  3 20]
+ [ 1 16 39]
+ [13 32 82]]",0.9375
+10,Random Forest,0.5035769092019092,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[ 0  2 21]
+ [ 1 11 44]
+ [ 6 27 94]]",21.15625
+11,Neural Net,0.6154025835275835,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[  0   0  23]
+ [  0   5  51]
+ [  0   4 123]]",14.9375
+12,AdaBoost,0.6099958374958375,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[  0   0  23]
+ [  0  10  46]
+ [  0  10 117]]",7.953125
+13,Naive Bayes,0.617892662892663,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[  0   0  23]
+ [  0   6  50]
+ [  0   4 123]]",3.15625
+14,QDA,0.62503552003552,Nested,SCALER_triads_f_BPM_30s_three_way_Manual,"[[  0   0  23]
+ [  0  10  46]
+ [  0   7 120]]",0.203125

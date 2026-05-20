@@ -1,0 +1,46 @@
+,Model,Score,CV,Version,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,0.5492402329838391,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",0.015625
+1,Baseline Prior Strategy,0.5492402329838391,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",0.015625
+2,Baseline Stratified Strategy,0.35788742374420124,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[ 7 12 21]
+ [ 6  5 18]
+ [21 23 45]]",0.03125
+3,Baseline Uniform Strategy,0.34498794577119385,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[18 10 12]
+ [10 10  9]
+ [33 27 29]]",0.015625
+4,Nearest Neighbors Test,0.4258201880884106,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[ 9  4 27]
+ [ 8  7 14]
+ [31  6 52]]",0.140625
+5,Nearest Neighbors,0.5145180107616169,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[ 0  1 39]
+ [ 0  1 28]
+ [ 6  0 83]]",2.0625
+6,Linear SVM l1,0.5507498948195879,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  1 28]
+ [ 1  0 88]]",0.109375
+7,Linear SVM l2,0.507498083225385,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[ 5  0 35]
+ [ 4  1 24]
+ [13  1 75]]",2.0
+8,SVM linear or rbf,0.5378765966202028,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 2  0 87]]",2.78125
+9,Decision Tree,0.40596000422566914,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[13  8 19]
+ [11  7 11]
+ [25 19 45]]",0.453125
+10,Random Forest,0.49055233094555345,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[ 8  0 32]
+ [ 6  5 18]
+ [20  4 65]]",7.359375
+11,Neural Net,0.5438054503751435,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[ 0  1 39]
+ [ 0  0 29]
+ [ 1  0 88]]",4.671875
+12,AdaBoost,0.4531639813369353,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[12  0 28]
+ [ 1  5 23]
+ [24 11 54]]",3.421875
+13,Naive Bayes,0.514518010761617,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[ 6  1 33]
+ [ 1  0 28]
+ [12  1 76]]",0.59375
+14,QDA,0.5045098408269764,Nested,SIMPLE_dyads_all_features_30s_three_way_Manual,"[[11  1 28]
+ [ 6  7 16]
+ [23  4 62]]",0.046875

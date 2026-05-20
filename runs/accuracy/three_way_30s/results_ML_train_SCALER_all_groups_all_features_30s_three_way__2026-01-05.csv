@@ -1,0 +1,46 @@
+,Model,Score,CV,Version,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,0.5856935956910381,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[  0   0  63]
+ [  0   0  85]
+ [  0   0 216]]",0.09375
+1,Baseline Prior Strategy,0.5856935956910381,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[  0   0  63]
+ [  0   0  85]
+ [  0   0 216]]",0.1875
+2,Baseline Stratified Strategy,0.4354116840817607,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[ 13  21  29]
+ [ 17  20  48]
+ [ 39  47 130]]",0.15625
+3,Baseline Uniform Strategy,0.342191990341287,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[22 21 20]
+ [27 28 30]
+ [66 76 74]]",0.171875
+4,Nearest Neighbors Test,0.52298735968493,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[ 16  15  32]
+ [ 11  36  38]
+ [ 31  50 135]]",0.625
+5,Nearest Neighbors,0.5668326649551073,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[  3   2  58]
+ [  3   2  80]
+ [  7   6 203]]",21.5625
+6,Linear SVM l1,0.5856935956910381,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[  0   0  63]
+ [  0   0  85]
+ [  0   0 216]]",1.171875
+7,Linear SVM l2,0.5745193532667957,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[  0   3  60]
+ [  0   5  80]
+ [  1   9 206]]",4.578125
+8,SVM linear or rbf,0.5856935956910381,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[  0   0  63]
+ [  0   0  85]
+ [  0   0 216]]",5.75
+9,Decision Tree,0.4242340413564838,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[ 12   9  42]
+ [ 18  28  39]
+ [ 47  46 123]]",3.953125
+10,Random Forest,0.5302807511826054,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[  7   8  48]
+ [  9  29  47]
+ [ 21  38 157]]",65.296875
+11,Neural Net,0.5728175134399558,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[  2   2  59]
+ [  2   9  74]
+ [  4  12 200]]",75.859375
+12,AdaBoost,0.5752174052148475,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[  0   0  63]
+ [  0   4  81]
+ [  0   8 208]]",27.25
+13,Naive Bayes,0.5537415441194213,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[  5   1  57]
+ [  6   2  77]
+ [ 21   1 194]]",11.328125
+14,QDA,0.5462618840735848,Nested,SCALER_all_groups_all_features_30s_three_way_Manual,"[[  8   3  52]
+ [  9  14  62]
+ [ 29  13 174]]",0.515625

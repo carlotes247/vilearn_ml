@@ -1,0 +1,7 @@
+,Model,Score,CV,Version,Conf_Matrix,Time
+0,SVM Simple,0.635563603063603,Nested,Simple_Manual,"[[  0   0  24]
+ [  0   0  42]
+ [  0   0 120]]",16489.40625
+1,SVM Simple,0.635563603063603,Nested,Scaler_Manual,"[[  0   0  24]
+ [  0   0  42]
+ [  0   0 120]]",19571.5

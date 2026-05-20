@@ -1,0 +1,46 @@
+,Model,Score,CV,Version,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,0.5492402329838391,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",0.0
+1,Baseline Prior Strategy,0.5492402329838391,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",0.0
+2,Baseline Stratified Strategy,0.3429865770418839,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 7  5 28]
+ [ 9  6 14]
+ [34 13 42]]",0.0
+3,Baseline Uniform Strategy,0.3064739235615195,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[15 15 10]
+ [ 7  9 13]
+ [34 29 26]]",0.0
+4,Nearest Neighbors Test,0.5428150591593686,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[16  9 15]
+ [ 4 13 12]
+ [16 17 56]]",0.078125
+5,Nearest Neighbors,0.5018917481353542,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 8  0 32]
+ [ 0  0 29]
+ [13  4 72]]",2.484375
+6,Linear SVM l1,0.5246866615552677,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 1  0 39]
+ [ 2  0 27]
+ [ 5  0 84]]",0.109375
+7,Linear SVM l2,0.515622808741415,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 0  5 35]
+ [ 0  0 29]
+ [ 1  5 83]]",0.5625
+8,SVM linear or rbf,0.5492402329838391,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",0.703125
+9,Decision Tree,0.48195636950432347,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[15  3 22]
+ [ 7  5 17]
+ [21 12 56]]",0.40625
+10,Random Forest,0.5180372873787196,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[12  5 23]
+ [ 4  5 20]
+ [12 11 66]]",7.828125
+11,Neural Net,0.531879121872728,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 8  0 32]
+ [ 2  0 27]
+ [12  0 77]]",7.625
+12,AdaBoost,0.45706851581212193,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 6  3 31]
+ [ 1  0 28]
+ [12 12 65]]",3.25
+13,Naive Bayes,0.5336152329838391,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 1  0 39]
+ [ 0  0 29]
+ [ 4  0 85]]",1.140625
+14,QDA,0.41761046480515784,Nested,SCALER_dyads_f_MG_1DG_30s_three_way_Manual,"[[10  3 27]
+ [ 3  1 25]
+ [17 14 58]]",0.078125

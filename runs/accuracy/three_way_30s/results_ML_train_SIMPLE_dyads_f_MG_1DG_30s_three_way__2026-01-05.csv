@@ -1,0 +1,46 @@
+,Model,Score,CV,Version,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,0.5492402329838391,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",0.015625
+1,Baseline Prior Strategy,0.5492402329838391,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",0.0
+2,Baseline Stratified Strategy,0.3421310635584932,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 9  6 25]
+ [11  3 15]
+ [26 19 44]]",0.015625
+3,Baseline Uniform Strategy,0.3271082560165041,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[10 12 18]
+ [ 6  9 14]
+ [26 31 32]]",0.0625
+4,Nearest Neighbors Test,0.5309527384735184,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[15 10 15]
+ [ 4 11 14]
+ [15 16 58]]",0.046875
+5,Nearest Neighbors,0.5075735663171725,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 3  0 37]
+ [ 0  0 29]
+ [ 8  3 78]]",1.109375
+6,Linear SVM l1,0.5492402329838391,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",0.125
+7,Linear SVM l2,0.5492402329838391,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",0.328125
+8,SVM linear or rbf,0.5492402329838391,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",0.578125
+9,Decision Tree,0.47652158689562785,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[13  4 23]
+ [ 6  5 18]
+ [19 13 57]]",0.15625
+10,Random Forest,0.4795203242693652,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[12  4 24]
+ [ 4  4 21]
+ [13 16 60]]",7.421875
+11,Neural Net,0.5492402329838391,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",6.140625
+12,AdaBoost,0.45706851581212193,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 6  3 31]
+ [ 1  0 28]
+ [12 12 65]]",3.171875
+13,Naive Bayes,0.5492402329838391,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",0.609375
+14,QDA,0.5492402329838391,Nested,SIMPLE_dyads_f_MG_1DG_30s_three_way_Manual,"[[ 0  0 40]
+ [ 0  0 29]
+ [ 0  0 89]]",0.078125
