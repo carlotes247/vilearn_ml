@@ -1,0 +1,412 @@
+,Model,Fold,Score,CV,Version,Group,Features,Group_Name,Sampling,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,1,0.6153846153846154,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[0 5]
+ [0 8]]",0.0
+1,Baseline Most Frequent Strategy,2,0.36363636363636365,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[0 7]
+ [0 4]]",0.015625
+2,Baseline Most Frequent Strategy,3,0.18181818181818182,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[0 9]
+ [0 2]]",0.0
+3,Baseline Most Frequent Strategy,4,0.6363636363636364,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[0 4]
+ [0 7]]",0.0
+4,Baseline Most Frequent Strategy,5,0.6,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[0 4]
+ [0 6]]",0.0
+5,Baseline Most Frequent Strategy,6,0.375,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[0 5]
+ [0 3]]",0.0
+6,Baseline Most Frequent Strategy,7,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[0 4]
+ [0 4]]",0.0
+7,Baseline Most Frequent Strategy,8,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[0 3]
+ [0 5]]",0.015625
+8,Baseline Most Frequent Strategy,9,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[0 6]
+ [0 2]]",0.0
+9,Baseline Most Frequent Strategy,10,0.8571428571428571,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [0 6]]",0.0
+10,Baseline Most Frequent Strategy,11,1.0,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,[[7]],0.0
+11,Baseline Most Frequent Strategy,12,1.0,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,[[4]],0.0
+12,Baseline Most Frequent Strategy,avg,0.5836954711954712,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[ 0 48]
+ [ 0 58]]",0.0625
+13,Baseline Most Frequent Strategy,std,0.25803507499920614,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[ 0 48]
+ [ 0 58]]",0.0625
+14,Baseline Prior Strategy,1,0.6153846153846154,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[0 5]
+ [0 8]]",0.0
+15,Baseline Prior Strategy,2,0.36363636363636365,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[0 7]
+ [0 4]]",0.0
+16,Baseline Prior Strategy,3,0.18181818181818182,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[0 9]
+ [0 2]]",0.0
+17,Baseline Prior Strategy,4,0.6363636363636364,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[0 4]
+ [0 7]]",0.0
+18,Baseline Prior Strategy,5,0.6,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[0 4]
+ [0 6]]",0.0
+19,Baseline Prior Strategy,6,0.375,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[0 5]
+ [0 3]]",0.015625
+20,Baseline Prior Strategy,7,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[0 4]
+ [0 4]]",0.0
+21,Baseline Prior Strategy,8,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[0 3]
+ [0 5]]",0.015625
+22,Baseline Prior Strategy,9,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[0 6]
+ [0 2]]",0.0
+23,Baseline Prior Strategy,10,0.8571428571428571,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [0 6]]",0.0
+24,Baseline Prior Strategy,11,1.0,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,[[7]],0.0
+25,Baseline Prior Strategy,12,1.0,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,[[4]],0.0
+26,Baseline Prior Strategy,avg,0.5836954711954712,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[ 0 48]
+ [ 0 58]]",0.03125
+27,Baseline Prior Strategy,std,0.25803507499920614,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[ 0 48]
+ [ 0 58]]",0.03125
+28,Baseline Stratified Strategy,1,0.46153846153846156,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[3 2]
+ [5 3]]",0.0
+29,Baseline Stratified Strategy,2,0.5454545454545454,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[2 5]
+ [0 4]]",0.0
+30,Baseline Stratified Strategy,3,0.45454545454545453,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[4 5]
+ [1 1]]",0.0
+31,Baseline Stratified Strategy,4,0.5454545454545454,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[3 1]
+ [4 3]]",0.0
+32,Baseline Stratified Strategy,5,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[2 2]
+ [3 3]]",0.0
+33,Baseline Stratified Strategy,6,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[1 4]
+ [2 1]]",0.0
+34,Baseline Stratified Strategy,7,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[2 2]
+ [2 2]]",0.0
+35,Baseline Stratified Strategy,8,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[1 2]
+ [4 1]]",0.0
+36,Baseline Stratified Strategy,9,0.375,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[2 4]
+ [1 1]]",0.0
+37,Baseline Stratified Strategy,10,0.42857142857142855,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[1 0]
+ [4 2]]",0.0
+38,Baseline Stratified Strategy,11,0.5714285714285714,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,"[[0 0]
+ [3 4]]",0.0
+39,Baseline Stratified Strategy,12,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [2 2]]",0.0
+40,Baseline Stratified Strategy,avg,0.4484994172494172,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[21 27]
+ [31 27]]",0.015625
+41,Baseline Stratified Strategy,std,0.10274523443819832,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[21 27]
+ [31 27]]",0.015625
+42,Baseline Uniform Strategy,1,0.6923076923076923,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[4 1]
+ [3 5]]",0.0
+43,Baseline Uniform Strategy,2,0.45454545454545453,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[4 3]
+ [3 1]]",0.0
+44,Baseline Uniform Strategy,3,0.5454545454545454,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[5 4]
+ [1 1]]",0.0
+45,Baseline Uniform Strategy,4,0.45454545454545453,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[3 1]
+ [5 2]]",0.0
+46,Baseline Uniform Strategy,5,0.6,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[3 1]
+ [3 3]]",0.0
+47,Baseline Uniform Strategy,6,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[3 2]
+ [1 2]]",0.0
+48,Baseline Uniform Strategy,7,0.75,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[2 2]
+ [0 4]]",0.0
+49,Baseline Uniform Strategy,8,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[2 1]
+ [2 3]]",0.0
+50,Baseline Uniform Strategy,9,0.125,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[1 5]
+ [2 0]]",0.03125
+51,Baseline Uniform Strategy,10,0.2857142857142857,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [4 2]]",0.0
+52,Baseline Uniform Strategy,11,0.5714285714285714,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,"[[0 0]
+ [3 4]]",0.0
+53,Baseline Uniform Strategy,12,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [3 1]]",0.015625
+54,Baseline Uniform Strategy,avg,0.49824966699966694,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[27 21]
+ [30 28]]",0.078125
+55,Baseline Uniform Strategy,std,0.18281120493651112,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[27 21]
+ [30 28]]",0.078125
+56,Nearest Neighbors,1,0.3076923076923077,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[1 4]
+ [5 3]]",0.765625
+57,Nearest Neighbors,2,0.36363636363636365,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[0 7]
+ [0 4]]",1.0625
+58,Nearest Neighbors,3,0.18181818181818182,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[0 9]
+ [0 2]]",0.90625
+59,Nearest Neighbors,4,0.36363636363636365,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[2 2]
+ [5 2]]",0.75
+60,Nearest Neighbors,5,0.4,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[0 4]
+ [2 4]]",1.09375
+61,Nearest Neighbors,6,0.375,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[0 5]
+ [0 3]]",1.296875
+62,Nearest Neighbors,7,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[0 4]
+ [0 4]]",0.84375
+63,Nearest Neighbors,8,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[0 3]
+ [0 5]]",1.03125
+64,Nearest Neighbors,9,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[0 6]
+ [0 2]]",0.859375
+65,Nearest Neighbors,10,0.2857142857142857,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [4 2]]",0.75
+66,Nearest Neighbors,11,0.8571428571428571,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,"[[0 0]
+ [1 6]]",0.890625
+67,Nearest Neighbors,12,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [3 1]]",0.921875
+68,Nearest Neighbors,avg,0.3966366966366966,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[ 3 45]
+ [20 38]]",11.171875
+69,Nearest Neighbors,std,0.1795651503298632,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[ 3 45]
+ [20 38]]",11.171875
+70,Logistic Regression,1,0.8461538461538461,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[3 2]
+ [0 8]]",0.015625
+71,Logistic Regression,2,0.5454545454545454,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[4 3]
+ [2 2]]",0.046875
+72,Logistic Regression,3,0.18181818181818182,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[0 9]
+ [0 2]]",0.0
+73,Logistic Regression,4,0.45454545454545453,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[4 0]
+ [6 1]]",0.0625
+74,Logistic Regression,5,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[4 0]
+ [5 1]]",0.078125
+75,Logistic Regression,6,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[5 0]
+ [3 0]]",0.0
+76,Logistic Regression,7,0.375,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[0 4]
+ [1 3]]",0.03125
+77,Logistic Regression,8,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[0 3]
+ [1 4]]",0.0625
+78,Logistic Regression,9,0.875,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[5 1]
+ [0 2]]",0.078125
+79,Logistic Regression,10,0.7142857142857143,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [1 5]]",0.015625
+80,Logistic Regression,11,1.0,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,[[7]],0.015625
+81,Logistic Regression,12,0.75,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [1 3]]",0.125
+82,Logistic Regression,avg,0.6139381451881453,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[25 23]
+ [20 38]]",0.53125
+83,Logistic Regression,std,0.22355181022034307,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[25 23]
+ [20 38]]",0.53125
+84,Linear SVM l1,1,0.6923076923076923,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[1 4]
+ [0 8]]",0.015625
+85,Linear SVM l1,2,0.6363636363636364,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[5 2]
+ [2 2]]",0.015625
+86,Linear SVM l1,3,0.18181818181818182,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[0 9]
+ [0 2]]",0.03125
+87,Linear SVM l1,4,0.45454545454545453,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[4 0]
+ [6 1]]",0.015625
+88,Linear SVM l1,5,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[4 0]
+ [5 1]]",0.015625
+89,Linear SVM l1,6,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[5 0]
+ [3 0]]",0.0
+90,Linear SVM l1,7,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[3 1]
+ [3 1]]",0.015625
+91,Linear SVM l1,8,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[0 3]
+ [1 4]]",0.0
+92,Linear SVM l1,9,0.875,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[5 1]
+ [0 2]]",0.03125
+93,Linear SVM l1,10,0.8571428571428571,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [0 6]]",0.03125
+94,Linear SVM l1,11,1.0,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,[[7]],0.09375
+95,Linear SVM l1,12,0.75,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [1 3]]",0.015625
+96,Linear SVM l1,avg,0.6310148185148184,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[27 21]
+ [21 37]]",0.28125
+97,Linear SVM l1,std,0.2139325250574552,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[27 21]
+ [21 37]]",0.28125
+98,Linear SVM l2,1,0.8461538461538461,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[3 2]
+ [0 8]]",0.34375
+99,Linear SVM l2,2,0.5454545454545454,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[4 3]
+ [2 2]]",0.1875
+100,Linear SVM l2,3,0.18181818181818182,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[0 9]
+ [0 2]]",0.25
+101,Linear SVM l2,4,0.45454545454545453,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[4 0]
+ [6 1]]",0.171875
+102,Linear SVM l2,5,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[3 1]
+ [4 2]]",0.203125
+103,Linear SVM l2,6,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[5 0]
+ [3 0]]",0.328125
+104,Linear SVM l2,7,0.375,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[0 4]
+ [1 3]]",0.265625
+105,Linear SVM l2,8,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[0 3]
+ [1 4]]",0.171875
+106,Linear SVM l2,9,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[0 6]
+ [0 2]]",0.265625
+107,Linear SVM l2,10,0.7142857142857143,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [1 5]]",0.28125
+108,Linear SVM l2,11,0.0,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,"[[0 0]
+ [7 0]]",0.28125
+109,Linear SVM l2,12,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [2 2]]",0.3125
+110,Linear SVM l2,avg,0.4576881451881452,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[19 29]
+ [27 31]]",3.0625
+111,Linear SVM l2,std,0.22236966907401662,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[19 29]
+ [27 31]]",3.0625
+112,SVM linear or rbf,1,0.8461538461538461,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[3 2]
+ [0 8]]",0.046875
+113,SVM linear or rbf,2,0.45454545454545453,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[2 5]
+ [1 3]]",0.078125
+114,SVM linear or rbf,3,0.18181818181818182,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[0 9]
+ [0 2]]",0.140625
+115,SVM linear or rbf,4,0.45454545454545453,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[4 0]
+ [6 1]]",0.0625
+116,SVM linear or rbf,5,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[4 0]
+ [5 1]]",0.015625
+117,SVM linear or rbf,6,0.375,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[0 5]
+ [0 3]]",0.171875
+118,SVM linear or rbf,7,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[3 1]
+ [2 2]]",0.15625
+119,SVM linear or rbf,8,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[0 3]
+ [1 4]]",0.109375
+120,SVM linear or rbf,9,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[0 6]
+ [0 2]]",0.109375
+121,SVM linear or rbf,10,0.8571428571428571,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [0 6]]",0.078125
+122,SVM linear or rbf,11,1.0,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,[[7]],0.234375
+123,SVM linear or rbf,12,0.75,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [1 3]]",0.09375
+124,SVM linear or rbf,avg,0.5661838161838161,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[16 32]
+ [16 42]]",1.296875
+125,SVM linear or rbf,std,0.24263000572646135,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[16 32]
+ [16 42]]",1.296875
+126,Decision Tree,1,0.5384615384615384,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[0 5]
+ [1 7]]",0.09375
+127,Decision Tree,2,0.5454545454545454,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[3 4]
+ [1 3]]",0.09375
+128,Decision Tree,3,0.2727272727272727,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[2 7]
+ [1 1]]",0.0625
+129,Decision Tree,4,0.6363636363636364,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[2 2]
+ [2 5]]",0.078125
+130,Decision Tree,5,0.4,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[3 1]
+ [5 1]]",0.171875
+131,Decision Tree,6,0.875,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[5 0]
+ [1 2]]",0.09375
+132,Decision Tree,7,0.375,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[2 2]
+ [3 1]]",0.078125
+133,Decision Tree,8,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[0 3]
+ [1 4]]",0.078125
+134,Decision Tree,9,0.75,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[5 1]
+ [1 1]]",0.03125
+135,Decision Tree,10,0.5714285714285714,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [2 4]]",0.046875
+136,Decision Tree,11,0.8571428571428571,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,"[[0 0]
+ [1 6]]",0.03125
+137,Decision Tree,12,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [3 1]]",0.078125
+138,Decision Tree,avg,0.5476315351315351,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[22 26]
+ [22 36]]",0.953125
+139,Decision Tree,std,0.19800489116102138,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[22 26]
+ [22 36]]",0.953125
+140,Random Forest,1,0.6153846153846154,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[0 5]
+ [0 8]]",1.265625
+141,Random Forest,2,0.36363636363636365,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[0 7]
+ [0 4]]",1.21875
+142,Random Forest,3,0.18181818181818182,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[0 9]
+ [0 2]]",1.359375
+143,Random Forest,4,0.45454545454545453,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[3 1]
+ [5 2]]",1.390625
+144,Random Forest,5,0.6,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[4 0]
+ [4 2]]",1.484375
+145,Random Forest,6,0.75,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[5 0]
+ [2 1]]",1.359375
+146,Random Forest,7,0.375,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[1 3]
+ [2 2]]",1.28125
+147,Random Forest,8,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[0 3]
+ [1 4]]",1.65625
+148,Random Forest,9,0.875,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[6 0]
+ [1 1]]",1.5
+149,Random Forest,10,0.7142857142857143,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [1 5]]",1.5625
+150,Random Forest,11,1.0,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,[[7]],1.578125
+151,Random Forest,12,0.75,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [1 3]]",1.46875
+152,Random Forest,avg,0.5983058608058608,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[19 29]
+ [17 41]]",17.125
+153,Random Forest,std,0.22479885379958756,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[19 29]
+ [17 41]]",17.125
+154,Neural Net,1,0.8461538461538461,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[5 0]
+ [2 6]]",0.640625
+155,Neural Net,2,0.6363636363636364,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[7 0]
+ [4 0]]",0.703125
+156,Neural Net,3,0.18181818181818182,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[0 9]
+ [0 2]]",0.78125
+157,Neural Net,4,0.6363636363636364,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[0 4]
+ [0 7]]",0.8125
+158,Neural Net,5,0.6,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[0 4]
+ [0 6]]",0.59375
+159,Neural Net,6,0.375,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[0 5]
+ [0 3]]",0.796875
+160,Neural Net,7,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[0 4]
+ [0 4]]",0.5625
+161,Neural Net,8,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[0 3]
+ [0 5]]",0.84375
+162,Neural Net,9,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[0 6]
+ [0 2]]",0.765625
+163,Neural Net,10,0.8571428571428571,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [0 6]]",0.84375
+164,Neural Net,11,0.0,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,"[[0 0]
+ [7 0]]",0.734375
+165,Neural Net,12,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [3 1]]",0.578125
+166,Neural Net,avg,0.4798201798201798,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[12 36]
+ [16 42]]",8.6875
+167,Neural Net,std,0.2577412390964209,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[12 36]
+ [16 42]]",8.6875
+168,AdaBoost,1,0.6153846153846154,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[0 5]
+ [0 8]]",0.328125
+169,AdaBoost,2,0.5454545454545454,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[2 5]
+ [0 4]]",0.546875
+170,AdaBoost,3,0.18181818181818182,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[0 9]
+ [0 2]]",0.515625
+171,AdaBoost,4,0.36363636363636365,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[3 1]
+ [6 1]]",0.65625
+172,AdaBoost,5,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[4 0]
+ [5 1]]",0.40625
+173,AdaBoost,6,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[4 1]
+ [2 1]]",0.296875
+174,AdaBoost,7,0.375,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[1 3]
+ [2 2]]",0.265625
+175,AdaBoost,8,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[0 3]
+ [1 4]]",0.390625
+176,AdaBoost,9,0.75,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[5 1]
+ [1 1]]",0.359375
+177,AdaBoost,10,0.7142857142857143,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [1 5]]",0.484375
+178,AdaBoost,11,1.0,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,[[7]],0.5625
+179,AdaBoost,12,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [2 2]]",0.46875
+180,AdaBoost,avg,0.5558816183816184,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[19 29]
+ [20 38]]",5.296875
+181,AdaBoost,std,0.20153778388209853,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[19 29]
+ [20 38]]",5.296875
+182,Naive Bayes,1,0.6153846153846154,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[1 4]
+ [1 7]]",0.21875
+183,Naive Bayes,2,0.7272727272727273,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[5 2]
+ [1 3]]",0.09375
+184,Naive Bayes,3,0.6363636363636364,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[5 4]
+ [0 2]]",0.109375
+185,Naive Bayes,4,0.45454545454545453,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[4 0]
+ [6 1]]",0.078125
+186,Naive Bayes,5,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[3 1]
+ [4 2]]",0.109375
+187,Naive Bayes,6,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[5 0]
+ [3 0]]",0.0625
+188,Naive Bayes,7,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[3 1]
+ [3 1]]",0.1875
+189,Naive Bayes,8,0.375,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[1 2]
+ [3 2]]",0.078125
+190,Naive Bayes,9,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[0 6]
+ [0 2]]",0.0625
+191,Naive Bayes,10,0.5714285714285714,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [2 4]]",0.140625
+192,Naive Bayes,11,0.7142857142857143,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,"[[0 0]
+ [2 5]]",0.171875
+193,Naive Bayes,12,0.75,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [1 3]]",0.15625
+194,Naive Bayes,avg,0.5599400599400599,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[27 21]
+ [26 32]]",1.46875
+195,Naive Bayes,std,0.14427529754780213,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[27 21]
+ [26 32]]",1.46875
+196,QDA,1,0.6153846153846154,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_01,60,"[[1 4]
+ [1 7]]",0.0
+197,QDA,2,0.36363636363636365,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_13,60,"[[2 5]
+ [2 2]]",0.0
+198,QDA,3,0.18181818181818182,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_06,60,"[[0 9]
+ [0 2]]",0.0
+199,QDA,4,0.45454545454545453,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_05,60,"[[4 0]
+ [6 1]]",0.0
+200,QDA,5,0.7,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_14,60,"[[4 0]
+ [3 3]]",0.0
+201,QDA,6,0.75,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_12,60,"[[5 0]
+ [2 1]]",0.0
+202,QDA,7,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_09,60,"[[1 3]
+ [0 4]]",0.0
+203,QDA,8,0.5,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_07,60,"[[0 3]
+ [1 4]]",0.0
+204,QDA,9,0.625,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_02,60,"[[4 2]
+ [1 1]]",0.0
+205,QDA,10,0.8571428571428571,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_10,60,"[[0 1]
+ [0 6]]",0.0
+206,QDA,11,0.7142857142857143,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_08,60,"[[0 0]
+ [2 5]]",0.015625
+207,QDA,12,0.25,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,triad_11,60,"[[0 0]
+ [3 1]]",0.0
+208,QDA,avg,0.5530677655677656,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,avg,60,"[[21 27]
+ [21 37]]",0.015625
+209,QDA,std,0.19814547912257435,Nested,SIMPLE_triads_all_features_60s_binary_all_groups_avg_separated_with_group_name_Manual,Triads,All,std,60,"[[21 27]
+ [21 37]]",0.015625

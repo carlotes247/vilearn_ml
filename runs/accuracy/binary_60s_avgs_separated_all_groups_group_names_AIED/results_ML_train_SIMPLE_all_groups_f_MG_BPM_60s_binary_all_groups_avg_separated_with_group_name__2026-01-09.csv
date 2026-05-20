@@ -1,0 +1,658 @@
+,Model,Fold,Score,CV,Version,Group,Features,Group_Name,Sampling,Conf_Matrix,Time,Score_on_dyads,Score_on_triads
+0,Baseline Most Frequent Strategy,1,0.38461538461538464,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[5 0]
+ [8 0]]",0.0,0.0,0.38461538461538464
+1,Baseline Most Frequent Strategy,2,0.8333333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.0,0.8333333333333334,0.0
+2,Baseline Most Frequent Strategy,3,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[9 0]
+ [3 0]]",0.0,0.75,0.0
+3,Baseline Most Frequent Strategy,4,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [6 0]]",0.0,0.45454545454545453,0.0
+4,Baseline Most Frequent Strategy,5,0.8181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[9 0]
+ [2 0]]",0.0,0.8181818181818182,0.0
+5,Baseline Most Frequent Strategy,6,0.7272727272727273,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[8 0]
+ [3 0]]",0.015625,0.0,0.7272727272727273
+6,Baseline Most Frequent Strategy,7,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[4 0]
+ [7 0]]",0.015625,0.0,0.36363636363636365
+7,Baseline Most Frequent Strategy,8,0.8181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[9 0]
+ [2 0]]",0.0,0.0,0.8181818181818182
+8,Baseline Most Frequent Strategy,9,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[6 0]
+ [4 0]]",0.0,0.0,0.6
+9,Baseline Most Frequent Strategy,10,0.8888888888888888,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[8 0]
+ [1 0]]",0.0,0.8888888888888888,0.0
+10,Baseline Most Frequent Strategy,11,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[4 0]
+ [5 0]]",0.015625,0.4444444444444444,0.0
+11,Baseline Most Frequent Strategy,12,0.1111111111111111,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [8 0]]",0.0,0.1111111111111111,0.0
+12,Baseline Most Frequent Strategy,13,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[3 0]
+ [5 0]]",0.0,0.0,0.375
+13,Baseline Most Frequent Strategy,14,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[5 0]
+ [3 0]]",0.0,0.0,0.625
+14,Baseline Most Frequent Strategy,15,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[3 0]
+ [5 0]]",0.0,0.0,0.375
+15,Baseline Most Frequent Strategy,16,0.875,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[7 0]
+ [1 0]]",0.0,0.0,0.875
+16,Baseline Most Frequent Strategy,17,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [7 0]]",0.0,0.0,0.0
+17,Baseline Most Frequent Strategy,18,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [7 0]]",0.0,0.0,0.0
+18,Baseline Most Frequent Strategy,19,0.14285714285714285,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[1 0]
+ [6 0]]",0.0,0.0,0.14285714285714285
+19,Baseline Most Frequent Strategy,20,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [4 0]]",0.0,0.0,0.0
+20,Baseline Most Frequent Strategy,avg,0.4793534243534244,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[97  0]
+ [89  0]]",0.0625,0.5375631313131314,0.44054695304695307
+21,Baseline Most Frequent Strategy,std,0.3028034893502255,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[97  0]
+ [89  0]]",0.0625,0.32038737122393207,0.2839360631781666
+22,Baseline Prior Strategy,1,0.38461538461538464,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[5 0]
+ [8 0]]",0.0,0.0,0.38461538461538464
+23,Baseline Prior Strategy,2,0.8333333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.0,0.8333333333333334,0.0
+24,Baseline Prior Strategy,3,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[9 0]
+ [3 0]]",0.0,0.75,0.0
+25,Baseline Prior Strategy,4,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [6 0]]",0.0,0.45454545454545453,0.0
+26,Baseline Prior Strategy,5,0.8181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[9 0]
+ [2 0]]",0.0,0.8181818181818182,0.0
+27,Baseline Prior Strategy,6,0.7272727272727273,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[8 0]
+ [3 0]]",0.0,0.0,0.7272727272727273
+28,Baseline Prior Strategy,7,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[4 0]
+ [7 0]]",0.0,0.0,0.36363636363636365
+29,Baseline Prior Strategy,8,0.8181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[9 0]
+ [2 0]]",0.0,0.0,0.8181818181818182
+30,Baseline Prior Strategy,9,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[6 0]
+ [4 0]]",0.0,0.0,0.6
+31,Baseline Prior Strategy,10,0.8888888888888888,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[8 0]
+ [1 0]]",0.015625,0.8888888888888888,0.0
+32,Baseline Prior Strategy,11,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[4 0]
+ [5 0]]",0.0,0.4444444444444444,0.0
+33,Baseline Prior Strategy,12,0.1111111111111111,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [8 0]]",0.0,0.1111111111111111,0.0
+34,Baseline Prior Strategy,13,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[3 0]
+ [5 0]]",0.0,0.0,0.375
+35,Baseline Prior Strategy,14,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[5 0]
+ [3 0]]",0.0,0.0,0.625
+36,Baseline Prior Strategy,15,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[3 0]
+ [5 0]]",0.0,0.0,0.375
+37,Baseline Prior Strategy,16,0.875,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[7 0]
+ [1 0]]",0.0,0.0,0.875
+38,Baseline Prior Strategy,17,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [7 0]]",0.0,0.0,0.0
+39,Baseline Prior Strategy,18,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [7 0]]",0.0,0.0,0.0
+40,Baseline Prior Strategy,19,0.14285714285714285,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[1 0]
+ [6 0]]",0.0,0.0,0.14285714285714285
+41,Baseline Prior Strategy,20,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [4 0]]",0.0,0.0,0.0
+42,Baseline Prior Strategy,avg,0.4793534243534244,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[97  0]
+ [89  0]]",0.015625,0.5375631313131314,0.44054695304695307
+43,Baseline Prior Strategy,std,0.3028034893502255,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[97  0]
+ [89  0]]",0.015625,0.32038737122393207,0.2839360631781666
+44,Baseline Stratified Strategy,1,0.6153846153846154,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[3 2]
+ [3 5]]",0.0,0.0,0.6153846153846154
+45,Baseline Stratified Strategy,2,0.5833333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[5 5]
+ [0 2]]",0.0,0.5833333333333334,0.0
+46,Baseline Stratified Strategy,3,0.6666666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[5 4]
+ [0 3]]",0.015625,0.6666666666666666,0.0
+47,Baseline Stratified Strategy,4,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[2 3]
+ [3 3]]",0.0,0.45454545454545453,0.0
+48,Baseline Stratified Strategy,5,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[6 3]
+ [1 1]]",0.0,0.6363636363636364,0.0
+49,Baseline Stratified Strategy,6,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[3 5]
+ [1 2]]",0.0,0.0,0.45454545454545453
+50,Baseline Stratified Strategy,7,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[3 1]
+ [5 2]]",0.0,0.0,0.45454545454545453
+51,Baseline Stratified Strategy,8,0.7272727272727273,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[7 2]
+ [1 1]]",0.0,0.0,0.7272727272727273
+52,Baseline Stratified Strategy,9,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[3 3]
+ [1 3]]",0.0,0.0,0.6
+53,Baseline Stratified Strategy,10,0.7777777777777778,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[6 2]
+ [0 1]]",0.0,0.7777777777777778,0.0
+54,Baseline Stratified Strategy,11,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[2 2]
+ [3 2]]",0.0,0.4444444444444444,0.0
+55,Baseline Stratified Strategy,12,0.2222222222222222,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[0 1]
+ [6 2]]",0.0,0.2222222222222222,0.0
+56,Baseline Stratified Strategy,13,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[2 1]
+ [2 3]]",0.0,0.0,0.625
+57,Baseline Stratified Strategy,14,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[1 4]
+ [1 2]]",0.0,0.0,0.375
+58,Baseline Stratified Strategy,15,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[2 1]
+ [3 2]]",0.0,0.0,0.5
+59,Baseline Stratified Strategy,16,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[4 3]
+ [1 0]]",0.0,0.0,0.5
+60,Baseline Stratified Strategy,17,0.5714285714285714,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [3 4]]",0.0,0.5714285714285714,0.0
+61,Baseline Stratified Strategy,18,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [4 3]]",0.0,0.0,0.42857142857142855
+62,Baseline Stratified Strategy,19,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[0 1]
+ [4 2]]",0.0,0.0,0.2857142857142857
+63,Baseline Stratified Strategy,20,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [2 2]]",0.0,0.0,0.5
+64,Baseline Stratified Strategy,avg,0.5211408036408037,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[54 43]
+ [44 45]]",0.03125,0.5445977633477633,0.5055028305028305
+65,Baseline Stratified Strategy,std,0.13607411537409167,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[54 43]
+ [44 45]]",0.03125,0.1588950689550201,0.1158324105029721
+66,Baseline Uniform Strategy,1,0.6153846153846154,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[3 2]
+ [3 5]]",0.0,0.0,0.6153846153846154
+67,Baseline Uniform Strategy,2,0.5833333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[5 5]
+ [0 2]]",0.0,0.5833333333333334,0.0
+68,Baseline Uniform Strategy,3,0.4166666666666667,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[4 5]
+ [2 1]]",0.0,0.4166666666666667,0.0
+69,Baseline Uniform Strategy,4,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[2 3]
+ [3 3]]",0.0,0.45454545454545453,0.0
+70,Baseline Uniform Strategy,5,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[4 5]
+ [1 1]]",0.0,0.45454545454545453,0.0
+71,Baseline Uniform Strategy,6,0.7272727272727273,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[5 3]
+ [0 3]]",0.015625,0.0,0.7272727272727273
+72,Baseline Uniform Strategy,7,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[2 2]
+ [2 5]]",0.0,0.0,0.6363636363636364
+73,Baseline Uniform Strategy,8,0.18181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[2 7]
+ [2 0]]",0.0,0.0,0.18181818181818182
+74,Baseline Uniform Strategy,9,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[3 3]
+ [2 2]]",0.0,0.0,0.5
+75,Baseline Uniform Strategy,10,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[3 5]
+ [0 1]]",0.0,0.4444444444444444,0.0
+76,Baseline Uniform Strategy,11,0.3333333333333333,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[1 3]
+ [3 2]]",0.0,0.3333333333333333,0.0
+77,Baseline Uniform Strategy,12,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [4 4]]",0.0,0.5555555555555556,0.0
+78,Baseline Uniform Strategy,13,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[3 0]
+ [2 3]]",0.0,0.0,0.75
+79,Baseline Uniform Strategy,14,0.25,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[2 3]
+ [3 0]]",0.0,0.0,0.25
+80,Baseline Uniform Strategy,15,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[2 1]
+ [3 2]]",0.0,0.0,0.5
+81,Baseline Uniform Strategy,16,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[2 5]
+ [0 1]]",0.0,0.0,0.375
+82,Baseline Uniform Strategy,17,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [4 3]]",0.015625,0.42857142857142855,0.0
+83,Baseline Uniform Strategy,18,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [1 6]]",0.0,0.0,0.8571428571428571
+84,Baseline Uniform Strategy,19,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[0 1]
+ [4 2]]",0.0,0.0,0.2857142857142857
+85,Baseline Uniform Strategy,20,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [2 2]]",0.015625,0.0,0.5
+86,Baseline Uniform Strategy,avg,0.49248459873459877,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[44 53]
+ [41 48]]",0.046875,0.4588744588744589,0.5148913586413586
+87,Baseline Uniform Strategy,std,0.1665592617957446,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[44 53]
+ [41 48]]",0.046875,0.07377609481666143,0.20335407744910436
+88,Nearest Neighbors Test,1,0.6923076923076923,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[3 2]
+ [2 6]]",0.015625,0.0,0.6923076923076923
+89,Nearest Neighbors Test,2,0.3333333333333333,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[4 6]
+ [2 0]]",0.03125,0.3333333333333333,0.0
+90,Nearest Neighbors Test,3,0.4166666666666667,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[3 6]
+ [1 2]]",0.0,0.4166666666666667,0.0
+91,Nearest Neighbors Test,4,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [5 1]]",0.0,0.5454545454545454,0.0
+92,Nearest Neighbors Test,5,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[5 4]
+ [2 0]]",0.0,0.45454545454545453,0.0
+93,Nearest Neighbors Test,6,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[2 6]
+ [0 3]]",0.015625,0.0,0.45454545454545453
+94,Nearest Neighbors Test,7,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[2 2]
+ [3 4]]",0.0,0.0,0.5454545454545454
+95,Nearest Neighbors Test,8,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[6 3]
+ [1 1]]",0.0,0.0,0.6363636363636364
+96,Nearest Neighbors Test,9,0.9,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[6 0]
+ [1 3]]",0.0,0.0,0.9
+97,Nearest Neighbors Test,10,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[4 4]
+ [1 0]]",0.0,0.4444444444444444,0.0
+98,Nearest Neighbors Test,11,0.7777777777777778,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[3 1]
+ [1 4]]",0.0,0.7777777777777778,0.0
+99,Nearest Neighbors Test,12,0.1111111111111111,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [8 0]]",0.015625,0.1111111111111111,0.0
+100,Nearest Neighbors Test,13,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[0 3]
+ [1 4]]",0.015625,0.0,0.5
+101,Nearest Neighbors Test,14,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[3 2]
+ [1 2]]",0.03125,0.0,0.625
+102,Nearest Neighbors Test,15,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[3 0]
+ [2 3]]",0.015625,0.0,0.75
+103,Nearest Neighbors Test,16,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[4 3]
+ [1 0]]",0.0,0.0,0.5
+104,Nearest Neighbors Test,17,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [4 3]]",0.0,0.42857142857142855,0.0
+105,Nearest Neighbors Test,18,0.5714285714285714,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [3 4]]",0.0,0.0,0.5714285714285714
+106,Nearest Neighbors Test,19,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[0 1]
+ [1 5]]",0.03125,0.0,0.7142857142857143
+107,Nearest Neighbors Test,20,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [1 3]]",0.0,0.0,0.75
+108,Nearest Neighbors Test,avg,0.5575645188145187,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[54 43]
+ [41 48]]",0.171875,0.43898809523809523,0.6366154678654679
+109,Nearest Neighbors Test,std,0.1761419071103318,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[54 43]
+ [41 48]]",0.171875,0.1752349693067793,0.12496316013464391
+110,Nearest Neighbors,1,0.6153846153846154,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[3 2]
+ [3 5]]",1.03125,0.0,0.6153846153846154
+111,Nearest Neighbors,2,0.6666666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[8 2]
+ [2 0]]",0.859375,0.6666666666666666,0.0
+112,Nearest Neighbors,3,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[5 4]
+ [2 1]]",0.875,0.5,0.0
+113,Nearest Neighbors,4,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [4 2]]",0.9375,0.6363636363636364,0.0
+114,Nearest Neighbors,5,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[5 4]
+ [2 0]]",1.125,0.45454545454545453,0.0
+115,Nearest Neighbors,6,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[2 6]
+ [0 3]]",0.9375,0.0,0.45454545454545453
+116,Nearest Neighbors,7,0.7272727272727273,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[2 2]
+ [1 6]]",1.03125,0.0,0.7272727272727273
+117,Nearest Neighbors,8,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[6 3]
+ [1 1]]",0.921875,0.0,0.6363636363636364
+118,Nearest Neighbors,9,0.7,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[4 2]
+ [1 3]]",0.921875,0.0,0.7
+119,Nearest Neighbors,10,0.7777777777777778,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[7 1]
+ [1 0]]",1.03125,0.7777777777777778,0.0
+120,Nearest Neighbors,11,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[4 0]
+ [4 1]]",1.015625,0.5555555555555556,0.0
+121,Nearest Neighbors,12,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [5 3]]",1.328125,0.4444444444444444,0.0
+122,Nearest Neighbors,13,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[0 3]
+ [1 4]]",1.9375,0.0,0.5
+123,Nearest Neighbors,14,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[3 2]
+ [1 2]]",0.921875,0.0,0.625
+124,Nearest Neighbors,15,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[3 0]
+ [2 3]]",1.0625,0.0,0.75
+125,Nearest Neighbors,16,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[5 2]
+ [1 0]]",0.671875,0.0,0.625
+126,Nearest Neighbors,17,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [2 5]]",0.90625,0.7142857142857143,0.0
+127,Nearest Neighbors,18,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [4 3]]",1.0625,0.0,0.42857142857142855
+128,Nearest Neighbors,19,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[1 0]
+ [1 5]]",1.140625,0.0,0.8571428571428571
+129,Nearest Neighbors,20,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [2 2]]",0.890625,0.0,0.5
+130,Nearest Neighbors,avg,0.6084459984459984,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[64 33]
+ [40 49]]",20.609375,0.5937049062049062,0.6182733932733934
+131,Nearest Neighbors,std,0.12134880802516677,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[64 33]
+ [40 49]]",20.609375,0.11589098320613705,0.12388421126260377
+132,Linear SVM l1,1,0.8461538461538461,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[4 1]
+ [1 7]]",0.59375,0.0,0.8461538461538461
+133,Linear SVM l1,2,0.8333333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.046875,0.8333333333333334,0.0
+134,Linear SVM l1,3,0.8333333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[9 0]
+ [2 1]]",0.015625,0.8333333333333334,0.0
+135,Linear SVM l1,4,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [6 0]]",0.015625,0.45454545454545453,0.0
+136,Linear SVM l1,5,0.8181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[9 0]
+ [2 0]]",0.03125,0.8181818181818182,0.0
+137,Linear SVM l1,6,0.2727272727272727,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[0 8]
+ [0 3]]",0.015625,0.0,0.2727272727272727
+138,Linear SVM l1,7,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[0 4]
+ [0 7]]",0.046875,0.0,0.6363636363636364
+139,Linear SVM l1,8,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[5 4]
+ [0 2]]",0.046875,0.0,0.6363636363636364
+140,Linear SVM l1,9,0.4,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[0 6]
+ [0 4]]",0.046875,0.0,0.4
+141,Linear SVM l1,10,0.7777777777777778,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[7 1]
+ [1 0]]",0.03125,0.7777777777777778,0.0
+142,Linear SVM l1,11,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[3 1]
+ [3 2]]",0.0625,0.5555555555555556,0.0
+143,Linear SVM l1,12,0.2222222222222222,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [7 1]]",0.03125,0.2222222222222222,0.0
+144,Linear SVM l1,13,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[0 3]
+ [0 5]]",0.0625,0.0,0.625
+145,Linear SVM l1,14,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[3 2]
+ [2 1]]",0.0,0.0,0.5
+146,Linear SVM l1,15,0.875,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[2 1]
+ [0 5]]",0.03125,0.0,0.875
+147,Linear SVM l1,16,0.125,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[0 7]
+ [0 1]]",0.046875,0.0,0.125
+148,Linear SVM l1,17,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [4 3]]",0.046875,0.42857142857142855,0.0
+149,Linear SVM l1,18,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [1 6]]",0.046875,0.0,0.8571428571428571
+150,Linear SVM l1,19,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[0 1]
+ [0 6]]",0.046875,0.0,0.8571428571428571
+151,Linear SVM l1,20,0.25,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [3 1]]",0.03125,0.0,0.25
+152,Linear SVM l1,avg,0.5902207514707516,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[58 39]
+ [34 55]]",1.296875,0.6154401154401155,0.5734078421578421
+153,Linear SVM l1,std,0.24066411000406976,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[58 39]
+ [34 55]]",1.296875,0.21835352457291185,0.25306092246512346
+154,Linear SVM l2,1,0.6153846153846154,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[0 5]
+ [0 8]]",0.390625,0.0,0.6153846153846154
+155,Linear SVM l2,2,0.8333333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.234375,0.8333333333333334,0.0
+156,Linear SVM l2,3,0.4166666666666667,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[3 6]
+ [1 2]]",0.3125,0.4166666666666667,0.0
+157,Linear SVM l2,4,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [5 1]]",0.171875,0.5454545454545454,0.0
+158,Linear SVM l2,5,0.18181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[0 9]
+ [0 2]]",0.375,0.18181818181818182,0.0
+159,Linear SVM l2,6,0.2727272727272727,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[0 8]
+ [0 3]]",0.21875,0.0,0.2727272727272727
+160,Linear SVM l2,7,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[0 4]
+ [0 7]]",0.390625,0.0,0.6363636363636364
+161,Linear SVM l2,8,0.18181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[0 9]
+ [0 2]]",0.15625,0.0,0.18181818181818182
+162,Linear SVM l2,9,0.4,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[0 6]
+ [0 4]]",0.265625,0.0,0.4
+163,Linear SVM l2,10,0.7777777777777778,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[7 1]
+ [1 0]]",0.359375,0.7777777777777778,0.0
+164,Linear SVM l2,11,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[0 4]
+ [0 5]]",0.28125,0.5555555555555556,0.0
+165,Linear SVM l2,12,0.2222222222222222,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [7 1]]",0.265625,0.2222222222222222,0.0
+166,Linear SVM l2,13,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[0 3]
+ [0 5]]",0.28125,0.0,0.625
+167,Linear SVM l2,14,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[0 5]
+ [0 3]]",0.296875,0.0,0.375
+168,Linear SVM l2,15,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[2 1]
+ [1 4]]",0.34375,0.0,0.75
+169,Linear SVM l2,16,0.125,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[0 7]
+ [0 1]]",0.28125,0.0,0.125
+170,Linear SVM l2,17,1.0,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,[[7]],0.4375,1.0,0.0
+171,Linear SVM l2,18,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [1 6]]",0.390625,0.0,0.8571428571428571
+172,Linear SVM l2,19,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[0 1]
+ [0 6]]",0.25,0.0,0.8571428571428571
+173,Linear SVM l2,20,1.0,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,[[4]],0.15625,0.0,1.0
+174,Linear SVM l2,avg,0.5614203851703852,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[28 69]
+ [18 71]]",5.859375,0.5666035353535354,0.5579649517149516
+175,Linear SVM l2,std,0.27272676137362534,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[28 69]
+ [18 71]]",5.859375,0.27232345214703163,0.27294062633684135
+176,SVM linear or rbf,1,0.7692307692307693,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[3 2]
+ [1 7]]",0.171875,0.0,0.7692307692307693
+177,SVM linear or rbf,2,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[9 1]
+ [2 0]]",0.15625,0.75,0.0
+178,SVM linear or rbf,3,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[4 5]
+ [1 2]]",0.09375,0.5,0.0
+179,SVM linear or rbf,4,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [5 1]]",0.234375,0.5454545454545454,0.0
+180,SVM linear or rbf,5,0.8181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[9 0]
+ [2 0]]",0.09375,0.8181818181818182,0.0
+181,SVM linear or rbf,6,0.2727272727272727,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[0 8]
+ [0 3]]",0.234375,0.0,0.2727272727272727
+182,SVM linear or rbf,7,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[0 4]
+ [0 7]]",0.1875,0.0,0.6363636363636364
+183,SVM linear or rbf,8,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[3 6]
+ [0 2]]",0.0625,0.0,0.45454545454545453
+184,SVM linear or rbf,9,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[2 4]
+ [0 4]]",0.40625,0.0,0.6
+185,SVM linear or rbf,10,0.6666666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[6 2]
+ [1 0]]",0.28125,0.6666666666666666,0.0
+186,SVM linear or rbf,11,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[4 0]
+ [4 1]]",0.125,0.5555555555555556,0.0
+187,SVM linear or rbf,12,0.2222222222222222,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [7 1]]",0.15625,0.2222222222222222,0.0
+188,SVM linear or rbf,13,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[0 3]
+ [0 5]]",0.09375,0.0,0.625
+189,SVM linear or rbf,14,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[3 2]
+ [1 2]]",0.140625,0.0,0.625
+190,SVM linear or rbf,15,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[3 0]
+ [3 2]]",0.125,0.0,0.625
+191,SVM linear or rbf,16,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[2 5]
+ [0 1]]",0.046875,0.0,0.375
+192,SVM linear or rbf,17,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [4 3]]",0.078125,0.42857142857142855,0.0
+193,SVM linear or rbf,18,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [1 6]]",0.1875,0.0,0.8571428571428571
+194,SVM linear or rbf,19,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[0 1]
+ [3 3]]",0.171875,0.0,0.42857142857142855
+195,SVM linear or rbf,20,0.25,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [3 1]]",0.140625,0.0,0.25
+196,SVM linear or rbf,avg,0.5502616827616829,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[54 43]
+ [38 51]]",3.1875,0.5608315295815296,0.5432151182151183
+197,SVM linear or rbf,std,0.1790056004891266,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[54 43]
+ [38 51]]",3.1875,0.17653920151360508,0.18028721543777923
+198,Decision Tree,1,0.6153846153846154,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[3 2]
+ [3 5]]",0.125,0.0,0.6153846153846154
+199,Decision Tree,2,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[8 2]
+ [1 1]]",0.1875,0.75,0.0
+200,Decision Tree,3,0.5833333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[6 3]
+ [2 1]]",0.125,0.5833333333333334,0.0
+201,Decision Tree,4,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [6 0]]",0.09375,0.45454545454545453,0.0
+202,Decision Tree,5,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[6 3]
+ [2 0]]",0.109375,0.5454545454545454,0.0
+203,Decision Tree,6,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[1 7]
+ [0 3]]",0.078125,0.0,0.36363636363636365
+204,Decision Tree,7,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[2 2]
+ [4 3]]",0.140625,0.0,0.45454545454545453
+205,Decision Tree,8,0.7272727272727273,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[6 3]
+ [0 2]]",0.046875,0.0,0.7272727272727273
+206,Decision Tree,9,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[2 4]
+ [0 4]]",0.09375,0.0,0.6
+207,Decision Tree,10,0.4444444444444444,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[4 4]
+ [1 0]]",0.109375,0.4444444444444444,0.0
+208,Decision Tree,11,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[0 4]
+ [0 5]]",0.09375,0.5555555555555556,0.0
+209,Decision Tree,12,0.7777777777777778,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [2 6]]",0.109375,0.7777777777777778,0.0
+210,Decision Tree,13,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[0 3]
+ [0 5]]",0.078125,0.0,0.625
+211,Decision Tree,14,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[4 1]
+ [3 0]]",0.109375,0.0,0.5
+212,Decision Tree,15,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[1 2]
+ [2 3]]",0.015625,0.0,0.5
+213,Decision Tree,16,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[4 3]
+ [0 1]]",0.046875,0.0,0.625
+214,Decision Tree,17,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [2 5]]",0.140625,0.7142857142857143,0.0
+215,Decision Tree,18,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [2 5]]",0.109375,0.0,0.7142857142857143
+216,Decision Tree,19,0.2857142857142857,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[0 1]
+ [4 2]]",0.09375,0.0,0.2857142857142857
+217,Decision Tree,20,0.25,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [3 1]]",0.046875,0.0,0.25
+218,Decision Tree,avg,0.5543117993117993,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[53 44]
+ [37 52]]",1.953125,0.6031746031746033,0.5217365967365968
+219,Decision Tree,std,0.14578191578314542,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[53 44]
+ [37 52]]",1.953125,0.12127880410843674,0.15153235025780165
+220,Random Forest,1,0.46153846153846156,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[3 2]
+ [5 3]]",2.5625,0.0,0.46153846153846156
+221,Random Forest,2,0.6666666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[7 3]
+ [1 1]]",3.015625,0.6666666666666666,0.0
+222,Random Forest,3,0.4166666666666667,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[3 6]
+ [1 2]]",3.03125,0.4166666666666667,0.0
+223,Random Forest,4,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [6 0]]",3.0625,0.45454545454545453,0.0
+224,Random Forest,5,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[4 5]
+ [2 0]]",2.796875,0.36363636363636365,0.0
+225,Random Forest,6,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[2 6]
+ [0 3]]",2.71875,0.0,0.45454545454545453
+226,Random Forest,7,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[0 4]
+ [3 4]]",2.921875,0.0,0.36363636363636365
+227,Random Forest,8,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[6 3]
+ [1 1]]",2.515625,0.0,0.6363636363636364
+228,Random Forest,9,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[1 5]
+ [0 4]]",2.625,0.0,0.5
+229,Random Forest,10,0.7777777777777778,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[7 1]
+ [1 0]]",2.59375,0.7777777777777778,0.0
+230,Random Forest,11,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[0 4]
+ [0 5]]",3.046875,0.5555555555555556,0.0
+231,Random Forest,12,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [4 4]]",2.984375,0.5555555555555556,0.0
+232,Random Forest,13,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[0 3]
+ [0 5]]",2.875,0.0,0.625
+233,Random Forest,14,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[3 2]
+ [3 0]]",2.5625,0.0,0.375
+234,Random Forest,15,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[1 2]
+ [2 3]]",2.59375,0.0,0.5
+235,Random Forest,16,0.125,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[0 7]
+ [0 1]]",3.015625,0.0,0.125
+236,Random Forest,17,0.5714285714285714,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [3 4]]",2.6875,0.5714285714285714,0.0
+237,Random Forest,18,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [2 5]]",3.015625,0.0,0.7142857142857143
+238,Random Forest,19,0.5714285714285714,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[0 1]
+ [2 4]]",2.9375,0.0,0.5714285714285714
+239,Random Forest,20,0.25,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [3 1]]",2.65625,0.0,0.25
+240,Random Forest,avg,0.4969315406815406,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[43 54]
+ [39 50]]",56.21875,0.5452290764790765,0.46473318348318343
+241,Random Forest,std,0.15325817123339555,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[43 54]
+ [39 50]]",56.21875,0.1262207384522618,0.16103982848052203
+242,Neural Net,1,0.38461538461538464,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[5 0]
+ [8 0]]",1.5,0.0,0.38461538461538464
+243,Neural Net,2,0.16666666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[ 0 10]
+ [ 0  2]]",1.34375,0.16666666666666666,0.0
+244,Neural Net,3,0.8333333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[9 0]
+ [2 1]]",1.4375,0.8333333333333334,0.0
+245,Neural Net,4,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [6 0]]",1.453125,0.45454545454545453,0.0
+246,Neural Net,5,0.8181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[9 0]
+ [2 0]]",1.1875,0.8181818181818182,0.0
+247,Neural Net,6,0.2727272727272727,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[0 8]
+ [0 3]]",1.3125,0.0,0.2727272727272727
+248,Neural Net,7,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[0 4]
+ [2 5]]",1.296875,0.0,0.45454545454545453
+249,Neural Net,8,0.8181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[9 0]
+ [2 0]]",1.296875,0.0,0.8181818181818182
+250,Neural Net,9,0.7,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[3 3]
+ [0 4]]",1.53125,0.0,0.7
+251,Neural Net,10,0.6666666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[6 2]
+ [1 0]]",1.140625,0.6666666666666666,0.0
+252,Neural Net,11,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[4 0]
+ [4 1]]",1.34375,0.5555555555555556,0.0
+253,Neural Net,12,0.1111111111111111,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [8 0]]",1.25,0.1111111111111111,0.0
+254,Neural Net,13,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[0 3]
+ [0 5]]",1.734375,0.0,0.625
+255,Neural Net,14,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[0 5]
+ [0 3]]",1.515625,0.0,0.375
+256,Neural Net,15,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[3 0]
+ [3 2]]",1.3125,0.0,0.625
+257,Neural Net,16,0.0,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[0 7]
+ [1 0]]",1.265625,0.0,0.0
+258,Neural Net,17,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [4 3]]",1.3125,0.42857142857142855,0.0
+259,Neural Net,18,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [1 6]]",1.65625,0.0,0.8571428571428571
+260,Neural Net,19,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[0 1]
+ [3 3]]",1.46875,0.0,0.42857142857142855
+261,Neural Net,20,0.25,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [3 1]]",1.328125,0.0,0.25
+262,Neural Net,avg,0.4912708125208126,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[54 43]
+ [50 39]]",27.703125,0.5043290043290043,0.48256535131535133
+263,Neural Net,std,0.24612041643183266,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[54 43]
+ [50 39]]",27.703125,0.2531251892262923,0.24094479739157584
+264,AdaBoost,1,0.6153846153846154,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[5 0]
+ [5 3]]",0.78125,0.0,0.6153846153846154
+265,AdaBoost,2,0.16666666666666666,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[ 0 10]
+ [ 0  2]]",0.890625,0.16666666666666666,0.0
+266,AdaBoost,3,0.8333333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[9 0]
+ [2 1]]",1.171875,0.8333333333333334,0.0
+267,AdaBoost,4,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [6 0]]",0.96875,0.45454545454545453,0.0
+268,AdaBoost,5,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[7 2]
+ [2 0]]",1.046875,0.6363636363636364,0.0
+269,AdaBoost,6,0.36363636363636365,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[1 7]
+ [0 3]]",0.953125,0.0,0.36363636363636365
+270,AdaBoost,7,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[1 3]
+ [3 4]]",0.625,0.0,0.45454545454545453
+271,AdaBoost,8,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[4 5]
+ [0 2]]",1.296875,0.0,0.5454545454545454
+272,AdaBoost,9,0.4,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[0 6]
+ [0 4]]",1.015625,0.0,0.4
+273,AdaBoost,10,0.1111111111111111,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[0 8]
+ [0 1]]",0.875,0.1111111111111111,0.0
+274,AdaBoost,11,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[0 4]
+ [0 5]]",0.96875,0.5555555555555556,0.0
+275,AdaBoost,12,0.2222222222222222,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [7 1]]",0.84375,0.2222222222222222,0.0
+276,AdaBoost,13,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[0 3]
+ [0 5]]",0.8125,0.0,0.625
+277,AdaBoost,14,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[4 1]
+ [3 0]]",0.921875,0.0,0.5
+278,AdaBoost,15,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[0 3]
+ [0 5]]",1.046875,0.0,0.625
+279,AdaBoost,16,0.125,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[0 7]
+ [0 1]]",0.84375,0.0,0.125
+280,AdaBoost,17,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [2 5]]",1.234375,0.7142857142857143,0.0
+281,AdaBoost,18,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [1 6]]",1.078125,0.0,0.8571428571428571
+282,AdaBoost,19,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[0 1]
+ [0 6]]",0.984375,0.0,0.8571428571428571
+283,AdaBoost,20,1.0,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,[[4]],1.109375,0.0,1.0
+284,AdaBoost,avg,0.5331195193695194,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[37 60]
+ [31 58]]",19.5,0.46176046176046176,0.5806922244422243
+285,AdaBoost,std,0.24711971793253684,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[37 60]
+ [31 58]]",19.5,0.2521371476491641,0.23181945237365273
+286,Naive Bayes,1,0.7692307692307693,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[3 2]
+ [1 7]]",0.34375,0.0,0.7692307692307693
+287,Naive Bayes,2,0.8333333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.265625,0.8333333333333334,0.0
+288,Naive Bayes,3,0.8333333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[9 0]
+ [2 1]]",0.140625,0.8333333333333334,0.0
+289,Naive Bayes,4,0.45454545454545453,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [6 0]]",0.296875,0.45454545454545453,0.0
+290,Naive Bayes,5,0.8181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[9 0]
+ [2 0]]",0.109375,0.8181818181818182,0.0
+291,Naive Bayes,6,0.2727272727272727,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[0 8]
+ [0 3]]",0.265625,0.0,0.2727272727272727
+292,Naive Bayes,7,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[0 4]
+ [0 7]]",0.21875,0.0,0.6363636363636364
+293,Naive Bayes,8,0.7272727272727273,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[6 3]
+ [0 2]]",0.25,0.0,0.7272727272727273
+294,Naive Bayes,9,0.4,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[0 6]
+ [0 4]]",0.296875,0.0,0.4
+295,Naive Bayes,10,0.7777777777777778,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[7 1]
+ [1 0]]",0.3125,0.7777777777777778,0.0
+296,Naive Bayes,11,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[4 0]
+ [4 1]]",0.1875,0.5555555555555556,0.0
+297,Naive Bayes,12,0.2222222222222222,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [7 1]]",0.25,0.2222222222222222,0.0
+298,Naive Bayes,13,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[0 3]
+ [0 5]]",0.15625,0.0,0.625
+299,Naive Bayes,14,0.5,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[3 2]
+ [2 1]]",0.203125,0.0,0.5
+300,Naive Bayes,15,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[1 2]
+ [0 5]]",0.25,0.0,0.75
+301,Naive Bayes,16,0.125,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[0 7]
+ [0 1]]",0.125,0.0,0.125
+302,Naive Bayes,17,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [4 3]]",0.203125,0.42857142857142855,0.0
+303,Naive Bayes,18,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [1 6]]",0.234375,0.0,0.8571428571428571
+304,Naive Bayes,19,0.7142857142857143,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[0 1]
+ [1 5]]",0.109375,0.0,0.7142857142857143
+305,Naive Bayes,20,0.25,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [3 1]]",0.265625,0.0,0.25
+306,Naive Bayes,avg,0.577527195027195,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[58 39]
+ [36 53]]",4.515625,0.6154401154401155,0.5522519147519147
+307,Naive Bayes,std,0.22659805355476945,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[58 39]
+ [36 53]]",4.515625,0.21835352457291185,0.22846266473960947
+308,QDA,1,0.7692307692307693,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_01,60,"[[3 2]
+ [1 7]]",0.015625,0.0,0.7692307692307693
+309,QDA,2,0.75,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_03,60,"[[9 1]
+ [2 0]]",0.0,0.75,0.0
+310,QDA,3,0.8333333333333334,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_04,60,"[[9 0]
+ [2 1]]",0.046875,0.8333333333333334,0.0
+311,QDA,4,0.6363636363636364,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_05,60,"[[5 0]
+ [4 2]]",0.03125,0.6363636363636364,0.0
+312,QDA,5,0.8181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_07,60,"[[9 0]
+ [2 0]]",0.015625,0.8181818181818182,0.0
+313,QDA,6,0.2727272727272727,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_06,60,"[[0 8]
+ [0 3]]",0.0,0.0,0.2727272727272727
+314,QDA,7,0.5454545454545454,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_05,60,"[[0 4]
+ [1 6]]",0.015625,0.0,0.5454545454545454
+315,QDA,8,0.8181818181818182,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_13,60,"[[7 2]
+ [0 2]]",0.03125,0.0,0.8181818181818182
+316,QDA,9,0.6,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_14,60,"[[2 4]
+ [0 4]]",0.0,0.0,0.6
+317,QDA,10,0.7777777777777778,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_06,60,"[[7 1]
+ [1 0]]",0.015625,0.7777777777777778,0.0
+318,QDA,11,0.5555555555555556,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_11,60,"[[4 0]
+ [4 1]]",0.0,0.5555555555555556,0.0
+319,QDA,12,0.2222222222222222,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_02,60,"[[1 0]
+ [7 1]]",0.015625,0.2222222222222222,0.0
+320,QDA,13,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_07,60,"[[0 3]
+ [0 5]]",0.0,0.0,0.625
+321,QDA,14,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_09,60,"[[3 2]
+ [1 2]]",0.0,0.0,0.625
+322,QDA,15,0.625,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_12,60,"[[3 0]
+ [3 2]]",0.0,0.0,0.625
+323,QDA,16,0.375,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_02,60,"[[2 5]
+ [0 1]]",0.0,0.0,0.375
+324,QDA,17,0.42857142857142855,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,dyad_10,60,"[[0 0]
+ [4 3]]",0.03125,0.42857142857142855,0.0
+325,QDA,18,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_08,60,"[[0 0]
+ [1 6]]",0.0,0.0,0.8571428571428571
+326,QDA,19,0.8571428571428571,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_10,60,"[[0 1]
+ [0 6]]",0.0,0.0,0.8571428571428571
+327,QDA,20,0.25,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,triad_11,60,"[[0 0]
+ [3 1]]",0.0,0.0,0.25
+328,QDA,avg,0.6120942945942947,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,avg,60,"[[64 33]
+ [36 53]]",0.21875,0.6277507215007215,0.6016566766566767
+329,QDA,std,0.20275583568292987,Nested,SIMPLE_all_groups_f_MG_BPM_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,AIxVR,std,60,"[[64 33]
+ [36 53]]",0.21875,0.2016783625376702,0.20280059309091186
