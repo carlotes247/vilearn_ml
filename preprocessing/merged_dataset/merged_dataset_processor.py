@@ -207,7 +207,7 @@ if __name__ == "__main__":
         file_name_blink_duration_dyads = f"blink_duration_per_minute_dyads_{sampling}s.csv"
         file_name_blink_duration_triads = f"blink_duration_per_minute_triads_{sampling}s.csv"
         file_name_blink_rate = f"blink_per_minute_all_groups.csv"
-        file_name_speaking_gaze = f"all_groups_interaction_speaking_x_gaze_per_{sampling}s_2026-04-09.csv"
+        file_name_speaking_gaze = f"all_groups_interaction_speaking_x_gaze_per_{sampling}s_2026-05-18.csv"
         # data_file_with_TE = '60s_TE_correlation.csv'
 
     datasetCtrl: MergedDatasetProcessor = MergedDatasetProcessor(sampling=sampling, filename_gaze=file_name_gaze,

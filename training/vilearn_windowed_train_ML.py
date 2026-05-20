@@ -294,10 +294,10 @@ if __name__ == '__main__':
     triads: bool = True
     simple: bool = True
     scaler: bool = True    
-    all_features : bool = False # to train models with all features
-    aied_feautures:bool = True # to train models with aied features (blinks + gaze)
-    aixvr_features: bool = True # to train models with aixvr features (gaze for dyads, blinks for triads)
-    blink_speaking_x_gaze_features: bool = False # to train models with blinks and gaze x speaking features
+    all_features : bool = True # to train models with all features
+    aied_feautures:bool = False # to train models with aied features (blinks + gaze)
+    aixvr_features: bool = False # to train models with aixvr features (gaze for dyads, blinks for triads)
+    blink_speaking_x_gaze_features: bool = True # to train models with blinks and gaze x speaking features
     blinks_only: bool = False # to train models with blinks only
     separate_avg_groups: bool = True
     data_file: str = "" # leave empty for the original 60s file from the AixVR paper
@@ -305,7 +305,7 @@ if __name__ == '__main__':
     if sampling == 30:
         data_file = "30s_TE_correlation_2025-12-27_edited.csv"
     elif sampling == 60:
-        data_file = "60s_TE_correlation_2026-04-09.csv"
+        data_file = "60s_TE_correlation_2026-05-19.csv"
     # suffix run
     suffix_run: str = f"{sampling}s_binary" if binary_clf else f"{sampling}s_three_way"
     # extra suffix opportunity
