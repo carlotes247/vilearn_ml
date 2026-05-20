@@ -47,6 +47,18 @@ def run_stat_test(df_in: pd.DataFrame, models: list[str] ):
     # Merge on the fold number
     df_paired = df.merge(baseline_scores, on='Fold', how='inner')
 
+    # Decide which models to keep. Sort models based on highest average
+    mean_models = df_paired.loc[df_paired['Model'] != baseline_name].groupby('Model')['Score'].mean().sort_values(ascending=False)
+    std_models = df_paired.loc[df_paired['Model'] != baseline_name].groupby('Model')['Score'].std()
+    # Keep the two highest
+    top_models = mean_models.head(2).index.tolist()
+    # Check if both models perform the same
+    if (np.equal(mean_models[top_models].values[0], mean_models[top_models].values[1]) & np.equal(std_models[top_models].values[0], std_models[top_models].values[1])):
+        # only select the first one
+        top_models = mean_models.head(1).index.tolist()
+
+    df_paired = df_paired[df_paired['Model'].isin(top_models)]
+
     # run paired t-tests
     tests = []          # will hold dicts with model, p‑value, etc.
     for model, grp in df_paired.groupby('Model'):
@@ -62,7 +74,9 @@ def run_stat_test(df_in: pd.DataFrame, models: list[str] ):
 
         tests.append({
             'Model': model,
-            'n_folds': len(grp),       # number of matched folds
+            'n_folds': len(grp),       # number of matched folds            
+            'mean_accuracy': model_scores.mean(),
+            'std_accuracy': model_scores.std(),
             'p_value': p_val
         })
 
@@ -78,7 +92,7 @@ def run_stat_test(df_in: pd.DataFrame, models: list[str] ):
     tests_df['significant'] = reject
 
     #  Show / export the result
-    print(tests_df[['Model', 'n_folds', 'p_value', 'p_value_adj', 'significant']])
+    print(tests_df)
 
     return
 
