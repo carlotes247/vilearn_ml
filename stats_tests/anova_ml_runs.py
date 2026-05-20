@@ -2,86 +2,85 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.stats as stats
+from scipy.stats import ttest_rel, wilcoxon
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
 import statsmodels.stats.multicomp as mc
+from statsmodels.stats.multitest import multipletests
 import os
 import datetime
 
-if __name__ == "__main__":
-    # config flags
-    binary:bool = False
-    # data_path
-    data_folder:str = "runs/accuracy"
-    # files three way
-    # simple, one file processed with relevant models from excel
-    # TODO: do a run for all groups all features simple-scalar because we are missing baselines
-    file_three_way:str ="Processed_Results_Accuracy_three_way_60s.csv"
-    file_binary_30s:str = "Processed_Results_Accuracy_binary_30s_avg.csv"
-    file:str = file_binary_30s
-    file_path:str = os.path.join(os.getcwd(), data_folder, file)
-    df_data: pd.DataFrame = pd.read_csv(file_path)
-    if "Time" in df_data.columns:
-        df_data.drop(columns=['Time'], inplace=True)
-    if "CV" in df_data.columns:
-        df_data.drop(columns="CV", inplace=True)
-    if "Fold" in df_data.columns:
-        df_data.drop(columns="Fold", inplace=True)
-    # get models to compare
-    # SVM L1, L2, linear? (maybe keep one rather than the other? here we weren’t sure, we need to think about it- also keep simple or scaler?); 
-    # nearest neighbours , 
-    # naive bayes, 
-    # QDA, 
-    # decision trees (performs well in triads)
-    # remove neural net from the analysis as it can get too complex? or maybe keep it if mentioned that it came from the scikitlearn package? Or remove it? it performed ok, almost 70
-    # also the baseline
-    models_selected_60s_three_way: list[str] = [
-        "Baseline Most Frequent Strategy",
-        "Nearest Neighbors", # beats baseline in triads aixvr scalar
-        "Neural Net", # beats baseline in triads aixvr simple
-        "Linear SVM l1", # beats baseline in triads & dyads all features
-        # "Decision Tree", 
-        # "Naive Bayes",
-        "QDA" # beats baseline in triads aixvr simple
-        ]
-    models_selected_30s_binary: list[str] = [
-        "Baseline Most Frequent Strategy",
-        "Adaboost",
-        "Linear SVM l1",
-        "Nearest Neighbors",
-        "Naive Bayes",
-        "Decision Tree"
-    ]
-    models_selected = models_selected_30s_binary
-    # beat the baseline in simple 60s version 3-way:
-        # only triads aixvr f (qda, neural net)
-    # beat the baseline in scaler 60s version 3-way:
-        # triads all f (linear svm l1)
-        # triads aixvr f (knn)
-        # dyads all f (linear svm l1)
-    # beat the baseline in simple 30s version 3-way:
-        # all groups all f (QDA, NN > 0.01, linear svm l1 > 0.005)
-        # all groups aixvr f (NN, SVM linear or rbf, knn, QDA, Naive Bayes)
-        # dyads all f (linear svm l1)
-        # triads all f (linear svm l2, NN, linear svm l1)
-        # triads aixvr f (adaboost, linear svm l1, naive bayes, QDA, knn)
-    # beat the baseline in scaler 30s version 3-way:
-        # dyads all f (knn)
-        # triads all f (knn)
-        # triads aixvr f (QDA, Naive Bayes, NN, linear svm l1, knn)
-
-
+def run_stat_test(df_in: pd.DataFrame, models: list[str] ):
     # discriminate for wanted models
-    df_subset = df_data.loc[df_data['Model'].isin(models_selected)]
-    if "Sampling" in df_subset.columns.to_list():
-        df_subset = df_subset.drop(columns=['Sampling'])
-    # select simple
-    df_simple = df_subset.loc[df_subset['Version'] == 'Simple']
-    df_simple = df_simple.drop(columns=['Version'])
-    # select scaler
-    df_scaler = df_subset.loc[df_subset['Version'] == 'Scaler']
-    df_scaler = df_scaler.drop(columns=['Version'])
-    print("DFs created")
+    df = df_in.loc[df_in['Model'].isin(models_selected)]
+    # remove avg and std rows
+    df = df[~df["Fold"].isin(["avg", "std"])]    
+    print("df configured")
+
+    # check for normality with saphiro test
+    # apparently we need to run a saphiro test per model. Doing that
+    results_saphiro = []
+    for model, df_model in df.groupby("Model"):
+        scores = df_model["Score"].values
+        W, p = stats.shapiro(scores)
+        results_saphiro.append({
+        'Model': model,
+        'W': W,
+        'p-value': p,
+        'n': len(scores)
+        })
+
+    normality_df = pd.DataFrame(results_saphiro)
+    normality_df['Normal (α=0.05)'] = normality_df['p-value'] > 0.05
+    # print(normality_df)
+    if (normality_df['Normal (α=0.05)'].mean()*100 < 70):
+        raise Exception("normality not met!")
+
+    # We assume normality at this point
+    # We run a simple t-test for the moment
+
+    # Get baseline for multiple paired t-test
+    baseline_name = "Baseline Uniform Strategy"
+    baseline_scores = df[df['Model'] == baseline_name][['Fold', 'Score']].rename(
+        columns={'Score': 'BaselineScore'}
+    )
+    # Merge on the fold number
+    df_paired = df.merge(baseline_scores, on='Fold', how='inner')
+
+    # run paired t-tests
+    tests = []          # will hold dicts with model, p‑value, etc.
+    for model, grp in df_paired.groupby('Model'):
+        if model == baseline_name:
+            continue  # skip the baseline itself
+
+        # The two paired samples
+        model_scores = grp['Score'].values
+        base_scores  = grp['BaselineScore'].values
+
+        # Paired t‑test (parametric)
+        _, p_val = ttest_rel(model_scores, base_scores)
+
+        tests.append({
+            'Model': model,
+            'n_folds': len(grp),       # number of matched folds
+            'p_value': p_val
+        })
+
+    # Create a DataFrame and adjust the p‑values
+    tests_df = pd.DataFrame(tests)
+
+    # Bonferroni correction (you can use 'fdr_bh', 'holm', etc.)
+    reject, p_adj, _, _ = multipletests(tests_df['p_value'],
+                                        alpha=0.05,
+                                        method='bonferroni')
+
+    tests_df['p_value_adj'] = p_adj
+    tests_df['significant'] = reject
+
+    #  Show / export the result
+    print(tests_df[['Model', 'n_folds', 'p_value', 'p_value_adj', 'significant']])
+
+    return
 
     # perform the one-way anova on models
     # ANOVA: 5models [4models and the baseline] x 3dataset [dyads, triads, all] x  2 features [all, or AIxVR features]
@@ -109,7 +108,7 @@ if __name__ == "__main__":
     + C(Group):C(Features) + C(Group):C(Version) + 
     C(Features):C(Version)
     """
-    df_anova = df_simple
+    df_anova = df
     formula = formula_interactions_single
     model = ols(formula, data=df_anova).fit()
     anova_table = sm.stats.anova_lm(model, typ=2)  # or typ=3
@@ -124,4 +123,52 @@ if __name__ == "__main__":
     # tukey_df = pd.DataFrame(data=tukey_results._results_table.data[1:],
     #                     columns=tukey_results._results_table.data[0])
     # tukey_df.to_csv("tukey_posthoc.csv", index=False)
+    pass
+
+if __name__ == "__main__":
+    # config flags
+    binary:bool = False
+    # data_path
+    data_folder:str = "runs/accuracy"
+    data_subfolder:str = "2026_05_19_binary_60s/Blinks_GazexSpeaking"
+    # files three way
+    # simple, one file processed with relevant models from excel
+    # file_three_way:str ="Processed_Results_Accuracy_three_way_60s.csv"
+    # file_binary_30s:str = "Processed_Results_Accuracy_binary_30s_avg.csv"
+    file_dyads:str = "results_ML_train_SIMPLE_dyads_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name__2026-05-19.csv"
+    file_triads:str = "results_ML_train_SIMPLE_triads_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name__2026-05-19.csv"
+    file_all:str = "results_ML_train_SIMPLE_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name__2026-05-19.csv"
+    file_path_dyads:str = os.path.join(os.getcwd(), data_folder, data_subfolder, file_dyads)
+    file_path_triads:str = os.path.join(os.getcwd(), data_folder, data_subfolder, file_triads)
+    file_path_all:str = os.path.join(os.getcwd(), data_folder, data_subfolder, file_all)
+    df_data_dyads: pd.DataFrame = pd.read_csv(file_path_dyads)
+    df_data_triads: pd.DataFrame = pd.read_csv(file_path_triads)
+    df_data_all: pd.DataFrame = pd.read_csv(file_path_all)    
+    # get models to compare
+    models_selected: list[str] = [
+        "AdaBoost",
+        "Baseline Uniform Strategy",
+        "Decision Tree",
+        "Linear SVM l1",
+        "Linear SVM l2",
+        "Logistic Regression",
+        "Naive Bayes",
+        "Nearest Neighbors",
+        "Neural Net",
+        "QDA",
+        "Random Forest",
+        "SVM linear or rbf",
+    ]
+    print("==========================")
+    print("Dyads T-Tests")
+    print("==========================")
+    run_stat_test(df_data_dyads, models_selected)
+    print("==========================")
+    print("Triads T-Tests")
+    print("==========================")
+    run_stat_test(df_data_triads, models_selected)
+    print("==========================")
+    print("All groups T-Tests")
+    print("==========================")
+    run_stat_test(df_data_all, models_selected)
     
