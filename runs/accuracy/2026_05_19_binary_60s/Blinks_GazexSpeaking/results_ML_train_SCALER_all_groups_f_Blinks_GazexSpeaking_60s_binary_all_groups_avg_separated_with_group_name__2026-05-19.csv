@@ -1,0 +1,654 @@
+,Model,Fold,Score,CV,Version,Group,Features,Group_Name,Sampling,Conf_Matrix,Time,Score_on_dyads,Score_on_triads
+0,Baseline Most Frequent Strategy,1,0.38461538461538464,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[5 0]
+ [8 0]]",0.0,0.0,0.38461538461538464
+1,Baseline Most Frequent Strategy,2,0.8333333333333334,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.03125,0.8333333333333334,0.0
+2,Baseline Most Frequent Strategy,3,0.8181818181818182,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[9 0]
+ [2 0]]",0.015625,0.8181818181818182,0.0
+3,Baseline Most Frequent Strategy,4,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [6 0]]",0.0,0.45454545454545453,0.0
+4,Baseline Most Frequent Strategy,5,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[7 0]
+ [4 0]]",0.015625,0.6363636363636364,0.0
+5,Baseline Most Frequent Strategy,6,0.8181818181818182,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[9 0]
+ [2 0]]",0.0,0.0,0.8181818181818182
+6,Baseline Most Frequent Strategy,7,0.36363636363636365,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[4 0]
+ [7 0]]",0.015625,0.0,0.36363636363636365
+7,Baseline Most Frequent Strategy,8,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[7 0]
+ [4 0]]",0.015625,0.0,0.6363636363636364
+8,Baseline Most Frequent Strategy,9,0.4,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[4 0]
+ [6 0]]",0.0,0.0,0.4
+9,Baseline Most Frequent Strategy,10,1.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,[[9]],0.03125,1.0,0.0
+10,Baseline Most Frequent Strategy,11,0.4444444444444444,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[4 0]
+ [5 0]]",0.0,0.4444444444444444,0.0
+11,Baseline Most Frequent Strategy,12,0.4444444444444444,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[4 0]
+ [5 0]]",0.03125,0.4444444444444444,0.0
+12,Baseline Most Frequent Strategy,13,0.375,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[3 0]
+ [5 0]]",0.0,0.0,0.375
+13,Baseline Most Frequent Strategy,14,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[4 0]
+ [4 0]]",0.015625,0.0,0.5
+14,Baseline Most Frequent Strategy,15,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[5 0]
+ [3 0]]",0.015625,0.0,0.625
+15,Baseline Most Frequent Strategy,16,0.75,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[6 0]
+ [2 0]]",0.015625,0.0,0.75
+16,Baseline Most Frequent Strategy,17,0.14285714285714285,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[1 0]
+ [6 0]]",0.015625,0.14285714285714285,0.0
+17,Baseline Most Frequent Strategy,18,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,"[[0 0]
+ [7 0]]",0.015625,0.0,0.0
+18,Baseline Most Frequent Strategy,19,0.14285714285714285,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[1 0]
+ [6 0]]",0.015625,0.0,0.14285714285714285
+19,Baseline Most Frequent Strategy,20,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [4 0]]",0.0,0.0,0.0
+20,Baseline Most Frequent Strategy,avg,0.488491230991231,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[97  0]
+ [88  0]]",0.265625,0.5967712842712842,0.41630452880452884
+21,Baseline Most Frequent Strategy,std,0.2735992638999161,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[97  0]
+ [88  0]]",0.265625,0.26024467953149844,0.25803507499920614
+22,Baseline Prior Strategy,1,0.38461538461538464,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[5 0]
+ [8 0]]",0.015625,0.0,0.38461538461538464
+23,Baseline Prior Strategy,2,0.8333333333333334,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.0,0.8333333333333334,0.0
+24,Baseline Prior Strategy,3,0.8181818181818182,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[9 0]
+ [2 0]]",0.015625,0.8181818181818182,0.0
+25,Baseline Prior Strategy,4,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [6 0]]",0.015625,0.45454545454545453,0.0
+26,Baseline Prior Strategy,5,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[7 0]
+ [4 0]]",0.0,0.6363636363636364,0.0
+27,Baseline Prior Strategy,6,0.8181818181818182,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[9 0]
+ [2 0]]",0.015625,0.0,0.8181818181818182
+28,Baseline Prior Strategy,7,0.36363636363636365,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[4 0]
+ [7 0]]",0.03125,0.0,0.36363636363636365
+29,Baseline Prior Strategy,8,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[7 0]
+ [4 0]]",0.0,0.0,0.6363636363636364
+30,Baseline Prior Strategy,9,0.4,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[4 0]
+ [6 0]]",0.0,0.0,0.4
+31,Baseline Prior Strategy,10,1.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,[[9]],0.015625,1.0,0.0
+32,Baseline Prior Strategy,11,0.4444444444444444,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[4 0]
+ [5 0]]",0.015625,0.4444444444444444,0.0
+33,Baseline Prior Strategy,12,0.4444444444444444,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[4 0]
+ [5 0]]",0.03125,0.4444444444444444,0.0
+34,Baseline Prior Strategy,13,0.375,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[3 0]
+ [5 0]]",0.0,0.0,0.375
+35,Baseline Prior Strategy,14,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[4 0]
+ [4 0]]",0.0,0.0,0.5
+36,Baseline Prior Strategy,15,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[5 0]
+ [3 0]]",0.0,0.0,0.625
+37,Baseline Prior Strategy,16,0.75,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[6 0]
+ [2 0]]",0.03125,0.0,0.75
+38,Baseline Prior Strategy,17,0.14285714285714285,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[1 0]
+ [6 0]]",0.015625,0.14285714285714285,0.0
+39,Baseline Prior Strategy,18,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,"[[0 0]
+ [7 0]]",0.015625,0.0,0.0
+40,Baseline Prior Strategy,19,0.14285714285714285,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[1 0]
+ [6 0]]",0.03125,0.0,0.14285714285714285
+41,Baseline Prior Strategy,20,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [4 0]]",0.03125,0.0,0.0
+42,Baseline Prior Strategy,avg,0.488491230991231,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[97  0]
+ [88  0]]",0.28125,0.5967712842712842,0.41630452880452884
+43,Baseline Prior Strategy,std,0.2735992638999161,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[97  0]
+ [88  0]]",0.28125,0.26024467953149844,0.25803507499920614
+44,Baseline Stratified Strategy,1,0.46153846153846156,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[2 3]
+ [4 4]]",0.0,0.0,0.46153846153846156
+45,Baseline Stratified Strategy,2,0.08333333333333333,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[1 9]
+ [2 0]]",0.0,0.08333333333333333,0.0
+46,Baseline Stratified Strategy,3,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[4 5]
+ [1 1]]",0.015625,0.45454545454545453,0.0
+47,Baseline Stratified Strategy,4,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[3 2]
+ [4 2]]",0.046875,0.45454545454545453,0.0
+48,Baseline Stratified Strategy,5,0.36363636363636365,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[4 3]
+ [4 0]]",0.015625,0.36363636363636365,0.0
+49,Baseline Stratified Strategy,6,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[6 3]
+ [1 1]]",0.046875,0.0,0.6363636363636364
+50,Baseline Stratified Strategy,7,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[2 2]
+ [3 4]]",0.015625,0.0,0.5454545454545454
+51,Baseline Stratified Strategy,8,0.36363636363636365,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[3 4]
+ [3 1]]",0.0,0.0,0.36363636363636365
+52,Baseline Stratified Strategy,9,0.4,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[2 2]
+ [4 2]]",0.015625,0.0,0.4
+53,Baseline Stratified Strategy,10,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[5 4]
+ [0 0]]",0.015625,0.5555555555555556,0.0
+54,Baseline Stratified Strategy,11,0.4444444444444444,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[2 2]
+ [3 2]]",0.046875,0.4444444444444444,0.0
+55,Baseline Stratified Strategy,12,0.3333333333333333,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[2 2]
+ [4 1]]",0.015625,0.3333333333333333,0.0
+56,Baseline Stratified Strategy,13,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[1 2]
+ [2 3]]",0.0,0.0,0.5
+57,Baseline Stratified Strategy,14,0.375,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[1 3]
+ [2 2]]",0.0,0.0,0.375
+58,Baseline Stratified Strategy,15,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[2 3]
+ [0 3]]",0.03125,0.0,0.625
+59,Baseline Stratified Strategy,16,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[3 3]
+ [0 2]]",0.015625,0.0,0.625
+60,Baseline Stratified Strategy,17,0.42857142857142855,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[1 0]
+ [4 2]]",0.015625,0.42857142857142855,0.0
+61,Baseline Stratified Strategy,18,0.42857142857142855,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,"[[0 0]
+ [4 3]]",0.015625,0.0,0.42857142857142855
+62,Baseline Stratified Strategy,19,0.42857142857142855,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[1 0]
+ [4 2]]",0.03125,0.0,0.42857142857142855
+63,Baseline Stratified Strategy,20,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [2 2]]",0.0,0.0,0.5
+64,Baseline Stratified Strategy,avg,0.45035506160506167,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[45 52]
+ [51 37]]",0.34375,0.389745670995671,0.49076132201132205
+65,Baseline Stratified Strategy,std,0.12122566017442539,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[45 52]
+ [51 37]]",0.34375,0.13140724172638965,0.0943355411412047
+66,Baseline Uniform Strategy,1,0.6923076923076923,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[3 2]
+ [2 6]]",0.0,0.0,0.6923076923076923
+67,Baseline Uniform Strategy,2,0.5833333333333334,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[5 5]
+ [0 2]]",0.015625,0.5833333333333334,0.0
+68,Baseline Uniform Strategy,3,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[7 2]
+ [1 1]]",0.0,0.7272727272727273,0.0
+69,Baseline Uniform Strategy,4,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[3 2]
+ [2 4]]",0.0,0.6363636363636364,0.0
+70,Baseline Uniform Strategy,5,0.8181818181818182,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[5 2]
+ [0 4]]",0.0,0.8181818181818182,0.0
+71,Baseline Uniform Strategy,6,0.36363636363636365,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[4 5]
+ [2 0]]",0.015625,0.0,0.36363636363636365
+72,Baseline Uniform Strategy,7,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[2 2]
+ [3 4]]",0.015625,0.0,0.5454545454545454
+73,Baseline Uniform Strategy,8,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[4 3]
+ [0 4]]",0.0,0.0,0.7272727272727273
+74,Baseline Uniform Strategy,9,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[2 2]
+ [3 3]]",0.03125,0.0,0.5
+75,Baseline Uniform Strategy,10,0.7777777777777778,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[7 2]
+ [0 0]]",0.015625,0.7777777777777778,0.0
+76,Baseline Uniform Strategy,11,0.4444444444444444,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[2 2]
+ [3 2]]",0.0,0.4444444444444444,0.0
+77,Baseline Uniform Strategy,12,0.3333333333333333,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[2 2]
+ [4 1]]",0.0,0.3333333333333333,0.0
+78,Baseline Uniform Strategy,13,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[0 3]
+ [0 5]]",0.015625,0.0,0.625
+79,Baseline Uniform Strategy,14,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[2 2]
+ [2 2]]",0.015625,0.0,0.5
+80,Baseline Uniform Strategy,15,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[3 2]
+ [1 2]]",0.015625,0.0,0.625
+81,Baseline Uniform Strategy,16,0.75,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[5 1]
+ [1 1]]",0.015625,0.0,0.75
+82,Baseline Uniform Strategy,17,0.5714285714285714,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[1 0]
+ [3 3]]",0.03125,0.5714285714285714,0.0
+83,Baseline Uniform Strategy,18,0.5714285714285714,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,"[[0 0]
+ [3 4]]",0.015625,0.0,0.5714285714285714
+84,Baseline Uniform Strategy,19,0.5714285714285714,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[1 0]
+ [3 3]]",0.015625,0.0,0.5714285714285714
+85,Baseline Uniform Strategy,20,0.75,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [1 3]]",0.0,0.0,0.75
+86,Baseline Uniform Strategy,avg,0.6056832056832057,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[58 39]
+ [34 54]]",0.21875,0.6115169552669553,0.6017940392940392
+87,Baseline Uniform Strategy,std,0.13113549488890217,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[58 39]
+ [34 54]]",0.21875,0.15494778532964099,0.1123261851746151
+88,Nearest Neighbors,1,0.7692307692307693,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[5 0]
+ [3 5]]",2.484375,0.0,0.7692307692307693
+89,Nearest Neighbors,2,0.4166666666666667,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[3 7]
+ [0 2]]",1.953125,0.4166666666666667,0.0
+90,Nearest Neighbors,3,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[7 2]
+ [2 0]]",2.765625,0.6363636363636364,0.0
+91,Nearest Neighbors,4,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [5 1]]",2.546875,0.5454545454545454,0.0
+92,Nearest Neighbors,5,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[7 0]
+ [4 0]]",2.78125,0.6363636363636364,0.0
+93,Nearest Neighbors,6,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[3 6]
+ [0 2]]",2.625,0.0,0.45454545454545453
+94,Nearest Neighbors,7,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[4 0]
+ [6 1]]",2.46875,0.0,0.45454545454545453
+95,Nearest Neighbors,8,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[4 3]
+ [2 2]]",2.96875,0.0,0.5454545454545454
+96,Nearest Neighbors,9,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[3 1]
+ [4 2]]",2.765625,0.0,0.5
+97,Nearest Neighbors,10,0.7777777777777778,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[7 2]
+ [0 0]]",2.625,0.7777777777777778,0.0
+98,Nearest Neighbors,11,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[4 0]
+ [4 1]]",2.65625,0.5555555555555556,0.0
+99,Nearest Neighbors,12,0.7777777777777778,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[2 2]
+ [0 5]]",2.171875,0.7777777777777778,0.0
+100,Nearest Neighbors,13,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[1 2]
+ [1 4]]",2.046875,0.0,0.625
+101,Nearest Neighbors,14,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[3 1]
+ [2 2]]",2.484375,0.0,0.625
+102,Nearest Neighbors,15,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[4 1]
+ [2 1]]",2.875,0.0,0.625
+103,Nearest Neighbors,16,0.875,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[6 0]
+ [1 1]]",2.59375,0.0,0.875
+104,Nearest Neighbors,17,0.2857142857142857,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[0 1]
+ [4 2]]",2.8125,0.2857142857142857,0.0
+105,Nearest Neighbors,18,0.7142857142857143,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,"[[0 0]
+ [2 5]]",2.25,0.0,0.7142857142857143
+106,Nearest Neighbors,19,0.7142857142857143,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[0 1]
+ [1 5]]",2.71875,0.0,0.7142857142857143
+107,Nearest Neighbors,20,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [4 0]]",2.390625,0.0,0.0
+108,Nearest Neighbors,avg,0.5767010767010766,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[68 29]
+ [47 41]]",51.015625,0.5789592352092352,0.5751956376956376
+109,Nearest Neighbors,std,0.19233897201369726,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[68 29]
+ [47 41]]",51.015625,0.15797544546039405,0.21216496760784676
+110,Logistic Regression,1,0.7692307692307693,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[4 1]
+ [2 6]]",0.234375,0.0,0.7692307692307693
+111,Logistic Regression,2,0.5833333333333334,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[5 5]
+ [0 2]]",0.203125,0.5833333333333334,0.0
+112,Logistic Regression,3,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[6 3]
+ [2 0]]",0.234375,0.5454545454545454,0.0
+113,Logistic Regression,4,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [6 0]]",0.109375,0.45454545454545453,0.0
+114,Logistic Regression,5,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[7 0]
+ [3 1]]",0.15625,0.7272727272727273,0.0
+115,Logistic Regression,6,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[3 6]
+ [0 2]]",0.125,0.0,0.45454545454545453
+116,Logistic Regression,7,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[4 0]
+ [6 1]]",0.09375,0.0,0.45454545454545453
+117,Logistic Regression,8,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[7 0]
+ [3 1]]",0.171875,0.0,0.7272727272727273
+118,Logistic Regression,9,0.6,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[3 1]
+ [3 3]]",0.09375,0.0,0.6
+119,Logistic Regression,10,0.8888888888888888,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[8 1]
+ [0 0]]",0.203125,0.8888888888888888,0.0
+120,Logistic Regression,11,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[4 0]
+ [4 1]]",0.125,0.5555555555555556,0.0
+121,Logistic Regression,12,0.6666666666666666,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[3 1]
+ [2 3]]",0.28125,0.6666666666666666,0.0
+122,Logistic Regression,13,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[0 3]
+ [1 4]]",0.21875,0.0,0.5
+123,Logistic Regression,14,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[3 1]
+ [3 1]]",0.171875,0.0,0.5
+124,Logistic Regression,15,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[4 1]
+ [3 0]]",0.296875,0.0,0.5
+125,Logistic Regression,16,0.875,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[6 0]
+ [1 1]]",0.203125,0.0,0.875
+126,Logistic Regression,17,0.42857142857142855,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[0 1]
+ [3 3]]",0.1875,0.42857142857142855,0.0
+127,Logistic Regression,18,1.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,[[7]],0.28125,0.0,1.0
+128,Logistic Regression,19,0.8571428571428571,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[0 1]
+ [0 6]]",0.15625,0.0,0.8571428571428571
+129,Logistic Regression,20,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [4 0]]",0.234375,0.0,0.0
+130,Logistic Regression,avg,0.6044012931512932,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[72 25]
+ [46 42]]",3.8125,0.606286075036075,0.6031447718947719
+131,Logistic Regression,std,0.21660841695352745,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[72 25]
+ [46 42]]",3.8125,0.14122523530128145,0.25475154952832685
+132,Linear SVM l1,1,0.7692307692307693,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[4 1]
+ [2 6]]",0.078125,0.0,0.7692307692307693
+133,Linear SVM l1,2,0.6666666666666666,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[6 4]
+ [0 2]]",0.140625,0.6666666666666666,0.0
+134,Linear SVM l1,3,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[7 2]
+ [2 0]]",0.015625,0.6363636363636364,0.0
+135,Linear SVM l1,4,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [5 1]]",0.015625,0.5454545454545454,0.0
+136,Linear SVM l1,5,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[7 0]
+ [3 1]]",0.109375,0.7272727272727273,0.0
+137,Linear SVM l1,6,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[3 6]
+ [0 2]]",0.03125,0.0,0.45454545454545453
+138,Linear SVM l1,7,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[4 0]
+ [6 1]]",0.09375,0.0,0.45454545454545453
+139,Linear SVM l1,8,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[7 0]
+ [3 1]]",0.1875,0.0,0.7272727272727273
+140,Linear SVM l1,9,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[3 1]
+ [4 2]]",0.046875,0.0,0.5
+141,Linear SVM l1,10,0.8888888888888888,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[8 1]
+ [0 0]]",0.0625,0.8888888888888888,0.0
+142,Linear SVM l1,11,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[4 0]
+ [4 1]]",0.046875,0.5555555555555556,0.0
+143,Linear SVM l1,12,0.6666666666666666,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[3 1]
+ [2 3]]",0.046875,0.6666666666666666,0.0
+144,Linear SVM l1,13,0.25,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[0 3]
+ [3 2]]",0.078125,0.0,0.25
+145,Linear SVM l1,14,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[3 1]
+ [3 1]]",0.09375,0.0,0.5
+146,Linear SVM l1,15,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[4 1]
+ [3 0]]",0.140625,0.0,0.5
+147,Linear SVM l1,16,0.875,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[6 0]
+ [1 1]]",0.125,0.0,0.875
+148,Linear SVM l1,17,0.42857142857142855,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[0 1]
+ [3 3]]",0.1875,0.42857142857142855,0.0
+149,Linear SVM l1,18,1.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,[[7]],0.109375,0.0,1.0
+150,Linear SVM l1,19,0.8571428571428571,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[0 1]
+ [0 6]]",0.046875,0.0,0.8571428571428571
+151,Linear SVM l1,20,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [4 0]]",0.0625,0.0,0.0
+152,Linear SVM l1,avg,0.6001588689088689,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[74 23]
+ [48 40]]",1.71875,0.6394300144300145,0.5739781052281052
+153,Linear SVM l1,std,0.22864852991727252,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[74 23]
+ [48 40]]",1.71875,0.12833881048875456,0.272835913880793
+154,Linear SVM l2,1,0.8461538461538461,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[5 0]
+ [2 6]]",0.265625,0.0,0.8461538461538461
+155,Linear SVM l2,2,0.6666666666666666,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[6 4]
+ [0 2]]",0.203125,0.6666666666666666,0.0
+156,Linear SVM l2,3,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[7 2]
+ [2 0]]",0.1875,0.6363636363636364,0.0
+157,Linear SVM l2,4,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [6 0]]",0.171875,0.45454545454545453,0.0
+158,Linear SVM l2,5,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[7 0]
+ [3 1]]",0.140625,0.7272727272727273,0.0
+159,Linear SVM l2,6,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[4 5]
+ [0 2]]",0.1875,0.0,0.5454545454545454
+160,Linear SVM l2,7,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[4 0]
+ [6 1]]",0.1875,0.0,0.45454545454545453
+161,Linear SVM l2,8,0.8181818181818182,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[7 0]
+ [2 2]]",0.234375,0.0,0.8181818181818182
+162,Linear SVM l2,9,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[3 1]
+ [4 2]]",0.15625,0.0,0.5
+163,Linear SVM l2,10,0.8888888888888888,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[8 1]
+ [0 0]]",0.21875,0.8888888888888888,0.0
+164,Linear SVM l2,11,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[4 0]
+ [4 1]]",0.359375,0.5555555555555556,0.0
+165,Linear SVM l2,12,0.6666666666666666,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[3 1]
+ [2 3]]",0.15625,0.6666666666666666,0.0
+166,Linear SVM l2,13,0.25,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[0 3]
+ [3 2]]",0.125,0.0,0.25
+167,Linear SVM l2,14,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[3 1]
+ [3 1]]",0.234375,0.0,0.5
+168,Linear SVM l2,15,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[4 1]
+ [3 0]]",0.140625,0.0,0.5
+169,Linear SVM l2,16,0.875,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[6 0]
+ [1 1]]",0.21875,0.0,0.875
+170,Linear SVM l2,17,0.2857142857142857,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[0 1]
+ [4 2]]",0.234375,0.2857142857142857,0.0
+171,Linear SVM l2,18,1.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,[[7]],0.203125,0.0,1.0
+172,Linear SVM l2,19,0.8571428571428571,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[0 1]
+ [0 6]]",0.28125,0.0,0.8571428571428571
+173,Linear SVM l2,20,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [4 0]]",0.28125,0.0,0.0
+174,Linear SVM l2,avg,0.6014076201576202,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[76 21]
+ [49 39]]",4.1875,0.6102092352092352,0.5955398767898767
+175,Linear SVM l2,std,0.24272507679107436,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[76 21]
+ [49 39]]",4.1875,0.16990451580974678,0.280822599659971
+176,SVM linear or rbf,1,0.7692307692307693,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[5 0]
+ [3 5]]",0.265625,0.0,0.7692307692307693
+177,SVM linear or rbf,2,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[4 6]
+ [0 2]]",0.390625,0.5,0.0
+178,SVM linear or rbf,3,0.8181818181818182,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[9 0]
+ [2 0]]",0.203125,0.8181818181818182,0.0
+179,SVM linear or rbf,4,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [6 0]]",0.21875,0.45454545454545453,0.0
+180,SVM linear or rbf,5,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[7 0]
+ [4 0]]",0.171875,0.6363636363636364,0.0
+181,SVM linear or rbf,6,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[5 4]
+ [0 2]]",0.265625,0.0,0.6363636363636364
+182,SVM linear or rbf,7,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[4 0]
+ [6 1]]",0.171875,0.0,0.45454545454545453
+183,SVM linear or rbf,8,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[6 1]
+ [2 2]]",0.4375,0.0,0.7272727272727273
+184,SVM linear or rbf,9,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[3 1]
+ [4 2]]",0.171875,0.0,0.5
+185,SVM linear or rbf,10,0.8888888888888888,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[8 1]
+ [0 0]]",0.1875,0.8888888888888888,0.0
+186,SVM linear or rbf,11,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[4 0]
+ [4 1]]",0.234375,0.5555555555555556,0.0
+187,SVM linear or rbf,12,0.6666666666666666,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[3 1]
+ [2 3]]",0.34375,0.6666666666666666,0.0
+188,SVM linear or rbf,13,0.375,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[1 2]
+ [3 2]]",0.21875,0.0,0.375
+189,SVM linear or rbf,14,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[3 1]
+ [3 1]]",0.15625,0.0,0.5
+190,SVM linear or rbf,15,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[5 0]
+ [3 0]]",0.28125,0.0,0.625
+191,SVM linear or rbf,16,0.875,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[6 0]
+ [1 1]]",0.34375,0.0,0.875
+192,SVM linear or rbf,17,0.2857142857142857,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[0 1]
+ [4 2]]",0.453125,0.2857142857142857,0.0
+193,SVM linear or rbf,18,0.8571428571428571,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,"[[0 0]
+ [1 6]]",0.25,0.0,0.8571428571428571
+194,SVM linear or rbf,19,0.7142857142857143,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[0 1]
+ [1 5]]",0.328125,0.0,0.7142857142857143
+195,SVM linear or rbf,20,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [4 0]]",0.359375,0.0,0.0
+196,SVM linear or rbf,avg,0.5919878732378733,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[78 19]
+ [53 35]]",5.46875,0.6007395382395382,0.5861534299034299
+197,SVM linear or rbf,std,0.21457239188805818,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[78 19]
+ [53 35]]",5.46875,0.18327926870884614,0.23292965365695142
+198,Decision Tree,1,0.38461538461538464,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[2 3]
+ [5 3]]",0.21875,0.0,0.38461538461538464
+199,Decision Tree,2,0.5833333333333334,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[6 4]
+ [1 1]]",0.125,0.5833333333333334,0.0
+200,Decision Tree,3,0.18181818181818182,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[1 8]
+ [1 1]]",0.078125,0.18181818181818182,0.0
+201,Decision Tree,4,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [4 2]]",0.203125,0.6363636363636364,0.0
+202,Decision Tree,5,0.36363636363636365,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[4 3]
+ [4 0]]",0.140625,0.36363636363636365,0.0
+203,Decision Tree,6,0.8181818181818182,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[8 1]
+ [1 1]]",0.234375,0.0,0.8181818181818182
+204,Decision Tree,7,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[2 2]
+ [4 3]]",0.203125,0.0,0.45454545454545453
+205,Decision Tree,8,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[5 2]
+ [1 3]]",0.171875,0.0,0.7272727272727273
+206,Decision Tree,9,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[3 1]
+ [4 2]]",0.125,0.0,0.5
+207,Decision Tree,10,0.7777777777777778,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[7 2]
+ [0 0]]",0.171875,0.7777777777777778,0.0
+208,Decision Tree,11,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[4 0]
+ [4 1]]",0.203125,0.5555555555555556,0.0
+209,Decision Tree,12,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[0 4]
+ [0 5]]",0.234375,0.5555555555555556,0.0
+210,Decision Tree,13,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[0 3]
+ [1 4]]",0.21875,0.0,0.5
+211,Decision Tree,14,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[3 1]
+ [3 1]]",0.1875,0.0,0.5
+212,Decision Tree,15,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[2 3]
+ [0 3]]",0.34375,0.0,0.625
+213,Decision Tree,16,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[5 1]
+ [2 0]]",0.234375,0.0,0.625
+214,Decision Tree,17,0.42857142857142855,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[0 1]
+ [3 3]]",0.1875,0.42857142857142855,0.0
+215,Decision Tree,18,0.7142857142857143,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,"[[0 0]
+ [2 5]]",0.359375,0.0,0.7142857142857143
+216,Decision Tree,19,0.42857142857142855,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[0 1]
+ [3 3]]",0.1875,0.0,0.42857142857142855
+217,Decision Tree,20,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [4 0]]",0.203125,0.0,0.0
+218,Decision Tree,avg,0.5180042180042179,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[57 40]
+ [47 41]]",4.03125,0.5103264790764791,0.5231227106227107
+219,Decision Tree,std,0.19077070381193534,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[57 40]
+ [47 41]]",4.03125,0.17064454331273105,0.20292173745029798
+220,Random Forest,1,0.6923076923076923,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[2 3]
+ [1 7]]",2.953125,0.0,0.6923076923076923
+221,Random Forest,2,0.3333333333333333,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[2 8]
+ [0 2]]",3.0625,0.3333333333333333,0.0
+222,Random Forest,3,0.36363636363636365,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[3 6]
+ [1 1]]",2.859375,0.36363636363636365,0.0
+223,Random Forest,4,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [5 1]]",2.890625,0.5454545454545454,0.0
+224,Random Forest,5,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[7 0]
+ [3 1]]",2.78125,0.7272727272727273,0.0
+225,Random Forest,6,0.36363636363636365,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[2 7]
+ [0 2]]",2.921875,0.0,0.36363636363636365
+226,Random Forest,7,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[4 0]
+ [6 1]]",3.03125,0.0,0.45454545454545453
+227,Random Forest,8,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[2 5]
+ [0 4]]",3.15625,0.0,0.5454545454545454
+228,Random Forest,9,0.6,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[3 1]
+ [3 3]]",3.125,0.0,0.6
+229,Random Forest,10,0.8888888888888888,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[8 1]
+ [0 0]]",3.234375,0.8888888888888888,0.0
+230,Random Forest,11,0.6666666666666666,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[4 0]
+ [3 2]]",3.515625,0.6666666666666666,0.0
+231,Random Forest,12,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[0 4]
+ [0 5]]",2.84375,0.5555555555555556,0.0
+232,Random Forest,13,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[0 3]
+ [1 4]]",3.0625,0.0,0.5
+233,Random Forest,14,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[4 0]
+ [3 1]]",3.1875,0.0,0.625
+234,Random Forest,15,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[4 1]
+ [2 1]]",3.21875,0.0,0.625
+235,Random Forest,16,0.875,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[6 0]
+ [1 1]]",2.921875,0.0,0.875
+236,Random Forest,17,0.2857142857142857,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[0 1]
+ [4 2]]",3.375,0.2857142857142857,0.0
+237,Random Forest,18,0.8571428571428571,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,"[[0 0]
+ [1 6]]",3.109375,0.0,0.8571428571428571
+238,Random Forest,19,0.7142857142857143,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[0 1]
+ [1 5]]",3.3125,0.0,0.7142857142857143
+239,Random Forest,20,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [4 0]]",2.921875,0.0,0.0
+240,Random Forest,avg,0.5609447496947497,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[56 41]
+ [39 49]]",61.53125,0.5458152958152958,0.5710310522810523
+241,Random Forest,std,0.21434523774037564,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[56 41]
+ [39 49]]",61.53125,0.19726778421046343,0.22444542475942078
+242,Neural Net,1,0.6923076923076923,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[3 2]
+ [2 6]]",2.875,0.0,0.6923076923076923
+243,Neural Net,2,0.5833333333333334,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[5 5]
+ [0 2]]",3.328125,0.5833333333333334,0.0
+244,Neural Net,3,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[6 3]
+ [2 0]]",3.28125,0.5454545454545454,0.0
+245,Neural Net,4,0.9090909090909091,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [1 5]]",3.140625,0.9090909090909091,0.0
+246,Neural Net,5,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[5 2]
+ [4 0]]",2.828125,0.45454545454545453,0.0
+247,Neural Net,6,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[5 4]
+ [1 1]]",3.3125,0.0,0.5454545454545454
+248,Neural Net,7,0.36363636363636365,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[4 0]
+ [7 0]]",3.390625,0.0,0.36363636363636365
+249,Neural Net,8,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[7 0]
+ [3 1]]",3.328125,0.0,0.7272727272727273
+250,Neural Net,9,0.6,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[3 1]
+ [3 3]]",2.828125,0.0,0.6
+251,Neural Net,10,0.8888888888888888,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[8 1]
+ [0 0]]",3.203125,0.8888888888888888,0.0
+252,Neural Net,11,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[4 0]
+ [4 1]]",3.03125,0.5555555555555556,0.0
+253,Neural Net,12,0.6666666666666666,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[2 2]
+ [1 4]]",3.0,0.6666666666666666,0.0
+254,Neural Net,13,0.375,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[1 2]
+ [3 2]]",3.171875,0.0,0.375
+255,Neural Net,14,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[3 1]
+ [3 1]]",3.078125,0.0,0.5
+256,Neural Net,15,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[4 1]
+ [2 1]]",3.40625,0.0,0.625
+257,Neural Net,16,0.875,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[6 0]
+ [1 1]]",2.953125,0.0,0.875
+258,Neural Net,17,0.5714285714285714,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[0 1]
+ [2 4]]",3.09375,0.5714285714285714,0.0
+259,Neural Net,18,1.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,[[7]],3.203125,0.0,1.0
+260,Neural Net,19,0.7142857142857143,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[0 1]
+ [1 5]]",3.1875,0.0,0.7142857142857143
+261,Neural Net,20,0.25,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [3 1]]",3.1875,0.0,0.25
+262,Neural Net,avg,0.6221460483960483,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[71 26]
+ [43 45]]",62.84375,0.6468704906204906,0.6056630869130869
+263,Neural Net,std,0.18931843236696272,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[71 26]
+ [43 45]]",62.84375,0.1553485298763018,0.20728671975116877
+264,AdaBoost,1,0.6923076923076923,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[3 2]
+ [2 6]]",1.25,0.0,0.6923076923076923
+265,AdaBoost,2,0.4166666666666667,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[5 5]
+ [2 0]]",1.265625,0.4166666666666667,0.0
+266,AdaBoost,3,0.2727272727272727,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[2 7]
+ [1 1]]",1.0,0.2727272727272727,0.0
+267,AdaBoost,4,0.9090909090909091,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [1 5]]",0.921875,0.9090909090909091,0.0
+268,AdaBoost,5,0.8181818181818182,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[7 0]
+ [2 2]]",1.3125,0.8181818181818182,0.0
+269,AdaBoost,6,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[7 2]
+ [1 1]]",0.84375,0.0,0.7272727272727273
+270,AdaBoost,7,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[4 0]
+ [6 1]]",1.25,0.0,0.45454545454545453
+271,AdaBoost,8,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[2 5]
+ [0 4]]",1.09375,0.0,0.5454545454545454
+272,AdaBoost,9,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[3 1]
+ [4 2]]",1.328125,0.0,0.5
+273,AdaBoost,10,0.8888888888888888,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[8 1]
+ [0 0]]",0.984375,0.8888888888888888,0.0
+274,AdaBoost,11,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[2 2]
+ [2 3]]",0.984375,0.5555555555555556,0.0
+275,AdaBoost,12,0.4444444444444444,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[0 4]
+ [1 4]]",1.125,0.4444444444444444,0.0
+276,AdaBoost,13,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[0 3]
+ [1 4]]",1.4375,0.0,0.5
+277,AdaBoost,14,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[3 1]
+ [3 1]]",1.0625,0.0,0.5
+278,AdaBoost,15,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[4 1]
+ [2 1]]",1.046875,0.0,0.625
+279,AdaBoost,16,0.875,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[6 0]
+ [1 1]]",1.09375,0.0,0.875
+280,AdaBoost,17,0.42857142857142855,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[0 1]
+ [3 3]]",1.578125,0.42857142857142855,0.0
+281,AdaBoost,18,0.8571428571428571,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,"[[0 0]
+ [1 6]]",1.078125,0.0,0.8571428571428571
+282,AdaBoost,19,0.2857142857142857,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[0 1]
+ [4 2]]",1.28125,0.0,0.2857142857142857
+283,AdaBoost,20,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [2 2]]",1.453125,0.0,0.5
+284,AdaBoost,avg,0.5898282273282274,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[61 36]
+ [39 49]]",23.421875,0.591765873015873,0.5885364635364635
+285,AdaBoost,std,0.19375324233372154,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[61 36]
+ [39 49]]",23.421875,0.22976455964463743,0.16543435146512342
+286,Naive Bayes,1,0.7692307692307693,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[5 0]
+ [3 5]]",0.546875,0.0,0.7692307692307693
+287,Naive Bayes,2,0.6666666666666666,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[6 4]
+ [0 2]]",0.640625,0.6666666666666666,0.0
+288,Naive Bayes,3,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[8 1]
+ [2 0]]",0.59375,0.7272727272727273,0.0
+289,Naive Bayes,4,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [4 2]]",0.609375,0.6363636363636364,0.0
+290,Naive Bayes,5,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[7 0]
+ [4 0]]",0.53125,0.6363636363636364,0.0
+291,Naive Bayes,6,0.9090909090909091,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[8 1]
+ [0 2]]",0.671875,0.0,0.9090909090909091
+292,Naive Bayes,7,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[4 0]
+ [6 1]]",0.375,0.0,0.45454545454545453
+293,Naive Bayes,8,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[7 0]
+ [3 1]]",0.390625,0.0,0.7272727272727273
+294,Naive Bayes,9,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[3 1]
+ [4 2]]",0.515625,0.0,0.5
+295,Naive Bayes,10,0.8888888888888888,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[8 1]
+ [0 0]]",0.421875,0.8888888888888888,0.0
+296,Naive Bayes,11,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[4 0]
+ [4 1]]",0.578125,0.5555555555555556,0.0
+297,Naive Bayes,12,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[0 4]
+ [0 5]]",0.59375,0.5555555555555556,0.0
+298,Naive Bayes,13,0.25,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[0 3]
+ [3 2]]",0.46875,0.0,0.25
+299,Naive Bayes,14,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[3 1]
+ [3 1]]",0.578125,0.0,0.5
+300,Naive Bayes,15,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[5 0]
+ [3 0]]",0.5625,0.0,0.625
+301,Naive Bayes,16,0.875,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[6 0]
+ [1 1]]",0.703125,0.0,0.875
+302,Naive Bayes,17,0.42857142857142855,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[0 1]
+ [3 3]]",0.703125,0.42857142857142855,0.0
+303,Naive Bayes,18,0.8571428571428571,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,"[[0 0]
+ [1 6]]",0.421875,0.0,0.8571428571428571
+304,Naive Bayes,19,0.7142857142857143,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[0 1]
+ [1 5]]",0.5,0.0,0.7142857142857143
+305,Naive Bayes,20,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [4 0]]",0.71875,0.0,0.0
+306,Naive Bayes,avg,0.6138403263403263,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[79 18]
+ [49 39]]",11.15625,0.636904761904762,0.598464035964036
+307,Naive Bayes,std,0.21859972303318068,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[79 18]
+ [49 39]]",11.15625,0.12707620280294757,0.2613166945937852
+308,QDA,1,0.8461538461538461,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_01,60,"[[5 0]
+ [2 6]]",0.0625,0.0,0.8461538461538461
+309,QDA,2,0.6666666666666666,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_03,60,"[[6 4]
+ [0 2]]",0.015625,0.6666666666666666,0.0
+310,QDA,3,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_04,60,"[[8 1]
+ [2 0]]",0.015625,0.7272727272727273,0.0
+311,QDA,4,0.5454545454545454,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_05,60,"[[5 0]
+ [5 1]]",0.015625,0.5454545454545454,0.0
+312,QDA,5,0.6363636363636364,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_07,60,"[[7 0]
+ [4 0]]",0.0,0.6363636363636364,0.0
+313,QDA,6,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_06,60,"[[7 2]
+ [1 1]]",0.015625,0.0,0.7272727272727273
+314,QDA,7,0.45454545454545453,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_05,60,"[[4 0]
+ [6 1]]",0.03125,0.0,0.45454545454545453
+315,QDA,8,0.7272727272727273,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_13,60,"[[6 1]
+ [2 2]]",0.0,0.0,0.7272727272727273
+316,QDA,9,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_14,60,"[[3 1]
+ [4 2]]",0.03125,0.0,0.5
+317,QDA,10,0.8888888888888888,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_06,60,"[[8 1]
+ [0 0]]",0.015625,0.8888888888888888,0.0
+318,QDA,11,0.5555555555555556,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_11,60,"[[4 0]
+ [4 1]]",0.0,0.5555555555555556,0.0
+319,QDA,12,0.7777777777777778,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_02,60,"[[2 2]
+ [0 5]]",0.015625,0.7777777777777778,0.0
+320,QDA,13,0.375,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_07,60,"[[1 2]
+ [3 2]]",0.015625,0.0,0.375
+321,QDA,14,0.5,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_09,60,"[[3 1]
+ [3 1]]",0.0,0.0,0.5
+322,QDA,15,0.625,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_12,60,"[[5 0]
+ [3 0]]",0.015625,0.0,0.625
+323,QDA,16,0.875,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_02,60,"[[6 0]
+ [1 1]]",0.03125,0.0,0.875
+324,QDA,17,0.42857142857142855,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,dyad_10,60,"[[0 1]
+ [3 3]]",0.0,0.42857142857142855,0.0
+325,QDA,18,1.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_08,60,[[7]],0.015625,0.0,1.0
+326,QDA,19,0.7142857142857143,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_10,60,"[[0 1]
+ [1 5]]",0.046875,0.0,0.7142857142857143
+327,QDA,20,0.0,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,triad_11,60,"[[0 0]
+ [4 0]]",0.03125,0.0,0.0
+328,QDA,avg,0.6285540848040847,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,avg,60,"[[80 17]
+ [48 40]]",0.4375,0.6533189033189033,0.6120442057942058
+329,QDA,std,0.2178462816582523,Nested,SCALER_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name_Manual,All,Blinks_GazexSpeaking,std,60,"[[80 17]
+ [48 40]]",0.4375,0.13630015624673403,0.2569599360399454
