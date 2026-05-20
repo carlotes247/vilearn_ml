@@ -1,0 +1,316 @@
+,Model,Fold,Score,CV,Version,Group,Features,Group_Name,Sampling,Conf_Matrix,Time
+0,Baseline Most Frequent Strategy,1,0.8333333333333334,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.0
+1,Baseline Most Frequent Strategy,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[7 0]
+ [4 0]]",0.0
+2,Baseline Most Frequent Strategy,3,0.45454545454545453,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[5 0]
+ [6 0]]",0.0
+3,Baseline Most Frequent Strategy,4,0.8181818181818182,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[9 0]
+ [2 0]]",0.0
+4,Baseline Most Frequent Strategy,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.0
+5,Baseline Most Frequent Strategy,6,1.0,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,[[9]],0.015625
+6,Baseline Most Frequent Strategy,7,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[4 0]
+ [5 0]]",0.015625
+7,Baseline Most Frequent Strategy,8,0.14285714285714285,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[1 0]
+ [6 0]]",0.0
+8,Baseline Most Frequent Strategy,avg,0.5967712842712842,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[49  0]
+ [30  0]]",0.03125
+9,Baseline Most Frequent Strategy,std,0.26024467953149844,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[49  0]
+ [30  0]]",0.03125
+10,Baseline Prior Strategy,1,0.8333333333333334,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.0
+11,Baseline Prior Strategy,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[7 0]
+ [4 0]]",0.0
+12,Baseline Prior Strategy,3,0.45454545454545453,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[5 0]
+ [6 0]]",0.0
+13,Baseline Prior Strategy,4,0.8181818181818182,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[9 0]
+ [2 0]]",0.015625
+14,Baseline Prior Strategy,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.015625
+15,Baseline Prior Strategy,6,1.0,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,[[9]],0.0
+16,Baseline Prior Strategy,7,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[4 0]
+ [5 0]]",0.015625
+17,Baseline Prior Strategy,8,0.14285714285714285,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[1 0]
+ [6 0]]",0.0
+18,Baseline Prior Strategy,avg,0.5967712842712842,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[49  0]
+ [30  0]]",0.046875
+19,Baseline Prior Strategy,std,0.26024467953149844,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[49  0]
+ [30  0]]",0.046875
+20,Baseline Stratified Strategy,1,0.8333333333333334,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[8 2]
+ [0 2]]",0.0
+21,Baseline Stratified Strategy,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[5 2]
+ [2 2]]",0.0
+22,Baseline Stratified Strategy,3,0.5454545454545454,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[3 2]
+ [3 3]]",0.0
+23,Baseline Stratified Strategy,4,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[6 3]
+ [1 1]]",0.0
+24,Baseline Stratified Strategy,5,0.6666666666666666,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[3 1]
+ [2 3]]",0.0
+25,Baseline Stratified Strategy,6,0.5555555555555556,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,"[[5 4]
+ [0 0]]",0.0
+26,Baseline Stratified Strategy,7,0.5555555555555556,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[3 1]
+ [3 2]]",0.0
+27,Baseline Stratified Strategy,8,0.14285714285714285,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[0 1]
+ [5 1]]",0.0
+28,Baseline Stratified Strategy,avg,0.571518759018759,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[33 16]
+ [16 14]]",0.0
+29,Baseline Stratified Strategy,std,0.18403446824496825,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[33 16]
+ [16 14]]",0.0
+30,Baseline Uniform Strategy,1,0.75,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[9 1]
+ [2 0]]",0.0
+31,Baseline Uniform Strategy,2,0.8181818181818182,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[6 1]
+ [1 3]]",0.0
+32,Baseline Uniform Strategy,3,0.5454545454545454,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[2 3]
+ [2 4]]",0.015625
+33,Baseline Uniform Strategy,4,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[6 3]
+ [1 1]]",0.015625
+34,Baseline Uniform Strategy,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[2 2]
+ [3 2]]",0.0
+35,Baseline Uniform Strategy,6,0.6666666666666666,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,"[[6 3]
+ [0 0]]",0.0
+36,Baseline Uniform Strategy,7,0.5555555555555556,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[3 1]
+ [3 2]]",0.0
+37,Baseline Uniform Strategy,8,0.2857142857142857,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[0 1]
+ [4 2]]",0.0
+38,Baseline Uniform Strategy,avg,0.5877976190476191,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[34 15]
+ [16 14]]",0.03125
+39,Baseline Uniform Strategy,std,0.15913926125948766,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[34 15]
+ [16 14]]",0.03125
+40,Nearest Neighbors Test,1,0.75,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[9 1]
+ [2 0]]",0.0
+41,Nearest Neighbors Test,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[7 0]
+ [4 0]]",0.0
+42,Nearest Neighbors Test,3,0.5454545454545454,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[2 3]
+ [2 4]]",0.015625
+43,Nearest Neighbors Test,4,0.45454545454545453,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[5 4]
+ [2 0]]",0.0
+44,Nearest Neighbors Test,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.015625
+45,Nearest Neighbors Test,6,0.5555555555555556,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,"[[5 4]
+ [0 0]]",0.0
+46,Nearest Neighbors Test,7,0.5555555555555556,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[0 4]
+ [0 5]]",0.0
+47,Nearest Neighbors Test,8,0.42857142857142855,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[1 0]
+ [4 2]]",0.03125
+48,Nearest Neighbors Test,avg,0.5463113275613276,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[33 16]
+ [19 11]]",0.0625
+49,Nearest Neighbors Test,std,0.10150779546352456,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[33 16]
+ [19 11]]",0.0625
+50,Nearest Neighbors,1,0.5833333333333334,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[7 3]
+ [2 0]]",0.234375
+51,Nearest Neighbors,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[7 0]
+ [4 0]]",0.234375
+52,Nearest Neighbors,3,0.45454545454545453,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[4 1]
+ [5 1]]",0.328125
+53,Nearest Neighbors,4,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[7 2]
+ [2 0]]",0.171875
+54,Nearest Neighbors,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.15625
+55,Nearest Neighbors,6,0.7777777777777778,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,"[[7 2]
+ [0 0]]",0.25
+56,Nearest Neighbors,7,0.5555555555555556,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[0 4]
+ [0 5]]",0.15625
+57,Nearest Neighbors,8,0.14285714285714285,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[1 0]
+ [6 0]]",0.234375
+58,Nearest Neighbors,avg,0.5289051226551227,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[37 12]
+ [24  6]]",1.765625
+59,Nearest Neighbors,std,0.1769183948913266,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[37 12]
+ [24  6]]",1.765625
+60,Logistic Regression,1,0.8333333333333334,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.015625
+61,Logistic Regression,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[7 0]
+ [4 0]]",0.015625
+62,Logistic Regression,3,0.45454545454545453,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[5 0]
+ [6 0]]",0.03125
+63,Logistic Regression,4,0.8181818181818182,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[9 0]
+ [2 0]]",0.0
+64,Logistic Regression,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.0
+65,Logistic Regression,6,0.8888888888888888,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,"[[8 1]
+ [0 0]]",0.03125
+66,Logistic Regression,7,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[4 0]
+ [5 0]]",0.03125
+67,Logistic Regression,8,0.14285714285714285,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[1 0]
+ [6 0]]",0.046875
+68,Logistic Regression,avg,0.5828823953823954,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[48  1]
+ [30  0]]",0.171875
+69,Logistic Regression,std,0.24057598426962037,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[48  1]
+ [30  0]]",0.171875
+70,Linear SVM l1,1,0.8333333333333334,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.015625
+71,Linear SVM l1,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[7 0]
+ [4 0]]",0.015625
+72,Linear SVM l1,3,0.45454545454545453,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[5 0]
+ [6 0]]",0.0
+73,Linear SVM l1,4,0.8181818181818182,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[9 0]
+ [2 0]]",0.015625
+74,Linear SVM l1,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.0
+75,Linear SVM l1,6,0.7777777777777778,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,"[[7 2]
+ [0 0]]",0.015625
+76,Linear SVM l1,7,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[4 0]
+ [5 0]]",0.015625
+77,Linear SVM l1,8,0.14285714285714285,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[1 0]
+ [6 0]]",0.0
+78,Linear SVM l1,avg,0.5689935064935064,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[47  2]
+ [30  0]]",0.078125
+79,Linear SVM l1,std,0.225226402702018,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[47  2]
+ [30  0]]",0.078125
+80,Linear SVM l2,1,0.8333333333333334,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.109375
+81,Linear SVM l2,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[7 0]
+ [4 0]]",0.109375
+82,Linear SVM l2,3,0.5454545454545454,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[0 5]
+ [0 6]]",0.109375
+83,Linear SVM l2,4,0.8181818181818182,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[9 0]
+ [2 0]]",0.078125
+84,Linear SVM l2,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.015625
+85,Linear SVM l2,6,1.0,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,[[9]],0.078125
+86,Linear SVM l2,7,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[4 0]
+ [5 0]]",0.28125
+87,Linear SVM l2,8,0.8571428571428571,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[0 1]
+ [0 6]]",0.03125
+88,Linear SVM l2,avg,0.6974206349206349,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[43  6]
+ [18 12]]",0.8125
+89,Linear SVM l2,std,0.19523592802427378,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[43  6]
+ [18 12]]",0.8125
+90,SVM linear or rbf,1,0.8333333333333334,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.0625
+91,SVM linear or rbf,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[7 0]
+ [4 0]]",0.078125
+92,SVM linear or rbf,3,0.45454545454545453,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[5 0]
+ [6 0]]",0.15625
+93,SVM linear or rbf,4,0.45454545454545453,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[3 6]
+ [0 2]]",0.046875
+94,SVM linear or rbf,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.015625
+95,SVM linear or rbf,6,1.0,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,[[9]],0.03125
+96,SVM linear or rbf,7,0.5555555555555556,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[0 4]
+ [0 5]]",0.0625
+97,SVM linear or rbf,8,0.14285714285714285,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[1 0]
+ [6 0]]",0.1875
+98,SVM linear or rbf,avg,0.5652056277056277,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[39 10]
+ [23  7]]",0.640625
+99,SVM linear or rbf,std,0.24585261150657944,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[39 10]
+ [23  7]]",0.640625
+100,Decision Tree,1,0.4166666666666667,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[4 6]
+ [1 1]]",0.046875
+101,Decision Tree,2,0.5454545454545454,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[6 1]
+ [4 0]]",0.03125
+102,Decision Tree,3,0.45454545454545453,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[2 3]
+ [3 3]]",0.0
+103,Decision Tree,4,0.5454545454545454,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[4 5]
+ [0 2]]",0.046875
+104,Decision Tree,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.015625
+105,Decision Tree,6,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,"[[4 5]
+ [0 0]]",0.0
+106,Decision Tree,7,0.5555555555555556,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[0 4]
+ [0 5]]",0.03125
+107,Decision Tree,8,0.42857142857142855,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[1 0]
+ [4 2]]",0.0
+108,Decision Tree,avg,0.4793921356421357,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[25 24]
+ [17 13]]",0.171875
+109,Decision Tree,std,0.05489378270843971,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[25 24]
+ [17 13]]",0.171875
+110,Random Forest,1,0.6666666666666666,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[8 2]
+ [2 0]]",0.90625
+111,Random Forest,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[7 0]
+ [4 0]]",0.8125
+112,Random Forest,3,0.5454545454545454,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[4 1]
+ [4 2]]",0.9375
+113,Random Forest,4,0.36363636363636365,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[2 7]
+ [0 2]]",0.921875
+114,Random Forest,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.84375
+115,Random Forest,6,0.7777777777777778,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,"[[7 2]
+ [0 0]]",0.859375
+116,Random Forest,7,0.5555555555555556,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[0 4]
+ [0 5]]",0.984375
+117,Random Forest,8,0.42857142857142855,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[1 0]
+ [4 2]]",0.640625
+118,Random Forest,avg,0.5523088023088023,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[33 16]
+ [19 11]]",6.90625
+119,Random Forest,std,0.12921864410887762,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[33 16]
+ [19 11]]",6.90625
+120,Neural Net,1,0.8333333333333334,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.34375
+121,Neural Net,2,0.36363636363636365,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[0 7]
+ [0 4]]",0.265625
+122,Neural Net,3,0.45454545454545453,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[5 0]
+ [6 0]]",0.421875
+123,Neural Net,4,0.36363636363636365,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[2 7]
+ [0 2]]",0.421875
+124,Neural Net,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.296875
+125,Neural Net,6,1.0,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,[[9]],0.421875
+126,Neural Net,7,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[4 0]
+ [5 0]]",0.28125
+127,Neural Net,8,0.14285714285714285,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[1 0]
+ [6 0]]",0.375
+128,Neural Net,avg,0.5058621933621934,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[35 14]
+ [24  6]]",2.828125
+129,Neural Net,std,0.25831575805698265,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[35 14]
+ [24  6]]",2.828125
+130,AdaBoost,1,0.5833333333333334,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[7 3]
+ [2 0]]",0.359375
+131,AdaBoost,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[7 0]
+ [4 0]]",0.328125
+132,AdaBoost,3,0.45454545454545453,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[5 0]
+ [6 0]]",0.46875
+133,AdaBoost,4,0.8181818181818182,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[9 0]
+ [2 0]]",0.734375
+134,AdaBoost,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.34375
+135,AdaBoost,6,0.2222222222222222,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,"[[2 7]
+ [0 0]]",0.34375
+136,AdaBoost,7,0.5555555555555556,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[0 4]
+ [0 5]]",0.234375
+137,AdaBoost,8,0.42857142857142855,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[1 0]
+ [4 2]]",0.296875
+138,AdaBoost,avg,0.5179022366522366,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[35 14]
+ [23  7]]",3.125
+139,AdaBoost,std,0.16382792970948354,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[35 14]
+ [23  7]]",3.125
+140,Naive Bayes,1,0.8333333333333334,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[10  0]
+ [ 2  0]]",0.078125
+141,Naive Bayes,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[7 0]
+ [4 0]]",0.109375
+142,Naive Bayes,3,0.45454545454545453,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[5 0]
+ [6 0]]",0.046875
+143,Naive Bayes,4,0.8181818181818182,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[9 0]
+ [2 0]]",0.0625
+144,Naive Bayes,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.0
+145,Naive Bayes,6,0.8888888888888888,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,"[[8 1]
+ [0 0]]",0.078125
+146,Naive Bayes,7,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[0 4]
+ [1 4]]",0.03125
+147,Naive Bayes,8,0.14285714285714285,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[1 0]
+ [6 0]]",0.125
+148,Naive Bayes,avg,0.5828823953823954,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[44  5]
+ [26  4]]",0.53125
+149,Naive Bayes,std,0.24057598426962037,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[44  5]
+ [26  4]]",0.53125
+150,QDA,1,0.75,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_03,60,"[[9 1]
+ [2 0]]",0.0
+151,QDA,2,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_07,60,"[[7 0]
+ [4 0]]",0.015625
+152,QDA,3,0.6363636363636364,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_05,60,"[[5 0]
+ [4 2]]",0.0
+153,QDA,4,0.7272727272727273,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_04,60,"[[8 1]
+ [2 0]]",0.015625
+154,QDA,5,0.4444444444444444,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_11,60,"[[4 0]
+ [5 0]]",0.03125
+155,QDA,6,0.6666666666666666,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_06,60,"[[6 3]
+ [0 0]]",0.015625
+156,QDA,7,0.5555555555555556,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_02,60,"[[0 4]
+ [0 5]]",0.015625
+157,QDA,8,0.5714285714285714,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,dyad_10,60,"[[0 1]
+ [2 4]]",0.015625
+158,QDA,avg,0.6235119047619048,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,avg,60,"[[39 10]
+ [19 11]]",0.109375
+159,QDA,std,0.09243518564619892,Nested,SIMPLE_dyads_f_Blinks_60s_binary_all_groups_avg_separated_with_group_name_Manual,Dyads,Blinks,std,60,"[[39 10]
+ [19 11]]",0.109375
