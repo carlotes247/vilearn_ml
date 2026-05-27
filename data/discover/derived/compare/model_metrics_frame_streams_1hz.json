@@ -1,0 +1,48 @@
+{
+  "individual_engagement": {
+    "target": "engagement_target",
+    "status": "ok",
+    "rows": 41249,
+    "linear": {
+      "r2": 0.3102198341588026,
+      "mae": 0.14181988313375693,
+      "corr_pred_true_pearson": 0.564253088212473,
+      "corr_pred_true_pearson_p": 0.0,
+      "corr_pred_true_spearman": 0.5392875528342083,
+      "corr_pred_true_spearman_p": 0.0
+    },
+    "logistic": {
+      "threshold_median": 0.46464822,
+      "accuracy": 0.6946666666666667,
+      "roc_auc": 0.7629601842453055,
+      "corr_pred_true_pearson": 0.4635330051295095,
+      "corr_pred_true_pearson_p": 0.0,
+      "corr_pred_true_spearman": 0.45546057891377983,
+      "corr_pred_true_spearman_p": 0.0
+    },
+    "include_streams": true
+  },
+  "group_task_engagement": {
+    "target": "task_engagement",
+    "status": "ok",
+    "rows": 42408,
+    "linear": {
+      "r2": 0.3087650539223906,
+      "mae": 0.2631433319564834,
+      "corr_pred_true_pearson": 0.5571238664419093,
+      "corr_pred_true_pearson_p": 0.0,
+      "corr_pred_true_spearman": 0.5357050187146493,
+      "corr_pred_true_spearman_p": 0.0
+    },
+    "logistic": {
+      "threshold_median": 0.6323757,
+      "accuracy": 0.7131572742277764,
+      "roc_auc": 0.7919043796575065,
+      "corr_pred_true_pearson": 0.5031419976162519,
+      "corr_pred_true_pearson_p": 0.0,
+      "corr_pred_true_spearman": 0.5055630400150248,
+      "corr_pred_true_spearman_p": 0.0
+    },
+    "include_streams": true
+  }
+}

@@ -6,11 +6,12 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 from scipy.stats import pearsonr, spearmanr
-from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.metrics import accuracy_score, mean_absolute_error, r2_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
 
 """
 Derive segment-level and session-role-level statistics for ViLearn and run simple models.
@@ -32,9 +33,16 @@ Outputs:
 MERGED_ROOT = Path("data/discover/merged")
 ANNOTATION_ROOT = Path("data/discover")
 OUTPUT_ROOT = Path("data/discover/derived")
+COMPARE_OUTPUT_ROOT = OUTPUT_ROOT / "compare"
 SESSION_SET_FILES = [Path("discover/vilearn_more.set")]
 ROLES = ["p_blue", "p_green", "p_red"]
 GENERATE_PARQUET = False
+USE_PARQUET_INPUT = True
+STREAM_PREFIXES = ("opensmile_", "emow2v_", "sentiment_emb_")
+FRAME_DOWNSAMPLE_STRIDE = 25
+WRITE_LEGACY_OUTPUTS = False
+PCA_EXPLAINED_VARIANCE = 0.95
+PCA_MAX_COMPONENTS = 128
 
 
 def load_sessions_from_set_files() -> list[str]:
@@ -57,7 +65,9 @@ def seg_mean_std(series: pd.Series) -> tuple[float, float]:
     return float(series.mean()), float(series.std(ddof=0))
 
 
-def build_segment_rows(session: str, role: str, frame_df: pd.DataFrame, tr_df: pd.DataFrame) -> list[dict]:
+def build_segment_rows(
+    session: str, role: str, frame_df: pd.DataFrame, tr_df: pd.DataFrame, include_streams: bool
+) -> list[dict]:
     rows: list[dict] = []
     tr = tr_df.copy()
     tr["from"] = pd.to_numeric(tr["from"], errors="coerce")
@@ -67,6 +77,7 @@ def build_segment_rows(session: str, role: str, frame_df: pd.DataFrame, tr_df: p
     sentiment_col = f"sentiment_{role}"
     engagement_col = f"engagement_{role}"
     feature_cols = [sentiment_col, engagement_col, "task_engagement", "arousal", "dominance", "valence"]
+    stream_cols = [c for c in frame_df.columns if c.startswith(STREAM_PREFIXES)] if include_streams else []
 
     for i, seg in tr.iterrows():
         start_ms = float(seg["from"])
@@ -108,6 +119,10 @@ def build_segment_rows(session: str, role: str, frame_df: pd.DataFrame, tr_df: p
             out[f"{col}_mean"] = m
             out[f"{col}_std"] = s
 
+        # Stream features are high-dimensional; keep segment means only.
+        for col in stream_cols:
+            out[f"{col}_mean"] = float(window[col].mean()) if col in window.columns else np.nan
+
         rows.append(out)
 
     return rows
@@ -147,7 +162,61 @@ def build_session_role_stats(segments_df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(grouped)
 
 
-def run_models(segments_df: pd.DataFrame, target_col: str, name: str) -> tuple[dict, pd.DataFrame]:
+def transform_with_block_pca(
+    x_train: pd.DataFrame, x_test: pd.DataFrame
+) -> tuple[pd.DataFrame, pd.DataFrame, list[dict]]:
+    train_blocks = []
+    test_blocks = []
+    block_info: list[dict] = []
+
+    stream_blocks = [
+        ("opensmile", [c for c in x_train.columns if c.startswith("opensmile_")]),
+        ("emow2v", [c for c in x_train.columns if c.startswith("emow2v_")]),
+        ("sentiment_emb", [c for c in x_train.columns if c.startswith("sentiment_emb_")]),
+    ]
+    stream_cols = {c for _, cols in stream_blocks for c in cols}
+    base_cols = [c for c in x_train.columns if c not in stream_cols]
+    if base_cols:
+        train_blocks.append(x_train[base_cols].reset_index(drop=True))
+        test_blocks.append(x_test[base_cols].reset_index(drop=True))
+        block_info.append({"block": "base", "input_dims": len(base_cols), "output_dims": len(base_cols)})
+
+    for block_name, cols in stream_blocks:
+        if not cols:
+            continue
+        tr = x_train[cols].to_numpy(dtype=float)
+        te = x_test[cols].to_numpy(dtype=float)
+        scaler = StandardScaler()
+        tr_s = scaler.fit_transform(tr)
+        te_s = scaler.transform(te)
+
+        max_comp = min(PCA_MAX_COMPONENTS, tr_s.shape[0] - 1, tr_s.shape[1])
+        if max_comp < 2:
+            # Degenerate case: keep one standardized dimension.
+            tr_df = pd.DataFrame(tr_s[:, :1], columns=[f"{block_name}_pc001"])
+            te_df = pd.DataFrame(te_s[:, :1], columns=[f"{block_name}_pc001"])
+            out_dims = 1
+        else:
+            pca = PCA(n_components=min(PCA_EXPLAINED_VARIANCE, max_comp), svd_solver="full")
+            tr_p = pca.fit_transform(tr_s)
+            te_p = pca.transform(te_s)
+            out_dims = tr_p.shape[1]
+            pc_cols = [f"{block_name}_pc{i + 1:03d}" for i in range(out_dims)]
+            tr_df = pd.DataFrame(tr_p, columns=pc_cols)
+            te_df = pd.DataFrame(te_p, columns=pc_cols)
+
+        train_blocks.append(tr_df.reset_index(drop=True))
+        test_blocks.append(te_df.reset_index(drop=True))
+        block_info.append({"block": block_name, "input_dims": len(cols), "output_dims": out_dims})
+
+    x_train_out = pd.concat(train_blocks, axis=1) if train_blocks else pd.DataFrame(index=x_train.index)
+    x_test_out = pd.concat(test_blocks, axis=1) if test_blocks else pd.DataFrame(index=x_test.index)
+    return x_train_out, x_test_out, block_info
+
+
+def run_models(
+    data_df: pd.DataFrame, target_col: str, name: str, use_pca: bool = False, include_streams: bool = True
+) -> tuple[dict, pd.DataFrame]:
     # Leakage-safe explanatory set (task-agnostic):
     # Do not use engagement or task_engagement as predictors for either engagement target.
     predictors = [
@@ -157,6 +226,14 @@ def run_models(segments_df: pd.DataFrame, target_col: str, name: str) -> tuple[d
         "words_per_second",
         "question",
         "statement",
+        "sentiment_role",
+        "speaking_role",
+        "sentiment_p_blue",
+        "sentiment_p_green",
+        "sentiment_p_red",
+        "arousal",
+        "dominance",
+        "valence",
         "sentiment_p_blue_mean",
         "sentiment_p_green_mean",
         "sentiment_p_red_mean",
@@ -165,7 +242,7 @@ def run_models(segments_df: pd.DataFrame, target_col: str, name: str) -> tuple[d
         "valence_mean",
     ]
 
-    use = segments_df.copy()
+    use = data_df.copy()
     use = use.rename(
         columns={
             "sentiment_p_blue_mean": "sentiment_p_blue_mean",
@@ -178,7 +255,14 @@ def run_models(segments_df: pd.DataFrame, target_col: str, name: str) -> tuple[d
         }
     )
 
+    stream_predictors = [
+        c
+        for c in use.columns
+        if c.startswith(STREAM_PREFIXES) and (c.endswith("_mean") or c.startswith("opensmile_") or c.startswith("emow2v_") or c.startswith("sentiment_emb_"))
+    ]
     predictor_cols = [c for c in predictors if c in use.columns and c != target_col]
+    if include_streams:
+        predictor_cols += stream_predictors
     # Safety guard against leakage: never use any engagement variable as predictor.
     predictor_cols = [c for c in predictor_cols if "engagement" not in c.lower()]
     keep_cols = ["role", target_col] + predictor_cols
@@ -187,16 +271,21 @@ def run_models(segments_df: pd.DataFrame, target_col: str, name: str) -> tuple[d
         return {"target": target_col, "status": "insufficient_rows", "rows": int(len(use))}, pd.DataFrame()
 
     x = use.drop(columns=[target_col])
-    x = pd.get_dummies(x, columns=["role"], drop_first=True)
+    if "role" in x.columns:
+        x = pd.get_dummies(x, columns=["role"], drop_first=True)
     y = use[target_col].astype(float)
 
     x = x.replace([np.inf, -np.inf], np.nan).fillna(0.0)
     x = x.astype(float)
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+    pca_info: list[dict] = []
+    if use_pca:
+        x_train, x_test, pca_info = transform_with_block_pca(x_train, x_test)
 
     # Linear regression
-    lin = Pipeline([("scaler", StandardScaler()), ("model", LinearRegression())])
+    # Use ridge regularization to keep linear estimates stable in high-dimensional settings.
+    lin = Pipeline([("scaler", StandardScaler()), ("model", Ridge(alpha=10.0))])
     lin.fit(x_train, y_train)
     y_pred = lin.predict(x_test)
     y_test_arr = np.asarray(y_test)
@@ -214,8 +303,8 @@ def run_models(segments_df: pd.DataFrame, target_col: str, name: str) -> tuple[d
         {
             "analysis": name,
             "target": target_col,
-            "model": "linear",
-            "feature": x.columns,
+            "model": "linear_pca" if use_pca else "linear",
+            "feature": x_train.columns,
             "coef": lin.named_steps["model"].coef_,
         }
     )
@@ -223,33 +312,40 @@ def run_models(segments_df: pd.DataFrame, target_col: str, name: str) -> tuple[d
     # statsmodels OLS (for significance tests)
     sm_lin_summary = ""
     sm_lin_table = pd.DataFrame()
-    try:
-        x_sm = sm.add_constant(x, has_constant="add").astype(float)
-        ols = sm.OLS(y, x_sm).fit()
-        sm_lin_summary = ols.summary().as_text()
-        sm_lin_table = (
-            pd.DataFrame(
-                {
-                    "analysis": name,
-                    "target": target_col,
-                    "model": "linear_statsmodels",
-                    "feature": ols.params.index,
-                    "coef": ols.params.values,
-                    "std_err": ols.bse.values,
-                    "t": ols.tvalues.values,
-                    "p_value": ols.pvalues.values,
-                }
+    if (not use_pca) and x.shape[1] <= 80:
+        try:
+            x_sm = sm.add_constant(x, has_constant="add").astype(float)
+            ols = sm.OLS(y, x_sm).fit()
+            sm_lin_summary = ols.summary().as_text()
+            sm_lin_table = (
+                pd.DataFrame(
+                    {
+                        "analysis": name,
+                        "target": target_col,
+                        "model": "linear_statsmodels",
+                        "feature": ols.params.index,
+                        "coef": ols.params.values,
+                        "std_err": ols.bse.values,
+                        "t": ols.tvalues.values,
+                        "p_value": ols.pvalues.values,
+                    }
+                )
             )
-        )
-        lin_metrics["f_pvalue"] = float(ols.f_pvalue) if ols.f_pvalue is not None else np.nan
-        lin_metrics["adj_r2"] = float(ols.rsquared_adj)
-    except Exception as e:
-        sm_lin_summary = f"statsmodels OLS failed: {e}"
+            lin_metrics["f_pvalue"] = float(ols.f_pvalue) if ols.f_pvalue is not None else np.nan
+            lin_metrics["adj_r2"] = float(ols.rsquared_adj)
+        except Exception as e:
+            sm_lin_summary = f"statsmodels OLS failed: {e}"
+    else:
+        if use_pca:
+            sm_lin_summary = "statsmodels OLS skipped in PCA mode (component-space inference not directly interpretable)."
+        else:
+            sm_lin_summary = f"statsmodels OLS skipped: high-dimensional design matrix with {x.shape[1]} predictors"
 
     # Logistic regression (median split)
     thr = float(y.median())
-    y_bin = (y > thr).astype(int)
-    if y_bin.nunique() < 2:
+    yb_train = (y_train > thr).astype(int)
+    yb_test = (y_test > thr).astype(int)
+    if yb_train.nunique() < 2 or yb_test.nunique() < 2:
         return {
             "target": target_col,
             "status": "single_class_for_logistic",
@@ -258,13 +354,12 @@ def run_models(segments_df: pd.DataFrame, target_col: str, name: str) -> tuple[d
             "linear_statsmodels_summary": sm_lin_summary,
         }, pd.concat([lin_coefs, sm_lin_table], ignore_index=True)
 
-    xb_train, xb_test, yb_train, yb_test = train_test_split(x, y_bin, test_size=0.2, random_state=42)
     logi = Pipeline(
         [("scaler", StandardScaler()), ("model", LogisticRegression(max_iter=2000, solver="lbfgs"))]
     )
-    logi.fit(xb_train, yb_train)
-    yb_pred = logi.predict(xb_test)
-    yb_prob = logi.predict_proba(xb_test)[:, 1]
+    logi.fit(x_train, yb_train)
+    yb_pred = logi.predict(x_test)
+    yb_prob = logi.predict_proba(x_test)[:, 1]
     yb_test_arr = np.asarray(yb_test)
     log_corr_pearson, log_corr_pearson_p = pearsonr(yb_prob, yb_test_arr)
     log_corr_spearman, log_corr_spearman_p = spearmanr(yb_prob, yb_test_arr)
@@ -281,8 +376,8 @@ def run_models(segments_df: pd.DataFrame, target_col: str, name: str) -> tuple[d
         {
             "analysis": name,
             "target": target_col,
-            "model": "logistic",
-            "feature": x.columns,
+            "model": "logistic_pca" if use_pca else "logistic",
+            "feature": x_train.columns,
             "coef": logi.named_steps["model"].coef_[0],
         }
     )
@@ -290,26 +385,33 @@ def run_models(segments_df: pd.DataFrame, target_col: str, name: str) -> tuple[d
     # statsmodels Logit (for significance tests)
     sm_logi_summary = ""
     sm_logi_table = pd.DataFrame()
-    try:
-        x_logit = sm.add_constant(x, has_constant="add").astype(float)
-        logit_model = sm.Logit(y_bin, x_logit).fit(disp=False)
-        sm_logi_summary = logit_model.summary().as_text()
-        sm_logi_table = pd.DataFrame(
-            {
-                "analysis": name,
-                "target": target_col,
-                "model": "logistic_statsmodels",
-                "feature": logit_model.params.index,
-                "coef": logit_model.params.values,
-                "std_err": logit_model.bse.values,
-                "z": logit_model.tvalues.values,
-                "p_value": logit_model.pvalues.values,
-            }
-        )
-        logi_metrics["llr_pvalue"] = float(logit_model.llr_pvalue) if logit_model.llr_pvalue is not None else np.nan
-        logi_metrics["pseudo_r2"] = float(logit_model.prsquared) if logit_model.prsquared is not None else np.nan
-    except Exception as e:
-        sm_logi_summary = f"statsmodels Logit failed: {e}"
+    if (not use_pca) and x.shape[1] <= 80:
+        try:
+            x_logit = sm.add_constant(x, has_constant="add").astype(float)
+            y_bin_full = (y > thr).astype(int)
+            logit_model = sm.Logit(y_bin_full, x_logit).fit(disp=False)
+            sm_logi_summary = logit_model.summary().as_text()
+            sm_logi_table = pd.DataFrame(
+                {
+                    "analysis": name,
+                    "target": target_col,
+                    "model": "logistic_statsmodels",
+                    "feature": logit_model.params.index,
+                    "coef": logit_model.params.values,
+                    "std_err": logit_model.bse.values,
+                    "z": logit_model.tvalues.values,
+                    "p_value": logit_model.pvalues.values,
+                }
+            )
+            logi_metrics["llr_pvalue"] = float(logit_model.llr_pvalue) if logit_model.llr_pvalue is not None else np.nan
+            logi_metrics["pseudo_r2"] = float(logit_model.prsquared) if logit_model.prsquared is not None else np.nan
+        except Exception as e:
+            sm_logi_summary = f"statsmodels Logit failed: {e}"
+    else:
+        if use_pca:
+            sm_logi_summary = "statsmodels Logit skipped in PCA mode (component-space inference not directly interpretable)."
+        else:
+            sm_logi_summary = f"statsmodels Logit skipped: high-dimensional design matrix with {x.shape[1]} predictors"
 
     metrics = {
         "target": target_col,
@@ -320,6 +422,9 @@ def run_models(segments_df: pd.DataFrame, target_col: str, name: str) -> tuple[d
         "linear_statsmodels_summary": sm_lin_summary,
         "logistic_statsmodels_summary": sm_logi_summary,
     }
+    if pca_info:
+        metrics["pca"] = pca_info
+    metrics["include_streams"] = include_streams
     coef_tables = [lin_coefs, logi_coefs]
     if not sm_lin_table.empty:
         coef_tables.append(sm_lin_table)
@@ -328,112 +433,271 @@ def run_models(segments_df: pd.DataFrame, target_col: str, name: str) -> tuple[d
     return metrics, pd.concat(coef_tables, ignore_index=True)
 
 
-def main() -> None:
-    OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
-    sessions = load_sessions_from_set_files()
-    if not sessions:
-        sessions = sorted([p.stem for p in MERGED_ROOT.glob("recording_*.csv")])
+def build_frame_role_rows(session: str, frame_df: pd.DataFrame, role: str, stride: int) -> pd.DataFrame:
+    sampled = frame_df.iloc[::stride].copy()
+    engagement_col = f"engagement_{role}"
+    sentiment_col = f"sentiment_{role}"
+    speaking_col = f"speaking_{role}"
+    sentiment_emb_cols = [c for c in sampled.columns if c.startswith(f"sentiment_emb_{role}_")]
+    rename_emb = {c: c.replace(f"sentiment_emb_{role}_", "sentiment_emb_") for c in sentiment_emb_cols}
+    opensmile_cols = [c for c in sampled.columns if c.startswith("opensmile_")]
+    emow2v_cols = [c for c in sampled.columns if c.startswith("emow2v_")]
 
-    segment_rows: list[dict] = []
-    for ses in sessions:
-        merged_path = MERGED_ROOT / f"{ses}.csv"
-        if not merged_path.exists():
-            continue
-        frame_df = pd.read_csv(merged_path)
-        for role in ROLES:
-            tr_path = ANNOTATION_ROOT / ses / f"transcript.{role}.helenrisack.csv"
-            if not tr_path.exists():
-                continue
-            tr_df = pd.read_csv(tr_path)
-            segment_rows.extend(build_segment_rows(ses, role, frame_df, tr_df))
+    keep = ["session", "time_ms", "task_engagement", "arousal", "dominance", "valence"] + opensmile_cols + emow2v_cols + sentiment_emb_cols
+    if sentiment_col in sampled.columns:
+        keep.append(sentiment_col)
+    if speaking_col in sampled.columns:
+        keep.append(speaking_col)
+    if engagement_col in sampled.columns:
+        keep.append(engagement_col)
+    use = sampled[[c for c in keep if c in sampled.columns]].copy()
+    if engagement_col not in use.columns:
+        return pd.DataFrame()
+    use = use.rename(columns=rename_emb)
+    if sentiment_col in use.columns:
+        use = use.rename(columns={sentiment_col: "sentiment_role"})
+    if speaking_col in use.columns:
+        use = use.rename(columns={speaking_col: "speaking_role"})
+    use = use.rename(columns={engagement_col: "engagement_target"})
+    use["role"] = role
+    return use
 
-    segments_df = pd.DataFrame(segment_rows)
-    segments_csv = OUTPUT_ROOT / "segments.csv"
-    segments_df.to_csv(segments_csv, index=False)
-    segments_parquet = OUTPUT_ROOT / "segments.parquet"
-    if GENERATE_PARQUET:
-        segments_df.to_parquet(segments_parquet, index=False)
 
-    session_role_df = build_session_role_stats(segments_df)
-    session_role_csv = OUTPUT_ROOT / "session_role_stats.csv"
-    session_role_df.to_csv(session_role_csv, index=False)
-    session_role_parquet = OUTPUT_ROOT / "session_role_stats.parquet"
-    if GENERATE_PARQUET:
-        session_role_df.to_parquet(session_role_parquet, index=False)
-
-    # Modeling targets
+def build_model_outputs(
+    input_df: pd.DataFrame, use_pca: bool = False, include_streams: bool = True
+) -> tuple[dict, list[pd.DataFrame], str]:
     model_metrics = {}
     coef_frames = []
 
-    # Individual engagement target, role-specific
-    # Build unified per-role target column for modeling
-    segments_model = segments_df.copy()
-    segments_model["engagement_target"] = np.nan
-    for role in ROLES:
-        col = f"engagement_{role}_mean"
-        idx = segments_model["role"] == role
-        if col in segments_model.columns:
-            segments_model.loc[idx, "engagement_target"] = segments_model.loc[idx, col]
-
-    m1, c1 = run_models(segments_model, "engagement_target", "individual_engagement")
+    m1, c1 = run_models(
+        input_df, "engagement_target", "individual_engagement", use_pca=use_pca, include_streams=include_streams
+    )
     model_metrics["individual_engagement"] = m1
     if not c1.empty:
         coef_frames.append(c1)
 
-    # Group task engagement target
-    m2, c2 = run_models(segments_df, "task_engagement_mean", "group_task_engagement")
+    m2, c2 = run_models(
+        input_df, "task_engagement", "group_task_engagement", use_pca=use_pca, include_streams=include_streams
+    )
     model_metrics["group_task_engagement"] = m2
     if not c2.empty:
         coef_frames.append(c2)
 
-    # Write full summaries to text for easier inspection.
-    summaries_path = OUTPUT_ROOT / "model_summaries.txt"
-    with summaries_path.open("w") as fh:
-        for k in ["individual_engagement", "group_task_engagement"]:
-            fh.write(f"=== {k} ===\n")
-            m = model_metrics.get(k, {})
-            lin_m = m.get("linear", {})
-            log_m = m.get("logistic", {})
-            fh.write(
-                "Linear pred-vs-true corr: "
-                f"pearson={lin_m.get('corr_pred_true_pearson', np.nan):.4f} (p={lin_m.get('corr_pred_true_pearson_p', np.nan):.3g}), "
-                f"spearman={lin_m.get('corr_pred_true_spearman', np.nan):.4f} (p={lin_m.get('corr_pred_true_spearman_p', np.nan):.3g})\n"
-            )
-            fh.write("Linear (statsmodels)\n")
-            fh.write(m.get("linear_statsmodels_summary", "n/a"))
-            fh.write("\n\n")
-            fh.write(
-                "Logistic pred-vs-true corr: "
-                f"pearson={log_m.get('corr_pred_true_pearson', np.nan):.4f} (p={log_m.get('corr_pred_true_pearson_p', np.nan):.3g}), "
-                f"spearman={log_m.get('corr_pred_true_spearman', np.nan):.4f} (p={log_m.get('corr_pred_true_spearman_p', np.nan):.3g})\n"
-            )
-            fh.write("Logistic (statsmodels)\n")
-            fh.write(m.get("logistic_statsmodels_summary", "n/a"))
-            fh.write("\n\n")
+    summary_chunks = []
+    for k in ["individual_engagement", "group_task_engagement"]:
+        m = model_metrics.get(k, {})
+        lin_m = m.get("linear", {})
+        log_m = m.get("logistic", {})
+        summary_chunks.append(f"=== {k} ===")
+        summary_chunks.append(
+            "Linear pred-vs-true corr: "
+            f"pearson={lin_m.get('corr_pred_true_pearson', np.nan):.4f} (p={lin_m.get('corr_pred_true_pearson_p', np.nan):.3g}), "
+            f"spearman={lin_m.get('corr_pred_true_spearman', np.nan):.4f} (p={lin_m.get('corr_pred_true_spearman_p', np.nan):.3g})"
+        )
+        summary_chunks.append("Linear (statsmodels)")
+        summary_chunks.append(m.get("linear_statsmodels_summary", "n/a"))
+        summary_chunks.append("")
+        summary_chunks.append(
+            "Logistic pred-vs-true corr: "
+            f"pearson={log_m.get('corr_pred_true_pearson', np.nan):.4f} (p={log_m.get('corr_pred_true_pearson_p', np.nan):.3g}), "
+            f"spearman={log_m.get('corr_pred_true_spearman', np.nan):.4f} (p={log_m.get('corr_pred_true_spearman_p', np.nan):.3g})"
+        )
+        summary_chunks.append("Logistic (statsmodels)")
+        summary_chunks.append(m.get("logistic_statsmodels_summary", "n/a"))
+        summary_chunks.append("")
+    return model_metrics, coef_frames, "\n".join(summary_chunks)
 
-    # Keep JSON compact and machine-readable without huge summary text blocks.
+
+def write_model_artifacts(root: Path, tag: str, model_metrics: dict, coef_frames: list[pd.DataFrame], summary_text: str) -> None:
+    root.mkdir(parents=True, exist_ok=True)
+    summaries_path = root / f"model_summaries_{tag}.txt"
+    summaries_path.write_text(summary_text)
+
     json_metrics = {}
     for k, v in model_metrics.items():
         vv = dict(v)
         vv.pop("linear_statsmodels_summary", None)
         vv.pop("logistic_statsmodels_summary", None)
         json_metrics[k] = vv
+    (root / f"model_metrics_{tag}.json").write_text(json.dumps(json_metrics, indent=2))
 
-    metrics_path = OUTPUT_ROOT / "model_metrics.json"
-    metrics_path.write_text(json.dumps(json_metrics, indent=2))
-
-    coef_path = OUTPUT_ROOT / "model_coefficients.csv"
+    coef_path = root / f"model_coefficients_{tag}.csv"
     if coef_frames:
         pd.concat(coef_frames, ignore_index=True).to_csv(coef_path, index=False)
     else:
         pd.DataFrame(columns=["analysis", "target", "model", "feature", "coef"]).to_csv(coef_path, index=False)
 
+
+def main() -> None:
+    OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
+    COMPARE_OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
+    sessions = load_sessions_from_set_files()
+    if not sessions:
+        sessions = sorted([p.stem for p in MERGED_ROOT.glob("recording_*.csv")])
+
+    segment_rows: list[dict] = []
+    frame_rows: list[pd.DataFrame] = []
+    for ses in sessions:
+        merged_csv = MERGED_ROOT / f"{ses}.csv"
+        merged_parquet = MERGED_ROOT / f"{ses}.parquet"
+        if USE_PARQUET_INPUT and merged_parquet.exists():
+            frame_df = pd.read_parquet(merged_parquet)
+        elif merged_csv.exists():
+            frame_df = pd.read_csv(merged_csv)
+        else:
+            continue
+        for role in ROLES:
+            tr_path = ANNOTATION_ROOT / ses / f"transcript.{role}.helenrisack.csv"
+            if not tr_path.exists():
+                continue
+            tr_df = pd.read_csv(tr_path)
+            segment_rows.extend(build_segment_rows(ses, role, frame_df, tr_df, include_streams=True))
+            frame_role = build_frame_role_rows(ses, frame_df, role, FRAME_DOWNSAMPLE_STRIDE)
+            if not frame_role.empty:
+                frame_rows.append(frame_role)
+
+    segments_df = pd.DataFrame(segment_rows)
+    segments_compare_csv = COMPARE_OUTPUT_ROOT / "segments_streams.csv"
+    segments_df.to_csv(segments_compare_csv, index=False)
+    segments_compare_parquet = COMPARE_OUTPUT_ROOT / "segments_streams.parquet"
+    if GENERATE_PARQUET:
+        segments_df.to_parquet(segments_compare_parquet, index=False)
+
+    session_role_df = build_session_role_stats(segments_df)
+    session_role_compare_csv = COMPARE_OUTPUT_ROOT / "session_role_stats_streams.csv"
+    session_role_df.to_csv(session_role_compare_csv, index=False)
+    session_role_compare_parquet = COMPARE_OUTPUT_ROOT / "session_role_stats_streams.parquet"
+    if GENERATE_PARQUET:
+        session_role_df.to_parquet(session_role_compare_parquet, index=False)
+
+    # Segment-level stream analysis
+    segment_model_df = segments_df.copy()
+    segment_model_df["engagement_target"] = np.nan
+    for role in ROLES:
+        col = f"engagement_{role}_mean"
+        idx = segment_model_df["role"] == role
+        if col in segment_model_df.columns:
+            segment_model_df.loc[idx, "engagement_target"] = segment_model_df.loc[idx, col]
+    segment_model_df["task_engagement"] = segment_model_df.get("task_engagement_mean", np.nan)
+    seg_metrics, seg_coefs, seg_summary = build_model_outputs(segment_model_df)
+    write_model_artifacts(COMPARE_OUTPUT_ROOT, "segment_streams", seg_metrics, seg_coefs, seg_summary)
+    seg_pca_metrics, seg_pca_coefs, seg_pca_summary = build_model_outputs(segment_model_df, use_pca=True)
+    write_model_artifacts(COMPARE_OUTPUT_ROOT, "segment_streams_pca", seg_pca_metrics, seg_pca_coefs, seg_pca_summary)
+    seg_base_pca_metrics, seg_base_pca_coefs, seg_base_pca_summary = build_model_outputs(
+        segment_model_df, use_pca=True, include_streams=False
+    )
+    write_model_artifacts(
+        COMPARE_OUTPUT_ROOT, "segment_base_only_pca", seg_base_pca_metrics, seg_base_pca_coefs, seg_base_pca_summary
+    )
+
+    # Frame-level downsampled stream analysis
+    frame_df_all = pd.concat(frame_rows, ignore_index=True) if frame_rows else pd.DataFrame()
+    frame_df_all.to_csv(COMPARE_OUTPUT_ROOT / "frame_rows_streams_1hz.csv", index=False)
+    if GENERATE_PARQUET and not frame_df_all.empty:
+        frame_df_all.to_parquet(COMPARE_OUTPUT_ROOT / "frame_rows_streams_1hz.parquet", index=False)
+    frame_metrics, frame_coefs, frame_summary = build_model_outputs(frame_df_all)
+    write_model_artifacts(COMPARE_OUTPUT_ROOT, "frame_streams_1hz", frame_metrics, frame_coefs, frame_summary)
+    frame_pca_metrics, frame_pca_coefs, frame_pca_summary = build_model_outputs(frame_df_all, use_pca=True)
+    write_model_artifacts(
+        COMPARE_OUTPUT_ROOT, "frame_streams_1hz_pca", frame_pca_metrics, frame_pca_coefs, frame_pca_summary
+    )
+    frame_base_pca_metrics, frame_base_pca_coefs, frame_base_pca_summary = build_model_outputs(
+        frame_df_all, use_pca=True, include_streams=False
+    )
+    write_model_artifacts(
+        COMPARE_OUTPUT_ROOT,
+        "frame_base_only_1hz_pca",
+        frame_base_pca_metrics,
+        frame_base_pca_coefs,
+        frame_base_pca_summary,
+    )
+
+    # Compact ablation table for stream utility checks.
+    def get_metric(d: dict, analysis: str, target: str, key: str) -> float:
+        return float(d.get(analysis, {}).get(target, {}).get(key, np.nan))
+
+    ablation_rows = [
+        {
+            "analysis": "segment",
+            "target": "individual_engagement",
+            "model": "linear_r2",
+            "base_only_pca": get_metric(seg_base_pca_metrics, "individual_engagement", "linear", "r2"),
+            "streams_pca": get_metric(seg_pca_metrics, "individual_engagement", "linear", "r2"),
+        },
+        {
+            "analysis": "segment",
+            "target": "individual_engagement",
+            "model": "logistic_auc",
+            "base_only_pca": get_metric(seg_base_pca_metrics, "individual_engagement", "logistic", "roc_auc"),
+            "streams_pca": get_metric(seg_pca_metrics, "individual_engagement", "logistic", "roc_auc"),
+        },
+        {
+            "analysis": "segment",
+            "target": "group_task_engagement",
+            "model": "linear_r2",
+            "base_only_pca": get_metric(seg_base_pca_metrics, "group_task_engagement", "linear", "r2"),
+            "streams_pca": get_metric(seg_pca_metrics, "group_task_engagement", "linear", "r2"),
+        },
+        {
+            "analysis": "segment",
+            "target": "group_task_engagement",
+            "model": "logistic_auc",
+            "base_only_pca": get_metric(seg_base_pca_metrics, "group_task_engagement", "logistic", "roc_auc"),
+            "streams_pca": get_metric(seg_pca_metrics, "group_task_engagement", "logistic", "roc_auc"),
+        },
+        {
+            "analysis": "frame_1hz",
+            "target": "individual_engagement",
+            "model": "linear_r2",
+            "base_only_pca": get_metric(frame_base_pca_metrics, "individual_engagement", "linear", "r2"),
+            "streams_pca": get_metric(frame_pca_metrics, "individual_engagement", "linear", "r2"),
+        },
+        {
+            "analysis": "frame_1hz",
+            "target": "individual_engagement",
+            "model": "logistic_auc",
+            "base_only_pca": get_metric(frame_base_pca_metrics, "individual_engagement", "logistic", "roc_auc"),
+            "streams_pca": get_metric(frame_pca_metrics, "individual_engagement", "logistic", "roc_auc"),
+        },
+        {
+            "analysis": "frame_1hz",
+            "target": "group_task_engagement",
+            "model": "linear_r2",
+            "base_only_pca": get_metric(frame_base_pca_metrics, "group_task_engagement", "linear", "r2"),
+            "streams_pca": get_metric(frame_pca_metrics, "group_task_engagement", "linear", "r2"),
+        },
+        {
+            "analysis": "frame_1hz",
+            "target": "group_task_engagement",
+            "model": "logistic_auc",
+            "base_only_pca": get_metric(frame_base_pca_metrics, "group_task_engagement", "logistic", "roc_auc"),
+            "streams_pca": get_metric(frame_pca_metrics, "group_task_engagement", "logistic", "roc_auc"),
+        },
+    ]
+    ablation_df = pd.DataFrame(ablation_rows)
+    ablation_df["delta_streams_minus_base"] = ablation_df["streams_pca"] - ablation_df["base_only_pca"]
+    ablation_df.to_csv(COMPARE_OUTPUT_ROOT / "ablation_streams_vs_base_pca.csv", index=False)
+
+    # Optional legacy outputs (kept off by default to avoid overwriting previous baseline files)
+    if WRITE_LEGACY_OUTPUTS:
+        segments_df.to_csv(OUTPUT_ROOT / "segments.csv", index=False)
+        if GENERATE_PARQUET:
+            segments_df.to_parquet(OUTPUT_ROOT / "segments.parquet", index=False)
+        session_role_df.to_csv(OUTPUT_ROOT / "session_role_stats.csv", index=False)
+        if GENERATE_PARQUET:
+            session_role_df.to_parquet(OUTPUT_ROOT / "session_role_stats.parquet", index=False)
+        write_model_artifacts(OUTPUT_ROOT, "", seg_metrics, seg_coefs, seg_summary)
+
     print(f"Derived segments: {len(segments_df)}")
     print(f"Derived session-role rows: {len(session_role_df)}")
+    print(f"Frame rows (downsampled): {len(frame_df_all)}")
     if GENERATE_PARQUET:
-        print(f"Wrote: {segments_csv}, {segments_parquet}, {session_role_csv}, {session_role_parquet}, {metrics_path}, {coef_path}, {summaries_path}")
+        print(
+            "Wrote comparison outputs under "
+            f"{COMPARE_OUTPUT_ROOT} (segment + frame, csv/json/txt and parquet where configured)"
+        )
     else:
-        print(f"Wrote: {segments_csv}, {session_role_csv}, {metrics_path}, {coef_path}, {summaries_path}")
+        print(f"Wrote comparison outputs under {COMPARE_OUTPUT_ROOT} (segment + frame, csv/json/txt)")
 
 
 if __name__ == "__main__":

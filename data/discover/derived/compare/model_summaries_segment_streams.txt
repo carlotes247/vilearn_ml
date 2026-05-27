@@ -1,0 +1,17 @@
+=== individual_engagement ===
+Linear pred-vs-true corr: pearson=0.4130 (p=8.77e-35), spearman=0.4091 (p=4.16e-34)
+Linear (statsmodels)
+statsmodels OLS skipped: high-dimensional design matrix with 3430 predictors
+
+Logistic pred-vs-true corr: pearson=0.2974 (p=4.75e-18), spearman=0.3046 (p=6.87e-19)
+Logistic (statsmodels)
+statsmodels Logit skipped: high-dimensional design matrix with 3430 predictors
+
+=== group_task_engagement ===
+Linear pred-vs-true corr: pearson=0.3911 (p=6.5e-32), spearman=0.3481 (p=3.39e-25)
+Linear (statsmodels)
+statsmodels OLS skipped: high-dimensional design matrix with 3430 predictors
+
+Logistic pred-vs-true corr: pearson=0.3441 (p=1.29e-24), spearman=0.3717 (p=9.47e-29)
+Logistic (statsmodels)
+statsmodels Logit skipped: high-dimensional design matrix with 3430 predictors

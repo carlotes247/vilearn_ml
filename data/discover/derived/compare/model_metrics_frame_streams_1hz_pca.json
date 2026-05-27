@@ -1,0 +1,92 @@
+{
+  "individual_engagement": {
+    "target": "engagement_target",
+    "status": "ok",
+    "rows": 41249,
+    "linear": {
+      "r2": 0.28640663917109077,
+      "mae": 0.14771902032983347,
+      "corr_pred_true_pearson": 0.5358267165553141,
+      "corr_pred_true_pearson_p": 0.0,
+      "corr_pred_true_spearman": 0.5108027707943219,
+      "corr_pred_true_spearman_p": 0.0
+    },
+    "logistic": {
+      "threshold_median": 0.46464822,
+      "accuracy": 0.6764848484848485,
+      "roc_auc": 0.7471539899677802,
+      "corr_pred_true_pearson": 0.43337004783546507,
+      "corr_pred_true_pearson_p": 0.0,
+      "corr_pred_true_spearman": 0.4280834305547452,
+      "corr_pred_true_spearman_p": 0.0
+    },
+    "pca": [
+      {
+        "block": "base",
+        "input_dims": 7,
+        "output_dims": 7
+      },
+      {
+        "block": "opensmile",
+        "input_dims": 88,
+        "output_dims": 65
+      },
+      {
+        "block": "emow2v",
+        "input_dims": 1024,
+        "output_dims": 37
+      },
+      {
+        "block": "sentiment_emb",
+        "input_dims": 768,
+        "output_dims": 118
+      }
+    ],
+    "include_streams": true
+  },
+  "group_task_engagement": {
+    "target": "task_engagement",
+    "status": "ok",
+    "rows": 42408,
+    "linear": {
+      "r2": 0.24517188704384363,
+      "mae": 0.281060898386754,
+      "corr_pred_true_pearson": 0.49556487259150317,
+      "corr_pred_true_pearson_p": 0.0,
+      "corr_pred_true_spearman": 0.46730869383054646,
+      "corr_pred_true_spearman_p": 0.0
+    },
+    "logistic": {
+      "threshold_median": 0.6323757,
+      "accuracy": 0.677906154208913,
+      "roc_auc": 0.744808376082748,
+      "corr_pred_true_pearson": 0.42597107315129207,
+      "corr_pred_true_pearson_p": 0.0,
+      "corr_pred_true_spearman": 0.423995237430586,
+      "corr_pred_true_spearman_p": 0.0
+    },
+    "pca": [
+      {
+        "block": "base",
+        "input_dims": 7,
+        "output_dims": 7
+      },
+      {
+        "block": "opensmile",
+        "input_dims": 88,
+        "output_dims": 65
+      },
+      {
+        "block": "emow2v",
+        "input_dims": 1024,
+        "output_dims": 36
+      },
+      {
+        "block": "sentiment_emb",
+        "input_dims": 768,
+        "output_dims": 117
+      }
+    ],
+    "include_streams": true
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "individual_engagement": {
+    "target": "engagement_target",
+    "status": "ok",
+    "rows": 41249,
+    "linear": {
+      "r2": 0.161628496882684,
+      "mae": 0.16192949043456595,
+      "corr_pred_true_pearson": 0.4024362968717625,
+      "corr_pred_true_pearson_p": 7.82254e-319,
+      "corr_pred_true_spearman": 0.3981147390506978,
+      "corr_pred_true_spearman_p": 0.0
+    },
+    "logistic": {
+      "threshold_median": 0.46464822,
+      "accuracy": 0.6524848484848484,
+      "roc_auc": 0.698534889444824,
+      "corr_pred_true_pearson": 0.35160358812657977,
+      "corr_pred_true_pearson_p": 1.1236599699492786e-238,
+      "corr_pred_true_spearman": 0.3438795890078094,
+      "corr_pred_true_spearman_p": 1.012100068921185e-227
+    },
+    "pca": [
+      {
+        "block": "base",
+        "input_dims": 7,
+        "output_dims": 7
+      }
+    ],
+    "include_streams": false
+  },
+  "group_task_engagement": {
+    "target": "task_engagement",
+    "status": "ok",
+    "rows": 42408,
+    "linear": {
+      "r2": 0.08311845080822211,
+      "mae": 0.32332147353025575,
+      "corr_pred_true_pearson": 0.2888051748338621,
+      "corr_pred_true_pearson_p": 1.2653371286163773e-162,
+      "corr_pred_true_spearman": 0.2735459679959815,
+      "corr_pred_true_spearman_p": 1.9256911983426706e-145
+    },
+    "logistic": {
+      "threshold_median": 0.6323757,
+      "accuracy": 0.5972647960386701,
+      "roc_auc": 0.6334581062409697,
+      "corr_pred_true_pearson": 0.22655928604376305,
+      "corr_pred_true_pearson_p": 3.5615718036647304e-99,
+      "corr_pred_true_spearman": 0.23114784337159267,
+      "corr_pred_true_spearman_p": 2.896344639299484e-103
+    },
+    "pca": [
+      {
+        "block": "base",
+        "input_dims": 7,
+        "output_dims": 7
+      }
+    ],
+    "include_streams": false
+  }
+}

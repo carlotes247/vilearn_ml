@@ -1,0 +1,48 @@
+{
+  "individual_engagement": {
+    "target": "engagement_target",
+    "status": "ok",
+    "rows": 4058,
+    "linear": {
+      "r2": -0.13558681960134789,
+      "mae": 0.17845274996238655,
+      "corr_pred_true_pearson": 0.41295356633506874,
+      "corr_pred_true_pearson_p": 8.774812225604017e-35,
+      "corr_pred_true_spearman": 0.4090948414454472,
+      "corr_pred_true_spearman_p": 4.155378491710451e-34
+    },
+    "logistic": {
+      "threshold_median": 0.511956,
+      "accuracy": 0.6379310344827587,
+      "roc_auc": 0.6763508771929825,
+      "corr_pred_true_pearson": 0.29743305721291613,
+      "corr_pred_true_pearson_p": 4.7507185062883145e-18,
+      "corr_pred_true_spearman": 0.30455722009562725,
+      "corr_pred_true_spearman_p": 6.87461816958924e-19
+    },
+    "include_streams": true
+  },
+  "group_task_engagement": {
+    "target": "task_engagement",
+    "status": "ok",
+    "rows": 4175,
+    "linear": {
+      "r2": -0.2519904295670772,
+      "mae": 0.31156904547360625,
+      "corr_pred_true_pearson": 0.39113254183843316,
+      "corr_pred_true_pearson_p": 6.501969873982647e-32,
+      "corr_pred_true_spearman": 0.34811059978015135,
+      "corr_pred_true_spearman_p": 3.3899585347177625e-25
+    },
+    "logistic": {
+      "threshold_median": 0.702783930782313,
+      "accuracy": 0.6538922155688622,
+      "roc_auc": 0.7149021864211738,
+      "corr_pred_true_pearson": 0.3440699784248858,
+      "corr_pred_true_pearson_p": 1.2879985975618954e-24,
+      "corr_pred_true_spearman": 0.3716808443785889,
+      "corr_pred_true_spearman_p": 9.465222494875161e-29
+    },
+    "include_streams": true
+  }
+}

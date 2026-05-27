@@ -169,3 +169,7 @@ testing/audio_vilearnchannel1gated2.wav
 data_paths.txt
 data/_path_prefix.txt
 data/discover/merged/*.parquet
+
+# large derived frame/segment feature files (regenerable from parquet streams)
+data/discover/derived/compare/frame_rows_streams_1hz.csv
+data/discover/derived/compare/segments_streams.csv

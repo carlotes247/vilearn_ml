@@ -1,0 +1,92 @@
+{
+  "individual_engagement": {
+    "target": "engagement_target",
+    "status": "ok",
+    "rows": 4058,
+    "linear": {
+      "r2": 0.1640650895569069,
+      "mae": 0.15089848648975723,
+      "corr_pred_true_pearson": 0.43471543608877494,
+      "corr_pred_true_pearson_p": 9.234555539108497e-39,
+      "corr_pred_true_spearman": 0.4251947164970049,
+      "corr_pred_true_spearman_p": 5.514952313598713e-37
+    },
+    "logistic": {
+      "threshold_median": 0.511956,
+      "accuracy": 0.6502463054187192,
+      "roc_auc": 0.7163752860411898,
+      "corr_pred_true_pearson": 0.3737946544871925,
+      "corr_pred_true_pearson_p": 2.513781173619483e-28,
+      "corr_pred_true_spearman": 0.37367920513368047,
+      "corr_pred_true_spearman_p": 2.618798613526345e-28
+    },
+    "pca": [
+      {
+        "block": "base",
+        "input_dims": 14,
+        "output_dims": 14
+      },
+      {
+        "block": "opensmile",
+        "input_dims": 88,
+        "output_dims": 60
+      },
+      {
+        "block": "emow2v",
+        "input_dims": 1024,
+        "output_dims": 17
+      },
+      {
+        "block": "sentiment_emb",
+        "input_dims": 2304,
+        "output_dims": 331
+      }
+    ],
+    "include_streams": true
+  },
+  "group_task_engagement": {
+    "target": "task_engagement",
+    "status": "ok",
+    "rows": 4175,
+    "linear": {
+      "r2": 0.25595607919283914,
+      "mae": 0.24894506397520352,
+      "corr_pred_true_pearson": 0.5170567726735202,
+      "corr_pred_true_pearson_p": 2.860988847506292e-58,
+      "corr_pred_true_spearman": 0.46556066572166693,
+      "corr_pred_true_spearman_p": 3.818771984204497e-46
+    },
+    "logistic": {
+      "threshold_median": 0.702783930782313,
+      "accuracy": 0.6958083832335329,
+      "roc_auc": 0.7641657077100115,
+      "corr_pred_true_pearson": 0.4574952738043413,
+      "corr_pred_true_pearson_p": 1.998048964305801e-44,
+      "corr_pred_true_spearman": 0.4568838266963795,
+      "corr_pred_true_spearman_p": 2.685568360775032e-44
+    },
+    "pca": [
+      {
+        "block": "base",
+        "input_dims": 14,
+        "output_dims": 14
+      },
+      {
+        "block": "opensmile",
+        "input_dims": 88,
+        "output_dims": 60
+      },
+      {
+        "block": "emow2v",
+        "input_dims": 1024,
+        "output_dims": 17
+      },
+      {
+        "block": "sentiment_emb",
+        "input_dims": 2304,
+        "output_dims": 331
+      }
+    ],
+    "include_streams": true
+  }
+}
