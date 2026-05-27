@@ -4,20 +4,20 @@
     "status": "ok",
     "rows": 41249,
     "linear": {
-      "r2": 0.28640663917109077,
-      "mae": 0.14771902032983347,
-      "corr_pred_true_pearson": 0.5358267165553141,
+      "r2": 0.2947442692115998,
+      "mae": 0.14713352211825315,
+      "corr_pred_true_pearson": 0.5432358170879819,
       "corr_pred_true_pearson_p": 0.0,
-      "corr_pred_true_spearman": 0.5108027707943219,
+      "corr_pred_true_spearman": 0.5154703234678563,
       "corr_pred_true_spearman_p": 0.0
     },
     "logistic": {
       "threshold_median": 0.46464822,
-      "accuracy": 0.6764848484848485,
-      "roc_auc": 0.7471539899677802,
-      "corr_pred_true_pearson": 0.43337004783546507,
+      "accuracy": 0.6775757575757576,
+      "roc_auc": 0.7486701302383181,
+      "corr_pred_true_pearson": 0.4351293365167568,
       "corr_pred_true_pearson_p": 0.0,
-      "corr_pred_true_spearman": 0.4280834305547452,
+      "corr_pred_true_spearman": 0.4307086953269028,
       "corr_pred_true_spearman_p": 0.0
     },
     "pca": [
@@ -29,12 +29,12 @@
       {
         "block": "opensmile",
         "input_dims": 88,
-        "output_dims": 65
+        "output_dims": 66
       },
       {
         "block": "emow2v",
         "input_dims": 1024,
-        "output_dims": 37
+        "output_dims": 94
       },
       {
         "block": "sentiment_emb",
@@ -42,27 +42,36 @@
         "output_dims": 118
       }
     ],
-    "include_streams": true
+    "include_streams": true,
+    "cv": {
+      "target": "engagement_target",
+      "status": "ok",
+      "n_folds": 25,
+      "linear_pca_r2_mean": -0.24636860953497716,
+      "linear_pca_r2_std": 0.8693884649087836,
+      "logistic_pca_auc_mean": 0.7006181016383772,
+      "logistic_pca_auc_std": 0.1313220974457294
+    }
   },
   "group_task_engagement": {
     "target": "task_engagement",
     "status": "ok",
-    "rows": 42408,
+    "rows": 42416,
     "linear": {
-      "r2": 0.24517188704384363,
-      "mae": 0.281060898386754,
-      "corr_pred_true_pearson": 0.49556487259150317,
+      "r2": 0.24681673186379505,
+      "mae": 0.2803252654870282,
+      "corr_pred_true_pearson": 0.49697847154912367,
       "corr_pred_true_pearson_p": 0.0,
-      "corr_pred_true_spearman": 0.46730869383054646,
+      "corr_pred_true_spearman": 0.4631067767453944,
       "corr_pred_true_spearman_p": 0.0
     },
     "logistic": {
       "threshold_median": 0.6323757,
-      "accuracy": 0.677906154208913,
-      "roc_auc": 0.744808376082748,
-      "corr_pred_true_pearson": 0.42597107315129207,
+      "accuracy": 0.6776284771334277,
+      "roc_auc": 0.7437763878138363,
+      "corr_pred_true_pearson": 0.42231747193679525,
       "corr_pred_true_pearson_p": 0.0,
-      "corr_pred_true_spearman": 0.423995237430586,
+      "corr_pred_true_spearman": 0.4221804320233244,
       "corr_pred_true_spearman_p": 0.0
     },
     "pca": [
@@ -74,12 +83,12 @@
       {
         "block": "opensmile",
         "input_dims": 88,
-        "output_dims": 65
+        "output_dims": 66
       },
       {
         "block": "emow2v",
         "input_dims": 1024,
-        "output_dims": 36
+        "output_dims": 93
       },
       {
         "block": "sentiment_emb",
@@ -87,6 +96,15 @@
         "output_dims": 117
       }
     ],
-    "include_streams": true
+    "include_streams": true,
+    "cv": {
+      "target": "task_engagement",
+      "status": "ok",
+      "n_folds": 25,
+      "linear_pca_r2_mean": -0.5119225451389596,
+      "linear_pca_r2_std": 1.8417022778058438,
+      "logistic_pca_auc_mean": 0.6852922243892018,
+      "logistic_pca_auc_std": 0.0836120583654579
+    }
   }
 }
