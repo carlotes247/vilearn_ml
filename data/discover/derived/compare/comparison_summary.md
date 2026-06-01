@@ -121,9 +121,14 @@ Baseline = DummyRegressor(mean) for R², DummyClassifier(stratified) for AUC.
 To compare against the prior detector slides (`discover/2026_March_ViLearn_Planning.pptx`), a
 separate panel runs **fixed-threshold (TE > 0.5) high/low classification** with a model sweep
 (Baseline-uniform, QDA, SVM-linear, SVM-rbf, Naive Bayes, kNN, Random Forest, Logistic
-Regression), LOSO CV, pooled out-of-fold predictions → accuracy + per-class precision/recall/F1
-+ confusion matrix. Reported on **3 group splits: D (dyads), T (triads), All**, matching the
-prior 3-fold reporting.
+Regression), **LOSO CV with per-fold accuracy** (one held-out group per fold) reported as
+**mean ± SD over folds** (matches Carlos's per-fold reporting). Per-class precision/recall/F1
+come from the pooled out-of-fold confusion. Reported on **3 group splits: D (dyads), T (triads),
+All**, matching the prior 3-fold reporting.
+
+**Significance** (`classifier_panel_ttest.csv`): per-fold paired t-tests (paired by held-out group)
+with Bonferroni correction + Cohen's d effect size, against (a) the uniform baseline and (b)
+**Carlos's prior GazexSpeaking+Blinks QDA** per-fold accuracy (`runs/accuracy/...ICMI/Blinks_GazexSpeaking`).
 
 **Feature sets:**
 - **base** = linguistic + affective + speaking, aggregated per granularity. At 60 s windows:
@@ -140,7 +145,24 @@ prior 3-fold reporting.
   (per-fold PCA on the 1880 stream dims tractable; full-SVD was ~8 min/config). Segment + 60 s
   window only (frame-1 Hz excluded: SVM-rbf intractable on 27k rows).
 
-### 60 s window · group task engagement — base vs +embeddings (best by F1-macro)
+### 60 s window · group task engagement — per-fold mean ± SD + significance
+
+Base features, best model per split, with paired-t-test significance + Cohen's d:
+
+| split (n folds) | best model | acc (mean±SD) | F1 | vs uniform baseline | vs Carlos GazexSpeaking QDA |
+|---|---|---:|---:|---|---|
+| All (20) | Random Forest | 0.823 ± 0.155 | 0.71 | p<0.001, d=+1.48 ✓ | **p=0.004, d=+0.92 ✓** |
+| All (20) | QDA | 0.806 ± 0.154 | 0.69 | p<0.001, d=+1.47 ✓ | p=0.011, d=+0.82 ✓ |
+| Triads (12) | Random Forest | 0.880 ± 0.090 | 0.80 | p<0.001, d=+2.42 ✓ | **p=0.005, d=+1.35 ✓** |
+| Triads (12) | QDA | 0.866 ± 0.083 | 0.77 | p<0.001, d=+2.32 ✓ | p=0.011, d=+1.20 ✓ |
+| Dyads (8) | QDA | 0.737 ± 0.210 | 0.57 | p=0.28, d=+0.89 (ns) | p=1.0, d=+0.52 (ns) |
+
+**Linguistic+affective beats the prior gaze×speaking QDA detector significantly on All groups and
+Triads (medium–large effect, d 0.8–1.35).** Dyads trend the same direction (positive d) but n=8
+folds is underpowered — not significant after Bonferroni. All models beat the uniform baseline on
+All/Triads (d 1.2–2.4); on dyads even baseline comparison is ns (low power).
+
+### 60 s window · group task engagement — base vs +embeddings (best by F1-macro, pooled OOF)
 
 | split | base (best) | acc / F1 | +streams_pca | acc / F1 |
 |---|---|---:|---|---:|
@@ -194,9 +216,11 @@ Segment ≪ 60 s window for both targets — aggregation to 60 s is clearly the 
   → linguistic + affective + speaking detect group TE at least as well as the submitted gaze×speaking
   set at matched granularity, without gaze.
 
-Outputs: `classifier_panel_metrics.csv` (138 rows; cols `group_split`, `accuracy`, per-class P/R/F1),
-`classifier_panel_confusion.csv` (per-model 2×2), `classifier_panel_importance.csv` (per-feature
-LogReg std-coef + RF importance, base configs).
+Outputs: `classifier_panel_metrics.csv` (cols `group_split`, `acc_mean`/`acc_std`, `f1_macro_mean`,
+pooled `accuracy_pooled`, per-class P/R/F1, `n_folds`), `classifier_panel_foldscores.csv` (per-fold
+per-model accuracy/F1 by held-out group), `classifier_panel_ttest.csv` (vs_baseline_uniform +
+vs_carlos_qda_gazespeak: `t_stat`, `p_value`, `p_value_adj`, `cohen_d`, `significant`),
+`classifier_panel_confusion.csv` (per-model 2×2, pooled), `classifier_panel_importance.csv`.
 
 ---
 

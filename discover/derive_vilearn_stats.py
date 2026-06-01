@@ -86,6 +86,15 @@ WINDOW_MS = 60_000.0
 # [0, 1]; high = value > threshold.
 RUN_CLASSIFIER_PANEL = True
 CLASSIFICATION_THRESHOLD = 0.5
+# Carlos's prior GazexSpeaking+Blinks per-fold results (for the "vs prior model"
+# t-test). Per-fold accuracy by held-out group; QDA = the prior detector model.
+CARLOS_GAZESPEAK_DIR = Path("runs/accuracy/binary_60s_avgs_separated_all_groups_speaking_x_gaze_ICMI/2026_05_19/Blinks_GazexSpeaking")
+CARLOS_SPLIT_FILES = {
+    "all": "results_ML_train_SIMPLE_all_groups_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name__2026-05-19.csv",
+    "D": "results_ML_train_SIMPLE_dyads_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name__2026-05-19.csv",
+    "T": "results_ML_train_SIMPLE_triads_f_Blinks_GazexSpeaking_60s_binary_all_groups_avg_separated_with_group_name__2026-05-19.csv",
+}
+CARLOS_REF_MODEL = "QDA"
 # Also run the panel on embedding streams (PCA-reduced). Off by default: the
 # ICMI/QDA detector uses hand-crafted features, and per-fold PCA on ~2600 stream
 # dims x 20 folds x 8 models is slow. Enable to test if embeddings help the
@@ -685,41 +694,45 @@ def run_classifier_panel(
     use_pca: bool = False,
     include_streams: bool = False,
     group_split: str = "all",
-) -> tuple[pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Fixed-threshold high/low classification with LOSO CV across a model panel.
 
-    Pools out-of-fold predictions per model, then reports accuracy, per-class
-    precision/recall/F1, macro F1, and a confusion matrix. Class 1 = high
-    (target > threshold), class 0 = low. Returns (metrics_df, confusion_df).
+    Per-fold (leave-one-group-out) accuracy + macro-F1 per model, reported as
+    mean +/- SD over folds (matches Carlos's per-fold reporting). Per-class
+    precision/recall/F1 come from the pooled out-of-fold confusion (stable when
+    some held-out groups are single-class). Class 1 = high (target > threshold).
+    Returns (metrics_df, confusion_df, importance_df, foldscores_df).
     """
+    empty4 = (pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame())
     prepared = _prepare_xy(data_df, target_col, include_streams)
     if prepared is None:
-        return pd.DataFrame(), pd.DataFrame()
+        return empty4
     x, y, groups = prepared
 
     yb = (y > threshold).astype(int)
     if yb.nunique() < 2:
-        return pd.DataFrame(), pd.DataFrame()
+        return empty4
 
     unique_sessions = groups.unique()
     n_splits = len(unique_sessions)
     if n_splits < 2:
-        return pd.DataFrame(), pd.DataFrame()
+        return empty4
     gkf = GroupKFold(n_splits=n_splits)
 
     classifiers = make_classifier_panel()
-    # Pooled out-of-fold predictions per model.
-    oof_true: dict[str, list[int]] = {m: [] for m in classifiers}
+    oof_true: dict[str, list[int]] = {m: [] for m in classifiers}   # pooled, for P/R
     oof_pred: dict[str, list[int]] = {m: [] for m in classifiers}
+    fold_score_rows: list[dict] = []                                # per (model, fold) for t-tests
     model_fit_seconds: dict[str, float] = {m: 0.0 for m in classifiers}
     log(f"    classifier panel: {name} ({n_splits} LOSO folds, {len(x)} rows, {len(classifiers)} models)")
 
-    for train_idx, test_idx in gkf.split(x, yb, groups=groups):
+    for fold_i, (train_idx, test_idx) in enumerate(gkf.split(x, yb, groups=groups)):
         x_tr, x_te = x.iloc[train_idx].reset_index(drop=True), x.iloc[test_idx].reset_index(drop=True)
         yb_tr, yb_te = yb.iloc[train_idx].reset_index(drop=True), yb.iloc[test_idx].reset_index(drop=True)
         x_te = x_te.reindex(columns=x_tr.columns, fill_value=0)
         if yb_tr.nunique() < 2:
             continue  # cannot train a classifier on a single class
+        held_group = str(groups.iloc[test_idx].iloc[0]).replace("recording_", "")
         if use_pca:
             x_tr, x_te, _ = transform_with_block_pca(x_tr, x_te)
         for model_name, clf in classifiers.items():
@@ -731,12 +744,21 @@ def run_classifier_panel(
             except Exception:
                 continue
             model_fit_seconds[model_name] += time.time() - t_clf
-            oof_true[model_name].extend(yb_te.tolist())
-            oof_pred[model_name].extend(np.asarray(pred).astype(int).tolist())
+            yb_te_arr = np.asarray(yb_te)
+            pred = np.asarray(pred).astype(int)
+            oof_true[model_name].extend(yb_te_arr.tolist())
+            oof_pred[model_name].extend(pred.tolist())
+            fold_score_rows.append({
+                "analysis": name, "group_split": group_split, "target": target_col,
+                "model": model_name, "fold": fold_i, "group": held_group,
+                "accuracy": float(accuracy_score(yb_te_arr, pred)),
+                "f1_macro": float(f1_score(yb_te_arr, pred, average="macro", zero_division=0)),
+            })
 
     slowest = sorted(model_fit_seconds.items(), key=lambda kv: kv[1], reverse=True)[:3]
     log(f"    done {name}: slowest fits " + ", ".join(f"{m}={s:.1f}s" for m, s in slowest))
 
+    foldscores_df = pd.DataFrame(fold_score_rows)
     metric_rows: list[dict] = []
     confusion_rows: list[dict] = []
     for model_name in classifiers:
@@ -744,11 +766,10 @@ def run_classifier_panel(
         yp = np.asarray(oof_pred[model_name])
         if len(yt) == 0:
             continue
-        prec, rec, f1, support = precision_recall_fscore_support(
-            yt, yp, labels=[0, 1], zero_division=0
-        )
+        prec, rec, f1, support = precision_recall_fscore_support(yt, yp, labels=[0, 1], zero_division=0)
         cm = confusion_matrix(yt, yp, labels=[0, 1])
         tn, fp, fn, tp = cm.ravel()
+        fs = foldscores_df[foldscores_df["model"] == model_name]
         metric_rows.append({
             "analysis": name,
             "group_split": group_split,
@@ -758,10 +779,17 @@ def run_classifier_panel(
             "include_streams": include_streams,
             "use_pca": use_pca,
             "n_samples": int(len(yt)),
+            "n_folds": int(len(fs)),
             "n_low": int(support[0]),
             "n_high": int(support[1]),
-            "accuracy": float(accuracy_score(yt, yp)),
-            "f1_macro": float(f1_score(yt, yp, average="macro", zero_division=0)),
+            # per-fold mean +/- SD (matches Carlos)
+            "acc_mean": float(fs["accuracy"].mean()),
+            "acc_std": float(fs["accuracy"].std(ddof=1)) if len(fs) > 1 else np.nan,
+            "f1_macro_mean": float(fs["f1_macro"].mean()),
+            "f1_macro_std": float(fs["f1_macro"].std(ddof=1)) if len(fs) > 1 else np.nan,
+            # pooled-OOF operating point
+            "accuracy_pooled": float(accuracy_score(yt, yp)),
+            "f1_macro_pooled": float(f1_score(yt, yp, average="macro", zero_division=0)),
             "precision_low": float(prec[0]),
             "recall_low": float(rec[0]),
             "f1_low": float(f1[0]),
@@ -800,16 +828,17 @@ def run_classifier_panel(
         except Exception:
             pass
 
-    return pd.DataFrame(metric_rows), pd.DataFrame(confusion_rows), pd.DataFrame(importance_rows)
+    return pd.DataFrame(metric_rows), pd.DataFrame(confusion_rows), pd.DataFrame(importance_rows), foldscores_df
 
 
 def run_classifier_panel_for_granularity(
     data_df: pd.DataFrame, analysis_prefix: str, threshold: float
-) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Run the panel for both targets, two feature sets, and 3 group splits (D/T/all)."""
     metric_frames: list[pd.DataFrame] = []
     confusion_frames: list[pd.DataFrame] = []
     importance_frames: list[pd.DataFrame] = []
+    foldscore_frames: list[pd.DataFrame] = []
     targets = [("engagement_target", "individual_engagement"), ("task_engagement", "group_task_engagement")]
     feature_sets = [(False, False, "base")]
     # Streams only at window granularity (~500 rows); segment (3k rows) + per-fold
@@ -830,7 +859,7 @@ def run_classifier_panel_for_granularity(
                 continue
             for include_streams, use_pca, fset_label in feature_sets:
                 name = f"{analysis_prefix}_{target_label}_{fset_label}_{split_label}"
-                m, c, imp = run_classifier_panel(
+                m, c, imp, fs = run_classifier_panel(
                     df_split, target_col, name, threshold,
                     use_pca=use_pca, include_streams=include_streams, group_split=split_label,
                 )
@@ -840,10 +869,100 @@ def run_classifier_panel_for_granularity(
                     confusion_frames.append(c)
                 if not imp.empty:
                     importance_frames.append(imp)
+                if not fs.empty:
+                    foldscore_frames.append(fs)
     metrics_df = pd.concat(metric_frames, ignore_index=True) if metric_frames else pd.DataFrame()
     confusion_df = pd.concat(confusion_frames, ignore_index=True) if confusion_frames else pd.DataFrame()
     importance_df = pd.concat(importance_frames, ignore_index=True) if importance_frames else pd.DataFrame()
-    return metrics_df, confusion_df, importance_df
+    foldscores_df = pd.concat(foldscore_frames, ignore_index=True) if foldscore_frames else pd.DataFrame()
+    return metrics_df, confusion_df, importance_df, foldscores_df
+
+
+def _cohen_d_paired(diff: np.ndarray) -> float:
+    sd = float(np.std(diff, ddof=1)) if len(diff) > 1 else 0.0
+    return float(np.mean(diff) / sd) if sd > 0 else np.nan
+
+
+def load_carlos_qda_foldscores(split_label: str) -> pd.DataFrame:
+    """Carlos's prior GazexSpeaking+Blinks QDA per-fold accuracy by held-out group."""
+    fname = CARLOS_SPLIT_FILES.get(split_label)
+    if not fname:
+        return pd.DataFrame()
+    path = CARLOS_GAZESPEAK_DIR / fname
+    if not path.exists():
+        return pd.DataFrame()
+    df = pd.read_csv(path)
+    df = df[(df["Model"] == CARLOS_REF_MODEL) & (~df["Fold"].astype(str).isin(["avg", "std"]))]
+    if df.empty or "Group_Name" not in df.columns:
+        return pd.DataFrame()
+    return pd.DataFrame({"group": df["Group_Name"].astype(str), "accuracy": df["Score"].astype(float)})
+
+
+def compute_panel_significance(foldscores_df: pd.DataFrame) -> pd.DataFrame:
+    """Per-fold paired t-tests (model vs uniform baseline, and vs Carlos's prior
+    GazexSpeaking QDA) with Bonferroni correction + Cohen's d effect size.
+
+    Paired by held-out group across LOSO folds (same recipe as anova_ml_runs.py).
+    """
+    if foldscores_df.empty:
+        return pd.DataFrame()
+    rows: list[dict] = []
+    for (analysis, split, target), g in foldscores_df.groupby(["analysis", "group_split", "target"]):
+        piv = g.pivot_table(index="group", columns="model", values="accuracy")
+
+        # 1) vs uniform baseline (paired by group)
+        if "Baseline Uniform" in piv.columns:
+            base = piv["Baseline Uniform"]
+            recs = []
+            for model in piv.columns:
+                if model == "Baseline Uniform":
+                    continue
+                pair = piv[[model]].join(base.rename("ref")).dropna()
+                if len(pair) < 3:
+                    continue
+                t, p = ttest_rel(pair[model].values, pair["ref"].values)
+                recs.append({
+                    "analysis": analysis, "group_split": split, "target": target, "model": model,
+                    "comparison": "vs_baseline_uniform", "n_pairs": int(len(pair)),
+                    "mean_model": float(pair[model].mean()), "mean_ref": float(pair["ref"].mean()),
+                    "t_stat": float(t), "p_value": float(p),
+                    "cohen_d": _cohen_d_paired(pair[model].values - pair["ref"].values),
+                })
+            if recs:
+                _, p_adj, _, _ = multipletests([r["p_value"] for r in recs], alpha=0.05, method="bonferroni")
+                for r, pa in zip(recs, p_adj):
+                    r["p_value_adj"] = float(pa)
+                    r["significant"] = bool(pa < 0.05)
+                rows.extend(recs)
+
+        # 2) vs Carlos's prior GazexSpeaking QDA (group task engagement only)
+        if target == "task_engagement":
+            cq = load_carlos_qda_foldscores(split)
+            if not cq.empty:
+                ref = cq.set_index("group")["accuracy"]
+                recs = []
+                for model in piv.columns:
+                    if model == "Baseline Uniform":
+                        continue
+                    pair = piv[[model]].join(ref.rename("ref"), how="inner").dropna()
+                    if len(pair) < 3:
+                        continue
+                    t, p = ttest_rel(pair[model].values, pair["ref"].values)
+                    recs.append({
+                        "analysis": analysis, "group_split": split, "target": target, "model": model,
+                        "comparison": "vs_carlos_qda_gazespeak", "n_pairs": int(len(pair)),
+                        "mean_model": float(pair[model].mean()), "mean_ref": float(pair["ref"].mean()),
+                        "t_stat": float(t), "p_value": float(p),
+                        "cohen_d": _cohen_d_paired(pair[model].values - pair["ref"].values),
+                    })
+                if recs:
+                    _, p_adj, _, _ = multipletests([r["p_value"] for r in recs], alpha=0.05, method="bonferroni")
+                    for r, pa in zip(recs, p_adj):
+                        r["p_value_adj"] = float(pa)
+                        r["significant"] = bool(pa < 0.05)
+                    rows.extend(recs)
+
+    return pd.DataFrame(rows)
 
 
 def build_frame_role_rows(session: str, frame_df: pd.DataFrame, role: str, stride: int) -> pd.DataFrame:
@@ -1245,6 +1364,7 @@ def main() -> None:
         clf_metric_frames: list[pd.DataFrame] = []
         clf_confusion_frames: list[pd.DataFrame] = []
         clf_importance_frames: list[pd.DataFrame] = []
+        clf_foldscore_frames: list[pd.DataFrame] = []
         # Panel runs on segment + 60 s window granularities only (the prior-work
         # comparison scales). Frame-1 Hz (~27k rows) is excluded: SVM-rbf is
         # O(n^2-n^3) per fold and intractable there; frame still gets the
@@ -1255,20 +1375,27 @@ def main() -> None:
         ]:
             if data_df is None or data_df.empty:
                 continue
-            m, c, imp = run_classifier_panel_for_granularity(data_df, prefix, CLASSIFICATION_THRESHOLD)
+            m, c, imp, fs = run_classifier_panel_for_granularity(data_df, prefix, CLASSIFICATION_THRESHOLD)
             if not m.empty:
                 clf_metric_frames.append(m)
             if not c.empty:
                 clf_confusion_frames.append(c)
             if not imp.empty:
                 clf_importance_frames.append(imp)
+            if not fs.empty:
+                clf_foldscore_frames.append(fs)
         clf_metrics_df = pd.concat(clf_metric_frames, ignore_index=True) if clf_metric_frames else pd.DataFrame()
         clf_confusion_df = pd.concat(clf_confusion_frames, ignore_index=True) if clf_confusion_frames else pd.DataFrame()
         clf_importance_df = pd.concat(clf_importance_frames, ignore_index=True) if clf_importance_frames else pd.DataFrame()
+        clf_foldscores_df = pd.concat(clf_foldscore_frames, ignore_index=True) if clf_foldscore_frames else pd.DataFrame()
+        clf_ttest_df = compute_panel_significance(clf_foldscores_df)
         clf_metrics_df.to_csv(COMPARE_OUTPUT_ROOT / "classifier_panel_metrics.csv", index=False)
         clf_confusion_df.to_csv(COMPARE_OUTPUT_ROOT / "classifier_panel_confusion.csv", index=False)
         clf_importance_df.to_csv(COMPARE_OUTPUT_ROOT / "classifier_panel_importance.csv", index=False)
-        print(f"Classifier panel: {len(clf_metrics_df)} model rows, {len(clf_confusion_df)} confusion matrices, {len(clf_importance_df)} importance rows")
+        clf_foldscores_df.to_csv(COMPARE_OUTPUT_ROOT / "classifier_panel_foldscores.csv", index=False)
+        clf_ttest_df.to_csv(COMPARE_OUTPUT_ROOT / "classifier_panel_ttest.csv", index=False)
+        n_sig = int(clf_ttest_df["significant"].sum()) if not clf_ttest_df.empty else 0
+        print(f"Classifier panel: {len(clf_metrics_df)} model rows, {len(clf_foldscores_df)} fold scores, {len(clf_ttest_df)} t-tests ({n_sig} significant)")
 
     # Compact ablation table for stream utility checks.
     def get_metric(d: dict, analysis: str, target: str, key: str) -> float:
