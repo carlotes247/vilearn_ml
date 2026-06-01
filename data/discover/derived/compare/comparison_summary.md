@@ -9,7 +9,7 @@
 > - **Floorlevel only** (`FLOORLEVEL_ONLY`): restricted to the 20 groups in `data/group_names_with_time_floorlevel.csv` (no participant "flying" in VR). Dropped: dyad_01/08/09, triad_03/04.
 > - **Interaction-time clipping** (`CLIP_TO_INTERACTION`): frames + transcript segments clipped to each group's interaction window. Wall-clock bounds → recording-relative ms via `data/recording_times_group_info.csv` (join on `Group_Name_Long` == `long_name`).
 > - **60 s window granularity** (`WINDOW_MS=60000`) added to match prior work (Cristina/Carlos 60 s resampling), alongside the existing segment and 1 Hz frame analyses.
-> - **Fixed-threshold classifier panel** (QDA/SVM/NB/kNN/RF/LogReg, D/T/All splits) added to compare with the prior ICMI/QDA detector — see "Fixed-Threshold Classification Panel" below.
+> - **Fixed-threshold classifier panel** (QDA/SVM/NB/kNN/RF/LogReg, D/T/All splits) added to compare with the prior ICMI/QDA detector — see "Fixed-Threshold Classification Panel" below. Includes per-window linguistic features, per-feature contribution (`classifier_panel_importance.csv`), and an embeddings (streams_pca) comparison at window granularity (randomized PCA).
 > - Counts: **3054 segments**, **52 session-role rows**, **27290 frame rows (1 Hz)**.
 
 ---
@@ -125,31 +125,53 @@ Regression), LOSO CV, pooled out-of-fold predictions → accuracy + per-class pr
 + confusion matrix. Reported on **3 group splits: D (dyads), T (triads), All**, matching the
 prior 3-fold reporting.
 
-- **Features = slide-7 "go-to" linguistic + affective set** (`segment_duration_s`, `word_count`,
-  `avg_word_length`, `words_per_second`, `question`, `statement` + `sentiment_*_mean`,
-  `arousal/dominance/valence_mean`). This is the discover pipeline's base feature set.
+**Feature sets:**
+- **base** = linguistic + affective + speaking, aggregated per granularity. At 60 s windows:
+  `word_count`, `words_per_second`, `avg_word_length`, `question_rate`, `statement_rate`,
+  `segment_count`, `speaking_seconds` (windowed linguistic) + `sentiment_role`, `speaking_role`,
+  `arousal`, `dominance`, `valence` + role. At segment level: same plus per-segment text metrics.
+- **streams_pca** = base **+** embedding streams (opensmile 88 + emow2v 1024 + sentiment_emb 768 =
+  1880 dims, PCA-reduced per block; base passes through unchanged). Window granularity only.
 - **NB: different modality from the prior detector.** Slide 3 QDA (dyads 77%) used **gaze**
   (MG/DG/No_DG + blink); slide 2 ICMI used **GazexSpeaking**. This panel answers slide-9's RQ
-  "how well with *only linguistic* features?", not a reimplementation of the gaze detector.
-- Config: `RUN_CLASSIFIER_PANEL=True`, `CLASSIFICATION_THRESHOLD=0.5`, `PANEL_INCLUDE_STREAMS=False`
-  (base only; embeddings off — per-fold PCA on ~2600 dims is slow). Panel runs on segment + 60 s
+  "how well with linguistic / multimodal features?", not a reimplementation of the gaze detector.
+- Config: `RUN_CLASSIFIER_PANEL=True`, `CLASSIFICATION_THRESHOLD=0.5`, `PANEL_INCLUDE_STREAMS`
+  (streams off by default; when on, window-only — segment+streams too slow). `PCA_SVD_SOLVER=randomized`
+  (per-fold PCA on the 1880 stream dims tractable; full-SVD was ~8 min/config). Segment + 60 s
   window only (frame-1 Hz excluded: SVM-rbf intractable on 27k rows).
 
-### 60 s window · group task engagement (best model + QDA)
+### 60 s window · group task engagement — base vs +embeddings (best by F1-macro)
 
-| split | best model | acc | F1-macro | QDA acc | QDA F1 |
-|---|---|---:|---:|---:|---:|
-| D (dyads) | Logistic Regression | 0.788 | 0.676 | 0.771 | 0.638 |
-| T (triads) | QDA | 0.869 | 0.818 | 0.869 | 0.818 |
-| All | QDA / Random Forest | 0.836 | 0.760 | 0.836 | 0.760 |
+| split | base (best) | acc / F1 | +streams_pca | acc / F1 |
+|---|---|---:|---|---:|
+| D (dyads) | Naive Bayes | 0.724 / 0.642 | Naive Bayes | 0.835 / 0.701 ↑* |
+| T (triads) | Random Forest | **0.872 / 0.820** | Random Forest | 0.708 / 0.657 ↓ |
+| All | Random Forest | **0.832 / 0.759** | Random Forest | 0.792 / 0.694 ↓ |
 
-### 60 s window · individual engagement
+### 60 s window · individual engagement — base vs +embeddings
 
-| split | best model | acc | F1-macro |
-|---|---|---:|---:|
-| D | Naive Bayes | 0.711 | 0.705 |
-| T | Naive Bayes | 0.698 | 0.697 |
-| All | Naive Bayes | 0.696 | 0.695 |
+| split | base (best) | acc / F1 | +streams_pca | acc / F1 |
+|---|---|---:|---|---:|
+| D | Naive Bayes | 0.654 / 0.653 | Random Forest | 0.610 / 0.603 ↓ |
+| T | QDA | 0.722 / 0.721 | Random Forest | 0.668 / 0.667 ↓ |
+| All | QDA | 0.694 / 0.694 | Naive Bayes | 0.696 / 0.693 ≈ |
+
+\* Dyad group-TE rise (8 LOSO folds, 170 rows) is within noise — not trusted. **Net: embeddings on
+top of base mostly hurt or don't help** — high-dim streams add noise that degrades cross-session
+generalization at window scale. **Base wins.**
+
+### Effect of adding windowed linguistic features (vs affective+speaking only)
+
+Roughly **neutral**: group-TE All ≈ unchanged (QDA 0.836→0.810, RF best 0.832), slight ↓ on small
+dyad splits. Affective+speaking already carried the group-TE signal; linguistic helps explain
+*individual* engagement but doesn't move accuracy (collinear with speaking).
+
+### Feature contribution (classifier_panel_importance.csv: standardized LogReg coef + RF Gini)
+
+- **Group TE** dominated by group affect: `valence` (coef +1.12, RF 0.21), `dominance` (−1.33, 0.18),
+  `arousal` (0.13). Linguistic features all low (0.04–0.06).
+- **Individual engagement** more distributed: `speaking_role` (+), `valence`, `speaking_seconds`,
+  `dominance` (−), `word_count` (+), `words_per_second` (+) — linguistic contributes here.
 
 ### Segment-level (text features available)
 
@@ -159,19 +181,22 @@ prior 3-fold reporting.
 | group TE | All | QDA | 0.593 | 0.563 |
 | group TE | T | QDA | 0.658 | 0.569 |
 
+Segment ≪ 60 s window for both targets — aggregation to 60 s is clearly the better granularity.
+
 ### Comparison to slides
 
 - **Slide 3 (QDA dyads, gaze): 77% acc, high P 83.3% / R 58.8%, low P 75% / R 91.3%.**
-  Ours (QDA dyads, linguistic, 60 s): **acc 77.1% — same overall** — high P 80.7% / R 91.4%,
-  low P 56% / R 33%. Same accuracy, **opposite operating point** (our model over-predicts "high"
-  because ~74% of group-TE windows are high), different feature modality.
+  Ours (QDA dyads, base linguistic+affective, 60 s): **acc 74.7%** — high P 81.0% / R 86.7%,
+  low P 48.5% / R 38.1%. Comparable accuracy, **opposite operating point** (our model over-predicts
+  "high" — ~74% of group-TE windows are high), different feature modality.
 - **Slide 2 (ICMI GazexSpeaking, accuracy M): SVM 0.66 / 0.63 / 0.62 (D/T/All); baseline 0.53/0.43/0.45.**
-  Our linguistic features at 60 s clearly exceed this: best acc **D 0.79 / T 0.87 / All 0.84**.
-  → linguistic + affective features detect group TE better than the submitted gaze×speaking set
-  at matched granularity.
+  Our base features at 60 s exceed this: best acc **D 0.72 / T 0.87 / All 0.83**.
+  → linguistic + affective + speaking detect group TE at least as well as the submitted gaze×speaking
+  set at matched granularity, without gaze.
 
-Outputs: `classifier_panel_metrics.csv` (96 rows: 2 targets × 2 granularities × 3 splits × 8
-models, column `group_split`), `classifier_panel_confusion.csv` (per-model 2×2).
+Outputs: `classifier_panel_metrics.csv` (138 rows; cols `group_split`, `accuracy`, per-class P/R/F1),
+`classifier_panel_confusion.csv` (per-model 2×2), `classifier_panel_importance.csv` (per-feature
+LogReg std-coef + RF importance, base configs).
 
 ---
 

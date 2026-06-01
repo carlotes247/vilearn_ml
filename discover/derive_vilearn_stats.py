@@ -59,6 +59,10 @@ FRAME_DOWNSAMPLE_STRIDE = 25
 WRITE_LEGACY_OUTPUTS = False
 PCA_EXPLAINED_VARIANCE = 0.95
 PCA_MAX_COMPONENTS = 128
+# "full" = exact SVD, keeps PCA_EXPLAINED_VARIANCE fraction (slow on wide stream
+# blocks). "randomized" = fast approximate SVD, keeps up to PCA_MAX_COMPONENTS
+# per block (variance-fraction target unsupported by randomized solver).
+PCA_SVD_SOLVER = "randomized"
 
 # Restrict analysis to floorlevel groups (no participant "flying" in VR) and to
 # each group's interaction time window. Both read from the floorlevel CSV; the
@@ -298,7 +302,12 @@ def transform_with_block_pca(
             te_df = pd.DataFrame(te_s[:, :1], columns=[f"{block_name}_pc001"])
             out_dims = 1
         else:
-            pca = PCA(n_components=min(PCA_EXPLAINED_VARIANCE, max_comp), svd_solver="full")
+            if PCA_SVD_SOLVER == "randomized":
+                # Randomized SVD needs an int n_components (variance-fraction
+                # target requires the full solver). Cap at PCA_MAX_COMPONENTS.
+                pca = PCA(n_components=int(max_comp), svd_solver="randomized", random_state=42)
+            else:
+                pca = PCA(n_components=min(PCA_EXPLAINED_VARIANCE, max_comp), svd_solver="full")
             tr_p = pca.fit_transform(tr_s)
             te_p = pca.transform(te_s)
             out_dims = tr_p.shape[1]
@@ -489,6 +498,8 @@ def _prepare_xy(
         "arousal", "dominance", "valence",
         "sentiment_p_blue_mean", "sentiment_p_green_mean", "sentiment_p_red_mean",
         "arousal_mean", "dominance_mean", "valence_mean",
+        # windowed linguistic features (build_window_role_rows)
+        "question_rate", "statement_rate", "segment_count", "speaking_seconds",
     ]
     use = data_df.copy()
     use = use.rename(columns={
@@ -769,18 +780,41 @@ def run_classifier_panel(
             "tp_true_high_pred_high": int(tp),
         })
 
-    return pd.DataFrame(metric_rows), pd.DataFrame(confusion_rows)
+    # Per-feature contribution (interpretable only when not PCA): standardized
+    # logistic-regression coefficient (sign + magnitude) and Random Forest Gini
+    # importance, fit on the full split. Global estimate, not per-fold.
+    importance_rows: list[dict] = []
+    if not use_pca and yb.nunique() == 2:
+        try:
+            x_std = StandardScaler().fit_transform(x)
+            lr = LogisticRegression(max_iter=2000, solver="lbfgs").fit(x_std, yb)
+            rf = RandomForestClassifier(n_estimators=200, random_state=42).fit(x, yb)
+            for feat, coef, imp in zip(x.columns, lr.coef_[0], rf.feature_importances_):
+                importance_rows.append({
+                    "analysis": name, "group_split": group_split, "target": target_col,
+                    "feature": feat,
+                    "logreg_std_coef": float(coef),
+                    "logreg_abs_coef": float(abs(coef)),
+                    "rf_importance": float(imp),
+                })
+        except Exception:
+            pass
+
+    return pd.DataFrame(metric_rows), pd.DataFrame(confusion_rows), pd.DataFrame(importance_rows)
 
 
 def run_classifier_panel_for_granularity(
     data_df: pd.DataFrame, analysis_prefix: str, threshold: float
-) -> tuple[pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Run the panel for both targets, two feature sets, and 3 group splits (D/T/all)."""
     metric_frames: list[pd.DataFrame] = []
     confusion_frames: list[pd.DataFrame] = []
+    importance_frames: list[pd.DataFrame] = []
     targets = [("engagement_target", "individual_engagement"), ("task_engagement", "group_task_engagement")]
     feature_sets = [(False, False, "base")]
-    if PANEL_INCLUDE_STREAMS:
+    # Streams only at window granularity (~500 rows); segment (3k rows) + per-fold
+    # PCA on ~1900 stream dims is too slow even with randomized SVD.
+    if PANEL_INCLUDE_STREAMS and analysis_prefix.startswith("window"):
         feature_sets.append((True, True, "streams_pca"))
     # Match prior work's 3-fold reporting: dyads-only (D), triads-only (T), all.
     group_splits = [("all", None), ("D", "dyad"), ("T", "triad")]
@@ -796,7 +830,7 @@ def run_classifier_panel_for_granularity(
                 continue
             for include_streams, use_pca, fset_label in feature_sets:
                 name = f"{analysis_prefix}_{target_label}_{fset_label}_{split_label}"
-                m, c = run_classifier_panel(
+                m, c, imp = run_classifier_panel(
                     df_split, target_col, name, threshold,
                     use_pca=use_pca, include_streams=include_streams, group_split=split_label,
                 )
@@ -804,9 +838,12 @@ def run_classifier_panel_for_granularity(
                     metric_frames.append(m)
                 if not c.empty:
                     confusion_frames.append(c)
+                if not imp.empty:
+                    importance_frames.append(imp)
     metrics_df = pd.concat(metric_frames, ignore_index=True) if metric_frames else pd.DataFrame()
     confusion_df = pd.concat(confusion_frames, ignore_index=True) if confusion_frames else pd.DataFrame()
-    return metrics_df, confusion_df
+    importance_df = pd.concat(importance_frames, ignore_index=True) if importance_frames else pd.DataFrame()
+    return metrics_df, confusion_df, importance_df
 
 
 def build_frame_role_rows(session: str, frame_df: pd.DataFrame, role: str, stride: int) -> pd.DataFrame:
@@ -839,12 +876,61 @@ def build_frame_role_rows(session: str, frame_df: pd.DataFrame, role: str, strid
     return use
 
 
-def build_window_role_rows(session: str, frame_df: pd.DataFrame, role: str, window_ms: float) -> pd.DataFrame:
+def build_window_linguistic(tr_df: pd.DataFrame, window_ms: float) -> pd.DataFrame:
+    """Per-window linguistic aggregates from a transcript (segments binned by `from`).
+
+    Returns one row per window_idx with: word_count (words in window),
+    words_per_second (words / window seconds), avg_word_length, question_rate,
+    statement_rate, segment_count, speaking_seconds. Windows with no speech get 0.
+    """
+    if tr_df is None or tr_df.empty:
+        return pd.DataFrame(columns=["window_idx"])
+    tr = tr_df.copy()
+    tr["from"] = pd.to_numeric(tr["from"], errors="coerce")
+    tr["to"] = pd.to_numeric(tr["to"], errors="coerce")
+    tr = tr.dropna(subset=["from", "to"])
+    if tr.empty:
+        return pd.DataFrame(columns=["window_idx"])
+    window_s = window_ms / 1000.0
+    rows = []
+    for _, seg in tr.iterrows():
+        text = str(seg.get("name", "") if pd.notna(seg.get("name", "")) else "")
+        words = tokenize_words(text)
+        wc = len(words)
+        is_q = int(text.strip().endswith("?"))
+        rows.append({
+            "window_idx": int(seg["from"] // window_ms),
+            "word_count": wc,
+            "word_len_sum": float(sum(len(w) for w in words)),
+            "question": is_q,
+            "statement": int(wc > 0 and not is_q),
+            "segment_count": 1,
+            "speaking_seconds": max((float(seg["to"]) - float(seg["from"])) / 1000.0, 0.0),
+        })
+    seg_df = pd.DataFrame(rows)
+    g = seg_df.groupby("window_idx", as_index=False).agg(
+        word_count=("word_count", "sum"),
+        word_len_sum=("word_len_sum", "sum"),
+        question_rate=("question", "mean"),
+        statement_rate=("statement", "mean"),
+        segment_count=("segment_count", "sum"),
+        speaking_seconds=("speaking_seconds", "sum"),
+    )
+    g["words_per_second"] = g["word_count"] / window_s
+    g["avg_word_length"] = (g["word_len_sum"] / g["word_count"]).where(g["word_count"] > 0, 0.0)
+    return g.drop(columns=["word_len_sum"])
+
+
+def build_window_role_rows(
+    session: str, frame_df: pd.DataFrame, role: str, window_ms: float, tr_df: pd.DataFrame | None = None
+) -> pd.DataFrame:
     """Aggregate frame features into fixed time windows (mean per window).
 
     Mirrors build_frame_role_rows but bins time_ms into ``window_ms`` windows and
     averages within each, matching the prior-work 60 s resampling. One row per
-    (session, role, window).
+    (session, role, window). If ``tr_df`` is given, per-window linguistic features
+    (word_count, words_per_second, avg_word_length, question_rate, statement_rate,
+    segment_count, speaking_seconds) are merged in.
     """
     engagement_col = f"engagement_{role}"
     sentiment_col = f"sentiment_{role}"
@@ -873,6 +959,17 @@ def build_window_role_rows(session: str, frame_df: pd.DataFrame, role: str, wind
     if speaking_col in agg.columns:
         agg = agg.rename(columns={speaking_col: "speaking_role"})
     agg = agg.rename(columns={engagement_col: "engagement_target"})
+
+    # Merge per-window linguistic features (0 for windows with no speech).
+    ling = build_window_linguistic(tr_df, window_ms)
+    ling_cols = ["word_count", "words_per_second", "avg_word_length", "question_rate", "statement_rate", "segment_count", "speaking_seconds"]
+    if not ling.empty:
+        agg = agg.merge(ling, on="window_idx", how="left")
+    for c in ling_cols:
+        if c not in agg.columns:
+            agg[c] = 0.0
+    agg[ling_cols] = agg[ling_cols].fillna(0.0)
+
     agg["session"] = session
     agg["role"] = role
     return agg
@@ -1039,7 +1136,7 @@ def main() -> None:
             frame_role = build_frame_role_rows(ses, frame_df, role, FRAME_DOWNSAMPLE_STRIDE)
             if not frame_role.empty:
                 frame_rows.append(frame_role)
-            window_role = build_window_role_rows(ses, frame_df, role, WINDOW_MS)
+            window_role = build_window_role_rows(ses, frame_df, role, WINDOW_MS, tr_df=tr_df)
             if not window_role.empty:
                 window_rows.append(window_role)
 
@@ -1147,6 +1244,7 @@ def main() -> None:
         log("STAGE: fixed-threshold classifier panel (QDA/SVM/NB/kNN/RF/LogReg)")
         clf_metric_frames: list[pd.DataFrame] = []
         clf_confusion_frames: list[pd.DataFrame] = []
+        clf_importance_frames: list[pd.DataFrame] = []
         # Panel runs on segment + 60 s window granularities only (the prior-work
         # comparison scales). Frame-1 Hz (~27k rows) is excluded: SVM-rbf is
         # O(n^2-n^3) per fold and intractable there; frame still gets the
@@ -1157,16 +1255,20 @@ def main() -> None:
         ]:
             if data_df is None or data_df.empty:
                 continue
-            m, c = run_classifier_panel_for_granularity(data_df, prefix, CLASSIFICATION_THRESHOLD)
+            m, c, imp = run_classifier_panel_for_granularity(data_df, prefix, CLASSIFICATION_THRESHOLD)
             if not m.empty:
                 clf_metric_frames.append(m)
             if not c.empty:
                 clf_confusion_frames.append(c)
+            if not imp.empty:
+                clf_importance_frames.append(imp)
         clf_metrics_df = pd.concat(clf_metric_frames, ignore_index=True) if clf_metric_frames else pd.DataFrame()
         clf_confusion_df = pd.concat(clf_confusion_frames, ignore_index=True) if clf_confusion_frames else pd.DataFrame()
+        clf_importance_df = pd.concat(clf_importance_frames, ignore_index=True) if clf_importance_frames else pd.DataFrame()
         clf_metrics_df.to_csv(COMPARE_OUTPUT_ROOT / "classifier_panel_metrics.csv", index=False)
         clf_confusion_df.to_csv(COMPARE_OUTPUT_ROOT / "classifier_panel_confusion.csv", index=False)
-        print(f"Classifier panel: {len(clf_metrics_df)} model rows, {len(clf_confusion_df)} confusion matrices")
+        clf_importance_df.to_csv(COMPARE_OUTPUT_ROOT / "classifier_panel_importance.csv", index=False)
+        print(f"Classifier panel: {len(clf_metrics_df)} model rows, {len(clf_confusion_df)} confusion matrices, {len(clf_importance_df)} importance rows")
 
     # Compact ablation table for stream utility checks.
     def get_metric(d: dict, analysis: str, target: str, key: str) -> float:
