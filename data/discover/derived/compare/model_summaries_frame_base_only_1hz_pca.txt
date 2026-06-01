@@ -1,27 +1,27 @@
 === individual_engagement ===
-Linear pred-vs-true corr: pearson=0.4190 (p=0), spearman=0.4202 (p=0)
-Linear CV (LOSO): R²=-0.3164 ± 1.0774
+Linear pred-vs-true corr: pearson=0.4203 (p=1.21e-226), spearman=0.4308 (p=2.39e-239)
+Linear CV (LOSO): R²=-0.4380 ± 1.3547
 Linear (statsmodels)
 statsmodels OLS skipped in PCA mode (component-space inference not directly interpretable).
 
-Logistic pred-vs-true corr: pearson=0.3596 (p=2.57e-250), spearman=0.3574 (p=4.99e-247)
-Logistic CV (LOSO): AUC=0.6906 ± 0.1332
+Logistic pred-vs-true corr: pearson=0.3676 (p=7.92e-170), spearman=0.3699 (p=4.45e-172)
+Logistic CV (LOSO): AUC=0.7025 ± 0.1609
 Logistic (statsmodels)
 statsmodels Logit skipped in PCA mode (component-space inference not directly interpretable).
 
 === group_task_engagement ===
-Linear pred-vs-true corr: pearson=0.2951 (p=4.22e-170), spearman=0.2842 (p=2.2e-157)
-Linear CV (LOSO): R²=-0.8415 ± 2.7955
+Linear pred-vs-true corr: pearson=0.2673 (p=7.27e-90), spearman=0.1965 (p=1.3e-48)
+Linear CV (LOSO): R²=-1.1123 ± 3.3049
 Linear (statsmodels)
 statsmodels OLS skipped in PCA mode (component-space inference not directly interpretable).
 
-Logistic pred-vs-true corr: pearson=0.2253 (p=4.07e-98), spearman=0.2280 (p=1.71e-100)
-Logistic CV (LOSO): AUC=0.6050 ± 0.0571
+Logistic pred-vs-true corr: pearson=0.1792 (p=1.3e-40), spearman=0.1671 (p=1.9e-35)
+Logistic CV (LOSO): AUC=0.5618 ± 0.0558
 Logistic (statsmodels)
 statsmodels Logit skipped in PCA mode (component-space inference not directly interpretable).
 
 === T-Tests vs Baseline (Bonferroni corrected) ===
-group_task_engagement task_engagement [linear_pca r2]: model=-0.8415±2.7955 vs baseline=-1.0772±3.4501, p=0.0864 (adj=0.3457) ns
-group_task_engagement task_engagement [logistic_pca auc]: model=0.6050±0.0571 vs baseline=0.4985±0.0166, p=0.0000 (adj=0.0000) * SIGNIFICANT
-individual_engagement engagement_target [linear_pca r2]: model=-0.3164±1.0774 vs baseline=-0.5230±1.2377, p=0.0006 (adj=0.0022) * SIGNIFICANT
-individual_engagement engagement_target [logistic_pca auc]: model=0.6906±0.1332 vs baseline=0.4980±0.0177, p=0.0000 (adj=0.0000) * SIGNIFICANT
+group_task_engagement task_engagement [linear_pca r2]: model=-1.1123±3.3049 vs baseline=-1.3378±4.0221, p=0.1820 (adj=0.7278) ns
+group_task_engagement task_engagement [logistic_pca auc]: model=0.5618±0.0558 vs baseline=0.5019±0.0179, p=0.0001 (adj=0.0006) * SIGNIFICANT
+individual_engagement engagement_target [linear_pca r2]: model=-0.4380±1.3547 vs baseline=-0.6117±1.4076, p=0.0035 (adj=0.0140) * SIGNIFICANT
+individual_engagement engagement_target [logistic_pca auc]: model=0.7025±0.1609 vs baseline=0.4986±0.0212, p=0.0000 (adj=0.0001) * SIGNIFICANT

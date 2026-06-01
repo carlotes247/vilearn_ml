@@ -121,4 +121,4 @@ Outputs in `data/discover/derived/`:
 - The `.set` file is authoritative; folder discovery is disabled.
 - Update annotator names via `CG` and `HR` at the top of the script.
 - openSMILE may emit `Segment too short, filling with NaN` warnings (make window bigger which includes possible tradeoffs). This can introduce NaNs in the output stream. Downstream processing should account for missing values (e.g., imputation or filtering).
-- `recording_dyad_02` has a corrupt `group.audio.wav` (malformed WAV `fmt` chunk). Expect missing arousal/dominance/valence annotations for that session until the audio is re-exported or fixed.
+- `recording_dyad_02` previously had a corrupt `group.audio.wav` (malformed WAV `fmt` chunk). The audio has since been re-exported, so arousal/dominance/valence annotations are now present and the merged/derived outputs include dyad_02 audio-derived features.

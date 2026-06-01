@@ -1,0 +1,97 @@
+analysis,group_split,target,model,tn_true_low_pred_low,fp_true_low_pred_high,fn_true_high_pred_low,tp_true_high_pred_high
+segment_individual_engagement_base_all,all,engagement_target,Baseline Uniform,577,669,807,884
+segment_individual_engagement_base_all,all,engagement_target,QDA,577,669,468,1223
+segment_individual_engagement_base_all,all,engagement_target,SVM (rbf),486,760,385,1306
+segment_individual_engagement_base_all,all,engagement_target,SVM (linear),583,663,442,1249
+segment_individual_engagement_base_all,all,engagement_target,Naive Bayes,546,700,449,1242
+segment_individual_engagement_base_all,all,engagement_target,kNN,553,693,549,1142
+segment_individual_engagement_base_all,all,engagement_target,Random Forest,526,720,521,1170
+segment_individual_engagement_base_all,all,engagement_target,Logistic Regression,563,683,420,1271
+segment_individual_engagement_base_D,D,engagement_target,Baseline Uniform,305,371,319,322
+segment_individual_engagement_base_D,D,engagement_target,QDA,319,357,212,429
+segment_individual_engagement_base_D,D,engagement_target,SVM (rbf),398,278,267,374
+segment_individual_engagement_base_D,D,engagement_target,SVM (linear),447,229,235,406
+segment_individual_engagement_base_D,D,engagement_target,Naive Bayes,233,443,153,488
+segment_individual_engagement_base_D,D,engagement_target,kNN,371,305,297,344
+segment_individual_engagement_base_D,D,engagement_target,Random Forest,393,283,303,338
+segment_individual_engagement_base_D,D,engagement_target,Logistic Regression,418,258,253,388
+segment_individual_engagement_base_T,T,engagement_target,Baseline Uniform,272,298,488,562
+segment_individual_engagement_base_T,T,engagement_target,QDA,290,280,356,694
+segment_individual_engagement_base_T,T,engagement_target,SVM (rbf),136,434,153,897
+segment_individual_engagement_base_T,T,engagement_target,SVM (linear),83,487,138,912
+segment_individual_engagement_base_T,T,engagement_target,Naive Bayes,309,261,365,685
+segment_individual_engagement_base_T,T,engagement_target,kNN,197,373,285,765
+segment_individual_engagement_base_T,T,engagement_target,Random Forest,184,386,239,811
+segment_individual_engagement_base_T,T,engagement_target,Logistic Regression,160,410,161,889
+segment_group_task_engagement_base_all,all,task_engagement,Baseline Uniform,446,507,1006,1091
+segment_group_task_engagement_base_all,all,task_engagement,QDA,502,451,790,1307
+segment_group_task_engagement_base_all,all,task_engagement,SVM (rbf),138,815,133,1964
+segment_group_task_engagement_base_all,all,task_engagement,SVM (linear),156,797,107,1990
+segment_group_task_engagement_base_all,all,task_engagement,Naive Bayes,585,368,937,1160
+segment_group_task_engagement_base_all,all,task_engagement,kNN,262,691,382,1715
+segment_group_task_engagement_base_all,all,task_engagement,Random Forest,226,727,257,1840
+segment_group_task_engagement_base_all,all,task_engagement,Logistic Regression,159,794,146,1951
+segment_group_task_engagement_base_D,D,task_engagement,Baseline Uniform,207,245,485,492
+segment_group_task_engagement_base_D,D,task_engagement,QDA,295,157,592,385
+segment_group_task_engagement_base_D,D,task_engagement,SVM (rbf),33,419,73,904
+segment_group_task_engagement_base_D,D,task_engagement,SVM (linear),37,415,53,924
+segment_group_task_engagement_base_D,D,task_engagement,Naive Bayes,326,126,588,389
+segment_group_task_engagement_base_D,D,task_engagement,kNN,110,342,243,734
+segment_group_task_engagement_base_D,D,task_engagement,Random Forest,93,359,205,772
+segment_group_task_engagement_base_D,D,task_engagement,Logistic Regression,59,393,101,876
+segment_group_task_engagement_base_T,T,task_engagement,Baseline Uniform,239,262,521,599
+segment_group_task_engagement_base_T,T,task_engagement,QDA,165,336,219,901
+segment_group_task_engagement_base_T,T,task_engagement,SVM (rbf),87,414,77,1043
+segment_group_task_engagement_base_T,T,task_engagement,SVM (linear),93,408,54,1066
+segment_group_task_engagement_base_T,T,task_engagement,Naive Bayes,130,371,196,924
+segment_group_task_engagement_base_T,T,task_engagement,kNN,126,375,167,953
+segment_group_task_engagement_base_T,T,task_engagement,Random Forest,118,383,139,981
+segment_group_task_engagement_base_T,T,task_engagement,Logistic Regression,100,401,107,1013
+window_60s_individual_engagement_base_all,all,engagement_target,Baseline Uniform,166,104,115,108
+window_60s_individual_engagement_base_all,all,engagement_target,QDA,194,76,76,147
+window_60s_individual_engagement_base_all,all,engagement_target,SVM (rbf),198,72,92,131
+window_60s_individual_engagement_base_all,all,engagement_target,SVM (linear),199,71,83,140
+window_60s_individual_engagement_base_all,all,engagement_target,Naive Bayes,183,87,63,160
+window_60s_individual_engagement_base_all,all,engagement_target,kNN,189,81,84,139
+window_60s_individual_engagement_base_all,all,engagement_target,Random Forest,199,71,90,133
+window_60s_individual_engagement_base_all,all,engagement_target,Logistic Regression,195,75,80,143
+window_60s_individual_engagement_base_D,D,engagement_target,Baseline Uniform,67,25,36,31
+window_60s_individual_engagement_base_D,D,engagement_target,QDA,63,29,26,41
+window_60s_individual_engagement_base_D,D,engagement_target,SVM (rbf),59,33,32,35
+window_60s_individual_engagement_base_D,D,engagement_target,SVM (linear),57,35,29,38
+window_60s_individual_engagement_base_D,D,engagement_target,Naive Bayes,68,24,22,45
+window_60s_individual_engagement_base_D,D,engagement_target,kNN,60,32,31,36
+window_60s_individual_engagement_base_D,D,engagement_target,Random Forest,62,30,35,32
+window_60s_individual_engagement_base_D,D,engagement_target,Logistic Regression,63,29,31,36
+window_60s_individual_engagement_base_T,T,engagement_target,Baseline Uniform,99,79,79,77
+window_60s_individual_engagement_base_T,T,engagement_target,QDA,129,49,53,103
+window_60s_individual_engagement_base_T,T,engagement_target,SVM (rbf),125,53,58,98
+window_60s_individual_engagement_base_T,T,engagement_target,SVM (linear),133,45,60,96
+window_60s_individual_engagement_base_T,T,engagement_target,Naive Bayes,120,58,43,113
+window_60s_individual_engagement_base_T,T,engagement_target,kNN,119,59,54,102
+window_60s_individual_engagement_base_T,T,engagement_target,Random Forest,126,52,57,99
+window_60s_individual_engagement_base_T,T,engagement_target,Logistic Regression,132,46,57,99
+window_60s_group_task_engagement_base_all,all,task_engagement,Baseline Uniform,78,54,207,167
+window_60s_group_task_engagement_base_all,all,task_engagement,QDA,69,63,20,354
+window_60s_group_task_engagement_base_all,all,task_engagement,SVM (rbf),52,80,19,355
+window_60s_group_task_engagement_base_all,all,task_engagement,SVM (linear),63,69,19,355
+window_60s_group_task_engagement_base_all,all,task_engagement,Naive Bayes,57,75,29,345
+window_60s_group_task_engagement_base_all,all,task_engagement,kNN,54,78,26,348
+window_60s_group_task_engagement_base_all,all,task_engagement,Random Forest,69,63,20,354
+window_60s_group_task_engagement_base_all,all,task_engagement,Logistic Regression,65,67,20,354
+window_60s_group_task_engagement_base_D,D,task_engagement,Baseline Uniform,28,14,78,50
+window_60s_group_task_engagement_base_D,D,task_engagement,QDA,14,28,11,117
+window_60s_group_task_engagement_base_D,D,task_engagement,SVM (rbf),8,34,6,122
+window_60s_group_task_engagement_base_D,D,task_engagement,SVM (linear),13,29,9,119
+window_60s_group_task_engagement_base_D,D,task_engagement,Naive Bayes,20,22,22,106
+window_60s_group_task_engagement_base_D,D,task_engagement,kNN,11,31,15,113
+window_60s_group_task_engagement_base_D,D,task_engagement,Random Forest,12,30,14,114
+window_60s_group_task_engagement_base_D,D,task_engagement,Logistic Regression,17,25,11,117
+window_60s_group_task_engagement_base_T,T,task_engagement,Baseline Uniform,50,40,129,117
+window_60s_group_task_engagement_base_T,T,task_engagement,QDA,57,33,11,235
+window_60s_group_task_engagement_base_T,T,task_engagement,SVM (rbf),48,42,10,236
+window_60s_group_task_engagement_base_T,T,task_engagement,SVM (linear),49,41,12,234
+window_60s_group_task_engagement_base_T,T,task_engagement,Naive Bayes,50,40,19,227
+window_60s_group_task_engagement_base_T,T,task_engagement,kNN,42,48,12,234
+window_60s_group_task_engagement_base_T,T,task_engagement,Random Forest,53,37,9,237
+window_60s_group_task_engagement_base_T,T,task_engagement,Logistic Regression,49,41,16,230

@@ -1,27 +1,27 @@
 === individual_engagement ===
-Linear pred-vs-true corr: pearson=0.5715 (p=0), spearman=0.5341 (p=0)
-Linear CV (LOSO): R²=-0.6110 ± 1.6655
+Linear pred-vs-true corr: pearson=0.5337 (p=0), spearman=0.5174 (p=0)
+Linear CV (LOSO): R²=-4.4024 ± 16.2655
 Linear (statsmodels)
 statsmodels OLS skipped: high-dimensional design matrix with 1887 predictors
 
-Logistic pred-vs-true corr: pearson=0.4574 (p=0), spearman=0.4482 (p=0)
-Logistic CV (LOSO): AUC=0.6628 ± 0.1145
+Logistic pred-vs-true corr: pearson=0.4332 (p=2.85e-242), spearman=0.4179 (p=6.47e-224)
+Logistic CV (LOSO): AUC=0.6200 ± 0.1072
 Logistic (statsmodels)
 statsmodels Logit skipped: high-dimensional design matrix with 1887 predictors
 
 === group_task_engagement ===
-Linear pred-vs-true corr: pearson=0.5534 (p=0), spearman=0.5245 (p=0)
-Linear CV (LOSO): R²=-0.6808 ± 1.8883
+Linear pred-vs-true corr: pearson=0.5128 (p=0), spearman=0.4694 (p=3.97e-297)
+Linear CV (LOSO): R²=-4.8666 ± 16.6106
 Linear (statsmodels)
 statsmodels OLS skipped: high-dimensional design matrix with 1887 predictors
 
-Logistic pred-vs-true corr: pearson=0.4980 (p=0), spearman=0.4995 (p=0)
-Logistic CV (LOSO): AUC=0.6661 ± 0.0665
+Logistic pred-vs-true corr: pearson=0.4732 (p=1.43e-302), spearman=0.4712 (p=1.11e-299)
+Logistic CV (LOSO): AUC=0.5880 ± 0.0509
 Logistic (statsmodels)
 statsmodels Logit skipped: high-dimensional design matrix with 1887 predictors
 
 === T-Tests vs Baseline (Bonferroni corrected) ===
-group_task_engagement task_engagement [linear r2]: model=-0.6808±1.8883 vs baseline=-1.0772±3.4501, p=0.2612 (adj=1.0000) ns
-group_task_engagement task_engagement [logistic auc]: model=0.6661±0.0665 vs baseline=0.4985±0.0166, p=0.0000 (adj=0.0000) * SIGNIFICANT
-individual_engagement engagement_target [linear r2]: model=-0.6110±1.6655 vs baseline=-0.5230±1.2377, p=0.7909 (adj=1.0000) ns
-individual_engagement engagement_target [logistic auc]: model=0.6628±0.1145 vs baseline=0.4980±0.0177, p=0.0000 (adj=0.0000) * SIGNIFICANT
+group_task_engagement task_engagement [linear r2]: model=-4.8666±16.6106 vs baseline=-1.3378±4.0221, p=0.3581 (adj=1.0000) ns
+group_task_engagement task_engagement [logistic auc]: model=0.5880±0.0509 vs baseline=0.5019±0.0179, p=0.0000 (adj=0.0000) * SIGNIFICANT
+individual_engagement engagement_target [linear r2]: model=-4.4024±16.2655 vs baseline=-0.6117±1.4076, p=0.3114 (adj=1.0000) ns
+individual_engagement engagement_target [logistic auc]: model=0.6200±0.1072 vs baseline=0.4986±0.0212, p=0.0001 (adj=0.0004) * SIGNIFICANT

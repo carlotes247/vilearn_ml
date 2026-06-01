@@ -1,5 +1,6 @@
 import json
 import re
+import time
 from pathlib import Path
 
 import numpy as np
@@ -7,12 +8,25 @@ import pandas as pd
 import statsmodels.api as sm
 from scipy.stats import pearsonr, shapiro, spearmanr, ttest_rel
 from sklearn.dummy import DummyClassifier, DummyRegressor
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression, Ridge
-from sklearn.metrics import accuracy_score, mean_absolute_error, r2_score, roc_auc_score
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    f1_score,
+    mean_absolute_error,
+    precision_recall_fscore_support,
+    r2_score,
+    roc_auc_score,
+)
 from sklearn.model_selection import GroupKFold, train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+from sklearn.svm import SVC
 from statsmodels.stats.multitest import multipletests
 
 """
@@ -46,6 +60,48 @@ WRITE_LEGACY_OUTPUTS = False
 PCA_EXPLAINED_VARIANCE = 0.95
 PCA_MAX_COMPONENTS = 128
 
+# Restrict analysis to floorlevel groups (no participant "flying" in VR) and to
+# each group's interaction time window. Both read from the floorlevel CSV; the
+# wall-clock interaction bounds are converted to recording-relative milliseconds
+# using the recording start times. time_ms in the merged frames is 0 at the
+# recording start (40 ms bins, see merge_vilearn_features.py).
+FLOORLEVEL_ONLY = True
+CLIP_TO_INTERACTION = True
+FLOORLEVEL_FILE = Path("data/group_names_with_time_floorlevel.csv")
+RECORDING_TIMES_FILE = Path("data/recording_times_group_info.csv")
+
+# Fixed-window aggregation to match prior work (Cristina/Carlos used 60 s bins).
+# This runs in addition to the segment- and 1 Hz frame-level analyses, which are
+# kept for comparison.
+WINDOW_MS = 60_000.0
+
+# Fixed-threshold high/low classification panel, to compare against the prior
+# ICMI detector (QDA, SVM, Naive Bayes, kNN, ... with accuracy/precision/F1 +
+# confusion matrix). Uses a FIXED threshold (not a median split) so class
+# definitions match prior work. Engagement/task-engagement annotations are in
+# [0, 1]; high = value > threshold.
+RUN_CLASSIFIER_PANEL = True
+CLASSIFICATION_THRESHOLD = 0.5
+# Also run the panel on embedding streams (PCA-reduced). Off by default: the
+# ICMI/QDA detector uses hand-crafted features, and per-fold PCA on ~2600 stream
+# dims x 20 folds x 8 models is slow. Enable to test if embeddings help the
+# fixed-threshold classifier.
+PANEL_INCLUDE_STREAMS = False
+
+# Regression + logistic-AUC + LOSO CV blocks (segment/frame/window). Unchanged
+# modeling; set False to iterate on the classifier panel alone without
+# recomputing the slow LOSO regression (reuses existing regression outputs).
+RUN_REGRESSION = True
+
+
+_T0 = time.time()
+
+
+def log(msg: str) -> None:
+    """Timestamped progress line (wall-clock + elapsed since start)."""
+    elapsed = time.time() - _T0
+    print(f"[{time.strftime('%H:%M:%S')} +{elapsed:6.1f}s] {msg}", flush=True)
+
 
 def load_sessions_from_set_files() -> list[str]:
     sessions: list[str] = []
@@ -55,6 +111,49 @@ def load_sessions_from_set_files() -> list[str]:
         entries = [line.strip() for line in set_file.read_text().splitlines()]
         sessions.extend([e for e in entries if e])
     return sorted(set(sessions))
+
+
+def load_interaction_windows() -> dict[str, tuple[float, float]]:
+    """Map each floorlevel session to its interaction window in recording-relative ms.
+
+    Returns {session_stem: (start_ms, end_ms)} for floorlevel groups only. The
+    session stem matches the merged file naming (e.g. ``recording_dyad_02``).
+    Wall-clock interaction bounds (floorlevel CSV) are offset by the recording
+    start time (recording_times CSV), joined on the long group name.
+    """
+    if not FLOORLEVEL_FILE.exists() or not RECORDING_TIMES_FILE.exists():
+        return {}
+    fl = pd.read_csv(FLOORLEVEL_FILE, sep=";")
+    rt = pd.read_csv(RECORDING_TIMES_FILE)
+    rec_start = dict(zip(rt["long_name"], pd.to_datetime(rt["start_recording"])))
+
+    windows: dict[str, tuple[float, float]] = {}
+    for _, row in fl.iterrows():
+        long_name = row["Group_Name_Long"]
+        if long_name not in rec_start:
+            continue
+        start = pd.to_datetime(row["TS_Start_Interaction"])
+        end = pd.to_datetime(row["TS_End_Interaction"])
+        start_ms = (start - rec_start[long_name]).total_seconds() * 1000.0
+        end_ms = (end - rec_start[long_name]).total_seconds() * 1000.0
+        windows[f"recording_{row['Group_Name']}"] = (start_ms, end_ms)
+    return windows
+
+
+def clip_frame_to_window(frame_df: pd.DataFrame, window: tuple[float, float]) -> pd.DataFrame:
+    start_ms, end_ms = window
+    mask = (frame_df["time_ms"] >= start_ms) & (frame_df["time_ms"] < end_ms)
+    return frame_df.loc[mask].reset_index(drop=True)
+
+
+def clip_transcript_to_window(tr_df: pd.DataFrame, window: tuple[float, float]) -> pd.DataFrame:
+    """Keep transcript segments that overlap the interaction window."""
+    start_ms, end_ms = window
+    tr = tr_df.copy()
+    tr["from"] = pd.to_numeric(tr["from"], errors="coerce")
+    tr["to"] = pd.to_numeric(tr["to"], errors="coerce")
+    mask = (tr["to"] > start_ms) & (tr["from"] < end_ms)
+    return tr.loc[mask].reset_index(drop=True)
 
 
 def tokenize_words(text: str) -> list[str]:
@@ -553,6 +652,163 @@ def run_ttest_vs_baseline(fold_df: pd.DataFrame) -> pd.DataFrame:
     return ttest_df
 
 
+def make_classifier_panel() -> dict:
+    """Off-the-shelf classifiers comparable to the prior ICMI detector sweep."""
+    return {
+        "Baseline Uniform": DummyClassifier(strategy="uniform", random_state=42),
+        "QDA": QuadraticDiscriminantAnalysis(reg_param=0.1),
+        "SVM (rbf)": SVC(kernel="rbf", probability=False, random_state=42),
+        "SVM (linear)": SVC(kernel="linear", probability=False, random_state=42),
+        "Naive Bayes": GaussianNB(),
+        "kNN": KNeighborsClassifier(n_neighbors=5),
+        "Random Forest": RandomForestClassifier(n_estimators=200, random_state=42),
+        "Logistic Regression": LogisticRegression(max_iter=2000, solver="lbfgs"),
+    }
+
+
+def run_classifier_panel(
+    data_df: pd.DataFrame,
+    target_col: str,
+    name: str,
+    threshold: float,
+    use_pca: bool = False,
+    include_streams: bool = False,
+    group_split: str = "all",
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Fixed-threshold high/low classification with LOSO CV across a model panel.
+
+    Pools out-of-fold predictions per model, then reports accuracy, per-class
+    precision/recall/F1, macro F1, and a confusion matrix. Class 1 = high
+    (target > threshold), class 0 = low. Returns (metrics_df, confusion_df).
+    """
+    prepared = _prepare_xy(data_df, target_col, include_streams)
+    if prepared is None:
+        return pd.DataFrame(), pd.DataFrame()
+    x, y, groups = prepared
+
+    yb = (y > threshold).astype(int)
+    if yb.nunique() < 2:
+        return pd.DataFrame(), pd.DataFrame()
+
+    unique_sessions = groups.unique()
+    n_splits = len(unique_sessions)
+    if n_splits < 2:
+        return pd.DataFrame(), pd.DataFrame()
+    gkf = GroupKFold(n_splits=n_splits)
+
+    classifiers = make_classifier_panel()
+    # Pooled out-of-fold predictions per model.
+    oof_true: dict[str, list[int]] = {m: [] for m in classifiers}
+    oof_pred: dict[str, list[int]] = {m: [] for m in classifiers}
+    model_fit_seconds: dict[str, float] = {m: 0.0 for m in classifiers}
+    log(f"    classifier panel: {name} ({n_splits} LOSO folds, {len(x)} rows, {len(classifiers)} models)")
+
+    for train_idx, test_idx in gkf.split(x, yb, groups=groups):
+        x_tr, x_te = x.iloc[train_idx].reset_index(drop=True), x.iloc[test_idx].reset_index(drop=True)
+        yb_tr, yb_te = yb.iloc[train_idx].reset_index(drop=True), yb.iloc[test_idx].reset_index(drop=True)
+        x_te = x_te.reindex(columns=x_tr.columns, fill_value=0)
+        if yb_tr.nunique() < 2:
+            continue  # cannot train a classifier on a single class
+        if use_pca:
+            x_tr, x_te, _ = transform_with_block_pca(x_tr, x_te)
+        for model_name, clf in classifiers.items():
+            pipe = Pipeline([("scaler", StandardScaler()), ("model", clf)])
+            t_clf = time.time()
+            try:
+                pipe.fit(x_tr, yb_tr)
+                pred = pipe.predict(x_te)
+            except Exception:
+                continue
+            model_fit_seconds[model_name] += time.time() - t_clf
+            oof_true[model_name].extend(yb_te.tolist())
+            oof_pred[model_name].extend(np.asarray(pred).astype(int).tolist())
+
+    slowest = sorted(model_fit_seconds.items(), key=lambda kv: kv[1], reverse=True)[:3]
+    log(f"    done {name}: slowest fits " + ", ".join(f"{m}={s:.1f}s" for m, s in slowest))
+
+    metric_rows: list[dict] = []
+    confusion_rows: list[dict] = []
+    for model_name in classifiers:
+        yt = np.asarray(oof_true[model_name])
+        yp = np.asarray(oof_pred[model_name])
+        if len(yt) == 0:
+            continue
+        prec, rec, f1, support = precision_recall_fscore_support(
+            yt, yp, labels=[0, 1], zero_division=0
+        )
+        cm = confusion_matrix(yt, yp, labels=[0, 1])
+        tn, fp, fn, tp = cm.ravel()
+        metric_rows.append({
+            "analysis": name,
+            "group_split": group_split,
+            "target": target_col,
+            "model": model_name,
+            "threshold": threshold,
+            "include_streams": include_streams,
+            "use_pca": use_pca,
+            "n_samples": int(len(yt)),
+            "n_low": int(support[0]),
+            "n_high": int(support[1]),
+            "accuracy": float(accuracy_score(yt, yp)),
+            "f1_macro": float(f1_score(yt, yp, average="macro", zero_division=0)),
+            "precision_low": float(prec[0]),
+            "recall_low": float(rec[0]),
+            "f1_low": float(f1[0]),
+            "precision_high": float(prec[1]),
+            "recall_high": float(rec[1]),
+            "f1_high": float(f1[1]),
+        })
+        confusion_rows.append({
+            "analysis": name,
+            "group_split": group_split,
+            "target": target_col,
+            "model": model_name,
+            "tn_true_low_pred_low": int(tn),
+            "fp_true_low_pred_high": int(fp),
+            "fn_true_high_pred_low": int(fn),
+            "tp_true_high_pred_high": int(tp),
+        })
+
+    return pd.DataFrame(metric_rows), pd.DataFrame(confusion_rows)
+
+
+def run_classifier_panel_for_granularity(
+    data_df: pd.DataFrame, analysis_prefix: str, threshold: float
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Run the panel for both targets, two feature sets, and 3 group splits (D/T/all)."""
+    metric_frames: list[pd.DataFrame] = []
+    confusion_frames: list[pd.DataFrame] = []
+    targets = [("engagement_target", "individual_engagement"), ("task_engagement", "group_task_engagement")]
+    feature_sets = [(False, False, "base")]
+    if PANEL_INCLUDE_STREAMS:
+        feature_sets.append((True, True, "streams_pca"))
+    # Match prior work's 3-fold reporting: dyads-only (D), triads-only (T), all.
+    group_splits = [("all", None), ("D", "dyad"), ("T", "triad")]
+    for target_col, target_label in targets:
+        if target_col not in data_df.columns:
+            continue
+        for split_label, session_substr in group_splits:
+            if session_substr is None:
+                df_split = data_df
+            else:
+                df_split = data_df[data_df["session"].str.contains(session_substr, na=False)]
+            if df_split.empty:
+                continue
+            for include_streams, use_pca, fset_label in feature_sets:
+                name = f"{analysis_prefix}_{target_label}_{fset_label}_{split_label}"
+                m, c = run_classifier_panel(
+                    df_split, target_col, name, threshold,
+                    use_pca=use_pca, include_streams=include_streams, group_split=split_label,
+                )
+                if not m.empty:
+                    metric_frames.append(m)
+                if not c.empty:
+                    confusion_frames.append(c)
+    metrics_df = pd.concat(metric_frames, ignore_index=True) if metric_frames else pd.DataFrame()
+    confusion_df = pd.concat(confusion_frames, ignore_index=True) if confusion_frames else pd.DataFrame()
+    return metrics_df, confusion_df
+
+
 def build_frame_role_rows(session: str, frame_df: pd.DataFrame, role: str, stride: int) -> pd.DataFrame:
     sampled = frame_df.iloc[::stride].copy()
     engagement_col = f"engagement_{role}"
@@ -583,10 +839,50 @@ def build_frame_role_rows(session: str, frame_df: pd.DataFrame, role: str, strid
     return use
 
 
+def build_window_role_rows(session: str, frame_df: pd.DataFrame, role: str, window_ms: float) -> pd.DataFrame:
+    """Aggregate frame features into fixed time windows (mean per window).
+
+    Mirrors build_frame_role_rows but bins time_ms into ``window_ms`` windows and
+    averages within each, matching the prior-work 60 s resampling. One row per
+    (session, role, window).
+    """
+    engagement_col = f"engagement_{role}"
+    sentiment_col = f"sentiment_{role}"
+    speaking_col = f"speaking_{role}"
+    sentiment_emb_cols = [c for c in frame_df.columns if c.startswith(f"sentiment_emb_{role}_")]
+    rename_emb = {c: c.replace(f"sentiment_emb_{role}_", "sentiment_emb_") for c in sentiment_emb_cols}
+    opensmile_cols = [c for c in frame_df.columns if c.startswith("opensmile_")]
+    emow2v_cols = [c for c in frame_df.columns if c.startswith("emow2v_")]
+
+    keep = ["time_ms", "task_engagement", "arousal", "dominance", "valence"] + opensmile_cols + emow2v_cols + sentiment_emb_cols
+    if sentiment_col in frame_df.columns:
+        keep.append(sentiment_col)
+    if speaking_col in frame_df.columns:
+        keep.append(speaking_col)
+    if engagement_col in frame_df.columns:
+        keep.append(engagement_col)
+    use = frame_df[[c for c in keep if c in frame_df.columns]].copy()
+    if engagement_col not in use.columns or use.empty:
+        return pd.DataFrame()
+
+    use["window_idx"] = (use["time_ms"] // window_ms).astype(int)
+    agg = use.groupby("window_idx", as_index=False).mean(numeric_only=True)
+    agg = agg.rename(columns=rename_emb)
+    if sentiment_col in agg.columns:
+        agg = agg.rename(columns={sentiment_col: "sentiment_role"})
+    if speaking_col in agg.columns:
+        agg = agg.rename(columns={speaking_col: "speaking_role"})
+    agg = agg.rename(columns={engagement_col: "engagement_target"})
+    agg["session"] = session
+    agg["role"] = role
+    return agg
+
+
 def build_model_outputs(
     input_df: pd.DataFrame, use_pca: bool = False, include_streams: bool = True
 ) -> tuple[dict, list[pd.DataFrame], str, pd.DataFrame, pd.DataFrame]:
     """Returns (model_metrics, coef_frames, summary_text, fold_scores_df, ttest_df)."""
+    log(f"  fitting models (use_pca={use_pca}, include_streams={include_streams}, rows={len(input_df)}) ...")
     model_metrics = {}
     coef_frames = []
     all_fold_scores: list[pd.DataFrame] = []
@@ -678,6 +974,7 @@ def write_model_artifacts(
     ttest_df: pd.DataFrame | None = None,
 ) -> None:
     root.mkdir(parents=True, exist_ok=True)
+    log(f"  wrote model artifacts: {tag}")
     summaries_path = root / f"model_summaries_{tag}.txt"
     summaries_path.write_text(summary_text)
 
@@ -708,9 +1005,16 @@ def main() -> None:
     if not sessions:
         sessions = sorted([p.stem for p in MERGED_ROOT.glob("recording_*.csv")])
 
+    interaction_windows = load_interaction_windows()
+    if FLOORLEVEL_ONLY:
+        sessions = [s for s in sessions if s in interaction_windows]
+        print(f"Floorlevel filter: {len(sessions)} sessions kept -> {sessions}")
+
     segment_rows: list[dict] = []
     frame_rows: list[pd.DataFrame] = []
-    for ses in sessions:
+    window_rows: list[pd.DataFrame] = []
+    log(f"Loading + aggregating {len(sessions)} sessions ...")
+    for s_i, ses in enumerate(sessions, 1):
         merged_csv = MERGED_ROOT / f"{ses}.csv"
         merged_parquet = MERGED_ROOT / f"{ses}.parquet"
         if USE_PARQUET_INPUT and merged_parquet.exists():
@@ -718,16 +1022,26 @@ def main() -> None:
         elif merged_csv.exists():
             frame_df = pd.read_csv(merged_csv)
         else:
+            log(f"  [{s_i}/{len(sessions)}] {ses}: no merged file, skipped")
             continue
+        log(f"  [{s_i}/{len(sessions)}] {ses}: {len(frame_df)} frames loaded")
+        window = interaction_windows.get(ses)
+        if CLIP_TO_INTERACTION and window is not None:
+            frame_df = clip_frame_to_window(frame_df, window)
         for role in ROLES:
             tr_path = ANNOTATION_ROOT / ses / f"transcript.{role}.helenrisack.csv"
             if not tr_path.exists():
                 continue
             tr_df = pd.read_csv(tr_path)
+            if CLIP_TO_INTERACTION and window is not None:
+                tr_df = clip_transcript_to_window(tr_df, window)
             segment_rows.extend(build_segment_rows(ses, role, frame_df, tr_df, include_streams=True))
             frame_role = build_frame_role_rows(ses, frame_df, role, FRAME_DOWNSAMPLE_STRIDE)
             if not frame_role.empty:
                 frame_rows.append(frame_role)
+            window_role = build_window_role_rows(ses, frame_df, role, WINDOW_MS)
+            if not window_role.empty:
+                window_rows.append(window_role)
 
     segments_df = pd.DataFrame(segment_rows)
     segments_compare_csv = COMPARE_OUTPUT_ROOT / "segments_streams.csv"
@@ -743,7 +1057,17 @@ def main() -> None:
     if GENERATE_PARQUET:
         session_role_df.to_parquet(session_role_compare_parquet, index=False)
 
+    log(f"Aggregation done: {len(segments_df)} segments, {len(session_role_df)} session-role rows")
+
+    # Defaults so the ablation table builds even when RUN_REGRESSION is False
+    # (get_metric falls back to NaN); the ablation CSV is only (re)written when
+    # regression actually ran, to avoid clobbering existing results.
+    seg_pca_metrics = seg_base_pca_metrics = {}
+    frame_pca_metrics = frame_base_pca_metrics = {}
+    win_pca_metrics = win_base_pca_metrics = {}
+
     # Segment-level stream analysis
+    log("STAGE: segment-level models")
     segment_model_df = segments_df.copy()
     segment_model_df["engagement_target"] = np.nan
     for role in ROLES:
@@ -752,40 +1076,97 @@ def main() -> None:
         if col in segment_model_df.columns:
             segment_model_df.loc[idx, "engagement_target"] = segment_model_df.loc[idx, col]
     segment_model_df["task_engagement"] = segment_model_df.get("task_engagement_mean", np.nan)
-    seg_metrics, seg_coefs, seg_summary, seg_folds, seg_ttest = build_model_outputs(segment_model_df)
-    write_model_artifacts(COMPARE_OUTPUT_ROOT, "segment_streams", seg_metrics, seg_coefs, seg_summary, seg_folds, seg_ttest)
-    seg_pca_metrics, seg_pca_coefs, seg_pca_summary, seg_pca_folds, seg_pca_ttest = build_model_outputs(segment_model_df, use_pca=True)
-    write_model_artifacts(COMPARE_OUTPUT_ROOT, "segment_streams_pca", seg_pca_metrics, seg_pca_coefs, seg_pca_summary, seg_pca_folds, seg_pca_ttest)
-    seg_base_pca_metrics, seg_base_pca_coefs, seg_base_pca_summary, seg_base_pca_folds, seg_base_pca_ttest = build_model_outputs(
-        segment_model_df, use_pca=True, include_streams=False
-    )
-    write_model_artifacts(
-        COMPARE_OUTPUT_ROOT, "segment_base_only_pca", seg_base_pca_metrics, seg_base_pca_coefs, seg_base_pca_summary, seg_base_pca_folds, seg_base_pca_ttest
-    )
+    if RUN_REGRESSION:
+        seg_metrics, seg_coefs, seg_summary, seg_folds, seg_ttest = build_model_outputs(segment_model_df)
+        write_model_artifacts(COMPARE_OUTPUT_ROOT, "segment_streams", seg_metrics, seg_coefs, seg_summary, seg_folds, seg_ttest)
+        seg_pca_metrics, seg_pca_coefs, seg_pca_summary, seg_pca_folds, seg_pca_ttest = build_model_outputs(segment_model_df, use_pca=True)
+        write_model_artifacts(COMPARE_OUTPUT_ROOT, "segment_streams_pca", seg_pca_metrics, seg_pca_coefs, seg_pca_summary, seg_pca_folds, seg_pca_ttest)
+        seg_base_pca_metrics, seg_base_pca_coefs, seg_base_pca_summary, seg_base_pca_folds, seg_base_pca_ttest = build_model_outputs(
+            segment_model_df, use_pca=True, include_streams=False
+        )
+        write_model_artifacts(
+            COMPARE_OUTPUT_ROOT, "segment_base_only_pca", seg_base_pca_metrics, seg_base_pca_coefs, seg_base_pca_summary, seg_base_pca_folds, seg_base_pca_ttest
+        )
 
     # Frame-level downsampled stream analysis
+    log("STAGE: frame-level (1 Hz) models")
     frame_df_all = pd.concat(frame_rows, ignore_index=True) if frame_rows else pd.DataFrame()
     frame_df_all.to_csv(COMPARE_OUTPUT_ROOT / "frame_rows_streams_1hz.csv", index=False)
     if GENERATE_PARQUET and not frame_df_all.empty:
         frame_df_all.to_parquet(COMPARE_OUTPUT_ROOT / "frame_rows_streams_1hz.parquet", index=False)
-    frame_metrics, frame_coefs, frame_summary, frame_folds, frame_ttest = build_model_outputs(frame_df_all)
-    write_model_artifacts(COMPARE_OUTPUT_ROOT, "frame_streams_1hz", frame_metrics, frame_coefs, frame_summary, frame_folds, frame_ttest)
-    frame_pca_metrics, frame_pca_coefs, frame_pca_summary, frame_pca_folds, frame_pca_ttest = build_model_outputs(frame_df_all, use_pca=True)
-    write_model_artifacts(
-        COMPARE_OUTPUT_ROOT, "frame_streams_1hz_pca", frame_pca_metrics, frame_pca_coefs, frame_pca_summary, frame_pca_folds, frame_pca_ttest
-    )
-    frame_base_pca_metrics, frame_base_pca_coefs, frame_base_pca_summary, frame_base_pca_folds, frame_base_pca_ttest = build_model_outputs(
-        frame_df_all, use_pca=True, include_streams=False
-    )
-    write_model_artifacts(
-        COMPARE_OUTPUT_ROOT,
-        "frame_base_only_1hz_pca",
-        frame_base_pca_metrics,
-        frame_base_pca_coefs,
-        frame_base_pca_summary,
-        frame_base_pca_folds,
-        frame_base_pca_ttest,
-    )
+    if RUN_REGRESSION:
+        frame_metrics, frame_coefs, frame_summary, frame_folds, frame_ttest = build_model_outputs(frame_df_all)
+        write_model_artifacts(COMPARE_OUTPUT_ROOT, "frame_streams_1hz", frame_metrics, frame_coefs, frame_summary, frame_folds, frame_ttest)
+        frame_pca_metrics, frame_pca_coefs, frame_pca_summary, frame_pca_folds, frame_pca_ttest = build_model_outputs(frame_df_all, use_pca=True)
+        write_model_artifacts(
+            COMPARE_OUTPUT_ROOT, "frame_streams_1hz_pca", frame_pca_metrics, frame_pca_coefs, frame_pca_summary, frame_pca_folds, frame_pca_ttest
+        )
+        frame_base_pca_metrics, frame_base_pca_coefs, frame_base_pca_summary, frame_base_pca_folds, frame_base_pca_ttest = build_model_outputs(
+            frame_df_all, use_pca=True, include_streams=False
+        )
+        write_model_artifacts(
+            COMPARE_OUTPUT_ROOT,
+            "frame_base_only_1hz_pca",
+            frame_base_pca_metrics,
+            frame_base_pca_coefs,
+            frame_base_pca_summary,
+            frame_base_pca_folds,
+            frame_base_pca_ttest,
+        )
+
+    # Fixed 60 s window stream analysis (prior-work granularity, for comparison)
+    log("STAGE: 60 s window models")
+    window_df_all = pd.concat(window_rows, ignore_index=True) if window_rows else pd.DataFrame()
+    window_df_all.to_csv(COMPARE_OUTPUT_ROOT / "window_rows_streams_60s.csv", index=False)
+    if GENERATE_PARQUET and not window_df_all.empty:
+        window_df_all.to_parquet(COMPARE_OUTPUT_ROOT / "window_rows_streams_60s.parquet", index=False)
+    if RUN_REGRESSION:
+        win_metrics, win_coefs, win_summary, win_folds, win_ttest = build_model_outputs(window_df_all)
+        write_model_artifacts(COMPARE_OUTPUT_ROOT, "window_streams_60s", win_metrics, win_coefs, win_summary, win_folds, win_ttest)
+        win_pca_metrics, win_pca_coefs, win_pca_summary, win_pca_folds, win_pca_ttest = build_model_outputs(window_df_all, use_pca=True)
+        write_model_artifacts(
+            COMPARE_OUTPUT_ROOT, "window_streams_60s_pca", win_pca_metrics, win_pca_coefs, win_pca_summary, win_pca_folds, win_pca_ttest
+        )
+        win_base_pca_metrics, win_base_pca_coefs, win_base_pca_summary, win_base_pca_folds, win_base_pca_ttest = build_model_outputs(
+            window_df_all, use_pca=True, include_streams=False
+        )
+        write_model_artifacts(
+            COMPARE_OUTPUT_ROOT,
+            "window_base_only_60s_pca",
+            win_base_pca_metrics,
+            win_base_pca_coefs,
+            win_base_pca_summary,
+            win_base_pca_folds,
+            win_base_pca_ttest,
+        )
+
+    # Fixed-threshold high/low classification panel (QDA, SVM, NB, kNN, RF, ...)
+    # to compare against the prior ICMI detector: accuracy + per-class
+    # precision/recall/F1 + confusion matrices, LOSO CV.
+    if RUN_CLASSIFIER_PANEL:
+        log("STAGE: fixed-threshold classifier panel (QDA/SVM/NB/kNN/RF/LogReg)")
+        clf_metric_frames: list[pd.DataFrame] = []
+        clf_confusion_frames: list[pd.DataFrame] = []
+        # Panel runs on segment + 60 s window granularities only (the prior-work
+        # comparison scales). Frame-1 Hz (~27k rows) is excluded: SVM-rbf is
+        # O(n^2-n^3) per fold and intractable there; frame still gets the
+        # regression/logistic-AUC analysis above.
+        for data_df, prefix in [
+            (segment_model_df, "segment"),
+            (window_df_all, "window_60s"),
+        ]:
+            if data_df is None or data_df.empty:
+                continue
+            m, c = run_classifier_panel_for_granularity(data_df, prefix, CLASSIFICATION_THRESHOLD)
+            if not m.empty:
+                clf_metric_frames.append(m)
+            if not c.empty:
+                clf_confusion_frames.append(c)
+        clf_metrics_df = pd.concat(clf_metric_frames, ignore_index=True) if clf_metric_frames else pd.DataFrame()
+        clf_confusion_df = pd.concat(clf_confusion_frames, ignore_index=True) if clf_confusion_frames else pd.DataFrame()
+        clf_metrics_df.to_csv(COMPARE_OUTPUT_ROOT / "classifier_panel_metrics.csv", index=False)
+        clf_confusion_df.to_csv(COMPARE_OUTPUT_ROOT / "classifier_panel_confusion.csv", index=False)
+        print(f"Classifier panel: {len(clf_metrics_df)} model rows, {len(clf_confusion_df)} confusion matrices")
 
     # Compact ablation table for stream utility checks.
     def get_metric(d: dict, analysis: str, target: str, key: str) -> float:
@@ -848,10 +1229,39 @@ def main() -> None:
             "base_only_pca": get_metric(frame_base_pca_metrics, "group_task_engagement", "logistic", "roc_auc"),
             "streams_pca": get_metric(frame_pca_metrics, "group_task_engagement", "logistic", "roc_auc"),
         },
+        {
+            "analysis": "window_60s",
+            "target": "individual_engagement",
+            "model": "linear_r2",
+            "base_only_pca": get_metric(win_base_pca_metrics, "individual_engagement", "linear", "r2"),
+            "streams_pca": get_metric(win_pca_metrics, "individual_engagement", "linear", "r2"),
+        },
+        {
+            "analysis": "window_60s",
+            "target": "individual_engagement",
+            "model": "logistic_auc",
+            "base_only_pca": get_metric(win_base_pca_metrics, "individual_engagement", "logistic", "roc_auc"),
+            "streams_pca": get_metric(win_pca_metrics, "individual_engagement", "logistic", "roc_auc"),
+        },
+        {
+            "analysis": "window_60s",
+            "target": "group_task_engagement",
+            "model": "linear_r2",
+            "base_only_pca": get_metric(win_base_pca_metrics, "group_task_engagement", "linear", "r2"),
+            "streams_pca": get_metric(win_pca_metrics, "group_task_engagement", "linear", "r2"),
+        },
+        {
+            "analysis": "window_60s",
+            "target": "group_task_engagement",
+            "model": "logistic_auc",
+            "base_only_pca": get_metric(win_base_pca_metrics, "group_task_engagement", "logistic", "roc_auc"),
+            "streams_pca": get_metric(win_pca_metrics, "group_task_engagement", "logistic", "roc_auc"),
+        },
     ]
     ablation_df = pd.DataFrame(ablation_rows)
     ablation_df["delta_streams_minus_base"] = ablation_df["streams_pca"] - ablation_df["base_only_pca"]
-    ablation_df.to_csv(COMPARE_OUTPUT_ROOT / "ablation_streams_vs_base_pca.csv", index=False)
+    if RUN_REGRESSION:
+        ablation_df.to_csv(COMPARE_OUTPUT_ROOT / "ablation_streams_vs_base_pca.csv", index=False)
 
     # Optional legacy outputs (kept off by default to avoid overwriting previous baseline files)
     if WRITE_LEGACY_OUTPUTS:
