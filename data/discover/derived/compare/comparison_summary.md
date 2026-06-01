@@ -224,6 +224,42 @@ vs_carlos_qda_gazespeak: `t_stat`, `p_value`, `p_value_adj`, `cohen_d`, `signifi
 
 ---
 
+## Modality Ablation (linguistic-only vs audio-only vs multimodal)
+
+Feature buckets (panel `feature_modality` column): **(para)linguistic** = transcript text
+(`word_count`, `words_per_second`, `avg_word_length`, `question/statement_rate`, `sentiment`) +
+speaking/turn-taking (`speaking_role`, `speaking_seconds`, `segment_count`); **audio** = group
+affect (`arousal`, `dominance`, `valence`); **multimodal** = both. (Audio is group-shared; speaking
+attributes it per role, folded into paralinguistic.) 60 s window, LOSO, best model per cell (acc / F1-macro):
+
+| target · split | multimodal | audio-only | (para)linguistic-only |
+|---|---:|---:|---:|
+| Group TE · All | 0.823 / 0.71 | **0.820 / 0.68** | 0.724 / 0.53 |
+| Group TE · Triads | **0.880 / 0.80** | 0.861 / 0.76 | 0.719 / 0.49 |
+| Group TE · Dyads (n=8) | 0.737 / 0.57 | 0.769 / 0.67 | 0.739 / 0.63 |
+| Individual · All | 0.688 / 0.64 | 0.661 / 0.59 | **0.707 / 0.66** |
+| Individual · Triads | 0.732 / 0.70 | 0.642 / 0.57 | 0.715 / 0.68 |
+| Individual · Dyads | 0.659 / 0.58 | 0.623 / 0.55 | 0.650 / 0.59 |
+
+**Double dissociation:**
+- **Group task engagement ← audio affect.** Audio-only ≈ multimodal; (para)linguistic-only ~0.10
+  worse on All/Triads. Text adds nothing on top of audio (matches importance: valence/dominance dominate).
+- **Individual engagement ← (para)linguistic.** Paralinguistic-only ≥ multimodal; audio-only collapses
+  toward baseline (group-shared v/a/d gives no per-role signal).
+- **No multimodal synergy** — each target is carried by one modality; combining ≈ the dominant one.
+
+### Answers to slide-9 Research Questions
+- **Linguistic-only detect TE?** Modest. Group TE acc ~0.72 / F1 ~0.53 (weaker than audio); but for
+  **individual** engagement (para)linguistic is the *best* channel (acc ~0.71 / F1 ~0.66).
+- **Which linguistic features strongest?** (importance, individual engagement) `speaking_role`,
+  `word_count`, `words_per_second` (speaking + amount of talk) + `sentiment`. For group TE the
+  linguistic features are weak; the driver is audio `valence` (+) / `dominance` (−).
+- **Multimodal (both)?** Group TE acc 0.82–0.88, individual 0.69–0.73 — equals the dominant single
+  modality per target, no gain from combining (and embeddings on top degrade slightly).
+
+Outputs gain a `feature_modality` column (multimodal / paralinguistic / audio) across both targets,
+both granularities, D/T/All (`classifier_panel_metrics.csv`, `..._foldscores.csv`, `..._ttest.csv`).
+
 ## Caveats
 
 - **Median split ≠ ICMI/QDA detector.** The prior detector slide (QDA, dyads 77% accuracy, high/low TE precision) uses a **fixed threshold** and reports **accuracy + per-class precision/F1 + confusion matrix**. This pipeline uses a **median split + AUC + LogisticRegression only**, so numbers are not directly comparable. For a like-for-like comparison, add: fixed-threshold binarization, accuracy/precision/recall/F1, confusion matrices, and a QDA model.

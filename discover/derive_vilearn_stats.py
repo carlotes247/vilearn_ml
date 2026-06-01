@@ -496,10 +496,20 @@ def run_models(
     return metrics, pd.concat(coef_tables, ignore_index=True)
 
 
+# Audio-derived affect (group-level emotion stream). Everything else among the
+# base predictors is (para)linguistic: transcript text + speaking/turn-taking.
+AUDIO_AFFECT_COLS = {"arousal", "dominance", "valence", "arousal_mean", "dominance_mean", "valence_mean"}
+
+
 def _prepare_xy(
-    data_df: pd.DataFrame, target_col: str, include_streams: bool
+    data_df: pd.DataFrame, target_col: str, include_streams: bool, feature_modality: str = "multimodal"
 ) -> tuple[pd.DataFrame, pd.Series, pd.Series] | None:
-    """Shared feature prep for run_models and run_models_cv. Returns (X, y, groups) or None."""
+    """Shared feature prep for run_models and run_models_cv. Returns (X, y, groups) or None.
+
+    feature_modality: "multimodal" (all base features), "paralinguistic" (text +
+    speaking/turn-taking, i.e. base minus audio affect), or "audio" (audio affect
+    v/a/d only). Streams are orthogonal (include_streams).
+    """
     predictors = [
         "segment_duration_s", "word_count", "avg_word_length", "words_per_second",
         "question", "statement", "sentiment_role", "speaking_role",
@@ -528,6 +538,11 @@ def _prepare_xy(
         )
     ]
     predictor_cols = [c for c in predictors if c in use.columns and c != target_col]
+    # Modality ablation: restrict base predictors before adding streams.
+    if feature_modality == "paralinguistic":
+        predictor_cols = [c for c in predictor_cols if c not in AUDIO_AFFECT_COLS]
+    elif feature_modality == "audio":
+        predictor_cols = [c for c in predictor_cols if c in AUDIO_AFFECT_COLS]
     if include_streams:
         predictor_cols += stream_predictors
     predictor_cols = [c for c in predictor_cols if "engagement" not in c.lower()]
@@ -694,6 +709,7 @@ def run_classifier_panel(
     use_pca: bool = False,
     include_streams: bool = False,
     group_split: str = "all",
+    feature_modality: str = "multimodal",
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Fixed-threshold high/low classification with LOSO CV across a model panel.
 
@@ -704,7 +720,7 @@ def run_classifier_panel(
     Returns (metrics_df, confusion_df, importance_df, foldscores_df).
     """
     empty4 = (pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame())
-    prepared = _prepare_xy(data_df, target_col, include_streams)
+    prepared = _prepare_xy(data_df, target_col, include_streams, feature_modality=feature_modality)
     if prepared is None:
         return empty4
     x, y, groups = prepared
@@ -749,7 +765,8 @@ def run_classifier_panel(
             oof_true[model_name].extend(yb_te_arr.tolist())
             oof_pred[model_name].extend(pred.tolist())
             fold_score_rows.append({
-                "analysis": name, "group_split": group_split, "target": target_col,
+                "analysis": name, "group_split": group_split, "feature_modality": feature_modality,
+                "target": target_col,
                 "model": model_name, "fold": fold_i, "group": held_group,
                 "accuracy": float(accuracy_score(yb_te_arr, pred)),
                 "f1_macro": float(f1_score(yb_te_arr, pred, average="macro", zero_division=0)),
@@ -773,6 +790,7 @@ def run_classifier_panel(
         metric_rows.append({
             "analysis": name,
             "group_split": group_split,
+            "feature_modality": feature_modality,
             "target": target_col,
             "model": model_name,
             "threshold": threshold,
@@ -840,11 +858,17 @@ def run_classifier_panel_for_granularity(
     importance_frames: list[pd.DataFrame] = []
     foldscore_frames: list[pd.DataFrame] = []
     targets = [("engagement_target", "individual_engagement"), ("task_engagement", "group_task_engagement")]
-    feature_sets = [(False, False, "base")]
+    # (include_streams, use_pca, label, feature_modality). Modality ablation:
+    # multimodal (= base), paralinguistic (text + speaking), audio (v/a/d only).
+    feature_sets = [
+        (False, False, "base", "multimodal"),
+        (False, False, "paralinguistic", "paralinguistic"),
+        (False, False, "audio", "audio"),
+    ]
     # Streams only at window granularity (~500 rows); segment (3k rows) + per-fold
     # PCA on ~1900 stream dims is too slow even with randomized SVD.
     if PANEL_INCLUDE_STREAMS and analysis_prefix.startswith("window"):
-        feature_sets.append((True, True, "streams_pca"))
+        feature_sets.append((True, True, "streams_pca", "multimodal"))
     # Match prior work's 3-fold reporting: dyads-only (D), triads-only (T), all.
     group_splits = [("all", None), ("D", "dyad"), ("T", "triad")]
     for target_col, target_label in targets:
@@ -857,11 +881,12 @@ def run_classifier_panel_for_granularity(
                 df_split = data_df[data_df["session"].str.contains(session_substr, na=False)]
             if df_split.empty:
                 continue
-            for include_streams, use_pca, fset_label in feature_sets:
+            for include_streams, use_pca, fset_label, modality in feature_sets:
                 name = f"{analysis_prefix}_{target_label}_{fset_label}_{split_label}"
                 m, c, imp, fs = run_classifier_panel(
                     df_split, target_col, name, threshold,
                     use_pca=use_pca, include_streams=include_streams, group_split=split_label,
+                    feature_modality=modality,
                 )
                 if not m.empty:
                     metric_frames.append(m)
