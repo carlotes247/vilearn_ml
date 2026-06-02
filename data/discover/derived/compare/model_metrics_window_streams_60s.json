@@ -1,0 +1,66 @@
+{
+  "individual_engagement": {
+    "target": "engagement_target",
+    "status": "ok",
+    "rows": 493,
+    "linear": {
+      "r2": 0.08673834127508995,
+      "mae": 0.1175413910575676,
+      "corr_pred_true_pearson": 0.56864209140375,
+      "corr_pred_true_pearson_p": 8.248730801032977e-10,
+      "corr_pred_true_spearman": 0.5768212739641311,
+      "corr_pred_true_spearman_p": 4.138562260354304e-10
+    },
+    "logistic": {
+      "threshold_median": 0.4720817303716666,
+      "accuracy": 0.6363636363636364,
+      "roc_auc": 0.7371428571428571,
+      "corr_pred_true_pearson": 0.3649484079475034,
+      "corr_pred_true_pearson_p": 0.00020398521452597967,
+      "corr_pred_true_spearman": 0.41074347722347654,
+      "corr_pred_true_spearman_p": 2.4121187947422364e-05
+    },
+    "include_streams": true,
+    "cv": {
+      "target": "engagement_target",
+      "status": "ok",
+      "n_folds": 20,
+      "linear_r2_mean": -2.949446717402301,
+      "linear_r2_std": 7.475809576185164,
+      "logistic_auc_mean": 0.702055585587042,
+      "logistic_auc_std": 0.18420545057092286
+    }
+  },
+  "group_task_engagement": {
+    "target": "task_engagement",
+    "status": "ok",
+    "rows": 506,
+    "linear": {
+      "r2": 0.6814739154056275,
+      "mae": 0.11545850935805173,
+      "corr_pred_true_pearson": 0.8368543742144297,
+      "corr_pred_true_pearson_p": 6.4403410145838655e-28,
+      "corr_pred_true_spearman": 0.7544199447251562,
+      "corr_pred_true_spearman_p": 5.450130545837566e-20
+    },
+    "logistic": {
+      "threshold_median": 0.6702711084373398,
+      "accuracy": 0.8137254901960784,
+      "roc_auc": 0.8826510721247564,
+      "corr_pred_true_pearson": 0.681474835512162,
+      "corr_pred_true_pearson_p": 3.193956482627078e-15,
+      "corr_pred_true_spearman": 0.6582000985625157,
+      "corr_pred_true_spearman_p": 5.591577410148769e-14
+    },
+    "include_streams": true,
+    "cv": {
+      "target": "task_engagement",
+      "status": "ok",
+      "n_folds": 20,
+      "linear_r2_mean": -22.840377566252357,
+      "linear_r2_std": 81.10528839053468,
+      "logistic_auc_mean": 0.6652949605768232,
+      "logistic_auc_std": 0.19385273450946866
+    }
+  }
+}

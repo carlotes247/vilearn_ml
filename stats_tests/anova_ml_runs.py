@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.stats as stats
-from scipy.stats import ttest_rel, wilcoxon
+from scipy.stats import ttest_rel, ttest_ind, wilcoxon
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
 import statsmodels.stats.multicomp as mc
@@ -71,7 +71,10 @@ def run_stat_test(df_in: pd.DataFrame, models: list[str] ):
         base_scores  = grp['BaselineScore'].values
 
         # Paired t‑test (parametric)
-        _, p_val = ttest_rel(model_scores, base_scores)
+        # ttest_rel is better for the same model on different datasets
+        # ttest_ind is better for two different models. I adjust for using the welch t-test instead of the standard one because it doesn't assume equal variances between samples
+        # _, p_val = ttest_rel(model_scores, base_scores)
+        _, p_val = ttest_ind(model_scores, base_scores, equal_var=False)
 
         # Effect size (Cohen's d because this is a difference test)
         # Paired samples Cohen's d (because both models use same dataset)

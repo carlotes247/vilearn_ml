@@ -1,0 +1,110 @@
+{
+  "individual_engagement": {
+    "target": "engagement_target",
+    "status": "ok",
+    "rows": 493,
+    "linear": {
+      "r2": 0.38020530459809543,
+      "mae": 0.10600666840524033,
+      "corr_pred_true_pearson": 0.6490475480288573,
+      "corr_pred_true_pearson_p": 3.7125672965400535e-13,
+      "corr_pred_true_spearman": 0.671799628942486,
+      "corr_pred_true_spearman_p": 2.7051591420283595e-14
+    },
+    "logistic": {
+      "threshold_median": 0.4720817303716666,
+      "accuracy": 0.7878787878787878,
+      "roc_auc": 0.8440816326530612,
+      "corr_pred_true_pearson": 0.5919408766392874,
+      "corr_pred_true_pearson_p": 1.0987336563012007e-10,
+      "corr_pred_true_spearman": 0.5959668697063525,
+      "corr_pred_true_spearman_p": 7.628842120126574e-11
+    },
+    "pca": [
+      {
+        "block": "base",
+        "input_dims": 7,
+        "output_dims": 7
+      },
+      {
+        "block": "opensmile",
+        "input_dims": 88,
+        "output_dims": 43
+      },
+      {
+        "block": "emow2v",
+        "input_dims": 1024,
+        "output_dims": 9
+      },
+      {
+        "block": "sentiment_emb",
+        "input_dims": 768,
+        "output_dims": 44
+      }
+    ],
+    "include_streams": true,
+    "cv": {
+      "target": "engagement_target",
+      "status": "ok",
+      "n_folds": 20,
+      "linear_pca_r2_mean": -1.9858051368391632,
+      "linear_pca_r2_std": 7.150187783125689,
+      "logistic_pca_auc_mean": 0.7386989320131101,
+      "logistic_pca_auc_std": 0.1635939370261234
+    }
+  },
+  "group_task_engagement": {
+    "target": "task_engagement",
+    "status": "ok",
+    "rows": 506,
+    "linear": {
+      "r2": 0.738557502600143,
+      "mae": 0.10262281625420795,
+      "corr_pred_true_pearson": 0.8619351162078625,
+      "corr_pred_true_pearson_p": 2.92622177888922e-31,
+      "corr_pred_true_spearman": 0.8409951355156557,
+      "corr_pred_true_spearman_p": 1.983665208481993e-28
+    },
+    "logistic": {
+      "threshold_median": 0.6702711084373398,
+      "accuracy": 0.7745098039215687,
+      "roc_auc": 0.8346978557504873,
+      "corr_pred_true_pearson": 0.5959441664516523,
+      "corr_pred_true_pearson_p": 3.901057522691101e-11,
+      "corr_pred_true_spearman": 0.5757155217686396,
+      "corr_pred_true_spearman_p": 2.4501150769141684e-10
+    },
+    "pca": [
+      {
+        "block": "base",
+        "input_dims": 7,
+        "output_dims": 7
+      },
+      {
+        "block": "opensmile",
+        "input_dims": 88,
+        "output_dims": 43
+      },
+      {
+        "block": "emow2v",
+        "input_dims": 1024,
+        "output_dims": 9
+      },
+      {
+        "block": "sentiment_emb",
+        "input_dims": 768,
+        "output_dims": 45
+      }
+    ],
+    "include_streams": true,
+    "cv": {
+      "target": "task_engagement",
+      "status": "ok",
+      "n_folds": 20,
+      "linear_pca_r2_mean": -44.17991282768407,
+      "linear_pca_r2_std": 190.4799013017872,
+      "logistic_pca_auc_mean": 0.6767223324514992,
+      "logistic_pca_auc_std": 0.1851116013145468
+    }
+  }
+}

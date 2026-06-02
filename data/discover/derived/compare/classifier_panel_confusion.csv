@@ -1,0 +1,289 @@
+analysis,group_split,target,model,tn_true_low_pred_low,fp_true_low_pred_high,fn_true_high_pred_low,tp_true_high_pred_high
+segment_individual_engagement_base_all,all,engagement_target,Baseline Uniform,577,669,807,884
+segment_individual_engagement_base_all,all,engagement_target,QDA,577,669,468,1223
+segment_individual_engagement_base_all,all,engagement_target,SVM (rbf),486,760,385,1306
+segment_individual_engagement_base_all,all,engagement_target,SVM (linear),583,663,442,1249
+segment_individual_engagement_base_all,all,engagement_target,Naive Bayes,546,700,449,1242
+segment_individual_engagement_base_all,all,engagement_target,kNN,553,693,549,1142
+segment_individual_engagement_base_all,all,engagement_target,Random Forest,526,720,521,1170
+segment_individual_engagement_base_all,all,engagement_target,Logistic Regression,563,683,420,1271
+segment_individual_engagement_paralinguistic_all,all,engagement_target,Baseline Uniform,577,669,807,884
+segment_individual_engagement_paralinguistic_all,all,engagement_target,QDA,600,646,488,1203
+segment_individual_engagement_paralinguistic_all,all,engagement_target,SVM (rbf),509,737,369,1322
+segment_individual_engagement_paralinguistic_all,all,engagement_target,SVM (linear),599,647,459,1232
+segment_individual_engagement_paralinguistic_all,all,engagement_target,Naive Bayes,597,649,492,1199
+segment_individual_engagement_paralinguistic_all,all,engagement_target,kNN,564,682,576,1115
+segment_individual_engagement_paralinguistic_all,all,engagement_target,Random Forest,515,731,566,1125
+segment_individual_engagement_paralinguistic_all,all,engagement_target,Logistic Regression,566,680,411,1280
+segment_individual_engagement_audio_all,all,engagement_target,Baseline Uniform,577,669,807,884
+segment_individual_engagement_audio_all,all,engagement_target,QDA,599,647,575,1116
+segment_individual_engagement_audio_all,all,engagement_target,SVM (rbf),439,807,547,1144
+segment_individual_engagement_audio_all,all,engagement_target,SVM (linear),672,574,503,1188
+segment_individual_engagement_audio_all,all,engagement_target,Naive Bayes,371,875,335,1356
+segment_individual_engagement_audio_all,all,engagement_target,kNN,552,694,599,1092
+segment_individual_engagement_audio_all,all,engagement_target,Random Forest,568,678,624,1067
+segment_individual_engagement_audio_all,all,engagement_target,Logistic Regression,510,736,485,1206
+segment_individual_engagement_base_D,D,engagement_target,Baseline Uniform,305,371,319,322
+segment_individual_engagement_base_D,D,engagement_target,QDA,319,357,212,429
+segment_individual_engagement_base_D,D,engagement_target,SVM (rbf),398,278,267,374
+segment_individual_engagement_base_D,D,engagement_target,SVM (linear),447,229,235,406
+segment_individual_engagement_base_D,D,engagement_target,Naive Bayes,233,443,153,488
+segment_individual_engagement_base_D,D,engagement_target,kNN,371,305,297,344
+segment_individual_engagement_base_D,D,engagement_target,Random Forest,393,283,303,338
+segment_individual_engagement_base_D,D,engagement_target,Logistic Regression,418,258,253,388
+segment_individual_engagement_paralinguistic_D,D,engagement_target,Baseline Uniform,305,371,319,322
+segment_individual_engagement_paralinguistic_D,D,engagement_target,QDA,319,357,185,456
+segment_individual_engagement_paralinguistic_D,D,engagement_target,SVM (rbf),391,285,220,421
+segment_individual_engagement_paralinguistic_D,D,engagement_target,SVM (linear),452,224,235,406
+segment_individual_engagement_paralinguistic_D,D,engagement_target,Naive Bayes,227,449,133,508
+segment_individual_engagement_paralinguistic_D,D,engagement_target,kNN,384,292,300,341
+segment_individual_engagement_paralinguistic_D,D,engagement_target,Random Forest,371,305,281,360
+segment_individual_engagement_paralinguistic_D,D,engagement_target,Logistic Regression,426,250,219,422
+segment_individual_engagement_audio_D,D,engagement_target,Baseline Uniform,305,371,319,322
+segment_individual_engagement_audio_D,D,engagement_target,QDA,382,294,268,373
+segment_individual_engagement_audio_D,D,engagement_target,SVM (rbf),410,266,273,368
+segment_individual_engagement_audio_D,D,engagement_target,SVM (linear),460,216,208,433
+segment_individual_engagement_audio_D,D,engagement_target,Naive Bayes,423,253,262,379
+segment_individual_engagement_audio_D,D,engagement_target,kNN,391,285,337,304
+segment_individual_engagement_audio_D,D,engagement_target,Random Forest,407,269,356,285
+segment_individual_engagement_audio_D,D,engagement_target,Logistic Regression,440,236,219,422
+segment_individual_engagement_base_T,T,engagement_target,Baseline Uniform,272,298,488,562
+segment_individual_engagement_base_T,T,engagement_target,QDA,290,280,356,694
+segment_individual_engagement_base_T,T,engagement_target,SVM (rbf),136,434,153,897
+segment_individual_engagement_base_T,T,engagement_target,SVM (linear),83,487,138,912
+segment_individual_engagement_base_T,T,engagement_target,Naive Bayes,309,261,365,685
+segment_individual_engagement_base_T,T,engagement_target,kNN,197,373,285,765
+segment_individual_engagement_base_T,T,engagement_target,Random Forest,184,386,239,811
+segment_individual_engagement_base_T,T,engagement_target,Logistic Regression,160,410,161,889
+segment_individual_engagement_paralinguistic_T,T,engagement_target,Baseline Uniform,272,298,488,562
+segment_individual_engagement_paralinguistic_T,T,engagement_target,QDA,319,251,401,649
+segment_individual_engagement_paralinguistic_T,T,engagement_target,SVM (rbf),136,434,142,908
+segment_individual_engagement_paralinguistic_T,T,engagement_target,SVM (linear),7,563,80,970
+segment_individual_engagement_paralinguistic_T,T,engagement_target,Naive Bayes,355,215,455,595
+segment_individual_engagement_paralinguistic_T,T,engagement_target,kNN,196,374,273,777
+segment_individual_engagement_paralinguistic_T,T,engagement_target,Random Forest,176,394,253,797
+segment_individual_engagement_paralinguistic_T,T,engagement_target,Logistic Regression,147,423,194,856
+segment_individual_engagement_audio_T,T,engagement_target,Baseline Uniform,272,298,488,562
+segment_individual_engagement_audio_T,T,engagement_target,QDA,107,463,127,923
+segment_individual_engagement_audio_T,T,engagement_target,SVM (rbf),72,498,117,933
+segment_individual_engagement_audio_T,T,engagement_target,SVM (linear),0,570,0,1050
+segment_individual_engagement_audio_T,T,engagement_target,Naive Bayes,117,453,108,942
+segment_individual_engagement_audio_T,T,engagement_target,kNN,194,376,278,772
+segment_individual_engagement_audio_T,T,engagement_target,Random Forest,173,397,272,778
+segment_individual_engagement_audio_T,T,engagement_target,Logistic Regression,22,548,65,985
+segment_group_task_engagement_base_all,all,task_engagement,Baseline Uniform,446,507,1006,1091
+segment_group_task_engagement_base_all,all,task_engagement,QDA,502,451,790,1307
+segment_group_task_engagement_base_all,all,task_engagement,SVM (rbf),138,815,133,1964
+segment_group_task_engagement_base_all,all,task_engagement,SVM (linear),156,797,107,1990
+segment_group_task_engagement_base_all,all,task_engagement,Naive Bayes,585,368,937,1160
+segment_group_task_engagement_base_all,all,task_engagement,kNN,262,691,382,1715
+segment_group_task_engagement_base_all,all,task_engagement,Random Forest,226,727,257,1840
+segment_group_task_engagement_base_all,all,task_engagement,Logistic Regression,159,794,146,1951
+segment_group_task_engagement_paralinguistic_all,all,task_engagement,Baseline Uniform,446,507,1006,1091
+segment_group_task_engagement_paralinguistic_all,all,task_engagement,QDA,502,451,859,1238
+segment_group_task_engagement_paralinguistic_all,all,task_engagement,SVM (rbf),139,814,96,2001
+segment_group_task_engagement_paralinguistic_all,all,task_engagement,SVM (linear),156,797,107,1990
+segment_group_task_engagement_paralinguistic_all,all,task_engagement,Naive Bayes,591,362,1010,1087
+segment_group_task_engagement_paralinguistic_all,all,task_engagement,kNN,273,680,376,1721
+segment_group_task_engagement_paralinguistic_all,all,task_engagement,Random Forest,264,689,326,1771
+segment_group_task_engagement_paralinguistic_all,all,task_engagement,Logistic Regression,147,806,108,1989
+segment_group_task_engagement_audio_all,all,task_engagement,Baseline Uniform,446,507,1006,1091
+segment_group_task_engagement_audio_all,all,task_engagement,QDA,72,881,168,1929
+segment_group_task_engagement_audio_all,all,task_engagement,SVM (rbf),56,897,116,1981
+segment_group_task_engagement_audio_all,all,task_engagement,SVM (linear),0,953,0,2097
+segment_group_task_engagement_audio_all,all,task_engagement,Naive Bayes,62,891,192,1905
+segment_group_task_engagement_audio_all,all,task_engagement,kNN,238,715,443,1654
+segment_group_task_engagement_audio_all,all,task_engagement,Random Forest,196,757,340,1757
+segment_group_task_engagement_audio_all,all,task_engagement,Logistic Regression,17,936,34,2063
+segment_group_task_engagement_base_D,D,task_engagement,Baseline Uniform,207,245,485,492
+segment_group_task_engagement_base_D,D,task_engagement,QDA,295,157,592,385
+segment_group_task_engagement_base_D,D,task_engagement,SVM (rbf),33,419,73,904
+segment_group_task_engagement_base_D,D,task_engagement,SVM (linear),37,415,53,924
+segment_group_task_engagement_base_D,D,task_engagement,Naive Bayes,326,126,588,389
+segment_group_task_engagement_base_D,D,task_engagement,kNN,110,342,243,734
+segment_group_task_engagement_base_D,D,task_engagement,Random Forest,93,359,205,772
+segment_group_task_engagement_base_D,D,task_engagement,Logistic Regression,59,393,101,876
+segment_group_task_engagement_paralinguistic_D,D,task_engagement,Baseline Uniform,207,245,485,492
+segment_group_task_engagement_paralinguistic_D,D,task_engagement,QDA,318,134,592,385
+segment_group_task_engagement_paralinguistic_D,D,task_engagement,SVM (rbf),29,423,45,932
+segment_group_task_engagement_paralinguistic_D,D,task_engagement,SVM (linear),37,415,53,924
+segment_group_task_engagement_paralinguistic_D,D,task_engagement,Naive Bayes,318,134,574,403
+segment_group_task_engagement_paralinguistic_D,D,task_engagement,kNN,99,353,223,754
+segment_group_task_engagement_paralinguistic_D,D,task_engagement,Random Forest,100,352,191,786
+segment_group_task_engagement_paralinguistic_D,D,task_engagement,Logistic Regression,30,422,48,929
+segment_group_task_engagement_audio_D,D,task_engagement,Baseline Uniform,207,245,485,492
+segment_group_task_engagement_audio_D,D,task_engagement,QDA,46,406,74,903
+segment_group_task_engagement_audio_D,D,task_engagement,SVM (rbf),23,429,41,936
+segment_group_task_engagement_audio_D,D,task_engagement,SVM (linear),0,452,0,977
+segment_group_task_engagement_audio_D,D,task_engagement,Naive Bayes,57,395,102,875
+segment_group_task_engagement_audio_D,D,task_engagement,kNN,109,343,318,659
+segment_group_task_engagement_audio_D,D,task_engagement,Random Forest,83,369,300,677
+segment_group_task_engagement_audio_D,D,task_engagement,Logistic Regression,20,432,43,934
+segment_group_task_engagement_base_T,T,task_engagement,Baseline Uniform,239,262,521,599
+segment_group_task_engagement_base_T,T,task_engagement,QDA,165,336,219,901
+segment_group_task_engagement_base_T,T,task_engagement,SVM (rbf),87,414,77,1043
+segment_group_task_engagement_base_T,T,task_engagement,SVM (linear),93,408,54,1066
+segment_group_task_engagement_base_T,T,task_engagement,Naive Bayes,130,371,196,924
+segment_group_task_engagement_base_T,T,task_engagement,kNN,126,375,167,953
+segment_group_task_engagement_base_T,T,task_engagement,Random Forest,118,383,139,981
+segment_group_task_engagement_base_T,T,task_engagement,Logistic Regression,100,401,107,1013
+segment_group_task_engagement_paralinguistic_T,T,task_engagement,Baseline Uniform,239,262,521,599
+segment_group_task_engagement_paralinguistic_T,T,task_engagement,QDA,156,345,193,927
+segment_group_task_engagement_paralinguistic_T,T,task_engagement,SVM (rbf),88,413,63,1057
+segment_group_task_engagement_paralinguistic_T,T,task_engagement,SVM (linear),93,408,54,1066
+segment_group_task_engagement_paralinguistic_T,T,task_engagement,Naive Bayes,121,380,147,973
+segment_group_task_engagement_paralinguistic_T,T,task_engagement,kNN,154,347,180,940
+segment_group_task_engagement_paralinguistic_T,T,task_engagement,Random Forest,157,344,177,943
+segment_group_task_engagement_paralinguistic_T,T,task_engagement,Logistic Regression,96,405,79,1041
+segment_group_task_engagement_audio_T,T,task_engagement,Baseline Uniform,239,262,521,599
+segment_group_task_engagement_audio_T,T,task_engagement,QDA,30,471,100,1020
+segment_group_task_engagement_audio_T,T,task_engagement,SVM (rbf),24,477,80,1040
+segment_group_task_engagement_audio_T,T,task_engagement,SVM (linear),0,501,0,1120
+segment_group_task_engagement_audio_T,T,task_engagement,Naive Bayes,18,483,92,1028
+segment_group_task_engagement_audio_T,T,task_engagement,kNN,125,376,238,882
+segment_group_task_engagement_audio_T,T,task_engagement,Random Forest,106,395,186,934
+segment_group_task_engagement_audio_T,T,task_engagement,Logistic Regression,13,488,45,1075
+window_60s_individual_engagement_base_all,all,engagement_target,Baseline Uniform,166,104,115,108
+window_60s_individual_engagement_base_all,all,engagement_target,QDA,175,95,56,167
+window_60s_individual_engagement_base_all,all,engagement_target,SVM (rbf),205,65,88,135
+window_60s_individual_engagement_base_all,all,engagement_target,SVM (linear),197,73,87,136
+window_60s_individual_engagement_base_all,all,engagement_target,Naive Bayes,184,86,66,157
+window_60s_individual_engagement_base_all,all,engagement_target,kNN,180,90,83,140
+window_60s_individual_engagement_base_all,all,engagement_target,Random Forest,200,70,101,122
+window_60s_individual_engagement_base_all,all,engagement_target,Logistic Regression,191,79,80,143
+window_60s_individual_engagement_paralinguistic_all,all,engagement_target,Baseline Uniform,166,104,115,108
+window_60s_individual_engagement_paralinguistic_all,all,engagement_target,QDA,178,92,70,153
+window_60s_individual_engagement_paralinguistic_all,all,engagement_target,SVM (rbf),211,59,86,137
+window_60s_individual_engagement_paralinguistic_all,all,engagement_target,SVM (linear),198,72,95,128
+window_60s_individual_engagement_paralinguistic_all,all,engagement_target,Naive Bayes,190,80,78,145
+window_60s_individual_engagement_paralinguistic_all,all,engagement_target,kNN,197,73,99,124
+window_60s_individual_engagement_paralinguistic_all,all,engagement_target,Random Forest,194,76,94,129
+window_60s_individual_engagement_paralinguistic_all,all,engagement_target,Logistic Regression,197,73,88,135
+window_60s_individual_engagement_audio_all,all,engagement_target,Baseline Uniform,166,104,115,108
+window_60s_individual_engagement_audio_all,all,engagement_target,QDA,168,102,68,155
+window_60s_individual_engagement_audio_all,all,engagement_target,SVM (rbf),175,95,89,134
+window_60s_individual_engagement_audio_all,all,engagement_target,SVM (linear),178,92,124,99
+window_60s_individual_engagement_audio_all,all,engagement_target,Naive Bayes,121,149,48,175
+window_60s_individual_engagement_audio_all,all,engagement_target,kNN,180,90,95,128
+window_60s_individual_engagement_audio_all,all,engagement_target,Random Forest,182,88,106,117
+window_60s_individual_engagement_audio_all,all,engagement_target,Logistic Regression,180,90,115,108
+window_60s_individual_engagement_base_D,D,engagement_target,Baseline Uniform,67,25,36,31
+window_60s_individual_engagement_base_D,D,engagement_target,QDA,51,41,23,44
+window_60s_individual_engagement_base_D,D,engagement_target,SVM (rbf),62,30,26,41
+window_60s_individual_engagement_base_D,D,engagement_target,SVM (linear),61,31,34,33
+window_60s_individual_engagement_base_D,D,engagement_target,Naive Bayes,57,35,20,47
+window_60s_individual_engagement_base_D,D,engagement_target,kNN,62,30,28,39
+window_60s_individual_engagement_base_D,D,engagement_target,Random Forest,60,32,32,35
+window_60s_individual_engagement_base_D,D,engagement_target,Logistic Regression,59,33,29,38
+window_60s_individual_engagement_paralinguistic_D,D,engagement_target,Baseline Uniform,67,25,36,31
+window_60s_individual_engagement_paralinguistic_D,D,engagement_target,QDA,54,38,22,45
+window_60s_individual_engagement_paralinguistic_D,D,engagement_target,SVM (rbf),66,26,27,40
+window_60s_individual_engagement_paralinguistic_D,D,engagement_target,SVM (linear),67,25,35,32
+window_60s_individual_engagement_paralinguistic_D,D,engagement_target,Naive Bayes,56,36,22,45
+window_60s_individual_engagement_paralinguistic_D,D,engagement_target,kNN,68,24,33,34
+window_60s_individual_engagement_paralinguistic_D,D,engagement_target,Random Forest,63,29,31,36
+window_60s_individual_engagement_paralinguistic_D,D,engagement_target,Logistic Regression,68,24,30,37
+window_60s_individual_engagement_audio_D,D,engagement_target,Baseline Uniform,67,25,36,31
+window_60s_individual_engagement_audio_D,D,engagement_target,QDA,58,34,31,36
+window_60s_individual_engagement_audio_D,D,engagement_target,SVM (rbf),57,35,38,29
+window_60s_individual_engagement_audio_D,D,engagement_target,SVM (linear),55,37,26,41
+window_60s_individual_engagement_audio_D,D,engagement_target,Naive Bayes,63,29,32,35
+window_60s_individual_engagement_audio_D,D,engagement_target,kNN,58,34,36,31
+window_60s_individual_engagement_audio_D,D,engagement_target,Random Forest,64,28,48,19
+window_60s_individual_engagement_audio_D,D,engagement_target,Logistic Regression,60,32,30,37
+window_60s_individual_engagement_base_T,T,engagement_target,Baseline Uniform,99,79,79,77
+window_60s_individual_engagement_base_T,T,engagement_target,QDA,127,51,42,114
+window_60s_individual_engagement_base_T,T,engagement_target,SVM (rbf),126,52,58,98
+window_60s_individual_engagement_base_T,T,engagement_target,SVM (linear),136,42,59,97
+window_60s_individual_engagement_base_T,T,engagement_target,Naive Bayes,136,42,51,105
+window_60s_individual_engagement_base_T,T,engagement_target,kNN,116,62,54,102
+window_60s_individual_engagement_base_T,T,engagement_target,Random Forest,123,55,61,95
+window_60s_individual_engagement_base_T,T,engagement_target,Logistic Regression,135,43,58,98
+window_60s_individual_engagement_paralinguistic_T,T,engagement_target,Baseline Uniform,99,79,79,77
+window_60s_individual_engagement_paralinguistic_T,T,engagement_target,QDA,134,44,55,101
+window_60s_individual_engagement_paralinguistic_T,T,engagement_target,SVM (rbf),141,37,62,94
+window_60s_individual_engagement_paralinguistic_T,T,engagement_target,SVM (linear),144,34,65,91
+window_60s_individual_engagement_paralinguistic_T,T,engagement_target,Naive Bayes,135,43,55,101
+window_60s_individual_engagement_paralinguistic_T,T,engagement_target,kNN,123,55,65,91
+window_60s_individual_engagement_paralinguistic_T,T,engagement_target,Random Forest,126,52,67,89
+window_60s_individual_engagement_paralinguistic_T,T,engagement_target,Logistic Regression,133,45,60,96
+window_60s_individual_engagement_audio_T,T,engagement_target,Baseline Uniform,99,79,79,77
+window_60s_individual_engagement_audio_T,T,engagement_target,QDA,86,92,50,106
+window_60s_individual_engagement_audio_T,T,engagement_target,SVM (rbf),103,75,47,109
+window_60s_individual_engagement_audio_T,T,engagement_target,SVM (linear),111,67,76,80
+window_60s_individual_engagement_audio_T,T,engagement_target,Naive Bayes,67,111,29,127
+window_60s_individual_engagement_audio_T,T,engagement_target,kNN,113,65,62,94
+window_60s_individual_engagement_audio_T,T,engagement_target,Random Forest,110,68,72,84
+window_60s_individual_engagement_audio_T,T,engagement_target,Logistic Regression,115,63,80,76
+window_60s_group_task_engagement_base_all,all,task_engagement,Baseline Uniform,78,54,207,167
+window_60s_group_task_engagement_base_all,all,task_engagement,QDA,72,60,36,338
+window_60s_group_task_engagement_base_all,all,task_engagement,SVM (rbf),59,73,22,352
+window_60s_group_task_engagement_base_all,all,task_engagement,SVM (linear),62,70,21,353
+window_60s_group_task_engagement_base_all,all,task_engagement,Naive Bayes,81,51,77,297
+window_60s_group_task_engagement_base_all,all,task_engagement,kNN,54,78,27,347
+window_60s_group_task_engagement_base_all,all,task_engagement,Random Forest,71,61,24,350
+window_60s_group_task_engagement_base_all,all,task_engagement,Logistic Regression,69,63,25,349
+window_60s_group_task_engagement_paralinguistic_all,all,task_engagement,Baseline Uniform,78,54,207,167
+window_60s_group_task_engagement_paralinguistic_all,all,task_engagement,QDA,45,87,54,320
+window_60s_group_task_engagement_paralinguistic_all,all,task_engagement,SVM (rbf),25,107,25,349
+window_60s_group_task_engagement_paralinguistic_all,all,task_engagement,SVM (linear),3,129,5,369
+window_60s_group_task_engagement_paralinguistic_all,all,task_engagement,Naive Bayes,80,52,135,239
+window_60s_group_task_engagement_paralinguistic_all,all,task_engagement,kNN,36,96,53,321
+window_60s_group_task_engagement_paralinguistic_all,all,task_engagement,Random Forest,32,100,51,323
+window_60s_group_task_engagement_paralinguistic_all,all,task_engagement,Logistic Regression,17,115,23,351
+window_60s_group_task_engagement_audio_all,all,task_engagement,Baseline Uniform,78,54,207,167
+window_60s_group_task_engagement_audio_all,all,task_engagement,QDA,63,69,18,356
+window_60s_group_task_engagement_audio_all,all,task_engagement,SVM (rbf),50,82,20,354
+window_60s_group_task_engagement_audio_all,all,task_engagement,SVM (linear),64,68,19,355
+window_60s_group_task_engagement_audio_all,all,task_engagement,Naive Bayes,54,78,25,349
+window_60s_group_task_engagement_audio_all,all,task_engagement,kNN,57,75,20,354
+window_60s_group_task_engagement_audio_all,all,task_engagement,Random Forest,71,61,29,345
+window_60s_group_task_engagement_audio_all,all,task_engagement,Logistic Regression,61,71,17,357
+window_60s_group_task_engagement_base_D,D,task_engagement,Baseline Uniform,28,14,78,50
+window_60s_group_task_engagement_base_D,D,task_engagement,QDA,16,26,17,111
+window_60s_group_task_engagement_base_D,D,task_engagement,SVM (rbf),9,33,12,116
+window_60s_group_task_engagement_base_D,D,task_engagement,SVM (linear),15,27,23,105
+window_60s_group_task_engagement_base_D,D,task_engagement,Naive Bayes,21,21,26,102
+window_60s_group_task_engagement_base_D,D,task_engagement,kNN,6,36,17,111
+window_60s_group_task_engagement_base_D,D,task_engagement,Random Forest,11,31,23,105
+window_60s_group_task_engagement_base_D,D,task_engagement,Logistic Regression,15,27,20,108
+window_60s_group_task_engagement_paralinguistic_D,D,task_engagement,Baseline Uniform,28,14,78,50
+window_60s_group_task_engagement_paralinguistic_D,D,task_engagement,QDA,11,31,10,118
+window_60s_group_task_engagement_paralinguistic_D,D,task_engagement,SVM (rbf),1,41,11,117
+window_60s_group_task_engagement_paralinguistic_D,D,task_engagement,SVM (linear),2,40,10,118
+window_60s_group_task_engagement_paralinguistic_D,D,task_engagement,Naive Bayes,15,27,22,106
+window_60s_group_task_engagement_paralinguistic_D,D,task_engagement,kNN,3,39,15,113
+window_60s_group_task_engagement_paralinguistic_D,D,task_engagement,Random Forest,9,33,14,114
+window_60s_group_task_engagement_paralinguistic_D,D,task_engagement,Logistic Regression,3,39,11,117
+window_60s_group_task_engagement_audio_D,D,task_engagement,Baseline Uniform,28,14,78,50
+window_60s_group_task_engagement_audio_D,D,task_engagement,QDA,14,28,14,114
+window_60s_group_task_engagement_audio_D,D,task_engagement,SVM (rbf),10,32,8,120
+window_60s_group_task_engagement_audio_D,D,task_engagement,SVM (linear),14,28,10,118
+window_60s_group_task_engagement_audio_D,D,task_engagement,Naive Bayes,20,22,16,112
+window_60s_group_task_engagement_audio_D,D,task_engagement,kNN,10,32,12,116
+window_60s_group_task_engagement_audio_D,D,task_engagement,Random Forest,22,20,27,101
+window_60s_group_task_engagement_audio_D,D,task_engagement,Logistic Regression,14,28,12,116
+window_60s_group_task_engagement_base_T,T,task_engagement,Baseline Uniform,50,40,129,117
+window_60s_group_task_engagement_base_T,T,task_engagement,QDA,62,28,19,227
+window_60s_group_task_engagement_base_T,T,task_engagement,SVM (rbf),51,39,9,237
+window_60s_group_task_engagement_base_T,T,task_engagement,SVM (linear),54,36,16,230
+window_60s_group_task_engagement_base_T,T,task_engagement,Naive Bayes,62,28,59,187
+window_60s_group_task_engagement_base_T,T,task_engagement,kNN,36,54,10,236
+window_60s_group_task_engagement_base_T,T,task_engagement,Random Forest,56,34,9,237
+window_60s_group_task_engagement_base_T,T,task_engagement,Logistic Regression,58,32,17,229
+window_60s_group_task_engagement_paralinguistic_T,T,task_engagement,Baseline Uniform,50,40,129,117
+window_60s_group_task_engagement_paralinguistic_T,T,task_engagement,QDA,35,55,49,197
+window_60s_group_task_engagement_paralinguistic_T,T,task_engagement,SVM (rbf),20,70,24,222
+window_60s_group_task_engagement_paralinguistic_T,T,task_engagement,SVM (linear),5,85,12,234
+window_60s_group_task_engagement_paralinguistic_T,T,task_engagement,Naive Bayes,64,26,115,131
+window_60s_group_task_engagement_paralinguistic_T,T,task_engagement,kNN,19,71,32,214
+window_60s_group_task_engagement_paralinguistic_T,T,task_engagement,Random Forest,19,71,38,208
+window_60s_group_task_engagement_paralinguistic_T,T,task_engagement,Logistic Regression,18,72,18,228
+window_60s_group_task_engagement_audio_T,T,task_engagement,Baseline Uniform,50,40,129,117
+window_60s_group_task_engagement_audio_T,T,task_engagement,QDA,57,33,15,231
+window_60s_group_task_engagement_audio_T,T,task_engagement,SVM (rbf),52,38,12,234
+window_60s_group_task_engagement_audio_T,T,task_engagement,SVM (linear),48,42,15,231
+window_60s_group_task_engagement_audio_T,T,task_engagement,Naive Bayes,45,45,9,237
+window_60s_group_task_engagement_audio_T,T,task_engagement,kNN,48,42,9,237
+window_60s_group_task_engagement_audio_T,T,task_engagement,Random Forest,53,37,20,226
+window_60s_group_task_engagement_audio_T,T,task_engagement,Logistic Regression,48,42,18,228

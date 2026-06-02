@@ -1,0 +1,27 @@
+=== individual_engagement ===
+Linear pred-vs-true corr: pearson=0.4884 (p=6.6e-317), spearman=0.4847 (p=0)
+Linear CV (LOSO): R²=-0.4618 ± 1.4072
+Linear (statsmodels)
+statsmodels OLS skipped in PCA mode (component-space inference not directly interpretable).
+
+Logistic pred-vs-true corr: pearson=0.4203 (p=1.21e-226), spearman=0.4159 (p=1.49e-221)
+Logistic CV (LOSO): AUC=0.6833 ± 0.1595
+Logistic (statsmodels)
+statsmodels Logit skipped in PCA mode (component-space inference not directly interpretable).
+
+=== group_task_engagement ===
+Linear pred-vs-true corr: pearson=0.4425 (p=2.24e-260), spearman=0.3922 (p=5.17e-200)
+Linear CV (LOSO): R²=-0.9346 ± 2.5853
+Linear (statsmodels)
+statsmodels OLS skipped in PCA mode (component-space inference not directly interpretable).
+
+Logistic pred-vs-true corr: pearson=0.3603 (p=5.99e-167), spearman=0.3579 (p=1.6e-164)
+Logistic CV (LOSO): AUC=0.6261 ± 0.0592
+Logistic (statsmodels)
+statsmodels Logit skipped in PCA mode (component-space inference not directly interpretable).
+
+=== T-Tests vs Baseline (Bonferroni corrected) ===
+group_task_engagement task_engagement [linear_pca r2]: model=-0.9346±2.5853 vs baseline=-1.3378±4.0221, p=0.2336 (adj=0.9345) ns
+group_task_engagement task_engagement [logistic_pca auc]: model=0.6261±0.0592 vs baseline=0.5019±0.0179, p=0.0000 (adj=0.0000) * SIGNIFICANT
+individual_engagement engagement_target [linear_pca r2]: model=-0.4618±1.4072 vs baseline=-0.6117±1.4076, p=0.0293 (adj=0.1170) ns
+individual_engagement engagement_target [logistic_pca auc]: model=0.6833±0.1595 vs baseline=0.4986±0.0212, p=0.0001 (adj=0.0003) * SIGNIFICANT

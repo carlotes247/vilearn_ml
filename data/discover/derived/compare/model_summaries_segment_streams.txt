@@ -1,0 +1,27 @@
+=== individual_engagement ===
+Linear pred-vs-true corr: pearson=0.4465 (p=3.7e-30), spearman=0.4486 (p=1.88e-30)
+Linear CV (LOSO): R²=-41.4435 ± 174.4904
+Linear (statsmodels)
+statsmodels OLS skipped: high-dimensional design matrix with 3430 predictors
+
+Logistic pred-vs-true corr: pearson=0.4555 (p=1.85e-31), spearman=0.4401 (p=2.99e-29)
+Logistic CV (LOSO): AUC=0.6161 ± 0.0619
+Logistic (statsmodels)
+statsmodels Logit skipped: high-dimensional design matrix with 3430 predictors
+
+=== group_task_engagement ===
+Linear pred-vs-true corr: pearson=0.3474 (p=9.74e-19), spearman=0.3366 (p=1.28e-17)
+Linear CV (LOSO): R²=-13.3433 ± 47.6565
+Linear (statsmodels)
+statsmodels OLS skipped: high-dimensional design matrix with 3430 predictors
+
+Logistic pred-vs-true corr: pearson=0.3050 (p=1.35e-14), spearman=0.3161 (p=1.29e-15)
+Logistic CV (LOSO): AUC=0.5838 ± 0.0747
+Logistic (statsmodels)
+statsmodels Logit skipped: high-dimensional design matrix with 3430 predictors
+
+=== T-Tests vs Baseline (Bonferroni corrected) ===
+group_task_engagement task_engagement [linear r2]: model=-13.3433±47.6565 vs baseline=-1.1975±3.4800, p=0.2706 (adj=1.0000) ns
+group_task_engagement task_engagement [logistic auc]: model=0.5838±0.0747 vs baseline=0.4945±0.0415, p=0.0001 (adj=0.0006) * SIGNIFICANT
+individual_engagement engagement_target [linear r2]: model=-41.4435±174.4904 vs baseline=-0.8020±1.8562, p=0.3111 (adj=1.0000) ns
+individual_engagement engagement_target [logistic auc]: model=0.6161±0.0619 vs baseline=0.5131±0.0431, p=0.0000 (adj=0.0000) * SIGNIFICANT

@@ -1,0 +1,80 @@
+{
+  "individual_engagement": {
+    "target": "engagement_target",
+    "status": "ok",
+    "rows": 2937,
+    "linear": {
+      "r2": 0.15470128405768302,
+      "mae": 0.14636854832226626,
+      "corr_pred_true_pearson": 0.39535436331849727,
+      "corr_pred_true_pearson_p": 1.946494969803968e-23,
+      "corr_pred_true_spearman": 0.41232348893542514,
+      "corr_pred_true_spearman_p": 1.5391487384796203e-25
+    },
+    "logistic": {
+      "threshold_median": 0.5239620766666667,
+      "accuracy": 0.6955782312925171,
+      "roc_auc": 0.7352324706154827,
+      "corr_pred_true_pearson": 0.3965875001856282,
+      "corr_pred_true_pearson_p": 1.3821472648470686e-23,
+      "corr_pred_true_spearman": 0.40724422946910876,
+      "corr_pred_true_spearman_p": 6.748005190634699e-25
+    },
+    "pca": [
+      {
+        "block": "base",
+        "input_dims": 14,
+        "output_dims": 14
+      }
+    ],
+    "include_streams": false,
+    "cv": {
+      "target": "engagement_target",
+      "status": "ok",
+      "n_folds": 20,
+      "linear_pca_r2_mean": -0.760675014789691,
+      "linear_pca_r2_std": 1.7539196670542307,
+      "logistic_pca_auc_mean": 0.6690788366048733,
+      "logistic_pca_auc_std": 0.15731820542472175
+    }
+  },
+  "group_task_engagement": {
+    "target": "task_engagement",
+    "status": "ok",
+    "rows": 3050,
+    "linear": {
+      "r2": 0.07986464802453097,
+      "mae": 0.2683181326886972,
+      "corr_pred_true_pearson": 0.28333023719546546,
+      "corr_pred_true_pearson_p": 1.003674370303379e-12,
+      "corr_pred_true_spearman": 0.25441120855471416,
+      "corr_pred_true_spearman_p": 1.8200279088214528e-10
+    },
+    "logistic": {
+      "threshold_median": 0.75279546,
+      "accuracy": 0.5770491803278689,
+      "roc_auc": 0.6103510583376355,
+      "corr_pred_true_pearson": 0.2105079978072862,
+      "corr_pred_true_pearson_p": 1.5425180780989975e-07,
+      "corr_pred_true_spearman": 0.1910835509645339,
+      "corr_pred_true_spearman_p": 1.9982136904379064e-06
+    },
+    "pca": [
+      {
+        "block": "base",
+        "input_dims": 14,
+        "output_dims": 14
+      }
+    ],
+    "include_streams": false,
+    "cv": {
+      "target": "task_engagement",
+      "status": "ok",
+      "n_folds": 20,
+      "linear_pca_r2_mean": -1.069672493761819,
+      "linear_pca_r2_std": 3.240699219601283,
+      "logistic_pca_auc_mean": 0.5760902151024545,
+      "logistic_pca_auc_std": 0.08079503667374989
+    }
+  }
+}
