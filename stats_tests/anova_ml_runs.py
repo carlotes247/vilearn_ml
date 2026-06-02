@@ -9,6 +9,7 @@ import statsmodels.stats.multicomp as mc
 from statsmodels.stats.multitest import multipletests
 import os
 import datetime
+from cohens_d import cohens_d
 
 def run_stat_test(df_in: pd.DataFrame, models: list[str] ):
     # discriminate for wanted models
@@ -72,12 +73,18 @@ def run_stat_test(df_in: pd.DataFrame, models: list[str] ):
         # Paired t‑test (parametric)
         _, p_val = ttest_rel(model_scores, base_scores)
 
+        # Effect size (Cohen's d because this is a difference test)
+        # Paired samples Cohen's d (because both models use same dataset)
+        d_paired = cohens_d(model_scores, base_scores, paired=True)
+        #print(f"Paired Cohen's d: {d_paired:.3f}")
+
         tests.append({
             'Model': model,
             'n_folds': len(grp),       # number of matched folds            
             'mean_accuracy': model_scores.mean(),
             'std_accuracy': model_scores.std(),
-            'p_value': p_val
+            "Paired Cohen's d": float(d_paired),
+            'p_value': p_val,
         })
 
     # Create a DataFrame and adjust the p‑values
@@ -92,7 +99,7 @@ def run_stat_test(df_in: pd.DataFrame, models: list[str] ):
     tests_df['significant'] = reject
 
     #  Show / export the result
-    print(tests_df)
+    print(tests_df.round(2).to_string())
 
     return
 
