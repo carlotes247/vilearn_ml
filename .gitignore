@@ -1,5 +1,8 @@
 wuerzburg_dataset/wise_2023/*
 
+# LibreOffice/Office transient lock files
+.~lock.*#
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
