@@ -9,7 +9,7 @@ import statsmodels.api as sm
 from scipy.stats import pearsonr, shapiro, spearmanr, ttest_rel
 from sklearn.dummy import DummyClassifier, DummyRegressor
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
 from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.metrics import (
     accuracy_score,
@@ -20,13 +20,15 @@ from sklearn.metrics import (
     r2_score,
     roc_auc_score,
 )
-from sklearn.model_selection import GroupKFold, train_test_split
+from sklearn.model_selection import GridSearchCV, GroupKFold, train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
-from sklearn.svm import SVC
+from sklearn.svm import SVC, LinearSVC
+from sklearn.tree import DecisionTreeClassifier
 from statsmodels.stats.multitest import multipletests
 
 """
@@ -86,6 +88,13 @@ WINDOW_MS = 60_000.0
 # [0, 1]; high = value > threshold.
 RUN_CLASSIFIER_PANEL = True
 CLASSIFICATION_THRESHOLD = 0.5
+# Nested CV: per outer LOSO fold, an inner leave-one-group-out GridSearchCV over
+# Carlos's param grids (training/vilearn_ML_models.py) picks hyperparameters on
+# the training groups only; the outer held-out group stays untouched. Estimators
+# are seeded (random_state=42) unlike Carlos's. Only applied at the granularities
+# below: segment rows (~3k) make the MLP/AdaBoost grids prohibitively slow.
+NESTED_CV = True
+NESTED_GRANULARITIES = ("window",)
 # Carlos's prior GazexSpeaking+Blinks per-fold results (for the "vs prior model"
 # t-test). Per-fold accuracy by held-out group; QDA = the prior detector model.
 CARLOS_GAZESPEAK_DIR = Path("runs/accuracy/binary_60s_avgs_separated_all_groups_speaking_x_gaze_ICMI/2026_05_19/Blinks_GazexSpeaking")
@@ -104,7 +113,7 @@ PANEL_INCLUDE_STREAMS = False
 # Regression + logistic-AUC + LOSO CV blocks (segment/frame/window). Unchanged
 # modeling; set False to iterate on the classifier panel alone without
 # recomputing the slow LOSO regression (reuses existing regression outputs).
-RUN_REGRESSION = True
+RUN_REGRESSION = False
 
 
 _T0 = time.time()
@@ -688,16 +697,89 @@ def run_ttest_vs_baseline(fold_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def make_classifier_panel() -> dict:
-    """Off-the-shelf classifiers comparable to the prior ICMI detector sweep."""
+    """Off-the-shelf classifiers comparable to the prior ICMI detector sweep.
+
+    Returns {name: (estimator, param_grid)}; empty grid = fixed params.
+    """
     return {
-        "Baseline Uniform": DummyClassifier(strategy="uniform", random_state=42),
-        "QDA": QuadraticDiscriminantAnalysis(reg_param=0.1),
-        "SVM (rbf)": SVC(kernel="rbf", probability=False, random_state=42),
-        "SVM (linear)": SVC(kernel="linear", probability=False, random_state=42),
-        "Naive Bayes": GaussianNB(),
-        "kNN": KNeighborsClassifier(n_neighbors=5),
-        "Random Forest": RandomForestClassifier(n_estimators=200, random_state=42),
-        "Logistic Regression": LogisticRegression(max_iter=2000, solver="lbfgs"),
+        "Baseline Uniform": (DummyClassifier(strategy="uniform", random_state=42), {}),
+        "QDA": (QuadraticDiscriminantAnalysis(reg_param=0.1), {}),
+        "SVM (rbf)": (SVC(kernel="rbf", probability=False, random_state=42), {}),
+        "SVM (linear)": (SVC(kernel="linear", probability=False, random_state=42), {}),
+        "Naive Bayes": (GaussianNB(), {}),
+        "kNN": (KNeighborsClassifier(n_neighbors=5), {}),
+        "Random Forest": (RandomForestClassifier(n_estimators=200, random_state=42), {}),
+        "Logistic Regression": (LogisticRegression(max_iter=2000, solver="lbfgs"), {}),
+    }
+
+
+def make_classifier_panel_nested() -> dict:
+    """Carlos's model set + hyperparameter grids (training/vilearn_ML_models.py),
+    with random_state=42 added everywhere it exists (his estimators are unseeded).
+    "Nearest Neighbors Test" (debug subset of the kNN grid) is dropped.
+    """
+    return {
+        "Baseline Most Frequent": (DummyClassifier(strategy="most_frequent"), {}),
+        "Baseline Prior": (DummyClassifier(strategy="prior"), {}),
+        "Baseline Stratified": (DummyClassifier(strategy="stratified", random_state=42), {}),
+        "Baseline Uniform": (DummyClassifier(strategy="uniform", random_state=42), {}),
+        "kNN": (KNeighborsClassifier(), {
+            "n_neighbors": np.arange(1, 100, 1),
+            "weights": ["uniform", "distance"],
+        }),
+        "Logistic Regression": (LogisticRegression(solver="liblinear", random_state=42), {
+            "C": [0.01, 0.1, 1, 10],
+            "penalty": ["l1", "l2"],
+            "max_iter": [100, 200],
+            "tol": [1e-4, 1e-3],
+        }),
+        "Linear SVM l1": (LinearSVC(dual="auto", random_state=42), {
+            "penalty": ["l1"],
+            "loss": ["squared_hinge"],
+            "C": [0.01, 0.1, 1, 5, 10, 100],
+            "max_iter": [5000, 10000, 50000],
+        }),
+        "Linear SVM l2": (LinearSVC(dual="auto", random_state=42), {
+            "penalty": ["l2"],
+            "loss": ["hinge", "squared_hinge"],
+            "C": [0.01, 0.1, 1, 5, 10, 100],
+            "max_iter": [5000, 10000, 50000],
+        }),
+        "SVM linear or rbf": (SVC(random_state=42), {
+            "kernel": ["linear", "rbf"],
+            "C": [0.1, 1],
+            "gamma": [0.1, 0.01, 0.001],
+            "degree": [0, 1, 2, 4],
+        }),
+        "Decision Tree": (DecisionTreeClassifier(random_state=42), {
+            "max_depth": [10, 20, 30, None],
+            "min_samples_split": [2, 5, 10],
+            "min_samples_leaf": [1, 2, 4],
+        }),
+        "Random Forest": (RandomForestClassifier(random_state=42), {
+            "n_estimators": [100, 200],
+            "max_depth": [None, 10, 20],
+            "min_samples_split": [2, 5],
+            "min_samples_leaf": [1, 2],
+            "bootstrap": [True, False],
+        }),
+        "Neural Net": (MLPClassifier(max_iter=1000, random_state=42), {
+            "hidden_layer_sizes": [(10, 30, 10), (20,)],
+            "activation": ["tanh", "relu"],
+            "solver": ["sgd", "adam"],
+            "alpha": [0.0001, 0.05, 1],
+            "learning_rate": ["constant", "adaptive"],
+        }),
+        "AdaBoost": (AdaBoostClassifier(random_state=42), {
+            "n_estimators": [10, 50, 100, 500],
+            "learning_rate": [0.0001, 0.001, 0.01, 0.1, 1.0, 10],
+        }),
+        "Naive Bayes": (GaussianNB(), {
+            "var_smoothing": np.logspace(0, -9, num=100),
+        }),
+        "QDA": (QuadraticDiscriminantAnalysis(), {
+            "reg_param": [0.1, 0.2, 0.3, 0.4, 0.5],
+        }),
     }
 
 
@@ -710,6 +792,7 @@ def run_classifier_panel(
     include_streams: bool = False,
     group_split: str = "all",
     feature_modality: str = "multimodal",
+    nested: bool = False,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Fixed-threshold high/low classification with LOSO CV across a model panel.
 
@@ -717,6 +800,9 @@ def run_classifier_panel(
     mean +/- SD over folds (matches Carlos's per-fold reporting). Per-class
     precision/recall/F1 come from the pooled out-of-fold confusion (stable when
     some held-out groups are single-class). Class 1 = high (target > threshold).
+    nested=True swaps in Carlos's model set + grids and tunes hyperparameters
+    per outer fold with an inner leave-one-group-out GridSearchCV on the
+    training groups (his nested-CV protocol, seeded).
     Returns (metrics_df, confusion_df, importance_df, foldscores_df).
     """
     empty4 = (pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame())
@@ -735,12 +821,13 @@ def run_classifier_panel(
         return empty4
     gkf = GroupKFold(n_splits=n_splits)
 
-    classifiers = make_classifier_panel()
+    classifiers = make_classifier_panel_nested() if nested else make_classifier_panel()
     oof_true: dict[str, list[int]] = {m: [] for m in classifiers}   # pooled, for P/R
     oof_pred: dict[str, list[int]] = {m: [] for m in classifiers}
     fold_score_rows: list[dict] = []                                # per (model, fold) for t-tests
     model_fit_seconds: dict[str, float] = {m: 0.0 for m in classifiers}
-    log(f"    classifier panel: {name} ({n_splits} LOSO folds, {len(x)} rows, {len(classifiers)} models)")
+    log(f"    classifier panel: {name} ({n_splits} LOSO folds, {len(x)} rows, "
+        f"{len(classifiers)} models{', nested' if nested else ''})")
 
     for fold_i, (train_idx, test_idx) in enumerate(gkf.split(x, yb, groups=groups)):
         x_tr, x_te = x.iloc[train_idx].reset_index(drop=True), x.iloc[test_idx].reset_index(drop=True)
@@ -749,14 +836,33 @@ def run_classifier_panel(
         if yb_tr.nunique() < 2:
             continue  # cannot train a classifier on a single class
         held_group = str(groups.iloc[test_idx].iloc[0]).replace("recording_", "")
+        groups_tr = groups.iloc[train_idx].reset_index(drop=True)
         if use_pca:
             x_tr, x_te, _ = transform_with_block_pca(x_tr, x_te)
-        for model_name, clf in classifiers.items():
+        for model_name, (clf, grid) in classifiers.items():
             pipe = Pipeline([("scaler", StandardScaler()), ("model", clf)])
             t_clf = time.time()
+            best_params = ""
             try:
-                pipe.fit(x_tr, yb_tr)
-                pred = pipe.predict(x_te)
+                if nested and grid:
+                    # inner LOSO over the training groups (Carlos: n_splits-1)
+                    inner = GroupKFold(n_splits=int(groups_tr.nunique()))
+                    gs = GridSearchCV(
+                        pipe,
+                        {f"model__{k}": v for k, v in grid.items()},
+                        cv=inner,
+                        n_jobs=-1,
+                        error_score=np.nan,  # e.g. kNN k > n_train_samples
+                    )
+                    gs.fit(x_tr, yb_tr, groups=groups_tr)
+                    fitted = gs.best_estimator_
+                    best_params = json.dumps(
+                        {k.removeprefix("model__"): v for k, v in gs.best_params_.items()},
+                        default=str,
+                    )
+                else:
+                    fitted = pipe.fit(x_tr, yb_tr)
+                pred = fitted.predict(x_te)
             except Exception:
                 continue
             model_fit_seconds[model_name] += time.time() - t_clf
@@ -770,6 +876,7 @@ def run_classifier_panel(
                 "model": model_name, "fold": fold_i, "group": held_group,
                 "accuracy": float(accuracy_score(yb_te_arr, pred)),
                 "f1_macro": float(f1_score(yb_te_arr, pred, average="macro", zero_division=0)),
+                "best_params": best_params,
             })
 
     slowest = sorted(model_fit_seconds.items(), key=lambda kv: kv[1], reverse=True)[:3]
@@ -883,10 +990,11 @@ def run_classifier_panel_for_granularity(
                 continue
             for include_streams, use_pca, fset_label, modality in feature_sets:
                 name = f"{analysis_prefix}_{target_label}_{fset_label}_{split_label}"
+                nested = NESTED_CV and any(analysis_prefix.startswith(g) for g in NESTED_GRANULARITIES)
                 m, c, imp, fs = run_classifier_panel(
                     df_split, target_col, name, threshold,
                     use_pca=use_pca, include_streams=include_streams, group_split=split_label,
-                    feature_modality=modality,
+                    feature_modality=modality, nested=nested,
                 )
                 if not m.empty:
                     metric_frames.append(m)

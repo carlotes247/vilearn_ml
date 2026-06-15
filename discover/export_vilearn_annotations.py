@@ -18,15 +18,18 @@ SET_FILES = ["discover/vilearn_more.set"]
 DOTENV_PATH = "discover/.env"
 OUTPUT_ROOT = Path("data/discover")
 
-# Annotation schemes to export and the annotator to use for each scheme
+# Annotation schemes to export and the annotator(s) to use for each scheme.
+# task engagement: both annotators (group TE = 2-annotator mean downstream);
+# the 60Hz scheme is the fallback for sessions annotated at 60 Hz.
 SCHEME_ANNOTATOR = {
-    "transcript": "helenrisack",
-    "engagement": "helenrisack",
-    "task engagement": "helenrisack",
-    "sentiment": "carlosgonzalez",
-    "arousal": "carlosgonzalez",
-    "dominance": "carlosgonzalez",
-    "valence": "carlosgonzalez",
+    "transcript": ["helenrisack"],
+    "engagement": ["helenrisack"],
+    "task engagement": ["helenrisack", "carlosgonzalez"],
+    "task engagement60Hz": ["helenrisack", "carlosgonzalez"],
+    "sentiment": ["carlosgonzalez"],
+    "arousal": ["carlosgonzalez"],
+    "dominance": ["carlosgonzalez"],
+    "valence": ["carlosgonzalez"],
 }
 
 # Expected roles per scheme (avoid reporting expected missing data)
@@ -34,6 +37,7 @@ SCHEME_ROLES = {
     "transcript": ["p_blue", "p_green", "p_red"],
     "engagement": ["p_blue", "p_green", "p_red"],
     "task engagement": ["group"],
+    "task engagement60Hz": ["group"],
     "sentiment": ["p_blue", "p_green", "p_red"],
     "arousal": ["group"],
     "dominance": ["group"],
@@ -88,23 +92,24 @@ def main() -> None:
         ses_dir = OUTPUT_ROOT / ses
         ses_dir.mkdir(parents=True, exist_ok=True)
 
-        for scheme, annotator in SCHEME_ANNOTATOR.items():
-            for role in expected_roles(ses, scheme):
-                try:
-                    anno = ah.load(dataset=DATASET, session=ses, scheme=scheme, role=role, annotator=annotator)
-                except Exception:
-                    missing.append((ses, scheme, role, annotator))
-                    continue
+        for scheme, annotators in SCHEME_ANNOTATOR.items():
+            for annotator in annotators:
+                for role in expected_roles(ses, scheme):
+                    try:
+                        anno = ah.load(dataset=DATASET, session=ses, scheme=scheme, role=role, annotator=annotator)
+                    except Exception:
+                        missing.append((ses, scheme, role, annotator))
+                        continue
 
-                if getattr(anno, "data", None) is None:
-                    continue
+                    if getattr(anno, "data", None) is None:
+                        continue
 
-                df = pd.DataFrame(anno.data)
-                if df.empty:
-                    continue
+                    df = pd.DataFrame(anno.data)
+                    if df.empty:
+                        continue
 
-                filename = f"{safe_filename(scheme)}.{role}.{annotator}.csv"
-                df.to_csv(ses_dir / filename, index=False)
+                    filename = f"{safe_filename(scheme)}.{role}.{annotator}.csv"
+                    df.to_csv(ses_dir / filename, index=False)
 
     if missing:
         print("Missing annotations (unexpected):")

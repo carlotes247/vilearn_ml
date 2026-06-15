@@ -24,6 +24,12 @@ GENERATE_PARQUET = False  # set True to include stream features (opensmile, emow
 
 ROLES = ["p_blue", "p_green", "p_red"]
 
+# Second task-engagement annotator (raw NOVA annotation files, not exported).
+# Group TE = clean mean of both annotators, matching Carlos's averaging method
+# (preprocessing/engagement/engagement_processor.py) but NaN-skipping instead of
+# fillna(0) and without the 60 Hz time-stretch bug.
+ANNOTATIONS_ROOT = Path("data/annotations")
+
 STEP_MS_40 = 40.0
 STEP_MS_90 = 1000.0 / 90.0
 
@@ -120,6 +126,62 @@ def downsample_to_40ms(df: pd.DataFrame, step_ms: float, prefix: str) -> pd.Data
     return agg
 
 
+def load_carlos_task_engagement(ses: str, n_helen: int) -> np.ndarray | None:
+    """Load the second annotator's raw task engagement on helen's 90 Hz grid.
+
+    Files are 90 or 60 Hz; the actual rate is detected by matching duration
+    against helen's timeline (dyad_08's "90Hz"-named file is really 60 Hz).
+    60 Hz signals are linearly interpolated onto the 90 Hz grid.
+    """
+    dur = n_helen / 90.0
+    # Prefer fresh NOVA exports (export_vilearn_annotations.py), fall back to the
+    # raw annotation files checked into data/annotations.
+    candidates = [
+        (EXPORT_ROOT / ses / "task_engagement.group.carlosgonzalez.csv", 90.0),
+        (EXPORT_ROOT / ses / "task_engagement60Hz.group.carlosgonzalez.csv", 60.0),
+        (ANNOTATIONS_ROOT / ses / "task engagement.group.carlosgonzalez.annotation~", 90.0),
+        (ANNOTATIONS_ROOT / ses / "task engagement60Hz.group.carlosgonzalez.annotation~", 60.0),
+    ]
+    for path, named_freq in candidates:
+        if not path.exists():
+            continue
+        if path.suffix == ".csv":
+            raw = pd.read_csv(path)
+        else:
+            raw = pd.read_csv(path, sep=";", names=["score", "conf"])
+        v = pd.to_numeric(raw["score"], errors="coerce").to_numpy()
+        for freq in (named_freq, 60.0, 90.0):
+            if abs(len(v) / freq - dur) >= 2.0:
+                continue
+            if freq == 90.0 and len(v) == n_helen:
+                return v
+            mask = ~np.isnan(v)
+            if mask.sum() < 2:
+                return None
+            t_src = np.arange(len(v)) / freq
+            t_dst = np.arange(n_helen) / 90.0
+            out = np.interp(t_dst, t_src[mask], v[mask])
+            out[(t_dst < t_src[mask][0]) | (t_dst > t_src[mask][-1])] = np.nan
+            return out
+    return None
+
+
+def load_task_engagement_mean(ses: str, ses_dir: Path) -> pd.DataFrame | None:
+    """Group TE = NaN-skipping mean of helen's export and carlos's raw annotation."""
+    helen = load_csv(ses_dir / "task_engagement.group.helenrisack.csv")
+    if helen is None:
+        return None
+    h = pd.to_numeric(helen["score"], errors="coerce").to_numpy()
+    c = load_carlos_task_engagement(ses, len(h))
+    if c is None:
+        print(f"  {ses}: no second-annotator task engagement found, using helen only")
+        merged = h
+    else:
+        with np.errstate(invalid="ignore"):
+            merged = np.nanmean(np.vstack([h, c]), axis=0)
+    return pd.DataFrame({"score": merged})
+
+
 def attach_transcript(base: pd.DataFrame, tr: pd.DataFrame, role: str) -> pd.DataFrame:
     """Assign transcript text/conf to 40 ms bins using interval coverage."""
     base = base.copy()
@@ -169,8 +231,8 @@ def main() -> None:
         dominance = load_csv(ses_dir / "dominance.group.carlosgonzalez.csv")
         valence = load_csv(ses_dir / "valence.group.carlosgonzalez.csv")
 
-        # Group-level 90 Hz annotation (downsample)
-        task_eng = load_csv(ses_dir / "task_engagement.group.helenrisack.csv")
+        # Group-level 90 Hz annotation (downsample); 2-annotator clean mean
+        task_eng = load_task_engagement_mean(ses, ses_dir)
         task_eng_40 = None if task_eng is None else downsample_to_40ms(task_eng, STEP_MS_90, "task_engagement")
 
         # Determine base length (40 ms grid) from group features
