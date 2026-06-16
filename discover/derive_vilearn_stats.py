@@ -1036,6 +1036,14 @@ def compute_panel_significance(foldscores_df: pd.DataFrame) -> pd.DataFrame:
     GazexSpeaking QDA) with Bonferroni correction + Cohen's d effect size.
 
     Paired by held-out group across LOSO folds (same recipe as anova_ml_runs.py).
+
+    NOTE (2026-06-16, significance-method decision PENDING — do not rewire yet):
+    the uniform-DummyClassifier baseline here is stochastic/seed-dependent and a
+    weak comparison; verdicts flip vs a deterministic-majority one-sample test or a
+    permutation test (see deck "Methodology Review" slides). Recommended replacement
+    once the team decides: group-level unit + permutation-vs-chance. Reference
+    implementation: scratch/te_adoption/{consolidated_methods,permutation_test,
+    group_level_audio}.py. Left as-is intentionally to not pre-empt that decision.
     """
     if foldscores_df.empty:
         return pd.DataFrame()
