@@ -110,6 +110,13 @@ CARLOS_REF_MODEL = "QDA"
 # fixed-threshold classifier.
 PANEL_INCLUDE_STREAMS = False
 
+# Group task engagement is a GROUP-level label; the per-role long format repeats each
+# group-window once per participant (pseudo-replication). When True, the group_task_engagement
+# target is collapsed to one row per (session, window_idx) — group-shared features unchanged,
+# per-role features mean-aggregated, role dropped. Individual engagement keeps per-role rows.
+# (Window granularity only; segment rows have no window_idx.) See deck "Methodology Review".
+GROUP_LEVEL_GROUP_TARGET = True
+
 # Regression + logistic-AUC + LOSO CV blocks (segment/frame/window). Unchanged
 # modeling; set False to iterate on the classifier panel alone without
 # recomputing the slow LOSO regression (reuses existing regression outputs).
@@ -956,6 +963,17 @@ def run_classifier_panel(
     return pd.DataFrame(metric_rows), pd.DataFrame(confusion_rows), pd.DataFrame(importance_rows), foldscores_df
 
 
+def collapse_to_group_windows(df: pd.DataFrame) -> pd.DataFrame:
+    """Collapse per-role window rows to one row per (session, window_idx): group-shared
+    columns unchanged, per-role numeric features mean-aggregated, role dropped. Used for
+    the group-level task-engagement target (label is group-level -> no pseudo-replication)."""
+    if "window_idx" not in df.columns:
+        return df
+    num_cols = [c for c in df.select_dtypes(include=[np.number]).columns if c != "window_idx"]
+    return df[["session", "window_idx"] + num_cols].groupby(
+        ["session", "window_idx"], as_index=False).mean()
+
+
 def run_classifier_panel_for_granularity(
     data_df: pd.DataFrame, analysis_prefix: str, threshold: float
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
@@ -988,6 +1006,9 @@ def run_classifier_panel_for_granularity(
                 df_split = data_df[data_df["session"].str.contains(session_substr, na=False)]
             if df_split.empty:
                 continue
+            if (GROUP_LEVEL_GROUP_TARGET and target_label == "group_task_engagement"
+                    and analysis_prefix.startswith("window")):
+                df_split = collapse_to_group_windows(df_split)
             for include_streams, use_pca, fset_label, modality in feature_sets:
                 name = f"{analysis_prefix}_{target_label}_{fset_label}_{split_label}"
                 nested = NESTED_CV and any(analysis_prefix.startswith(g) for g in NESTED_GRANULARITIES)
