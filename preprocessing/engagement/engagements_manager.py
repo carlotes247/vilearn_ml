@@ -10,8 +10,8 @@ import numpy as np
 class EngagementsManager:
 
     engagements_list: list[EngagementProcessor] = []
-    data_path: str = "../../data/annotations"
-    path_groups_info: str = "../../data/group_durations_all_commas.csv"
+    data_path: str = os.path.join(os.getcwd(), "data/annotations")
+    path_groups_info: str = os.path.join(os.getcwd(), "data/group_durations_all_commas.csv")
     filename_all_groups_rec_time: str = "all_groups_task_eng90Hz.csv"
     filename_dyads_rec_time: str ="dyads_task_eng90Hz.csv"                    
     filename_triads_rec_time: str ="triads_task_eng90Hz.csv"
@@ -44,12 +44,12 @@ class EngagementsManager:
     def load_engagements(self, save_to_disk: bool, load_from_disk: bool, discretised_data = False):
         self.loaded_from_disk = False
         if load_from_disk:            
-            self.df_avg_eng_all = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_all_groups_rec_time))
-            self.df_avg_eng_dyads = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_dyads_rec_time))
-            self.df_avg_eng_triads = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_triads_rec_time))
-            self.df_avg_eng_all_interaction = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_all_groups_interaction_time))
-            self.df_avg_eng_dyads_interaction = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_dyads_interaction_time))
-            self.df_avg_eng_triads_interaction = pd.read_csv(os.path.join(os.getcwd(), self.data_path, self.filename_triads_interaction_time))
+            self.df_avg_eng_all = pd.read_csv(os.path.join(self.data_path, self.filename_all_groups_rec_time))
+            self.df_avg_eng_dyads = pd.read_csv(os.path.join(self.data_path, self.filename_dyads_rec_time))
+            self.df_avg_eng_triads = pd.read_csv(os.path.join(self.data_path, self.filename_triads_rec_time))
+            self.df_avg_eng_all_interaction = pd.read_csv(os.path.join(self.data_path, self.filename_all_groups_interaction_time))
+            self.df_avg_eng_dyads_interaction = pd.read_csv(os.path.join(self.data_path, self.filename_dyads_interaction_time))
+            self.df_avg_eng_triads_interaction = pd.read_csv(os.path.join(self.data_path, self.filename_triads_interaction_time))
             self.loaded_from_disk = True
         else:
             self.folders = os.listdir(self.data_path)
