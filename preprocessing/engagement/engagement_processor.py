@@ -60,7 +60,7 @@ class EngagementProcessor:
                 self.filename_1 = self.filename_1_90Hz; self.is_file_1_90Hz = True
             else:
                 self.filename_1 = self.filename_1_60Hz
-            if os.path.isfile("{self.data_path}/{self.filename_2_90Hz}"):
+            if os.path.isfile(f"{self.data_path}/{self.filename_2_90Hz}"):
                 self.filename_2 = self.filename_2_90Hz; self.is_file_2_90Hz = True
             else:
                 self.filename_2 = self.filename_2_60Hz
@@ -181,9 +181,12 @@ class EngagementProcessor:
                 self.df_eng_1 = self.__interpolate_eng(self.df_eng_1, self.freq, 90, force_numeric=True)
             if not self.is_file_2_90Hz:
                 self.df_eng_2 = self.__interpolate_eng(self.df_eng_2, self.freq, 90, force_numeric=True)
+            # by here the frequency will always be 90Hz because we are interpolating up
+            self.freq = 90
         df_avg, result = self.__avg_eng_files_TS_secs(self.df_eng_1, self.df_eng_2)
         if not result:
             return pd.DataFrame(), pd.DataFrame()
+        # Currently this will never be called because we always interpolate up to 90
         if self.freq < 90:
             df_avg = self.__interpolate_eng(df_avg, self.freq, 90)
             self.freq = 90

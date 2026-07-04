@@ -18,12 +18,18 @@ Scope: the 60 s floorlevel TE labels and the QDA baselines trained on them
   annotator 2. So this checks a literal string `"{self.data_path}/..."`, which never
   exists → the 90 Hz file for annotator 2 (carlosgonzalez) is never detected →
   `is_file_2_90Hz` stays `False` and `filename_2` falls back to the 60 Hz name.
+  **COMMENT FROM CARLOS:** This bug is correct. Fixing it gets the correct file. But this issue is handled in engagement_processor.process_task_engagement(), where the 60Hz file gets interpolated up to 90Hz with engagement_processor.__interpolate_eng() in line 180-184
+
 - **Lines 67–68:** `if self.is_file_1_90Hz and self.is_file_2_90Hz: self.freq = 90`
   Because the annotator-2 check at line 63 always fails, `freq` stays **60** even for
   groups where both 90 Hz files actually exist.
+  **COMMENT FROM CARLOS:** This is also correct, fixing the bug above fixes this issue. But again, this was handled by interpolating up the 60Hz to 90Hz
+
 - **Line 112:** `ts_secs = [x * (1/self.freq) for x in range(len(df_avg))]`
   Timestamps are then built at `freq = 60`, while annotator 1's data (helen, selected as
   the 90 Hz file at line 60) is genuinely 90 Hz → her track is **stretched ×1.5** in time.
+**COMMENT FROM CARLOS:** This is the actual problem!!! All tracks get into 90Hz (one from the correct file, one interpolated up to 90Hz), and then averaged. But because the variable self.freq doesn't get updated before, the seconds columns gets stretched 1.5x, which for example results in the last second of dyad_6 being 1324 instead of 882. Changing self.freq into 90 after interpolating up to 90Hz fixes the issue. Good catch, but wrong explanation from the LLM.
+
 
 **Effect:** for the 13/20 floorlevel groups annotated under the 60 Hz scheme where helen's
 90 Hz file is present, the merged TE is temporally misaligned. The 2026-05-19 QDA baselines
@@ -34,6 +40,7 @@ as 60 Hz (the bug) vs correctly as 90 Hz — and correlate each against the save
 `task_engagement90Hz_avg_all.csv`. The bug simulation matches the saved file (corr ≈ 0.75–0.87);
 the correct alignment does not (≈ 0). A pure 90 Hz control group (e.g. dyad_03) replicates
 exactly (corr = 1.0000), confirming the issue is specific to the 60 Hz path.
+
 
 ---
 
