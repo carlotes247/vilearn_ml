@@ -253,8 +253,26 @@ def sub_for(his, sp):
 
 def write_feature_lists():
     with open(f"{OUT}/c2_feature_lists.md", "w") as f:
-        f.write("# Feature sets (canonical group-level protocol, 185 windows)\n\n")
+        f.write("# Classifiers & feature sets (canonical group-level protocol, 185 windows)\n\n")
+        f.write("## Classifier panel (identical for every cell)\n\n")
+        f.write("Nested leave-one-group-out model selection: outer LOGO fold -> inner LOGO\n")
+        f.write("GridSearchCV over the panel below; pipeline = StandardScaler -> [PCA or\n")
+        f.write("SelectKBest where the set says so] -> model. Reported: best (rank-1) and\n")
+        f.write("second-best (rank-2) model by mean outer-fold accuracy. seed=42.\n\n")
+        f.write("| model | hyperparameter grid |\n|---|---|\n")
+        for name, (clf, grid) in ab.PANEL.items():
+            g = {k: ("np.logspace(0,-9,50)" if k == "var_smoothing" else v) for k, v in grid.items()}
+            f.write(f"| {name} ({type(clf).__name__}) | `{g}` |\n")
+        f.write("\nQDA is skipped on high-dimensional sets (singular class covariance); the\n")
+        f.write("permutation test (300 perms) runs the best model with default hyperparams.\n\n")
+        f.write("## Feature sets\n\n")
         f.write(f"- **AIxVR** gaze (per split): All={ab.AIXVR['All']} / D={ab.AIXVR['D']} / T={ab.AIXVR['T']}\n")
+        f.write("  — mirrors the prior pipeline's `features_label=\"AIxVR\"` runs\n")
+        f.write("  (training/vilearn_windowed_train_ML.py, '### AIxVR FEATURES ###' block,\n")
+        f.write("  'according to AIxVR paper'). NB the 4-feature gaze set\n")
+        f.write("  ['MG','1d_DG','BPM','blink_durations'] is that script's separate **AIED**\n")
+        f.write("  baseline ('### AIED FEATURES (BLINKS + GAZE) ###', features_label=\"AIED\"),\n")
+        f.write("  same 4 features for all splits — a different prior, not AIxVR.\n")
         f.write(f"- **GazexSpeaking** gaze (same all splits): {ab.GXS}\n")
         f.write(f"- **audio** (estimated affect, v/a/d): {ab.AUDIO}\n")
         f.write("- **linguistic** — 7 surface stats per group-window (no model-derived sentiment):\n\n")

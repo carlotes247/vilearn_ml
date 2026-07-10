@@ -1,6 +1,31 @@
-# Feature sets (canonical group-level protocol, 185 windows)
+# Classifiers & feature sets (canonical group-level protocol, 185 windows)
+
+## Classifier panel (identical for every cell)
+
+Nested leave-one-group-out model selection: outer LOGO fold -> inner LOGO
+GridSearchCV over the panel below; pipeline = StandardScaler -> [PCA or
+SelectKBest where the set says so] -> model. Reported: best (rank-1) and
+second-best (rank-2) model by mean outer-fold accuracy. seed=42.
+
+| model | hyperparameter grid |
+|---|---|
+| QDA (QuadraticDiscriminantAnalysis) | `{'reg_param': [0.1, 0.2, 0.3, 0.4, 0.5]}` |
+| SVM (SVC) | `{'kernel': ['linear', 'rbf'], 'C': [0.1, 1], 'gamma': [0.1, 0.01, 0.001]}` |
+| LogReg (LogisticRegression) | `{'C': [0.01, 0.1, 1, 10]}` |
+| NB (GaussianNB) | `{'var_smoothing': 'np.logspace(0,-9,50)'}` |
+
+QDA is skipped on high-dimensional sets (singular class covariance); the
+permutation test (300 perms) runs the best model with default hyperparams.
+
+## Feature sets
 
 - **AIxVR** gaze (per split): All=['MG', 'BPM'] / D=['MG', '1d_DG'] / T=['BPM']
+  — mirrors the prior pipeline's `features_label="AIxVR"` runs
+  (training/vilearn_windowed_train_ML.py, '### AIxVR FEATURES ###' block,
+  'according to AIxVR paper'). NB the 4-feature gaze set
+  ['MG','1d_DG','BPM','blink_durations'] is that script's separate **AIED**
+  baseline ('### AIED FEATURES (BLINKS + GAZE) ###', features_label="AIED"),
+  same 4 features for all splits — a different prior, not AIxVR.
 - **GazexSpeaking** gaze (same all splits): ['BPM', 'blink_durations', 'G_OnSpeaker', 'No_G_OnSpeaker', 'G_SI', 'No_G_SI']
 - **audio** (estimated affect, v/a/d): ['arousal', 'dominance', 'valence']
 - **linguistic** — 7 surface stats per group-window (no model-derived sentiment):
