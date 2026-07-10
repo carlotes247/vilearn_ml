@@ -45,14 +45,21 @@ Snapshot date: 2026-07-10.
 - `b2_rate_split.csv` — 60 Hz vs 90 Hz annotation-rate robustness (confounded
   with group type; appendix).
 
+- `idea3_window_scores_think.csv` / `idea3_window_scores_nothink.csv` — LLM
+  rubric scores per window (numeric only, no transcript text); inputs to the
+  LLM columns in c2_features.csv and to b1. `idea3_results.csv` — LLM/BERT
+  detector evaluation summary.
+
 ## Regeneration
 
-From repo root (env: discover conda env):
+Scripts live in `discover/analysis_scripts/` (see its README). From repo root
+(discover conda env):
 
-    python3 scratch/te_adoption/c2_paper_tables.py            # full driver, parallel
-    PYTHONPATH=scratch/te_adoption python3 scratch/te_adoption/c2_paper_tables.py <split> <set>   # one cell
-    python3 scratch/te_adoption/d3_restore_extras.py          # extra cells not in the driver SETS
-    PYTHONPATH=scratch/te_adoption python3 scratch/te_adoption/d2_pca_dims.py
-    PYTHONPATH=scratch/te_adoption python3 scratch/te_adoption/d4_opensmile_ranking.py
+    python3 discover/analysis_scripts/c2_paper_tables.py            # full driver, parallel
+    PYTHONPATH=discover/analysis_scripts python3 discover/analysis_scripts/c2_paper_tables.py <split> <set>   # one cell
+    python3 discover/analysis_scripts/d3_restore_extras.py          # extra cells not in the driver SETS
+    PYTHONPATH=discover/analysis_scripts python3 discover/analysis_scripts/d2_pca_dims.py
+    PYTHONPATH=discover/analysis_scripts python3 discover/analysis_scripts/d4_opensmile_ranking.py
 
-then copy the refreshed files here.
+outputs land in `scratch/te_adoption/a1_out/` (gitignored workbench,
+auto-created); copy the refreshed files here and commit.

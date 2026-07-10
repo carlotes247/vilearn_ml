@@ -1,0 +1,16 @@
+source,mode,split,n,majority,acc,p,best_model
+think,zeroshot,all,185,0.519,0.741,0.0005,-
+think,features,all,185,0.519,0.809,0.0033,SVM
+think,zeroshot,D,79,0.595,0.709,0.002,-
+think,features,D,79,0.595,0.753,0.01,LogReg
+think,zeroshot,T,106,0.538,0.764,0.0005,-
+think,features,T,106,0.538,0.836,0.0033,NB
+nothink,zeroshot,all,185,0.519,0.746,0.0005,-
+nothink,features,all,185,0.519,0.761,0.0033,QDA
+nothink,zeroshot,D,79,0.595,0.759,0.0005,-
+nothink,features,D,79,0.595,0.762,0.0033,LogReg
+nothink,zeroshot,T,106,0.538,0.736,0.0005,-
+nothink,features,T,106,0.538,0.823,0.0033,LogReg
+bert,features,all,185,0.519,0.761,0.0033,LogReg
+bert,features,D,79,0.595,0.771,0.0033,LogReg
+bert,features,T,106,0.538,0.738,0.0033,SVM
