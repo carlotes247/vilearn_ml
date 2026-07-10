@@ -30,6 +30,14 @@ Snapshot date: 2026-07-10.
   88 eGeMAPS features per split (variability functionals dominate).
 - `comprehensive_table.csv` — earlier 3-priors + fusion table (same protocol);
   superseded by c2_paper_table.csv where they overlap, kept for cross-checking.
+- `c2_features.csv` — the WINDOWED FEATURE MATRIX itself (185 windows × 123
+  cols): prior gaze features on the original floorlevel grid, prior TE +
+  clean 2-annotator TE (`our_te`) + binarized target `y`, audio v/a/d, LLM
+  rubric scores, linguistic stats, 88 eGeMAPS. `group_name` = fold key for
+  leave-one-group-out. Training is directly reproducible from this file alone
+  (no parquets needed).
+- `c2_emb_features.csv` — embedding features on the same grid (emow2v 1024 +
+  sentiment-embedding 512, window-aggregated) for the embedding cells.
 
 ## Journal (LLM-era) scope
 
