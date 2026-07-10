@@ -26,6 +26,8 @@ permutation test (300 perms) runs the best model with default hyperparams.
   ['MG','1d_DG','BPM','blink_durations'] is that script's separate **AIED**
   baseline ('### AIED FEATURES (BLINKS + GAZE) ###', features_label="AIED"),
   same 4 features for all splits — a different prior, not AIxVR.
+- **AIED** gaze (same all splits): ['MG', '1d_DG', 'BPM', 'blink_durations'] — the prior 4-feature baseline above,
+  reported as its own detector (+ audio/linguistic fusions).
 - **GazexSpeaking** gaze (same all splits): ['BPM', 'blink_durations', 'G_OnSpeaker', 'No_G_OnSpeaker', 'G_SI', 'No_G_SI']
 - **audio** (estimated affect, v/a/d): ['arousal', 'dominance', 'valence']
 - **linguistic** — 7 surface stats per group-window (no model-derived sentiment):

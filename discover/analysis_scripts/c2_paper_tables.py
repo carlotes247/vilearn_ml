@@ -47,9 +47,13 @@ LING = ["segment_count", "word_count", "avg_word_length", "question_ratio",
 # accuracy is a DESCRIPTIVE post-hoc number (set chosen from all-fold selection
 # frequencies) — cite _sel for the unbiased lean-set estimate.
 LING_CORE = ["word_count", "question_ratio", "speech_ratio", "mean_segment_duration_s"]
+# prior AIED baseline (training/vilearn_windowed_train_ML.py '### AIED FEATURES ###',
+# features_label="AIED"): 4 gaze features, SAME all splits — distinct from AIxVR
+AIED = ["MG", "1d_DG", "BPM", "blink_durations"]
 SPLITS = ("All", "D", "T")
-SETS = ("AIxVR", "GazexSpeaking", "audio", "linguistic", "openSMILE",
-        "openSMILE_pca", "audio+AIxVR", "audio+GazexSpeaking", "audio+openSMILE",
+SETS = ("AIxVR", "AIED", "GazexSpeaking", "audio", "linguistic", "openSMILE",
+        "openSMILE_pca", "audio+AIxVR", "audio+AIED", "linguistic+AIED",
+        "audio+GazexSpeaking", "audio+openSMILE",
         # 2026-07-07 additions (slide 13/18 group-level rebuild, indiv-TE cut)
         "audio+linguistic", "linguistic+GazexSpeaking", "audio+linguistic+GazexSpeaking",
         "emow2v_pca", "sentemb_pca")
@@ -62,8 +66,9 @@ def osm_cols(df):
 
 def feats_for(det, sp, osm, emo=(), semb=()):
     aix = ab.AIXVR[sp]
-    return {"AIxVR": aix, "GazexSpeaking": ab.GXS, "audio": ab.AUDIO,
+    return {"AIxVR": aix, "AIED": AIED, "GazexSpeaking": ab.GXS, "audio": ab.AUDIO,
             "linguistic": LING, "openSMILE": osm, "openSMILE_pca": osm,
+            "audio+AIED": ab.AUDIO + AIED, "linguistic+AIED": LING + AIED,
             "audio+AIxVR": ab.AUDIO + aix, "audio+GazexSpeaking": ab.AUDIO + ab.GXS,
             "audio+openSMILE": ab.AUDIO + osm,
             "linguistic_core": LING_CORE,
@@ -273,6 +278,8 @@ def write_feature_lists():
         f.write("  ['MG','1d_DG','BPM','blink_durations'] is that script's separate **AIED**\n")
         f.write("  baseline ('### AIED FEATURES (BLINKS + GAZE) ###', features_label=\"AIED\"),\n")
         f.write("  same 4 features for all splits — a different prior, not AIxVR.\n")
+        f.write(f"- **AIED** gaze (same all splits): {AIED} — the prior 4-feature baseline above,\n")
+        f.write("  reported as its own detector (+ audio/linguistic fusions).\n")
         f.write(f"- **GazexSpeaking** gaze (same all splits): {ab.GXS}\n")
         f.write(f"- **audio** (estimated affect, v/a/d): {ab.AUDIO}\n")
         f.write("- **linguistic** — 7 surface stats per group-window (no model-derived sentiment):\n\n")
