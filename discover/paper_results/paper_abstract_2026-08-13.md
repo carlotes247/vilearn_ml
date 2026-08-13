@@ -441,3 +441,136 @@ one of them is independently rejection-worthy:
     stddevNorm, k≈4).
 17. §8: the dyad transcript-only result is not significant under either test; the
     hardware claim is conditional on group size.
+
+---
+
+## 11. The rejection reviews — what is already answered, what still needs work
+
+Title decided (saveli, 2026-08-13): **"Gaze for Dyads, Talk for Triads: Detecting Group
+Task Engagement in Social VR Classrooms."**
+
+Three of the five substantive rejection reasons are **dead** — killed by work already
+committed, not by rewording. Two needed new analysis, run today as
+`c5_reviewer_checks.py` (`c5_error_independence.csv`, `c5_bootstrap_ci.csv`,
+`c5_bootstrap_contrasts.csv`). Two remain genuinely open.
+
+| Objection | Who | Status | Evidence |
+|---|---|---|---|
+| "Triad models do not beat the baseline" | Coordinator, R3 | **dead** | Triads `linguistic` macro-F1 .773, acc .766, perm p=.003, t-test p=.008 — significant under **both** tests. `linguistic+GxS` likewise (.773 / .758 / .003 / .030). |
+| "Not fully multimodal; limited to eye-tracking with limited speech" | R3 (main weakness) | **dead** | Three modalities with full per-split ablation and every pairwise fusion; embeddings (emoW2V, sentiment) and 88 eGeMAPS functionals additionally tested and reported. |
+| "Positive results limited to dyads" | Coordinator | **dead** | Every split now has a detector significant under both tests; the *dissociation* is the finding, not a coverage gap. |
+| "Circularity: annotators saw gaze rays, gaze is model input" | R1 C4, Coordinator | **answered** (§11.1) | Gaze-free detector works; gaze detector degrades with group size; error structures separate. |
+| "Small dataset, may not generalise" | R2, R3, Coordinator | **quantified** (§11.2) | Group-level bootstrap CIs; every headline detector beats the floor in 100% of 10,000 resamples. |
+| "Same dataset as [13] → secondary classification analysis" | R1 C1, Coordinator | **reframeable** (§11.3) | Same recordings, **different labels**, two new modalities, a corrected prior baseline. |
+| "Binary high/low TE is simplistic" | R2 | open (§11.4) | — |
+| "Participants co-located" | R3 | open — limitation only | — |
+| "Participant counts inconsistent" | R1 C3 | fix in body | 156 invited / 108 participated / 52 analysed; the 154 is a typo (per rebuttal). Add the flow table. |
+| "Do results hold with the outlier dyad included?" | R1 Q3 | **blocked** | `data/group_names_with_time_floorlevel.csv` holds only the 20 analysed groups. `data/discover/` has `dyad_01`, `dyad_08`, `dyad_09`, but without their `TS_Start_Interaction` the 60 s window grid cannot be built. Needs Carlos to supply the floor-level timestamps — then it is a one-command rerun. |
+
+### 11.1 Circularity — the strongest available answer
+
+R1's concern: annotators saw gaze rays while labelling, so gaze features may be reading
+the annotation channel back out. Five pieces of evidence, in descending strength:
+
+1. **A gaze-free detector works.** `linguistic` uses seven surface transcript
+   statistics and no eye-tracking at all: macro-F1 .764 overall and .773 in triads,
+   significant under both tests. TE labels cannot be a pure gaze readout if a detector
+   that never sees gaze recovers them.
+2. **The gaze detector degrades with group size, and the annotation setup does not.**
+   Annotators saw the same gaze rays in dyads and in triads. A label-readout channel
+   would not care how many people are in the room; a *behavioural* gaze–engagement
+   relation does. GazexSpeaking drops from macro-F1 .795 (dyads) to .715 (triads), and
+   in triads it fails the t-test (p=.090). This is the pattern a real effect makes and
+   a readout does not.
+3. **In dyads — where the concern bites hardest, because that is where gaze works — the
+   gaze-only and transcript-only detectors are close to statistically independent.**
+   They agree on only 69.6% of windows (Cohen's κ = .278 between their predictions),
+   and their per-window *errors* are uncorrelated (φ = .239, χ² p = .070): 6 windows
+   only gaze gets wrong, 18 only transcript gets wrong. One shared annotation shortcut
+   would produce one shared error pattern. (Overall and triads the errors do correlate,
+   φ = .50 / .61 — expected, since both detectors track the same construct and the easy
+   windows are easy for both. Report all three honestly and lead with dyads.)
+4. **The coding schema is verbal.** Table 1 defines TE by silence, off-task talk,
+   surface-level task talk and elaborated task talk with prior knowledge and connected
+   ideas. There is no gaze criterion in it, and the rebuttal already states that
+   annotators used the verbal information.
+5. **And the mirror-image objection does not hold either.** If the labels are verbally
+   grounded, are the transcript features circular instead? No: the schema codes
+   *content* (depth, reasoning, connecting ideas), while the seven features are
+   *surface* statistics — segment and word counts, average word length, question ratio,
+   speech ratio, mean segment duration, unfinished ratio. No semantic model, no
+   sentiment model, no topic. Talk-amount is not what was coded.
+
+Point 2 is the one to put in the paper: it converts a design flaw into a testable
+prediction that the data passes. It also explains R1's Q2 (eye movements were **not**
+rendered on the avatars, so participants read head direction, not gaze) — with one
+partner the head-direction target is unambiguous, with two it is diffuse. The reviewer's
+own observation becomes the mechanism behind the paper's central finding.
+
+### 11.2 Small sample — quantify it instead of apologising
+
+Group-level bootstrap: resample the 20 (8 / 12) **groups** with replacement so the
+within-group dependency is preserved; 10,000 resamples; pooled macro-F1.
+
+| Split | Detector | macro-F1 [95% CI] | vs majority floor |
+|---|---|---|---|
+| All | majority floor | .336 [.273, .394] | — |
+| All | linguistic | .762 [.679, .842] | +.425 [.317, .529], better in **100%** of resamples |
+| All | linguistic+GazexSpeaking | .783 [.696, .857] | +.446 [.340, .545], **100%** |
+| Dyads | majority floor | .368 [.266, .437] | — |
+| Dyads | linguistic | .645 [.537, .765] | +.275 [.141, .433], **100%** |
+| Dyads | linguistic+GazexSpeaking | .814 [.719, .886] | +.445 [.288, .592], **99.99%** |
+| Triads | majority floor | .349 [.279, .409] | — |
+| Triads | linguistic | .770 [.640, .876] | +.420 [.267, .557], **100%** |
+| Triads | linguistic+GazexSpeaking | .768 [.622, .896] | +.419 [.243, .585], **100%** |
+
+The paired contrasts are the more interesting result, because they certify the paper's
+central claim directly:
+
+| Split | fusion − transcript-only (macro-F1) | 95% CI | fusion better in |
+|---|---|---|---|
+| **Dyads** | **+.170** | **[+.047, +.279]** | **99.6%** of resamples |
+| Triads | −.001 | [−.060, +.054] | 45.4% |
+| All | +.021 | [−.020, +.062] | 83.5% |
+
+Gaze's contribution is certified in dyads with a CI that excludes zero, is a tight null
+in triads (CI ±.06 around zero — the microphone-only claim is not a failure to detect a
+difference, the interval is narrow enough to call it a tie), and is not established
+overall. Report it exactly that way. It is a stronger answer to "n is small" than any
+amount of hedging, and it makes the title's claim a measured one.
+
+### 11.3 "Same dataset → secondary analysis" — the reframe
+
+Same recordings, but:
+
+- **Different labels.** The prior work's labels carry a 60 Hz annotation time-stretch
+  bug (confirmed by Carlos, `TE_LABEL_DISCREPANCIES.md`); this paper uses the clean
+  two-annotator mean. The prior published numbers *understated their own method* — we
+  re-run their feature sets on corrected labels and report the improvement.
+- **Two modalities that do not exist in [13]** (acoustic, transcript), plus their
+  fusions.
+- **A different protocol**: nested LOGO model selection against a majority floor with a
+  permutation null, versus linear correlation.
+- **A correction of the prior finding.** [13] reports blinks as the triad predictor.
+  Under this protocol the triad signal is talk: `AIED` (which contains the blink
+  features) reaches macro-F1 .566 in triads, against .773 for transcript statistics.
+  That is a substantive disagreement with the work we extend, not a re-analysis of it.
+
+Position the paper as *"the transfer question [13] raised, answered — and its triad half
+corrected"*, and R1's framing objection resolves itself.
+
+### 11.4 Binary classification — options
+
+R2 called binary high/low simplistic. Two cheap responses, neither run yet:
+
+1. **Report the detector's continuous output against the continuous TE mean** (Spearman
+   ρ between decision function and `our_te`) as a secondary analysis. The continuous
+   labels are already in `c2_features.csv` (`our_te`); no retraining is needed beyond
+   keeping `predict_proba`/`decision_function` instead of `predict`. Half a day.
+2. **Justify binary from the annotation, not from convenience.** The coding schema has
+   three levels but the annotators were deliberately given no numeric thresholds, so a
+   three-class target would impose boundaries the annotation does not contain. Say that
+   — it is a design argument, not an apology.
+
+Option 2 costs nothing and is the honest reading of §4.1. Option 1 is worth doing if
+there is time before submission.
