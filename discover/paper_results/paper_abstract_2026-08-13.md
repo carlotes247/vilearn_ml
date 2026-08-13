@@ -18,8 +18,8 @@ the next revision cycle; none of it needs to be settled tonight.
 ## 1. Proposed abstract
 
 Headline is **macro-F1-ranked**, not accuracy-ranked (saveli, 2026-08-13). That makes
-`linguistic+GazexSpeaking` the best detector in **all three splits** — one feature set
-across every table — with `linguistic` alone as the best-per-effort tier.
+`linguistic+GazexSpeaking` the best detector in **all three splits** (one feature set
+across every table), with `linguistic` alone as the best-per-effort tier.
 
 > Social VR classrooms hide the cues a teacher uses to notice that a group has stopped
 > working on its task. We present the first multimodal detectors of group task
