@@ -27,8 +27,8 @@ across every table — with `linguistic` alone as the best-per-effort tier.
 > carries TE at which group size. From 178 minutes of conversation by 52 pedagogy
 > students (8 dyads, 12 triads), two annotators rated group TE continuously; we detect
 > it in 185 60-second windows from eye-tracking, acoustic and transcript features.
-> Every feature set — ours and the two published gaze sets, re-evaluated on the same
-> data — runs through one protocol: nested leave-one-group-out cross-validation, a
+> Every feature set, ours as well as the two published gaze sets re-evaluated on the
+> same data, runs through one protocol: nested leave-one-group-out cross-validation, a
 > majority-class floor, a 300-permutation null and a one-sample t-test, reported with
 > Cohen's d. Fusing seven surface transcript statistics with prior-work gaze×speaking
 > features detects TE at macro-F1 .786 overall (QDA, 78.6% accuracy, d=1.33), .824 in
@@ -39,10 +39,10 @@ across every table — with `linguistic` alone as the best-per-effort tier.
 > transcript statistics alone already match the fusion (macro-F1 .773) and need nothing
 > but a microphone, whereas in dyads gaze lifts them from .651 to .824 (+.170 macro-F1, bootstrap
 > 95% CI [.047, .279]). Class-level
-> results show why fusion matters for intervention — the gaze-only dyad detector
+> results show why fusion matters for intervention: the gaze-only dyad detector
 > recalls every high-TE window but only 56% of the low-TE ones, the class an
 > intervention has to catch, and the fusion raises that to 72%. Raw acoustic
-> functionals never clear the floor under both tests and cost 6–8 points when fused in.
+> functionals never clear the floor under both tests and cost 6 to 8 points when fused in.
 > Group TE is therefore detectable in real time and, in larger groups, from consumer
 > hardware without eye tracking.
 
