@@ -727,11 +727,13 @@ the range and n**, and note that four groups fall below conventional thresholds.
    file for this group?? How was this included in the blink calculations?" (`triad_12`,
    `triad_13`, `triad_14` share the missing-flags pattern). Their blink features exist in
    the gaze file regardless.
-8. **Annotator naming does not match the pipeline.** The ledger column is
-   "Annotation Freq - **Laura**:Helen", while the data files are
-   `*.helenrisack.csv` and `*.carlosgonzalez.csv`. Resolve who the second annotator is
-   before the paper names them; also note this column is the 60 Hz/90 Hz split that
-   `b2_rate_split.csv` already treats as confounded with group type.
+8. **Annotator naming.** Resolved (saveli, 2026-08-13): the ledger's
+   "Annotation Freq - **Laura**:Helen" column is correct — **Laura's annotation was
+   saved under Carlos's NOVA user**, so `*.carlosgonzalez.csv` files hold Laura's
+   track. The two annotators are Laura and Helen; the paper must name them (or their
+   roles) accordingly and not imply Carlos annotated. The column itself is the
+   60 Hz/90 Hz split that `b2_rate_split.csv` already treats as confounded with group
+   type.
 
 ### What to do
 
