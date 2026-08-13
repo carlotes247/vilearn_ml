@@ -13,32 +13,49 @@ one-sample t-test vs the majority floor, Cohen's d vs that floor.
 
 ## 1. Proposed abstract
 
-> Social VR classrooms strip away the cues a teacher uses to notice that a group has
-> stopped working on its task. We present the first multimodal detectors of group task
-> engagement (TE) for free-flow Social VR discussions, and we show which signal carries
-> TE at which group size. Our data are 178 minutes of conversation from 52 pedagogy
-> students (8 dyads, 12 triads), rated continuously for group TE by two annotators and
-> cut into 185 60-second windows. We evaluate eye-tracking, acoustic and transcript
-> feature sets and their fusions under one protocol: nested leave-one-group-out
-> cross-validation, a majority-class floor, a 300-permutation null and a one-sample
-> t-test. Fusing seven surface transcript statistics with prior-work gaze features
-> detects TE at 79.4% overall (SVM, d=1.81), 84.2% in dyads (logistic regression,
-> d=2.81) and 77.6% in triads (QDA, d=1.03) — significant under both tests (p≤.004)
-> and up to 8 points above the same gaze features evaluated alone. Which modality
-> matters flips with group size: gaze adds 16 accuracy points in dyads but 1 in triads,
-> where transcript statistics alone already reach 76.6%. Class-level results show why
-> the fusion pays off for intervention: the gaze-only dyad detector recalls every
-> high-TE window but only 56% of the low-TE ones, the fusion 72% — and low TE is
-> precisely what a support system must catch. Raw acoustic functionals never clear the
-> floor under both tests and cost 6–8 points when fused in. Group TE is thus detectable
-> from a headset microphone alone, with eye tracking earning its cost only in dyads:
-> enough to trigger socially shared regulation support in real time, without asking
-> students to interrupt themselves to report it.
+Headline is **macro-F1-ranked**, not accuracy-ranked (saveli, 2026-08-13). That makes
+`linguistic+GazexSpeaking` the best detector in **all three splits** — one feature set
+across every table — with `linguistic` alone as the best-per-effort tier.
 
-~250 words. A ~200-word cut is available by dropping the class-level sentence and the
-acoustic sentence, but both are results the current draft explicitly says it lacks
-("We do not currently have this calculated!"), so they are the cheapest way to make the
-abstract concrete.
+> Social VR classrooms hide the cues a teacher uses to notice that a group has stopped
+> working on its task. We present the first multimodal detectors of group task
+> engagement (TE) for free-flow Social VR discussions, and we identify which signal
+> carries TE at which group size. From 178 minutes of conversation by 52 pedagogy
+> students (8 dyads, 12 triads), two annotators rated group TE continuously; we detect
+> it in 185 60-second windows from eye-tracking, acoustic and transcript features.
+> Every feature set — ours and the two published gaze sets, re-evaluated on the same
+> data — runs through one protocol: nested leave-one-group-out cross-validation, a
+> majority-class floor, a 300-permutation null and a one-sample t-test, reported with
+> Cohen's d. Fusing seven surface transcript statistics with prior-work gaze×speaking
+> features detects TE at macro-F1 .786 overall (QDA, 78.6% accuracy, d=1.33), .824 in
+> dyads (logistic regression, 84.2%, d=2.81) and .773 in triads (naive Bayes, 75.8%,
+> d=0.72), significant under both tests in every split, while the best published gaze
+> set alone reaches .736/.795/.715 and the AIxVR set stays dominated even inside its
+> own fusion. Which modality earns its place flips with group size: in triads the
+> transcript statistics alone already match the fusion (macro-F1 .773) and need nothing
+> but a microphone, whereas in dyads gaze lifts them from .651 to .824. Class-level
+> results show why fusion matters for intervention — the gaze-only dyad detector
+> recalls every high-TE window but only 56% of the low-TE ones, the class an
+> intervention has to catch, and the fusion raises that to 72%. Raw acoustic
+> functionals never clear the floor under both tests and cost 6–8 points when fused in.
+> Group TE is therefore detectable in real time and, in larger groups, from consumer
+> hardware without eye tracking.
+
+~255 words. Every claim in it is in `c2_paper_table.csv` / `c3_prf.csv` /
+`c4_acoustic_fusions.csv`.
+
+### Which undersells are woven in
+
+| # | Underselling (see §3) | In the abstract? |
+|---|---|---|
+| 1 | Effect sizes | yes — d per split, plus "reported with Cohen's d" |
+| 2 | Fair re-evaluation of prior work | yes — "the two published gaze sets, re-evaluated on the same data" |
+| 3 | Protocol rigour | yes — nested LOGO + majority floor + permutation null + t-test, one clause |
+| 4 | Microphone-only detector | yes — "need nothing but a microphone" + closing sentence |
+| 5 | Group-size dissociation, quantified | yes — .651 → .824 in dyads vs a tie in triads |
+| 6 | AIxVR dominated everywhere | yes — one clause ("dominated even inside its own fusion") |
+| 7 | Class-level behaviour | yes — the 56% → 72% low-TE recall sentence |
+| 8–11 | selection robustness, coefficients, unit fix | **no — paper body only** (§7 below) |
 
 ### What changed and why
 
@@ -46,7 +63,7 @@ abstract concrete.
 |---|---|---|
 | "This paper explores ML detectors…" | Explores = no claim | "We present the first multimodal detectors… and we show which signal carries TE at which group size" |
 | 6 sentences of Social VR / SSRL background before any result | Reader reaches the contribution at sentence 7 | 1 problem sentence, then straight to data and results |
-| "TE was detected with an accuracy of 84% / 78% / 77%" | Bare accuracies, no baseline, no model, no significance, no effect size, and 77% understates the actual 79.4% | Accuracy + classifier + Cohen's d + both significance tests + margin over the prior baseline |
+| "TE was detected with an accuracy of 84% / 78% / 77%" | Bare accuracies, no baseline, no model, no significance, no effect size, and accuracy hides that the detector is class-imbalanced | macro-F1 + accuracy + classifier + Cohen's d + both significance tests + the published gaze set's own score under the same protocol |
 | "Our results show promise as a first exploratory step" (×3, also in intro and conclusion) | Tells the reviewer to lower expectations | Cut. Replaced by the deployment claim the numbers support |
 | "We discuss how our classifier behave in different classification metrics" | Announces a discussion instead of stating the finding | The finding itself: gaze-only misses 44% of low-TE windows, fusion misses 28% |
 | "future work should investigate how to account for different group sizes" | Frames the dissociation as an unsolved weakness | The dissociation **is** the result: +16 points from gaze in dyads, +1 in triads |
@@ -199,15 +216,29 @@ embedding cells): `c3_prf.csv`. Per-window out-of-fold predictions:
   gaze-only cell has high-TE recall ≫ low-TE recall (dyads 1.000 vs .562; overall
   .906 vs .573). Fusing in transcript features moves the errors off the low-TE class,
   which is the class an SSRL intervention has to catch.
-- **Ranking depends slightly on the metric.** Overall, `linguistic+AIED` wins on
-  accuracy (.794) but `linguistic+GazexSpeaking` wins on macro-F1 (.786 vs .776), MCC
-  (.585 vs .559) and balanced accuracy — consistent with the paired test that already
-  called them tied (p=.83). In triads, `linguistic+AIED` wins on accuracy (.776) while
-  plain `linguistic` wins on macro-F1 (.773 vs .753) and MCC (.567 vs .507).
-  **Decision needed:** report accuracy-ranked with the F1 caveat, or lead with
-  `linguistic+GazexSpeaking` everywhere for one consistent feature set across splits
-  (.786 / .842 / .758 — costs 0.8 points overall and 1.8 in triads, buys a much
-  simpler story and the same gaze set in every table).
+- **Rank by macro-F1, not accuracy** (decided 2026-08-13). Accuracy rewards a detector
+  for riding the majority class; the floors here are .519 / .595 / .538 and the classes
+  are the thing an intervention has to tell apart. Under macro-F1 the ranking is also
+  simpler and more consistent:
+
+  | Feature set | All | Dyads | Triads |
+  |---|---|---|---|
+  | **linguistic+GazexSpeaking** | **.786** | **.824** | **.773** |
+  | linguistic+AIED | .776 | .804 | .753 |
+  | linguistic | .764 | .651 | .773 |
+  | GazexSpeaking (prior) | .736 | .795 | .715 |
+
+  `linguistic+GazexSpeaking` is best in every split — one feature set for every table,
+  significant under both tests everywhere. Accuracy-ranking would instead have picked
+  `linguistic+AIED` in All and Triads, i.e. a different gaze set per split, purchased
+  with a worse class balance (Triads: `ling+AIED` .776 acc but macro-F1 .753 and MCC
+  .507, against `ling+GxS` .758 acc / .773 / .573). The retired accuracy-ranked
+  headline was 79.4 / 84.2 / 77.6.
+
+- **Two tiers, and say so.** Best = `linguistic+GazexSpeaking`. Best-per-effort =
+  `linguistic` alone: it **ties the fusion in triads** (macro-F1 .773 both) and needs
+  only a microphone, but collapses in dyads (.651). That is the hardware argument, and
+  it is a result, not a caveat.
 
 ---
 
@@ -257,3 +288,155 @@ Both write to the gitignored workbench `scratch/te_adoption/a1_out/`; refreshed 
 are copied into `discover/paper_results/` and committed. `c3` reruns the rank-1 model
 of each cell and keeps the out-of-fold predictions; its fold-mean accuracies reproduce
 `c2_paper_table.csv` to three decimals in all 74 non-baseline cells.
+
+---
+
+## 7. 178 minutes vs 185 windows — no contradiction, but the paper must explain it
+
+Windows are non-overlapping 60 s slices on the floor-level interaction grid, and each
+group gets `ceil(duration / 60 s)` of them, so the **last window of every group is
+partial**.
+
+| | groups | windows | window span | reported conversation | unfilled tail |
+|---|---|---|---|---|---|
+| Dyads | 8 | 79 | 79.0 min | 77.88 min | 1.12 min |
+| Triads | 12 | 106 | 106.0 min | 100.11 min | 5.89 min |
+| **Total** | **20** | **185** | **185.0 min** | **177.99 min** | **7.01 min** |
+
+Per-group window counts run 4–13 (`triad_11` = 4, `triad_01` = 13), mean 9.25. The
+average final window holds ~39 s of the 60 s, i.e. ~21 s short. Nothing is padded or
+imputed: window features are computed over whatever frames fall inside the interval, so
+a short tail window simply aggregates less data.
+
+Two sentences for §5 cover it:
+
+> Each group interaction was divided into non-overlapping 60 s windows from the start of
+> the interaction, yielding 4–13 windows per group (M=9.25) and 185 windows in total (79
+> dyadic, 106 triadic). The final window of each group is shorter than 60 s (21 s short
+> on average); features are computed over the frames it contains rather than padded.
+
+This also removes an inconsistency a reviewer would find on their own: 185 min of
+windows against a stated 177.99 min of conversation.
+
+---
+
+## 8. Should we push "no eye tracker needed"?
+
+**Yes, but as a group-size-conditional claim, not a blanket one.** The blanket version
+is false in dyads and the data says so loudly:
+
+| | transcript only | + gaze×speaking | gaze buys |
+|---|---|---|---|
+| Overall | .764 | .786 | +.022 |
+| **Dyads** | **.651** | **.824** | **+.173** |
+| **Triads** | **.773** | **.773** | **±.000** |
+
+(macro-F1; the accuracy view agrees: dyads .680 → .842, triads .766 → .758.)
+
+So the defensible claim is:
+
+> In triads, group task engagement is detected as well from the transcript alone as
+> from the full multimodal fusion — a consumer headset with a microphone suffices. In
+> dyads, eye tracking is not optional: it is what makes the detector work at all
+> (macro-F1 .651 → .824).
+
+This is stronger than "cheap hardware suffices" because it is a **design rule**, not a
+cost note: it tells a deployment which sensor to buy for which classroom configuration,
+and it is the operational form of the paper's central finding. It also lands better
+against the prior work, which claimed eye-tracking predictors for *both* group sizes.
+
+Two honesty guards:
+- The transcript features need ASR plus diarization of the shared group audio. Say
+  "microphone plus on-device ASR", not "microphone".
+- The dyad transcript-only number (.651, acc .680) is **not significant** under either
+  test — that is exactly why the claim must be conditional.
+
+---
+
+## 9. Title
+
+The current title states the procedure ("Detecting X from A, B and C in D") and no
+finding. It also now over-promises on the acoustic modality. Candidates, best first:
+
+1. **Gaze for Dyads, Talk for Triads: Detecting Group Task Engagement in Social VR
+   Classrooms** — direct riff on the prior paper's *"Gaze for Dyads & Blinks for Triads"*
+   [13], which makes the relationship explicit and states that we **correct its triad
+   half**: the triad signal is talk, not blinks. Reviewers who know [13] get the
+   contribution from the title alone.
+2. **Group Size Decides the Modality: Multimodal Task-Engagement Detection in Social VR
+   Classrooms** — same finding, no dependence on the reader knowing [13].
+3. **What the Microphone Already Knows: Detecting Group Task Engagement in Social VR
+   Without Eye Tracking** — leads with the deployment result; risks overstating, since
+   the claim only holds for triads.
+4. **Talk Carries Triads, Gaze Carries Dyads: Multimodal Detection of Task Engagement in
+   Social VR Small Groups** — variant of 1 without the borrowed phrasing.
+
+Recommendation: **1**. It is a finding, it is short, it positions the paper against the
+work it extends, and it survives the loss of the acoustic modality.
+
+---
+
+## 10. Split: what goes in the abstract now vs the paper later
+
+### Now (abstract, due 2026-08-14)
+
+- Two-tier headline: `linguistic+GazexSpeaking` best in all three splits by macro-F1;
+  `linguistic` alone as the microphone-only tier that ties it in triads.
+- Effect sizes and both significance tests, named in one clause.
+- Prior gaze sets re-evaluated under the identical protocol, with their numbers.
+- The group-size dissociation, quantified.
+- The low-TE recall gap (56% → 72%) as the intervention argument.
+- Acoustics tested and rejected, stated as a result.
+- New title.
+
+### Later (paper body, before submission)
+
+**Must fix — deprecated content carried over from the ICMI/AIxVR rejections.** These are
+not stale numbers, they are descriptions of a pipeline that no longer exists, and every
+one of them is independently rejection-worthy:
+
+1. §5: delete the 8-algorithm panel (kNN, Decision Tree, Random Forest, Neural Network,
+   AdaBoost) — the canonical protocol is QDA / SVM / LogReg / GaussianNB with inner-CV
+   grid search.
+2. §5: delete the **uniform DummyClassifier** baseline. It is stochastic and gameable;
+   the floor is the majority class. Deck slide 19 documents verdicts flipping between
+   the two — a reviewer finding that on their own is fatal.
+3. §5: "relevant-subset features … we computed a different subset for dyads and triads"
+   is the **AIxVR prior set**, not our design, and it is the worst set we test (All
+   .625; in triads it reduces to a single feature, BPM, .581). Reframe as a
+   re-evaluated prior baseline.
+4. §5: threshold is **0.5** on the clean two-annotator mean, not the .507 median split.
+5. Table 3: regenerate. Real floors are .595 dyads / .538 triads / .519 overall, and the
+   triad row currently has the majority class inverted.
+6. §1 vs abstract: the "77% in dyads" sentence in the introduction contradicts the
+   abstract's dyad number. Delete.
+7. §3.1 vs §4: 108 volunteered vs 154 collected vs 52 analysed — reconcile.
+8. §4.1: Cronbach's α = .772 is *acceptable*, not "high".
+9. Add: 185 windows, 4–13 per group, final window partial (§7 above).
+10. Add: nested LOGO means no group ever appears in its own training set — state it
+    explicitly, or reviewers will assume leakage.
+11. Add: the unit fix — every modality is aggregated over the whole 60 s group window,
+    matching the unit of the group-level target. This is why these numbers differ from
+    the ICMI submission.
+
+**Results the body should carry that the abstract cannot hold (§3 items 8–11):**
+
+12. §6: the full modality ablation (all base sets × 3 splits) with macro-F1 alongside
+    accuracy — `c3_prf.csv` has every cell.
+13. §6/§7: confusion matrices for the three headline detectors plus the majority floor.
+    The floor's matrices are degenerate (triads predicts low TE for all 106 windows,
+    dyads high TE for all 79) — that single observation justifies the whole
+    majority-floor + permutation apparatus.
+14. §6: the feature-selection robustness analysis (SelectKBest, k tuned in the inner CV,
+    `c2_selection.csv`) — pre-empts "why a fixed feature set?". Answer: selection helps
+    nowhere robustly and destabilises fusions at n=8.
+15. §6/§7: the drop-one ablation and coefficient signs (`d1_linguistic_dropone.csv`) —
+    the signal is distributed (best solo feature: words/window, .753), and question
+    ratio predicts TE **negatively** (−.56 overall, −.64 triads): more questions means
+    clarification-seeking, not engagement. This is the mechanism §7 is missing.
+16. §6: acoustics — the 88 eGeMAPS functionals alone, under PCA, under in-CV selection,
+    and in fusion (`c4_acoustic_fusions.csv`). All fail. What little signal exists is
+    *variability*, not level (selection converges on mfcc1V / spectral-flux / loudness
+    stddevNorm, k≈4).
+17. §8: the dyad transcript-only result is not significant under either test; the
+    hardware claim is conditional on group size.
