@@ -18,6 +18,24 @@ Snapshot date: 2026-07-10.
 - `c2_foldscores.csv` — per-fold accuracies for ALL panel models per cell; any
   statistic above is recomputable from this.
 - `c2_feature_lists.md` — exact feature lists per set (paper appendix).
+- `c3_prf.csv` — per-class precision / recall / F1 + confusion matrix (TN/FP/FN/TP,
+  class 1 = High TE) + macro-F1, weighted-F1, balanced accuracy and MCC for the
+  rank-1 model of every cell in `c2_paper_table.csv`. Same protocol; the rank-1
+  model is rerun keeping the out-of-fold predictions, so each window is predicted
+  exactly once by a model that never saw its group. `acc_foldmean` reproduces
+  `c2_paper_table.acc_mean` in all 74 non-baseline cells.
+- `c3_predictions.csv` — the underlying per-window out-of-fold predictions
+  (split, detector, model, test_group, y_true, y_pred); any other metric is
+  recomputable from this.
+- `c4_acoustic_fusions.csv` / `c4_acoustic_fusions_prf.csv` — openSMILE fusions
+  WITHOUT the v/a/d affect estimate (`linguistic+openSMILE`,
+  `openSMILE+GazexSpeaking`, `linguistic+openSMILE+GazexSpeaking`), added
+  2026-08-13 once v/a/d moved to the follow-up journal paper and eGeMAPS became
+  the IUI paper's only acoustic modality. Every acoustic fusion loses to the same
+  set without acoustics.
+- `paper_abstract_2026-08-13.md` — proposed IUI abstract + audit of the current
+  PDF (errors, contradictions, unclaimed results) + the headline P/R/F1 and
+  confusion tables in paper-ready form.
 - `c2_selection.csv` — per-fold SelectKBest picks for the `_sel` robustness
   cells (split, detector, model, test_group, k, features '|'-joined).
   openSMILE_sel uses a log-spaced k grid (1,2,3,4,6,8,11,16,22,32,45,64,88);

@@ -72,6 +72,12 @@ def feats_for(det, sp, osm, emo=(), semb=()):
             "audio+AIxVR": ab.AUDIO + aix, "audio+GazexSpeaking": ab.AUDIO + ab.GXS,
             "audio+openSMILE": ab.AUDIO + osm,
             "linguistic_core": LING_CORE,
+            # 2026-08-13: acoustic fusions WITHOUT the v/a/d affect estimate — needed
+            # once v/a/d moved to the follow-up journal paper and openSMILE became the
+            # paper's only acoustic modality (see c4_acoustic_fusions.py)
+            "linguistic+openSMILE": LING + list(osm),
+            "openSMILE+GazexSpeaking": list(osm) + ab.GXS,
+            "linguistic+openSMILE+GazexSpeaking": LING + list(osm) + ab.GXS,
             "audio+linguistic": ab.AUDIO + LING,
             "linguistic+GazexSpeaking": LING + ab.GXS,
             "linguistic+AIxVR": LING + aix,
