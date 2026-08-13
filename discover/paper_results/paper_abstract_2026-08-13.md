@@ -634,3 +634,121 @@ Two options, in order of preference:
    applied to, and report the re-included result as a robustness check.
 
 Either way the current §4 sentence has to change.
+
+---
+
+## 12. Exclusion-chain audit — the inclusion rule is not reconstructible
+
+Triggered by saveli, 2026-08-13: "first time I hear about excluding sessions for being an
+outlier; I was always told floor level + interaction times." Source ledger:
+`data/groups_info_as_of_2025_06_30.csv` (28 rows; an export of `data/groups_info.xlsx`,
+sheet `Sheet1`). The chain is
+
+    43 recorded (paper §4)  →  28 in the triage ledger  →  25 named in NOVA
+                            →  25 in vilearn_more.set / the gaze feature file
+                            →  20 analysed
+
+and **at least four different filters act between 25 and 20, applied inconsistently.**
+
+| group | in analysis | valid blinks | valid gaze | P flying | Cronbach α | annot. freq |
+|---|---|---|---|---|---|---|
+| dyad_01 | **no** | 1 | 0 | — | **.967** | 90:90 |
+| dyad_02 | yes | 1 | **0** | — | .775 | 90:90 |
+| dyad_03 | yes | 1 | 1 | — | .706 | 90:90 |
+| dyad_04 | yes | 1 | 1 | — | .892 | 90:90 |
+| dyad_05 | yes | 1 | 1 | — | .848 | 90:90 |
+| dyad_06 | yes | 1 | 1 | — | .837 | 90:90 |
+| dyad_07 | yes | 1 | 1 | — | .848 | 90:90 |
+| dyad_08 | **no** | 1 | 0 | — | .807 | 60:90 |
+| dyad_09 | **no** | 1 | 0 | 0 | .829 | 60:90 |
+| dyad_10 | yes | 1 | **0** | — | **.551** | 60:90 |
+| dyad_11 | yes | — | — | — | .842 | 60:90 |
+| triad_01 | yes | 1 | 1 | — | .901 | 90:90 |
+| triad_02 | yes | 1 | **0** | — | .748 | 90:90 |
+| triad_03 | **no** | 1 | 0 | — | — | 90:90 |
+| triad_04 | **no** | **1** | **1** | 1 | **.889** | 90:90 |
+| triad_05 | yes | 1 | 1 | 0 | **.458** | 60:90 |
+| triad_06 | yes | 1 | 1 | — | .852 | 60:90 |
+| triad_07 | yes | 1 | 1 | 0 | .913 | 60:90 |
+| triad_08 | yes | 1 | 1 | 0 | — | 60:90? |
+| triad_09 | yes | 1 | 1 | — | .875 | 60:90 |
+| triad_10 | yes | — | — | — | .908 | 60:90 |
+| triad_11 | yes | — | — | — | **.530** | 60:90 |
+| triad_12 | yes | — | — | — | .855 | 60:90 |
+| triad_13 | yes | — | — | — | .820 | 60:90 |
+| triad_14 | yes | — | — | — | **.517** | 60:90 |
+
+### What the table shows
+
+1. **`Valid for gaze?` does not decide inclusion.** `dyad_02`, `dyad_10` and `triad_02`
+   are flagged **0** and are in the gaze-based analysis; `dyad_01`, `dyad_08`,
+   `dyad_09`, `triad_03` carry the same 0 and are out. The flag is either not the
+   criterion, or it was overridden four times without a record.
+2. **`triad_04` is excluded although both validity flags are 1 and its α is .889.** The
+   only reason on file is a free-text note ("The Participant in red is stuck in the
+   floor the whole time. Seems like they look at each other despite that") — the note
+   itself argues the data is usable.
+3. **`P Flying` is populated for four groups only** (`triad_04`=1; `dyad_09`,
+   `triad_05`, `triad_07`, `triad_08`=0), and two of the zeros are *in* the analysis
+   while `dyad_09`'s zero is *out*. The paper's "four more groups were removed as
+   technical errors changed the virtual height of one participant" cannot be read off
+   this column.
+4. **`dyad_01`, the group with the highest agreement in the whole dataset (α = .967), is
+   excluded.**
+5. **The outlier removal (§11.5) targets `dyad_09`, and does not survive the label
+   correction** — it is less extreme than two groups that were kept.
+
+### The agreement number in the paper is a mean, and it hides the range
+
+The 19 included groups with an α on file average **exactly .772** — the value §4.1
+reports as "a high interrater agreement of .772". It is the **mean of per-group
+Cronbach's alphas**, range **.458 – .913**, and four analysed groups sit below .60:
+
+| group | α |
+|---|---|
+| triad_05 | .458 |
+| triad_14 | .517 |
+| triad_11 | .530 |
+| dyad_10 | .551 |
+
+Reporting a single pooled ".772 = high" for a set that includes an α of .458 will not
+survive a reviewer who asks for the distribution — and R1 already asked for a
+participant/group flow table, which is where this would surface. Report the mean **with
+the range and n**, and note that four groups fall below conventional thresholds.
+
+### Two more undocumented per-group interventions (not exclusions, but non-uniform)
+
+6. **`triad_08`'s interaction window was manually extended**: "[added more minutes at the
+   end as they are still discussing, even though prob low cog]". One group therefore has
+   a different window definition from the other 19. It is also the group with the lowest
+   mean TE (.078) and one of the two that make `dyad_09`'s outlier removal inconsistent.
+7. **Six of the twenty analysed groups carry an open provenance question** in the
+   ledger: `dyad_11`, `triad_10`, `triad_11` — "We don't seem to have a group_features
+   file for this group?? How was this included in the blink calculations?" (`triad_12`,
+   `triad_13`, `triad_14` share the missing-flags pattern). Their blink features exist in
+   the gaze file regardless.
+8. **Annotator naming does not match the pipeline.** The ledger column is
+   "Annotation Freq - **Laura**:Helen", while the data files are
+   `*.helenrisack.csv` and `*.carlosgonzalez.csv`. Resolve who the second annotator is
+   before the paper names them; also note this column is the 60 Hz/90 Hz split that
+   `b2_rate_split.csv` already treats as confounded with group type.
+
+### What to do
+
+- **Report the flow.** R1 C3 asked for a participant/group flow table; build it from this
+  ledger, with the reason per dropped group. This is required either way.
+- **State one criterion and apply it.** As it stands the 25 → 20 step is not
+  reconstructible from any column in the file. Either (a) re-include the groups that no
+  defensible criterion excludes — `triad_04` (both flags valid) and `dyad_09` (outlier
+  status gone after the label fix) — or (b) define the criterion in prose and accept
+  that three included groups violate it.
+- **Run the sensitivity analysis.** Both variants are a one-line swap of the group list
+  (`group_names_with_time_floorlevel.csv` → `group_names_with_time_subsetsFullVERSION.csv`):
+  all 25 groups / 243 windows, and the 20-group set minus the four α<.60 groups. If the
+  headline survives both, the exclusion debate stops mattering and the paper gains a
+  robustness section instead of a weakness.
+- **Fix §4.1's agreement sentence** to mean + range + n.
+
+None of this changes tonight's abstract — the 20-group numbers stand as the reported
+analysis. It changes what the paper has to disclose, and it is much better found now
+than by a reviewer.
