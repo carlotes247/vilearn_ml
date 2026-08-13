@@ -55,7 +55,7 @@ across every table — with `linguistic` alone as the best-per-effort tier.
 | 5 | Group-size dissociation, quantified | yes — .651 → .824 in dyads vs a tie in triads |
 | 6 | AIxVR dominated everywhere | yes — one clause ("dominated even inside its own fusion") |
 | 7 | Class-level behaviour | yes — the 56% → 72% low-TE recall sentence |
-| 8–11 | selection robustness, coefficients, unit fix | **no — paper body only** (§7 below) |
+| 8–11 | selection robustness, coefficients, unit fix | **no — paper body only** (§10 below) |
 
 ### What changed and why
 
@@ -108,9 +108,10 @@ across every table — with `linguistic` alone as the best-per-effort tier.
 
 ## 3. Undersellings — results we have and the paper does not claim
 
-1. **Effect sizes.** d = 2.81 (dyads), 1.81 (overall), 1.03 (triads). Huge, and absent
-   from the abstract. The dyad fusion is the only dyad detector significant under
-   *both* tests.
+1. **Effect sizes.** For the headline `linguistic+GazexSpeaking` detector: d = 2.81
+   (dyads), 1.33 (overall), 0.72 (triads) — large to huge, and absent from the
+   abstract. The dyad fusion is the only dyad detector significant under *both* tests.
+   (Accuracy-ranked cells run higher still: `linguistic+AIED` d = 1.81 overall.)
 2. **Fair re-evaluation of prior work.** Prior work [13] reported linear correlations.
    We re-run its exact feature sets under our protocol on the same data — that is a
    methodological contribution in its own right, and it is what licenses the
