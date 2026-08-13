@@ -9,6 +9,10 @@ protocol: 185 floor-level 60 s group windows, clean 2-annotator-mean TE binarise
 0.5, nested leave-one-group-out model selection (seed 42), 300-permutation test +
 one-sample t-test vs the majority floor, Cohen's d vs that floor.
 
+**How to read this document.** §1 is the deliverable due 2026-08-14 — the abstract and
+the findings that go in it. Everything else (§2–§11) is material for the paper body and
+the next revision cycle; none of it needs to be settled tonight.
+
 ---
 
 ## 1. Proposed abstract
@@ -33,7 +37,8 @@ across every table — with `linguistic` alone as the best-per-effort tier.
 > set alone reaches .736/.795/.715 and the AIxVR set stays dominated even inside its
 > own fusion. Which modality earns its place flips with group size: in triads the
 > transcript statistics alone already match the fusion (macro-F1 .773) and need nothing
-> but a microphone, whereas in dyads gaze lifts them from .651 to .824. Class-level
+> but a microphone, whereas in dyads gaze lifts them from .651 to .824 (+.170 macro-F1, bootstrap
+> 95% CI [.047, .279]). Class-level
 > results show why fusion matters for intervention — the gaze-only dyad detector
 > recalls every high-TE window but only 56% of the low-TE ones, the class an
 > intervention has to catch, and the fusion raises that to 72%. Raw acoustic
@@ -465,7 +470,7 @@ committed, not by rewording. Two needed new analysis, run today as
 | "Binary high/low TE is simplistic" | R2 | open (§11.4) | — |
 | "Participants co-located" | R3 | open — limitation only | — |
 | "Participant counts inconsistent" | R1 C3 | fix in body | 156 invited / 108 participated / 52 analysed; the 154 is a typo (per rebuttal). Add the flow table. |
-| "Do results hold with the outlier dyad included?" | R1 Q3 | **blocked** | `data/group_names_with_time_floorlevel.csv` holds only the 20 analysed groups. `data/discover/` has `dyad_01`, `dyad_08`, `dyad_09`, but without their `TS_Start_Interaction` the 60 s window grid cannot be built. Needs Carlos to supply the floor-level timestamps — then it is a one-command rerun. |
+| "Do results hold with the outlier dyad included?" | R1 Q3 | **runnable now** (§11.5) | `data/group_names_with_time_subsetsFullVERSION.csv` has all 25 groups' interaction timestamps, and the gaze feature file already covers all 25. Nothing is missing. |
 
 ### 11.1 Circularity — the strongest available answer
 
@@ -559,18 +564,73 @@ Same recordings, but:
 Position the paper as *"the transfer question [13] raised, answered — and its triad half
 corrected"*, and R1's framing objection resolves itself.
 
-### 11.4 Binary classification — options
+### 11.4 Binary classification — the annotation makes the argument
 
-R2 called binary high/low simplistic. Two cheap responses, neither run yet:
+R2 called binary high/low simplistic. The current draft invites that by justifying
+binary as "a simpler problem to tackle as a first exploratory step" — convenience. The
+real justification is in the annotation design and is much stronger (saveli,
+2026-08-13):
 
-1. **Report the detector's continuous output against the continuous TE mean** (Spearman
-   ρ between decision function and `our_te`) as a secondary analysis. The continuous
-   labels are already in `c2_features.csv` (`our_te`); no retraining is needed beyond
-   keeping `predict_proba`/`decision_function` instead of `predict`. Half a day.
-2. **Justify binary from the annotation, not from convenience.** The coding schema has
-   three levels but the annotators were deliberately given no numeric thresholds, so a
-   three-class target would impose boundaries the annotation does not contain. Say that
-   — it is a design argument, not an apology.
+- The construct is **ternary by design**: the coding schema (Table 1) defines three TE
+  levels, low / medium / high.
+- It was **annotated on a continuous scale** so that the annotators would not be pushed
+  onto boundaries the schema does not specify.
+- **The annotators never used the full spectrum.** Each settled into a different band of
+  the slider for the same coded level, so the continuous values are not comparable
+  across annotators as magnitudes — only as ordering within an annotator.
+- Consolidating to binary is therefore what makes the two annotators **commensurable**.
+  It is a measurement decision forced by the annotation behaviour, not a simplification
+  of the research question.
 
-Option 2 costs nothing and is the honest reading of §4.1. Option 1 is worth doing if
-there is time before submission.
+Write it that way and R2's objection turns into a methods paragraph. In hindsight the
+scale should have been discrete from the start — that belongs in Limitations as a
+concrete, actionable lesson rather than a generic "more data needed".
+
+Optional extra if there is time: report Spearman ρ between the detector's decision
+function and the continuous two-annotator mean (`our_te`, already in
+`c2_features.csv`) — no retraining, just keep `decision_function` instead of `predict`.
+
+### 11.5 The outlier dyad (R1 Q3) — not blocked, and the exclusion needs re-checking
+
+Everything needed is in the repo:
+
+- `data/group_names_with_time_subsetsFullVERSION.csv` — interaction timestamps for **25**
+  groups (the floor-level file holds only the 20 analysed ones).
+- `Recordings/SavedData/v2_no_low_sampled/60s_TE_correlation_2026-05-19.csv` — the gaze
+  feature file already covers **all 25 groups / 243 windows**; `a1_lib.load_data()`
+  filters it down to 185.
+- The five extra groups (`dyad_01`, `dyad_08`, `dyad_09`, `triad_03`, `triad_04`) all
+  have recording times, both annotators' TE, transcripts, and merged CSV + parquet.
+
+This also reconciles the exclusion accounting exactly: 43 groups − 18 unusable
+recordings = 25 (the gaze file) − 4 avatar-height groups − 1 outlier dyad = 20.
+
+**The outlier is `dyad_09`, and under the corrected labels it is no longer an outlier.**
+Group-mean TE on the clean two-annotator mean, against the 20 included groups
+(M=.456, SD=.163):
+
+| Group | mean TE | z vs included | in analysis? |
+|---|---|---|---|
+| triad_08 | .078 | **−2.32** | **yes** |
+| dyad_10 | .132 | **−1.99** | **yes** |
+| dyad_09 | .155 | −1.85 | **no — excluded as the outlier** |
+| dyad_08 | .403 | −0.33 | no (avatar height) |
+| triad_03 | .450 | −0.04 | no (avatar height) |
+| dyad_01 | .509 | +0.33 | no (avatar height) |
+| triad_04 | .554 | +0.60 | no (avatar height) |
+
+The exclusion was decided on the old labels, which carried the 60 Hz time-stretch bug.
+On the corrected labels the excluded dyad is **less** extreme than two groups that were
+kept. As written, the "> 2 SD from the mean" criterion in §4 no longer describes what
+was done — a reviewer who recomputes it will find that immediately.
+
+Two options, in order of preference:
+
+1. **Re-include `dyad_09` and report the 21-group / 195-window results** as the headline
+   or as a robustness row. One rerun of `c2`/`c3` with the floor-level group list
+   swapped for the FullVERSION list. This answers R1 Q3 with data instead of prose and
+   removes a criterion that no longer holds.
+2. Keep the exclusion but restate the criterion in terms of the labels it was actually
+   applied to, and report the re-included result as a robustness check.
+
+Either way the current §4 sentence has to change.
