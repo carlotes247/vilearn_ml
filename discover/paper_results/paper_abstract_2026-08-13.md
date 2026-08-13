@@ -754,3 +754,116 @@ the range and n**, and note that four groups fall below conventional thresholds.
 None of this changes tonight's abstract — the 20-group numbers stand as the reported
 analysis. It changes what the paper has to disclose, and it is much better found now
 than by a reviewer.
+
+---
+
+## 13. Exclusion sensitivity — the experiment (run 2026-08-13)
+
+All 25 groups are fully annotated: both annotators' TE tracks (Helen, and **Laura under
+Carlos's NOVA user**), 2–3 role transcripts, merged CSV + parquet, and gaze features
+already present in `60s_TE_correlation_2026-05-19.csv`. **243 windows, zero NaN labels.**
+Nothing is missing in NOVA — the analysis was never limited to 21 sessions by data
+availability.
+
+`c6_build_groupset.py` rebuilds the matrix for any subset and reproduces the committed
+`c2_features.csv` **bit-exactly** on the analysed 20 (0 differing cells across all 7
+linguistic + 8 gaze columns, `y` and `our_te`). `c7_group_sensitivity.py` then reran 6
+feature sets × 3 splits × 4 group sets = **72 cells**, same protocol; the 18 `g20` cells
+reproduce `c2_paper_table.csv` exactly.
+
+| set | groups | windows | definition |
+|---|---|---|---|
+| g20 | 20 | 185 | the analysed set (validation) |
+| g21 | 21 | 195 | + `dyad_09`, the group dropped as a TE outlier |
+| g25 | 25 | 243 | every group with usable data |
+| g16 | 16 | 153 | g20 minus the four groups with per-group α < .60 |
+
+### Headline (macro-F1; ** = significant under both tests)
+
+| Split | Detector | g20 | g21 | g25 | g16 |
+|---|---|---|---|---|---|
+| **All** | GazexSpeaking | .736** | .753** | .755** | .767** |
+| | linguistic | .764** | .779** | .760** | .789** |
+| | linguistic+AIED | .776** | .779** | .767** | .755** |
+| | **linguistic+GazexSpeaking** | **.786**\*\* | **.788**\*\* | **.769**\*\* | **.797**\*\* |
+| **Dyads** | GazexSpeaking | .795 | .815** | .716 | .741** |
+| | linguistic | .651 | .722** | .737** | .525 |
+| | linguistic+AIED | .804** | .797** | .754** | .759** |
+| | **linguistic+GazexSpeaking** | **.824**\*\* | .762** | **.771**\*\* | .732** |
+| **Triads** | GazexSpeaking | .715 | .715 | .670 | .826** |
+| | linguistic | .773** | .773** | .775** | .864** |
+| | linguistic+AIED | .753** | .753** | .767** | .815** |
+| | **linguistic+GazexSpeaking** | **.773**\*\* | **.773**\*\* | .749** | **.889**\*\* |
+
+### What survives
+
+1. **`linguistic+GazexSpeaking` is significant under both tests in all 12 cells** — every
+   split × every group set. The headline detector never depends on an exclusion
+   decision. That is the single most useful sentence this experiment produces.
+2. **The dissociation holds in all four group sets.** Gaze's contribution over
+   transcript-only (macro-F1) is positive in dyads everywhere and ≈ zero in triads
+   everywhere:
+
+   | | g20 | g21 | g25 | g16 |
+   |---|---|---|---|---|
+   | Dyads | +.173 | +.040 | +.034 | +.207 |
+   | Triads | ±.000 | ±.000 | −.026 | +.025 |
+
+   The *direction* is robust; the *magnitude* in dyads swings between +.03 and +.21
+   depending on which dyads are in. State the direction as the finding and the
+   magnitude with a range.
+3. **One claim does not survive and must not be made:** on g25, gaze *alone* in dyads
+   (.716) is **worse** than transcript alone (.737). "Gaze for dyads" is a statement
+   about what gaze *adds*, never about gaze standing on its own.
+
+### R1 Q3 answered: including the excluded dyad makes dyads *stronger*
+
+`g21` vs `g20`:
+
+- **Overall is unchanged** (.786 → .788 macro-F1) and Triads is identical by
+  construction.
+- **GazexSpeaking gains significance in dyads** — perm p .083 → **.017**, so it now
+  clears both tests, which it never did in the reported analysis. macro-F1 .795 → .815.
+- **The transcript detector becomes significant in dyads** for the first time (.651 →
+  .722, perm .027, t-test .008).
+- The dyad fusion drops (.824 → .762) and the ranking inside dyads reshuffles.
+
+Mechanism: `dyad_09` is the lowest-TE dyad, so adding it moves the dyad majority floor
+from .595 to .528. A harder floor with a better-balanced target is exactly what makes
+the tests more informative. The honest summary for the rebuttal is: *"we reran with the
+excluded group included; the conclusions hold, and both dyad detectors become
+significant under both tests."*
+
+### Annotation quality is the biggest single lever
+
+`g16` — dropping only the four groups where the two annotators agree least (α < .60) —
+lifts Triads from macro-F1 .773 to **.889** (acc .895, d = 2.92) and Overall from .786 to
+.797, on 32 fewer windows. GazexSpeaking in triads goes from non-significant (.715) to
+.826\*\*. Dyads get slightly worse, but that set is down to 7 groups.
+
+That is a result in its own right and worth a paragraph: **detector performance tracks
+inter-annotator agreement.** Where the annotators agree on what task engagement looks
+like, a seven-feature transcript detector reaches .864 macro-F1 in triads. Where they do
+not, the ceiling is the label noise, not the model. It reframes "small dataset" as "label
+quality", which is both truer and more actionable.
+
+### Recommendation
+
+**Report `g21` (21 groups / 195 windows) as the main analysis**, with g20, g25 and g16 as
+a robustness table.
+
+- It removes the one exclusion that cannot be defended — the outlier criterion does not
+  hold on the corrected labels (§11.5) — while keeping the four exclusions that have a
+  stated technical cause (avatar mispositioned → gaze geometry invalid).
+- It answers R1 Q3 by construction rather than by rebuttal prose.
+- Overall and Triads headlines are unchanged; Dyads gains two newly significant
+  detectors.
+- Cost: the dyad fusion headline moves from .842 acc / .824 macro-F1 to .781 / .762.
+
+If a single number matters more than defensibility, keep g20 and add g21/g25/g16 as the
+robustness table — but then §4 must state the exclusion criteria in a form that actually
+matches the data, which §12 shows it currently does not.
+
+Outputs: `c7_sensitivity.csv` (acc ± SD, majority, perm p, t, p, Cohen's d, top-2 models
+per cell) and `c7_sensitivity_prf.csv` (confusion matrix, per-class P/R/F1, macro-F1,
+balanced accuracy, MCC).
