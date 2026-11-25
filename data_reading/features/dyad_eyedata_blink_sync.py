@@ -29,6 +29,8 @@ dyad_sync_results = pd.DataFrame(columns=[
     "avg_blinks_async_ms",
     "p1_mean_blink_duration_ms", "p2_mean_blink_duration_ms",
     "session_duration_seconds", "p1_blink_rate_per_min", "p2_blink_rate_per_min",
+    "p1_gaze_mismatch_frames", "p1_gaze_mismatch_percent",
+    "p2_gaze_mismatch_frames", "p2_gaze_mismatch_percent",
 ])
 
 # blink detection params (same conventions as the previous pipeline)
@@ -37,6 +39,9 @@ min_blink_ms = 100.0
 max_blink_ms = 500.0
 # collision window in +/− seconds around the reference onset
 collision_window_seconds = 1.5
+# minimum euclidean distance between the left and right gaze vectors for a
+# frame to count as a "different" gaze vector (gaze coordinate units)
+gaze_mismatch_threshold = 0.0
 #endregion
 
 def load_dyads() -> list[tuple[str, str, str]]:
@@ -104,6 +109,45 @@ def calculate_sync_blink_asynchrony_bins(hits: BlinkCollisionsList) -> dict:
         bins[bin_multiplier * 250] += 1
     return bins
 
+def calculate_gaze_mismatch_stats(evd: VrcftEyeDataLoader,
+                                  gaze_diff_threshold: float = gaze_mismatch_threshold) -> tuple[int, float]:
+    """
+    Counts the frames in the loaded dataset where the left eye gaze vector
+    differs from the right eye gaze vector, i.e. the euclidean distance
+    between (LeftGazeX, LeftGazeY) and (RightGazeX, RightGazeY) exceeds
+    ``gaze_diff_threshold``.
+    Returns (mismatch_frame_count, mismatch_fraction) where the fraction is
+    the count over all frames with valid gaze values. Returns (0, np.nan) if
+    the data is not loaded or the gaze columns are missing.
+    """
+    df = evd.raw_data
+    if df is None or len(df) == 0:
+        return 0, np.nan
+    gaze_cols = ["LeftGazeX", "LeftGazeY", "RightGazeX", "RightGazeY"]
+    missing = [c for c in gaze_cols if c not in df.columns]
+    if missing:
+        print(f"Warning: {evd.participant_name} ({os.path.basename(evd.file_path)}) "
+              f"is missing gaze columns {missing}; cannot calculate gaze mismatch.")
+        return 0, np.nan
+    dx = pd.to_numeric(df["LeftGazeX"], errors="coerce") - pd.to_numeric(df["RightGazeX"], errors="coerce")
+    dy = pd.to_numeric(df["LeftGazeY"], errors="coerce") - pd.to_numeric(df["RightGazeY"], errors="coerce")
+    dist = np.sqrt(dx**2 + dy**2)
+    valid = dist.notna().to_numpy()
+    if not valid.any():
+        return 0, np.nan
+    mismatch_count = int(((dist > gaze_diff_threshold).to_numpy() & valid).sum())
+    return mismatch_count, float(mismatch_count / valid.sum())
+
+def calculate_gaze_mismatch_percent(evd: VrcftEyeDataLoader,
+                                    gaze_diff_threshold: float = gaze_mismatch_threshold) -> float:
+    """
+    Fraction (0-1) of frames in the loaded dataset where the left eye gaze
+    vector differs from the right eye gaze vector (see
+    calculate_gaze_mismatch_stats). Returns np.nan if the data is not loaded
+    or the gaze columns are missing.
+    """
+    return calculate_gaze_mismatch_stats(evd, gaze_diff_threshold)[1]
+
 def plot_dyad_blink_asynchrony_boxplot(results_rows, collisions_per_dyad, out_png: str):
     """
     Boxplot of the synced blinks' time lag per dyad (signed ms; negative = the
@@ -164,6 +208,9 @@ def compute_dyad_sync_stats(dyads):
         p1_rate = len(p1.blink_onsets) / (session_s / 60.0) if session_s > 0 else np.nan
         p2_rate = len(p2.blink_onsets) / (session_s / 60.0) if session_s > 0 else np.nan
 
+        p1_gaze_frames, p1_gaze_percent = calculate_gaze_mismatch_stats(p1)
+        p2_gaze_frames, p2_gaze_percent = calculate_gaze_mismatch_stats(p2)
+
         rows.append({
             "dyad_name": dyad_name,
             "p1_eyedata_file": p1.file_path, "p2_eyedata_file": p2.file_path,
@@ -174,6 +221,8 @@ def compute_dyad_sync_stats(dyads):
             "p2_mean_blink_duration_ms": p2.mean_blink_duration_ms(),
             "session_duration_seconds": session_s,
             "p1_blink_rate_per_min": p1_rate, "p2_blink_rate_per_min": p2_rate,
+            "p1_gaze_mismatch_frames": p1_gaze_frames, "p1_gaze_mismatch_percent": p1_gaze_percent,
+            "p2_gaze_mismatch_frames": p2_gaze_frames, "p2_gaze_mismatch_percent": p2_gaze_percent,
         })
 
     global dyad_sync_results
@@ -195,6 +244,8 @@ if __name__ == "__main__":
     avg_blink_duration_ms = np.average([results['p1_mean_blink_duration_ms'].mean(), results['p2_mean_blink_duration_ms'].mean()])
     avg_blink_rate_per_min = np.average([results['p1_blink_rate_per_min'].mean(), results['p2_blink_rate_per_min'].mean()])
     avg_session_duration_seconds = results['session_duration_seconds'].mean()
+    avg_gaze_mismatch_frames = np.average([results['p1_gaze_mismatch_frames'].mean(), results['p2_gaze_mismatch_frames'].mean()])
+    avg_gaze_mismatch_percent = np.average([results['p1_gaze_mismatch_percent'].mean(), results['p2_gaze_mismatch_percent'].mean()])
     sum_sessions_mins = results['session_duration_seconds'].sum() / 60
     summary = pd.DataFrame([{
         'avg_count_sync_blink':       avg_count_sync_blink,
@@ -203,6 +254,8 @@ if __name__ == "__main__":
         'avg_blink_rate_per_min':     avg_blink_rate_per_min,
         'avg_session_duration_sec':   avg_session_duration_seconds,
         'sum_sessions_mins':          sum_sessions_mins,
+        'avg_gaze_mismatch_frames':   avg_gaze_mismatch_frames,
+        'avg_gaze_mismatch_percent':  avg_gaze_mismatch_percent,
     }])
     summary.to_csv(os.path.join(out_dir, f"{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}_dyads_retreat_blinks_features_summary.csv"), index=False)
 
