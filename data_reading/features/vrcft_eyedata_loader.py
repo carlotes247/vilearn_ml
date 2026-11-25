@@ -83,8 +83,7 @@ class VrcftEyeDataLoader:
                   filter_interaction_window: bool = False,
                   dyad_name: str = None,
                   participant_label: str = None,
-                  time_reference: str = "utc",
-                  padding_ms: float = 500.0) -> bool:
+                  time_reference: str = "utc") -> bool:
         """
         Loads the per-participant eyedata CSV.
 
@@ -105,8 +104,6 @@ class VrcftEyeDataLoader:
             Defaults to the lowercased ``participant_name`` (e.g. ``"P1"`` -> ``"p1"``).
         time_reference : str
             ``"utc"`` or ``"ntp"``; which boundary columns define the window.
-        padding_ms : float
-            Margin added on each side of the window boundaries.
         """
         rel = self.file_path.replace("\\", "/").strip()
         candidates = []
@@ -156,7 +153,7 @@ class VrcftEyeDataLoader:
                 )
             label = participant_label or self.participant_name.lower()
             self.filter_by_interaction_window(
-                dyad_name, label, time_reference=time_reference, padding_ms=padding_ms
+                dyad_name, label, time_reference=time_reference
             )
         return True
     #endregion
@@ -225,11 +222,14 @@ class VrcftEyeDataLoader:
         dyad_name: str,
         participant_label: str = "p1",
         time_reference: str = "utc",  # "utc" or "ntp"
-        padding_ms: float = 500.0,
     ) -> "VrcftEyeDataLoader":
         """
         Drops samples that fall outside the interaction window for a given dyad
         and participant, as defined in ``2026_retreat_dyads_interaction_times.csv``.
+
+        The trim is exact: samples strictly before ``start`` and strictly after
+        ``end`` are discarded, so the remaining data starts exactly at the CSV
+        start timestamp and ends exactly at the CSV end timestamp.
 
         The CSV is loaded once from *<project_root>/data/* and cached on the class
         so repeated calls (e.g. for p1 / p2 of the same dyad) stay fast.
@@ -246,10 +246,6 @@ class VrcftEyeDataLoader:
             verified correct against the dataset, and the loaded ``ts`` column
             is UTC-derived. Use ``"ntp"`` only if the device's NTP clock is
             known to be in sync with the interaction-time logger.
-        padding_ms : float
-            Extra margin (on each side) in milliseconds. The CSV start/end will
-            not align exactly to sample boundaries; this avoids discarding valid
-            edge samples that are within a few ms of the window boundary.
 
         Returns
         -------
@@ -297,15 +293,10 @@ class VrcftEyeDataLoader:
             start_raw = pd.to_datetime(row["start_interaction_utc"], utc=True).tz_localize(None)
             end_raw   = pd.to_datetime(row["end_interaction_utc"],   utc=True).tz_localize(None)
 
-        start_trim = start_raw - pd.Timedelta(milliseconds=padding_ms)
-        end_trim   = end_raw   + pd.Timedelta(milliseconds=padding_ms)
-
-        # --- filter the raw data ------------------------------------------------
+        # --- filter the raw data: keep exactly [start_raw, end_raw] -------------
         ts_col = self.raw_data[ts_key]
-        before = ts_col >= start_trim
-        after  = ts_col <= end_trim
-        kept_mask = before & after
-        dropped = (~kept_mask).sum()
+        kept_mask = (ts_col >= start_raw) & (ts_col <= end_raw)
+        dropped = int((~kept_mask).sum())
 
         if dropped > 0:
             self.raw_data = self.raw_data.loc[kept_mask].reset_index(drop=True)
@@ -316,9 +307,9 @@ class VrcftEyeDataLoader:
             ).total_seconds()
             print(
                 f"[filter] Dyad={dyad_name}, {participant_label}: "
-                f"dropped {dropped}/{len(self.raw_data) + dropped} samples "
+                f"dropped {dropped} samples "
                 f"(window: {start_raw.time()} – {end_raw.time()} "
-                f"on '{time_reference}', pad={padding_ms:.0f}ms, "
+                f"on '{time_reference}', "
                 f"remaining={len(self.raw_data)} frames, "
                 f"duration={self.session_duration_seconds:.1f}s)"
             )
@@ -330,6 +321,92 @@ class VrcftEyeDataLoader:
             )
 
         return self  # enable chaining
+
+    def verify_window_boundaries(
+        self,
+        dyad_name: str,
+        participant_label: str = "p1",
+        time_reference: str = "utc",  # "utc" or "ntp"
+    ) -> bool:
+        """
+        Checks that the first and last timestamps of the (filtered) data are
+        EXACTLY equal to the start/end interaction timestamps for this dyad
+        + participant in ``2026_retreat_dyads_interaction_times.csv``:
+
+            - first ts must equal  start
+            - last  ts must equal  end
+
+        Raises
+        ------
+        ValueError
+            If either boundary check fails (with a message printed to the
+            terminal describing both sides of the comparison).
+        """
+        if not self.data_loaded or self.raw_data is None or len(self.raw_data) == 0:
+            raise ValueError(
+                f"Cannot verify boundaries: no data loaded for {self.participant_name} "
+                f"({self.file_path}). Load and filter the data first."
+            )
+
+        # --- load and cache the interaction-time CSV (shared with filter) ----
+        if not hasattr(VrcftEyeDataLoader, "_interaction_cache"):
+            root = VrcftEyeDataLoader.project_root()
+            csv_path = os.path.join(root, "data", "2026_retreat_dyads_interaction_times.csv")
+            try:
+                VrcftEyeDataLoader._interaction_cache = pd.read_csv(csv_path)
+                VrcftEyeDataLoader._interaction_cache.columns = [
+                    str(c).strip() for c in VrcftEyeDataLoader._interaction_cache.columns
+                ]
+            except FileNotFoundError:
+                raise FileNotFoundError(
+                    f"Interaction-time CSV not found at {csv_path}. "
+                    "Is the 2026 retreat dataset present?"
+                )
+
+        cache = VrcftEyeDataLoader._interaction_cache
+        mask = (cache["name"] == dyad_name) & (cache["participant"] == participant_label)
+        if not mask.any():
+            raise ValueError(
+                f"No interaction window found for dyad={dyad_name}, "
+                f"participant={participant_label} in the CSV."
+            )
+
+        row = cache.loc[mask].iloc[0]
+
+        # --- pick start / end -------------------------------------------------
+        if time_reference == "ntp":
+            ts_key = "ts_ntp"
+            start_raw = pd.to_datetime(row["start_interaction_ntp"], utc=True).tz_localize(None)
+            end_raw   = pd.to_datetime(row["end_interaction_ntp"],   utc=True).tz_localize(None)
+        else:
+            ts_key = "ts"
+            start_raw = pd.to_datetime(row["start_interaction_utc"], utc=True).tz_localize(None)
+            end_raw   = pd.to_datetime(row["end_interaction_utc"],   utc=True).tz_localize(None)
+
+        first_ts = self.raw_data[ts_key].iloc[0]
+        last_ts  = self.raw_data[ts_key].iloc[-1]
+
+        start_ok = (first_ts == start_raw)
+        end_ok   = (last_ts  == end_raw)
+
+        if not (start_ok and end_ok):
+            msg = (
+                f"Boundary check FAILED for {self.participant_name} "
+                f"(dyad={dyad_name}, {participant_label}, '{time_reference}':\n"
+                f"  start: CSV={start_raw}, data first ts={first_ts} "
+                f"(off by {(first_ts - start_raw).total_seconds() * 1000.0:+.1f} ms, ok={start_ok})\n"
+                f"  end:   CSV={end_raw}, data last ts={last_ts} "
+                f"(off by {(last_ts - end_raw).total_seconds() * 1000.0:+.1f} ms, ok={end_ok})"
+            )
+            print(msg)
+            raise ValueError(msg)
+
+        print(
+            f"[verify] {self.participant_name} (dyad={dyad_name}, {participant_label}): "
+            f"first ts {first_ts} == CSV start and last ts {last_ts} == CSV end "
+            f"({start_raw} / {end_raw})."
+        )
+        return True
     #endregion
 
 
@@ -382,6 +459,9 @@ if __name__ == "__main__":
     print(f"Filtered:  {len(filtered.raw_data)} samples, "
           f"{filtered.session_duration_seconds:.1f}s ({dropped} dropped) "
           f"for {dyad_name} / p1")
+
+    # 2b) verify filtered boundaries against the interaction CSV
+    filtered.verify_window_boundaries(dyad_name, participant_label="p1")
 
     # 3) blink detection on the filtered data
     onsets, durations = filtered.detect_blinks()

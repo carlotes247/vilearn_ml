@@ -237,7 +237,7 @@ if __name__ == "__main__":
     print(results.to_string(index=False))
     out_dir = os.path.join(_project_root(), "data", "2026_dyad_blink_sync")
     os.makedirs(out_dir, exist_ok=True)
-    results.to_csv(os.path.join(out_dir, f"{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}_dyad_blink_sync_all_dyads.csv"), index=False)
+    results.to_csv(os.path.join(out_dir, f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_dyad_blink_sync_all_dyads.csv"), index=False)
     # calculate averages of relevant columns
     avg_count_sync_blink = results['count_sync_blinks'].mean()
     avg_percent_sync_blinks= results['percent_sync_blinks'].mean()
@@ -257,18 +257,18 @@ if __name__ == "__main__":
         'avg_gaze_mismatch_frames':   avg_gaze_mismatch_frames,
         'avg_gaze_mismatch_percent':  avg_gaze_mismatch_percent,
     }])
-    summary.to_csv(os.path.join(out_dir, f"{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}_dyads_retreat_blinks_features_summary.csv"), index=False)
+    summary.to_csv(os.path.join(out_dir, f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_dyads_retreat_blinks_features_summary.csv"), index=False)
 
     # per-dyad synced blink collision dataframes (ref_TS, adv_TS, delta_ms)
     for dyad_name, hits in collisions_per_dyad.items():
         if hits.collisions:
-            hits.get_collisions_df().to_csv(os.path.join(out_dir, f"{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}_dyad_{dyad_name}_collisions.csv"), index=False)
+            hits.get_collisions_df().to_csv(os.path.join(out_dir, f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_dyad_{dyad_name}_collisions.csv"), index=False)
             
     # per-dyad synced blink count in each 250ms time-lag bin (same bins as BlinkStats)
     if collisions_per_dyad:
         bins_rows = {d: calculate_sync_blink_asynchrony_bins(h) for d, h in collisions_per_dyad.items()}
-        pd.DataFrame(bins_rows).T.to_csv(os.path.join(out_dir, f"{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}_dyad_blink_async_250ms_bins.csv"))
+        pd.DataFrame(bins_rows).T.to_csv(os.path.join(out_dir, f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_dyad_blink_async_250ms_bins.csv"))
 
     plot_dyad_blink_asynchrony_boxplot(results, collisions_per_dyad,
-                                       os.path.join(out_dir, f"{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}_dyad_blink_async_boxplot_all_dyads.png"))
+                                       os.path.join(out_dir, f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_dyad_blink_async_boxplot_all_dyads.png"))
     print(f"\nSaved results in: {out_dir}")
