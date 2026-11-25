@@ -78,7 +78,36 @@ class VrcftEyeDataLoader:
         return os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 
     #region load
-    def load_data(self, sep: str = ",") -> bool:
+    def load_data(self,
+                  sep: str = ",",
+                  filter_interaction_window: bool = False,
+                  dyad_name: str = None,
+                  participant_label: str = None,
+                  time_reference: str = "utc",
+                  padding_ms: float = 500.0) -> bool:
+        """
+        Loads the per-participant eyedata CSV.
+
+        Parameters
+        ----------
+        sep : str
+            CSV field separator.
+        filter_interaction_window : bool
+            If ``True``, samples outside the participant's interaction window
+            (``2026_retreat_dyads_interaction_times.csv``) are dropped during
+            load, so ``raw_data``, ``timestamps`` and ``session_duration_seconds``
+            already reflect the window. Requires ``dyad_name``.
+        dyad_name : str
+            ``name`` value in the interaction CSV (e.g. ``"DYAD_2026_10_22_Eng_Case_1"``).
+            Only used when ``filter_interaction_window`` is ``True``.
+        participant_label : str
+            ``participant`` value in the interaction CSV (``"p1"``/``"p2"``).
+            Defaults to the lowercased ``participant_name`` (e.g. ``"P1"`` -> ``"p1"``).
+        time_reference : str
+            ``"utc"`` or ``"ntp"``; which boundary columns define the window.
+        padding_ms : float
+            Margin added on each side of the window boundaries.
+        """
         rel = self.file_path.replace("\\", "/").strip()
         candidates = []
         if self.path_prefix:
@@ -97,6 +126,9 @@ class VrcftEyeDataLoader:
         except FileNotFoundError:
             print(f"Error: eyedata file not found: {path}")
             return False
+        # drop the raw hex timestamp column; we only use TimestampUtc/NtpOffsetMs
+        if "NtpTimestampHex" in df.columns:
+            df = df.drop(columns=["NtpTimestampHex"])
         missing = [c for c in self.required_columns if c not in df.columns]
         if missing:
             print(f"Error: file {os.path.basename(path)} is missing columns {missing}; expected {self.required_columns}")
@@ -116,6 +148,16 @@ class VrcftEyeDataLoader:
         # interaction duration (used as the "session length" for per-minute blink rates)
         self.session_duration_seconds = (self.timestamps[-1] - self.timestamps[0]).total_seconds()
         self.data_loaded = True
+        if filter_interaction_window:
+            if dyad_name is None:
+                raise ValueError(
+                    "filter_interaction_window=True requires dyad_name "
+                    "(e.g. 'DYAD_2026_10_22_Eng_Case_1')."
+                )
+            label = participant_label or self.participant_name.lower()
+            self.filter_by_interaction_window(
+                dyad_name, label, time_reference=time_reference, padding_ms=padding_ms
+            )
         return True
     #endregion
 
@@ -174,7 +216,122 @@ class VrcftEyeDataLoader:
         if not self.blink_durations_ms:
             return float("nan")
         return float(np.mean(self.blink_durations_ms))
+
     #endregion
+
+    #region interaction-window filtering
+    def filter_by_interaction_window(
+        self,
+        dyad_name: str,
+        participant_label: str = "p1",
+        time_reference: str = "utc",  # "utc" or "ntp"
+        padding_ms: float = 500.0,
+    ) -> "VrcftEyeDataLoader":
+        """
+        Drops samples that fall outside the interaction window for a given dyad
+        and participant, as defined in ``2026_retreat_dyads_interaction_times.csv``.
+
+        The CSV is loaded once from *<project_root>/data/* and cached on the class
+        so repeated calls (e.g. for p1 / p2 of the same dyad) stay fast.
+
+        Parameters
+        ----------
+        dyad_name : str
+            Exact ``name`` value in the CSV, e.g. ``"DYAD_2026_10_22_Eng_Case_1"``.
+        participant_label : str
+            ``participant`` column value in the CSV (e.g. ``"p1"``, ``"p2"``).
+        time_reference : str
+            Which boundary to use for filtering: ``"utc"`` or ``"ntp"``.
+            Defaults to ``"utc"``: the UTC boundaries in the CSV have been
+            verified correct against the dataset, and the loaded ``ts`` column
+            is UTC-derived. Use ``"ntp"`` only if the device's NTP clock is
+            known to be in sync with the interaction-time logger.
+        padding_ms : float
+            Extra margin (on each side) in milliseconds. The CSV start/end will
+            not align exactly to sample boundaries; this avoids discarding valid
+            edge samples that are within a few ms of the window boundary.
+
+        Returns
+        -------
+        self  (for method chaining).
+        """
+        if not self.data_loaded or self.raw_data is None:
+            raise RuntimeError(
+                f"Cannot filter: eyedata was not loaded for {self.participant_name} "
+                f"({self.file_path}). Call load_data() first."
+            )
+
+        # --- load and cache the interaction-time CSV ---------------------------
+        if not hasattr(VrcftEyeDataLoader, "_interaction_cache"):
+            root = VrcftEyeDataLoader.project_root()
+            csv_path = os.path.join(root, "data", "2026_retreat_dyads_interaction_times.csv")
+            try:
+                VrcftEyeDataLoader._interaction_cache = pd.read_csv(csv_path)
+                # header has a stray space (' participant'); normalize column names
+                VrcftEyeDataLoader._interaction_cache.columns = [
+                    str(c).strip() for c in VrcftEyeDataLoader._interaction_cache.columns
+                ]
+            except FileNotFoundError:
+                raise FileNotFoundError(
+                    f"Interaction-time CSV not found at {csv_path}. "
+                    "Is the 2026 retreat dataset present?"
+                )
+
+        cache = VrcftEyeDataLoader._interaction_cache
+        mask = (cache["name"] == dyad_name) & (cache["participant"] == participant_label)
+        if not mask.any():
+            raise ValueError(
+                f"No interaction window found for dyad={dyad_name}, "
+                f"participant={participant_label} in the CSV."
+            )
+
+        row = cache.loc[mask].iloc[0]
+
+        # --- pick start / end -------------------------------------------------
+        if time_reference == "ntp":
+            ts_key = "ts_ntp"
+            start_raw = pd.to_datetime(row["start_interaction_ntp"], utc=True).tz_localize(None)
+            end_raw   = pd.to_datetime(row["end_interaction_ntp"],   utc=True).tz_localize(None)
+        else:
+            ts_key = "ts"
+            start_raw = pd.to_datetime(row["start_interaction_utc"], utc=True).tz_localize(None)
+            end_raw   = pd.to_datetime(row["end_interaction_utc"],   utc=True).tz_localize(None)
+
+        start_trim = start_raw - pd.Timedelta(milliseconds=padding_ms)
+        end_trim   = end_raw   + pd.Timedelta(milliseconds=padding_ms)
+
+        # --- filter the raw data ------------------------------------------------
+        ts_col = self.raw_data[ts_key]
+        before = ts_col >= start_trim
+        after  = ts_col <= end_trim
+        kept_mask = before & after
+        dropped = (~kept_mask).sum()
+
+        if dropped > 0:
+            self.raw_data = self.raw_data.loc[kept_mask].reset_index(drop=True)
+            self.timestamps = self.raw_data["ts"].tolist()
+            # Recalculate session duration from the trimmed data
+            self.session_duration_seconds = (
+                self.timestamps[-1] - self.timestamps[0]
+            ).total_seconds()
+            print(
+                f"[filter] Dyad={dyad_name}, {participant_label}: "
+                f"dropped {dropped}/{len(self.raw_data) + dropped} samples "
+                f"(window: {start_raw.time()} – {end_raw.time()} "
+                f"on '{time_reference}', pad={padding_ms:.0f}ms, "
+                f"remaining={len(self.raw_data)} frames, "
+                f"duration={self.session_duration_seconds:.1f}s)"
+            )
+        else:
+            print(
+                f"[filter] Dyad={dyad_name}, {participant_label}: "
+                f"all {len(self.raw_data)} samples inside window "
+                f"(no change)."
+            )
+
+        return self  # enable chaining
+    #endregion
+
 
     #region export
     def export_full_csv(self, out_path: str = None) -> str:
@@ -199,13 +356,35 @@ class VrcftEyeDataLoader:
 
 # testing below to see if it works
 if __name__ == "__main__":
-    # Single participant from the 2026 retreat dataset (Case 1, Hamish's PC)
+    # Single participant from the 2026 retreat dataset (Case 1, Hamish's PC).
+    # Hamish is 'p1' of DYAD_2026_10_22_Eng_Case_1 in the interaction CSV.
     participant_rel_path = "Recordings/2026_Retreat_Dataset/Case 1/Hamishs PC/VRCFT_EyeData.csv"
+    dyad_name = "DYAD_2026_10_22_Eng_Case_1"
+
+    # 1) raw load (flag off, default behaviour)
     test = VrcftEyeDataLoader(participant_rel_path, participant_name="Hamish")
-    if test.load_data():
-        print(f"Loaded {len(test.timestamps)} samples for {test.participant_name} "
-              f"({test.session_duration_seconds:.1f}s session); "
-              f"columns: {list(test.raw_data.columns)}")
-        test.export_full_csv()
-    else:
-        print("Failed to load the 2026 retreat participant eyedata.")
+    if not test.load_data():
+        raise SystemExit("Failed to load the 2026 retreat participant eyedata.")
+    raw_samples = len(test.raw_data)
+    raw_duration = test.session_duration_seconds
+    print(f"Raw:       {raw_samples} samples, {raw_duration:.1f}s; "
+          f"columns: {list(test.raw_data.columns)}")
+    #test.export_full_csv()
+
+    # 2) filtered load (restricted to the interaction window, UTC boundaries)
+    filtered = VrcftEyeDataLoader(participant_rel_path, participant_name="Hamish")
+    filtered.load_data(
+        filter_interaction_window=True,
+        dyad_name=dyad_name,
+        participant_label="p1",   # participant_name 'Hamish' is not a CSV label
+    )
+    dropped = raw_samples - len(filtered.raw_data)
+    print(f"Filtered:  {len(filtered.raw_data)} samples, "
+          f"{filtered.session_duration_seconds:.1f}s ({dropped} dropped) "
+          f"for {dyad_name} / p1")
+
+    # 3) blink detection on the filtered data
+    onsets, durations = filtered.detect_blinks()
+    print(f"Blinks:    {len(onsets)} valid blinks, "
+          f"mean duration {filtered.mean_blink_duration_ms():.0f} ms, "
+          f"rate {len(onsets) / (filtered.session_duration_seconds / 60.0):.2f}/min")

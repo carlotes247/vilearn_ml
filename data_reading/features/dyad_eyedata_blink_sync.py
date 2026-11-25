@@ -136,8 +136,16 @@ def compute_dyad_sync_stats(dyads):
     for dyad_name, p1_rel, p2_rel in dyads:
         p1 = VrcftEyeDataLoader(p1_rel, "P1")
         p2 = VrcftEyeDataLoader(p2_rel, "P2")
-        loaded_p1= p1.load_data()
-        loaded_p2= p2.load_data()
+        # load restricted to the interaction window (UTC boundaries, from
+        # 2026_retreat_dyads_interaction_times.csv) so blinks/rates below only
+        # reflect the window; participant labels p1/p2 are derived from the
+        # loader's participant_name ("P1"/"P2")
+        try:
+            loaded_p1 = p1.load_data(filter_interaction_window=True, dyad_name=dyad_name)
+            loaded_p2 = p2.load_data(filter_interaction_window=True, dyad_name=dyad_name)
+        except (ValueError, KeyError) as e:
+            print(f"Skipping dyad {dyad_name}: interaction window lookup failed ({e}).")
+            continue
         loaded = loaded_p1 and loaded_p2
         if not loaded:
             print(f"Skipping dyad {dyad_name} because eyedata could not be loaded.")
